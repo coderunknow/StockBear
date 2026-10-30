@@ -1,0 +1,9 @@
+# Deterministic paired openings, expressed as legal UCI moves from startpos.
+Start position |
+Open game | e2e4 e7e5
+Sicilian | e2e4 c7c5
+French | e2e4 e7e6
+Queen pawn | d2d4 d7d5
+Queen's gambit | d2d4 d7d5 c2c4
+Indian | d2d4 g8f6 c2c4 e7e6
+English | c2c4 e7e5

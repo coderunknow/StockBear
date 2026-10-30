@@ -1,0 +1,116 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: ${{ matrix.os }} / ${{ matrix.config }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2022]
+        config: [Debug, Release]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Configure (Linux)
+        if: runner.os == 'Linux'
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.config }} -DSTOCKBEAR_BUILD_TESTS=ON -DSTOCKBEAR_REQUIRE_PYTHON_TESTS=ON
+      - name: Configure x64 (Windows)
+        if: runner.os == 'Windows'
+        run: cmake -S . -B build -A x64 -DSTOCKBEAR_BUILD_TESTS=ON -DSTOCKBEAR_REQUIRE_PYTHON_TESTS=ON
+      - name: Build
+        run: cmake --build build --config ${{ matrix.config }} --parallel 2
+      - name: Unit, regression, full perft, stress, and UCI integration tests
+        run: ctest --test-dir build -C ${{ matrix.config }} --output-on-failure
+      - name: Package Linux binary
+        if: runner.os == 'Linux' && matrix.config == 'Release'
+        shell: bash
+        run: |
+          set -eu
+          version=$(cat VERSION)
+          mkdir -p package
+          cp build/stockbear LICENSE README.md package/
+          tar -czf "stockbear-${version}-linux-x64.tar.gz" -C package .
+      - name: Package Windows binary
+        if: runner.os == 'Windows' && matrix.config == 'Release'
+        shell: pwsh
+        run: |
+          $version = (Get-Content VERSION -Raw).Trim()
+          New-Item -ItemType Directory -Force package | Out-Null
+          Copy-Item build/Release/stockbear.exe, LICENSE, README.md package/
+          Compress-Archive -Path package/* -DestinationPath "stockbear-$version-windows-x64.zip"
+      - name: Upload Linux release artifact
+        if: runner.os == 'Linux' && matrix.config == 'Release'
+        uses: actions/upload-artifact@v4
+        with:
+          name: stockbear-linux-x64
+          path: stockbear-*-linux-x64.tar.gz
+          if-no-files-found: error
+      - name: Upload Windows release artifact
+        if: runner.os == 'Windows' && matrix.config == 'Release'
+        uses: actions/upload-artifact@v4
+        with:
+          name: stockbear-windows-x64
+          path: stockbear-*-windows-x64.zip
+          if-no-files-found: error
+
+  sanitizers:
+    name: Linux ASan + UBSan
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DSTOCKBEAR_SANITIZE=address,undefined -DSTOCKBEAR_BUILD_TESTS=ON -DSTOCKBEAR_REQUIRE_PYTHON_TESTS=ON
+      - run: cmake --build build --parallel 2
+      - name: Run complete test suite with sanitizers
+        env:
+          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
+          UBSAN_OPTIONS: print_stacktrace=1:halt_on_error=1
+        run: ctest --test-dir build --output-on-failure
+
+  independent-reference:
+    name: Independent move generation and tournament harness
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install optional validation tool
+        run: python -m pip install chess==1.11.2
+      - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DSTOCKBEAR_BUILD_TESTS=ON -DSTOCKBEAR_REQUIRE_PYTHON_TESTS=ON
+      - run: cmake --build build --parallel 2
+      - name: Verify reference perft counts
+        run: python scripts/reference_perft.py
+      - name: Compare seeded legal positions and divides
+        run: python scripts/differential.py ./build/stockbear --samples 2000 --seed 20261030
+      - name: Verify tournament harness and PGN
+        run: python tests/integration/test_tournament.py ./build/stockbear
+
+  clang:
+    name: Linux Clang Release
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Configure with Clang
+        env:
+          CC: clang
+          CXX: clang++
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DSTOCKBEAR_BUILD_TESTS=ON -DSTOCKBEAR_REQUIRE_PYTHON_TESTS=ON
+      - run: cmake --build build --parallel 2
+      - run: ctest --test-dir build --output-on-failure
