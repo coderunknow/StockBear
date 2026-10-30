@@ -6,7 +6,7 @@ Current evidence and limitations are in [the versioned benchmark report](benchma
 
 ## Requirements
 
-- 64-bit Linux or Windows 10 x64 target; GCC, Clang or Visual Studio 2022 with C++17 and CMake 3.16+ to build.
+- 64-bit Linux or Windows 10 x64 target; a C++17 compiler (GCC, Clang or MSVC) and CMake 3.16+ to build (CMake 3.21+ with Visual Studio 2022).
 - A CPU with a portable x86-64 baseline; no AVX2, AVX-512, GPU or external engine is required. The released Linux build statically links the C++ runtime but uses the system glibc; the Windows MSVC build uses the static C++ runtime.
 - Normal execution needs only the executable and operating-system libraries. Python 3 is optional for black-box tests; the separate reference/tournament tools additionally use the optional `chess==1.11.2` Python package. See [third-party notices](THIRD_PARTY.md).
 - One search thread. The default Hash budget is 16 MiB, configurable from 1 to 512 MiB. Tables and the rest of the process use additional memory.
@@ -18,7 +18,7 @@ Linux terminal:
 ```sh
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build --parallel 2
-ctest --test-dir build --output-on-failure
+cmake -E chdir build ctest --output-on-failure
 ./build/stockbear --version
 ./build/stockbear
 ```
@@ -28,7 +28,7 @@ Windows PowerShell with the Visual Studio C++ workload:
 ```powershell
 cmake -S . -B build -A x64
 cmake --build build --config Release --parallel 2
-ctest --test-dir build -C Release --output-on-failure
+cmake -E chdir build ctest -C Release --output-on-failure
 .\build\Release\stockbear.exe --version
 .\build\Release\stockbear.exe
 ```
@@ -48,7 +48,7 @@ position startpos moves e2e4 e7e5
 go depth 5
 ```
 
-Wait for `bestmove` before issuing the next position. To analyze a FEN, use `position fen <six FEN fields> [moves <uci moves>...]`. `go depth N`, `go nodes N`, `go movetime N`, `go wtime N btime N winc N binc N movestogo N`, and `go infinite` are supported; times and increments are milliseconds. `stop` interrupts a search; `quit` stops and exits. `isready` remains responsive during search. A terminal position returns `bestmove 0000`.
+Wait for `bestmove` before issuing the next position. To analyze a FEN, use `position fen <six FEN fields> [moves <uci moves>...]`. `go depth N`, `go nodes N`, `go movetime N`, `go wtime N btime N winc N binc N movestogo N`, and `go infinite` are supported; times and increments are milliseconds. Negative remaining-clock values are clamped to zero; other negative limits are rejected. `stop` interrupts a search; `quit` stops and exits. `isready` remains responsive during search. A terminal position returns `bestmove 0000`.
 
 The only advertised option is `Hash`. Ponder, `searchmoves`, MultiPV, Chess960, an opening book, tablebases and multiple search threads are **not** implemented. Malformed commands are reported as UCI `info string` messages and do not replace a valid position.
 

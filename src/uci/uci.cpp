@@ -120,8 +120,18 @@ void UciEngine::handle_go(const std::string& arguments) {
             emit("info string go: unsupported parameter " + key); return;
         }
         std::uint64_t n = 0;
-        if (!(in >> text) || !number(text, n, key == "nodes" ? std::numeric_limits<std::uint64_t>::max()
-                                                            : 1000000000000ULL)) {
+        const std::uint64_t maximum = key == "nodes" ? std::numeric_limits<std::uint64_t>::max()
+                                                      : 1000000000000ULL;
+        if (!(in >> text)) { emit("info string go: invalid value for " + key); return; }
+        // Some GUIs report a slightly negative remaining clock after a flag
+        // falls. Clamp well-formed, bounded clocks to zero; other negative
+        // parameters remain invalid. Do not start a search on malformed input.
+        if ((key == "wtime" || key == "btime") && text.size() > 1 && text[0] == '-') {
+            std::uint64_t magnitude = 0;
+            if (!number(text.substr(1), magnitude, maximum)) {
+                emit("info string go: invalid value for " + key); return;
+            }
+        } else if (!number(text, n, maximum)) {
             emit("info string go: invalid value for " + key); return;
         }
         if (key == "depth") {

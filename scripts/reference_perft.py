@@ -29,16 +29,31 @@ def perft(board, depth):
     return nodes
 
 
+def parse_cases(lines):
+    """Fail closed: every PERFT row must be recognized and validated."""
+    cases = []
+    for number, line in enumerate(lines, 1):
+        stripped = line.strip()
+        if not re.match(r"^PERFT\b", stripped):
+            continue
+        match = PATTERN.fullmatch(stripped)
+        if not match:
+            raise ValueError(f"unparsable perft row {number}: {line}")
+        cases.append(match.groups())
+    if not cases:
+        raise ValueError("No reference positions found")
+    return cases
+
+
 def main():
     path = Path(__file__).resolve().parents[1] / "benchmarks" / "positions" / "perft.inc"
     ok = True
-    cases = 0
+    try:
+        cases = parse_cases(path.read_text(encoding="utf-8").splitlines())
+    except ValueError as exc:
+        sys.exit(str(exc))
     print(f"Reference: python-chess {chess.__version__}", flush=True)
-    for line in path.read_text(encoding="utf-8").splitlines():
-        m = PATTERN.match(line)
-        if not m:
-            continue
-        name, fen, depth, expected = m.groups()
+    for name, fen, depth, expected in cases:
         b = chess.Board(fen)
         if not b.is_valid():
             print(f"FAIL {name}: invalid reference position (status {b.status()})", flush=True)
@@ -50,9 +65,6 @@ def main():
         print(f"{'PASS' if passed else 'FAIL'} {name}: depth={depth} expected={expected} "
               f"reference={actual} seconds={time.monotonic()-started:.3f}", flush=True)
         ok &= passed
-        cases += 1
-    if not cases:
-        sys.exit("No reference positions found")
     sys.exit(0 if ok else 1)
 
 if __name__ == "__main__":

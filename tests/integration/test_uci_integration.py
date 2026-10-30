@@ -121,6 +121,16 @@ def main():
         e.send("go wtime 1000 btime 1000 winc 10 binc 10 movestogo 20")
         best, _ = e.best(3)
         assert best in start_legal, best
+        # Some GUIs send an already-expired negative remaining time.
+        e.send("go wtime -7 btime 60000")
+        best, _ = e.best(3)
+        assert best in start_legal, best
+        e.send("go winc -1")
+        _, invalid_clock = e.until(lambda x: x.startswith("info string go:"))
+        assert not any(x.startswith("bestmove ") for x in invalid_clock), invalid_clock
+        e.send("go wtime -not-a-number")
+        _, malformed_clock = e.until(lambda x: x.startswith("info string go:"))
+        assert not any(x.startswith("bestmove ") for x in malformed_clock), malformed_clock
 
         # Black's clock, not White's, must govern a black-to-move search.
         black_fen = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
@@ -130,6 +140,9 @@ def main():
         e.send("go wtime 60000 btime 100 winc 10 binc 20 movestogo 20")
         best, _ = e.best(3)
         assert best in black_legal and time.monotonic() - before < 1, best
+        e.send("go wtime 60000 btime -7")
+        best, _ = e.best(3)
+        assert best in black_legal, best
         e.send("position startpos")
 
         e.send("go infinite")

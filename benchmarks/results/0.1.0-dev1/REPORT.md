@@ -33,9 +33,9 @@ The fixed-depth and fixed-node CSV files cover 12 positions including mate-in-on
 
 | Position | Best move | Score | Nodes | Time | NPS |
 |---|---|---:|---:|---:|---:|
-| Starting position | `b1c3` | +25 cp | 17,075 | 12,509 µs | 1,365,017 |
-| Complex middlegame | `e2a6` | +7 cp | 168,923 | 116,831 µs | 1,445,874 |
-| Mate in two | `b2c3` | mate +2 | 66,245 | 16,194 µs | 4,090,712 |
+| Starting position | `b1c3` | +25 cp | 17,075 | 7,764 µs | 2,199,252 |
+| Complex middlegame | `e2a6` | +7 cp | 168,923 | 73,228 µs | 2,306,808 |
+| Mate in two | `b2c3` | mate +2 | 66,245 | 16,054 µs | 4,126,385 |
 
 The raw data contains the full PVs, other positions and fixed-100,000-node run. Repeating fixed-depth and fixed-node suites produced identical moves, scores, nodes and PVs when measured on the same build; timings were excluded from that comparison. A detected bare-king draw ends at depth zero instead of pretending to have searched the requested depth. Very short timings and measured NPS are noisy.
 
