@@ -1,0 +1,14 @@
+# StockBear 0.1.0-dev1; threads=1; hash_requested_mb=16; hash_allocated_bytes=16777200; mode=depth;5
+name,bestmove,depth,score_type,score,nodes,time_us,nps,hashfull,pv,fen
+"Starting position",b1c3,5,cp,25,17075,7764,2199252,4,"b1c3 g8f6 e2e3 b8c6 f1c4","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+"Complex middlegame",e2a6,5,cp,7,168923,73228,2306808,9,"e2a6 e6d5 e5g6 f7g6 c3b5 d5e4 b5c7 e8f7","r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"
+"Mate in one",f7g7,5,mate,1,13399,2991,4479772,2,"f7g7","7k/5Q2/6K1/8/8/8/8/8 w - - 0 1"
+"Rook and pawn ending",b4f4,5,cp,80,6231,1902,3276025,2,"b4f4 h4g3 f4f7 c7c6 f7g7 g3f4","8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1"
+"Promotion race",g1h2,5,cp,992,1039,293,3546075,0,"g1h2 h7g6 a7a8q g6f5 a8d5 f5f4","8/P6k/8/8/8/8/7p/6K1 w - - 0 1"
+"Hanging queen",e4d5,5,cp,0,411,108,3805555,0,"e4d5 e8d7 e1d2 d7d6 d2c1 d6d5","4k3/8/8/3q4/4P3/8/8/4K3 w - - 0 1"
+"Developed middlegame",b1a3,5,cp,461,173889,76485,2273504,21,"b1a3 b7b5 c4b3 c6a5 c1e3 a5b3 d1b3","r4rk1/1pp1qppp/p1np1n2/8/2B1P1b1/2PP1N2/PP3PPP/RNBQ1RK1 w - - 0 10"
+"Bare kings drawn",e1d1,0,cp,0,0,0,0,0,"e1d1","8/8/8/8/8/4k3/8/4K3 w - - 0 1"
+"Mate in two",b2c3,5,mate,2,66245,16054,4126385,14,"b2c3 a4a3 f5a5","8/8/8/5Q2/k7/8/1K6/8 w - - 0 1"
+"Forced check evasion",g1h1,5,cp,-1136,1144,270,4237037,1,"g1h1 g2h2 h1g1 f2g2 g1f1 g2g4","7k/8/8/8/8/8/5rr1/6K1 w - - 0 1"
+"Avoid immediate mate",a1a3,5,cp,-1000,1119,355,3152112,1,"a1a3 b3a3 b1c2 h6g6 c2c3 g6e4","8/8/7q/8/8/1k6/8/RK6 w - - 0 1"
+"Stalemate avoidance",f1f2,5,mate,3,1720,428,4018691,0,"f1f2 h1h2 b7b8q h2h3 b8g3","8/1P6/8/8/8/8/8/5K1k w - - 0 1"

@@ -1,0 +1,155 @@
+name: Build and publish development prerelease
+
+# Deliberately manual: publication must follow a verified merge, annotated tag,
+# and successful push-to-main CI for that exact tagged commit.
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing annotated release tag (must equal v + VERSION)'
+        required: true
+        type: string
+      validation_run_id:
+        description: 'Successful CI push-to-main run ID for the tagged commit'
+        required: true
+        type: string
+
+# Do not race two manual publications for the same tag.
+concurrency:
+  group: prerelease-${{ inputs.tag }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Package ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2022]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Verify annotated tag, version, and default-branch ancestry
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          test "$RELEASE_TAG" = "v$(tr -d '\r\n' < VERSION)"
+          test "$(git cat-file -t "refs/tags/$RELEASE_TAG")" = tag
+          test "$(git rev-parse HEAD)" = "$(git rev-parse "$RELEASE_TAG^{}")"
+          git merge-base --is-ancestor HEAD refs/remotes/origin/main
+      - name: Configure Linux
+        if: runner.os == 'Linux'
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DSTOCKBEAR_BUILD_TESTS=ON -DSTOCKBEAR_REQUIRE_PYTHON_TESTS=ON
+      - name: Configure Windows x64
+        if: runner.os == 'Windows'
+        run: cmake -S . -B build -A x64 -DSTOCKBEAR_BUILD_TESTS=ON -DSTOCKBEAR_REQUIRE_PYTHON_TESTS=ON
+      - run: cmake --build build --config Release --parallel 2
+      - name: Test the binary to be packaged
+        run: cmake -E chdir build ctest -C Release --output-on-failure
+      - name: Package Linux
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -eu
+          version=$(tr -d '\r\n' < VERSION)
+          mkdir package
+          cp build/stockbear LICENSE README.md package/
+          tar -czf "stockbear-${version}-linux-x64.tar.gz" -C package .
+      - name: Package Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $version = (Get-Content VERSION -Raw).Trim()
+          New-Item -ItemType Directory -Force package | Out-Null
+          Copy-Item build/Release/stockbear.exe, LICENSE, README.md package/
+          Compress-Archive -Path package/* -DestinationPath "stockbear-$version-windows-x64.zip"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: runner.os == 'Linux'
+        with:
+          name: stockbear-release-linux-x64
+          path: stockbear-*-linux-x64.tar.gz
+          if-no-files-found: error
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: runner.os == 'Windows'
+        with:
+          name: stockbear-release-windows-x64
+          path: stockbear-*-windows-x64.zip
+          if-no-files-found: error
+
+  publish:
+    name: Verify CI and publish prerelease
+    needs: package
+    runs-on: ubuntu-22.04
+    permissions:
+      actions: read   # Verify the supplied exact-commit CI run.
+      contents: write # Create the prerelease and upload its archives.
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: ${{ inputs.tag }}
+      VALIDATION_RUN_ID: ${{ inputs.validation_run_id }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: stockbear-release-*
+          path: release-assets
+          merge-multiple: true
+      - name: Verify exact-commit CI and publish with both assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(tr -d '\r\n' < VERSION)
+          test "$RELEASE_TAG" = "v$version"
+          test "$(git cat-file -t "refs/tags/$RELEASE_TAG")" = tag
+          commit=$(git rev-parse "$RELEASE_TAG^{}")
+          test "$(git rev-parse HEAD)" = "$commit"
+          git merge-base --is-ancestor "$commit" refs/remotes/origin/main
+          case "$VALIDATION_RUN_ID" in ''|*[!0-9]*) echo 'Invalid CI run ID' >&2; exit 1;; esac
+          gh run view "$VALIDATION_RUN_ID" --repo "$GITHUB_REPOSITORY" \
+            --json workflowName,event,headBranch,headSha,status,conclusion > ci-run.json
+          jq -e --arg commit "$commit" \
+            '.workflowName == "CI" and .event == "push" and .headBranch == "main" and
+             .headSha == $commit and .status == "completed" and .conclusion == "success"' ci-run.json
+          linux="stockbear-${version}-linux-x64.tar.gz"
+          windows="stockbear-${version}-windows-x64.zip"
+          test -s "release-assets/$linux"
+          test -s "release-assets/$windows"
+          (cd release-assets && sha256sum "$linux" "$windows" > SHA256SUMS.txt)
+          base="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$RELEASE_TAG/"
+          sed -e "s#](benchmarks/#](${base}benchmarks/#g" \
+              -e "s#](docs/#](${base}docs/#g" \
+              -e "s#](THIRD_PARTY.md)#](${base}THIRD_PARTY.md)#g" RELEASE_NOTES.md > release-notes.md
+          printf '\n\n## Verified release provenance\n\n- Commit: `%s`\n- Exact-commit CI: %s/%s/actions/runs/%s\n- Release binary build: %s/%s/actions/runs/%s\n' \
+            "$commit" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$VALIDATION_RUN_ID" \
+            "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" >> release-notes.md
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'Release already exists; inspect it manually before retrying.' >&2
+            exit 1
+          fi
+          # Keep the release a draft until uploads and asset verification succeed.
+          gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --draft --prerelease \
+            --title "StockBear $RELEASE_TAG" --notes-file release-notes.md \
+            "release-assets/$linux" "release-assets/$windows" release-assets/SHA256SUMS.txt
+          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft,isPrerelease,assets > release.json
+          jq -e --arg linux "$linux" --arg windows "$windows" \
+            '.isDraft and .isPrerelease and
+             ([.assets[].name] | sort) == ([$linux, $windows, "SHA256SUMS.txt"] | sort)' release.json
+          gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --draft=false --prerelease
+          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft,isPrerelease,url \
+            --jq 'select(.isDraft == false and .isPrerelease == true)'

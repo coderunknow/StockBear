@@ -1,0 +1,13 @@
+// Diverse deterministic fixed-position search suite, compiled into the binary.
+SEARCH("Starting position", "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+SEARCH("Complex middlegame", "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1")
+SEARCH("Mate in one", "7k/5Q2/6K1/8/8/8/8/8 w - - 0 1")
+SEARCH("Rook and pawn ending", "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1")
+SEARCH("Promotion race", "8/P6k/8/8/8/8/7p/6K1 w - - 0 1")
+SEARCH("Hanging queen", "4k3/8/8/3q4/4P3/8/8/4K3 w - - 0 1")
+SEARCH("Developed middlegame", "r4rk1/1pp1qppp/p1np1n2/8/2B1P1b1/2PP1N2/PP3PPP/RNBQ1RK1 w - - 0 10")
+SEARCH("Bare kings drawn", "8/8/8/8/8/4k3/8/4K3 w - - 0 1")
+SEARCH("Mate in two", "8/8/8/5Q2/k7/8/1K6/8 w - - 0 1")
+SEARCH("Forced check evasion", "7k/8/8/8/8/8/5rr1/6K1 w - - 0 1")
+SEARCH("Avoid immediate mate", "8/8/7q/8/8/1k6/8/RK6 w - - 0 1")
+SEARCH("Stalemate avoidance", "8/1P6/8/8/8/8/8/5K1k w - - 0 1")
