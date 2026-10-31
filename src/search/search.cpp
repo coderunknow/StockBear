@@ -46,33 +46,11 @@ inline int gain_of(const Position& pos, Move move) {
 
 } // namespace
 
-bool Search::quiet(const Position& pos, Move move) const {
-    return move_type(move) != PromotionMove && move_type(move) != EnPassantMove &&
-           pos.empty(move_to(move));
-}
-
-bool Search::gives_check(Position& pos, Move move) {
-    pos.make_move(move);
-    const bool check = pos.in_check();
-    pos.unmake_move(move);
-    return check;
-}
-
-bool Search::visit(int ply) {
-    if (stop_->load(std::memory_order_relaxed) ||
-        (limits_.hasNodes && nodes_ >= limits_.nodes) ||
-        ((nodes_ & (NodeCheckInterval - 1)) == 0 && timer_.hard_expired())) {
-        aborted_ = true;
-        return false;
-    }
-    ++nodes_;
-    selDepth_ = std::max(selDepth_, ply);
-    return true;
-}
-
-int Search::see(const Position& pos, Move move) {
+int static_exchange_evaluation(const Position& pos, Move move) {
     const Square from = move_from(move);
     const Square to = move_to(move);
+    // gain[i] is the material balance for the side that makes the i-th capture
+    // on `to`, counting from the side to move. gain[0] is the initial capture.
     int gain[32] = {};
     int d = 0;
     gain[0] = gain_of(pos, move);
@@ -98,13 +76,41 @@ int Search::see(const Position& pos, Move move) {
         occ ^= square_bb(lsb_square(chosenBB));
         ++d;
         gain[d] = SeeValue[attacker] - gain[d - 1];
-        // If neither side can profit, the exchange is settled.
-        if (std::max(-gain[d - 1], gain[d]) < 0) break;
         attacker = chosen;
         side = ~side;
+        // If neither side can profit, the exchange is settled; the last
+        // computed value is still folded in below.
+        if (std::max(-gain[d - 1], gain[d]) < 0) break;
     }
-    while (--d > 0) gain[d - 1] = -std::max(-gain[d - 1], gain[d]);
+    // Negamax fold. It must start from the last filled entry (d), otherwise the
+    // final recapture is ignored and a losing capture looks winning: a knight
+    // taking a pawn defended by a pawn must return 100 - 320 = -220, not +100.
+    for (; d > 0; --d) gain[d - 1] = -std::max(gain[d], -gain[d - 1]);
     return gain[0];
+}
+
+bool Search::quiet(const Position& pos, Move move) const {
+    return move_type(move) != PromotionMove && move_type(move) != EnPassantMove &&
+           pos.empty(move_to(move));
+}
+
+bool Search::gives_check(Position& pos, Move move) {
+    pos.make_move(move);
+    const bool check = pos.in_check();
+    pos.unmake_move(move);
+    return check;
+}
+
+bool Search::visit(int ply) {
+    if (stop_->load(std::memory_order_relaxed) ||
+        (limits_.hasNodes && nodes_ >= limits_.nodes) ||
+        ((nodes_ & (NodeCheckInterval - 1)) == 0 && timer_.hard_expired())) {
+        aborted_ = true;
+        return false;
+    }
+    ++nodes_;
+    selDepth_ = std::max(selDepth_, ply);
+    return true;
 }
 
 void Search::score_moves(const Position& pos, MoveList& moves, Move hashMove, int ply) {

@@ -9,6 +9,12 @@
 
 namespace stockbear {
 
+// Static exchange evaluation of `move` on `pos`, in centipawns from the moving
+// side's point of view (positive means the exchange wins material). Considers
+// every recapture on the target square with least-valuable-attacker-first
+// ordering and folds the sequence negamax-style.
+int static_exchange_evaluation(const Position& pos, Move move);
+
 struct SearchResult {
     Move bestMove = MOVE_NONE;
     int score = 0;
@@ -51,7 +57,9 @@ public:
 
     // Static exchange evaluation of a legal move, in centipawns, from the point
     // of view of the side to move. Exposed for tests.
-    static int see(const Position& pos, Move move);
+    static int see(const Position& pos, Move move) {
+        return static_exchange_evaluation(pos, move);
+    }
 
 private:
     bool visit(int ply);

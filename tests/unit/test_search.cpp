@@ -80,3 +80,40 @@ TEST(unit, retained_table_does_not_change_new_root_result) {
     SearchResult b = withoutHistory->run(p,l,stop);
     CHECK_EQ(a.score,b.score); CHECK_EQ(a.bestMove,b.bestMove);
 }
+
+namespace {
+int see_of(const char* fen, const char* uci) {
+    Position p = test::position(fen);
+    const Move m = move_from_uci(p, uci);
+    CHECK(is_ok(m));
+    return static_exchange_evaluation(p, m);
+}
+}
+
+TEST(search, static_exchange_evaluation_known_values) {
+    // Pawn takes an undefended pawn: +100.
+    CHECK_EQ(see_of("4k3/8/8/3p4/4P3/8/8/4K3 w - - 0 1", "e4d5"), 100);
+    // Knight takes a pawn defended by a pawn: 100 - 320 = -220. The final
+    // recapture must be folded in, otherwise this losing capture looks winning.
+    CHECK_EQ(see_of("4k3/8/2p5/3p4/8/2N5/8/4K3 w - - 0 1", "c3d5"), -220);
+    // Queen takes the same defended pawn: 100 - 975 = -875.
+    CHECK_EQ(see_of("4k3/8/2p5/3p4/8/8/8/3QK3 w - - 0 1", "d1d5"), -875);
+    // Pawn takes a pawn defended by a pawn, with nothing left to recapture:
+    // an equal trade, so exactly zero.
+    CHECK_EQ(see_of("4k3/8/2p5/3p4/2P5/8/8/4K3 w - - 0 1", "c4d5"), 0);
+    // Rook takes a defended rook that a pawn of ours recaptures: 500 - 500 + 100.
+    CHECK_EQ(see_of("4k3/8/2p5/3r4/2PR4/8/8/4K3 w - - 0 1", "d4d5"), 100);
+    // A quiet move wins nothing and loses nothing.
+    CHECK_EQ(see_of("4k3/8/8/8/8/8/8/4K3 w - - 0 1", "e1e2"), 0);
+    // En passant removes the captured pawn from the exchange square.
+    CHECK_EQ(see_of("4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 2", "e5d6"), 100);
+}
+
+TEST(search, static_exchange_evaluation_promotions) {
+    // Promoting to a queen upgrades the pawn's value: 975 - 100.
+    CHECK_EQ(see_of("4k3/1P6/8/8/8/8/8/4K3 w - - 0 1", "b7b8q"), 875);
+    // A capture-promotion adds the captured rook: 500 + 975 - 100.
+    CHECK_EQ(see_of("r3k3/1P6/8/8/8/8/8/4K3 w - - 0 1", "b7a8q"), 1375);
+    // Promoting to a rook is worth less than promoting to a queen.
+    CHECK_EQ(see_of("4k3/1P6/8/8/8/8/8/4K3 w - - 0 1", "b7b8r"), 400);
+}
