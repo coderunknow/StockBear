@@ -203,9 +203,13 @@ Documented limits:
 2. **Independent reference** (`scripts/dead_position_reference.py`): a second,
    from-scratch implementation on top of python-chess that enumerates the same
    component with a different move generator and decides the same question. It
-   compares verdicts on bare kings, `KB`/`KN`/`KQ`/`KR`, locked and blocked-pawn
-   structures in both side-to-move variants. The CI job "Independent reference,
-   statistics and dead positions" runs it against every build.
+   compares verdicts on bare kings, `KB`/`KQ`/`KR`/`KP` and locked or blocked
+   pawn structures in both side-to-move variants. The recorded dev2 run compared
+   10 positions with 0 failures and printed `SKIP` for the two `KN` v `K` rows,
+   whose component exceeds the 400,000-state reference cap (StockBear decides
+   those statically, and the exhaustive three-piece sweep covers them). The CI
+   job "Independent reference, statistics and dead positions" runs it against
+   every build.
 3. **Corpus with expected verdicts** (`scripts/dead_position_corpus.py`), also
    run in CI, which fails on any wrong verdict or broken witness.
 4. **No false draw claims in the engine**: `draw_status()` is tested to report

@@ -183,9 +183,15 @@ limits. Recorded evidence:
   which are excluded from 5.2.2. Every `alive` witness was replayed and ends in
   checkmate.
 * independent reference (`dead-positions-reference.txt`): python-chess
-  re-implements the component enumeration and agrees on every compared position
-  (10 compared at a 400,000-state cap, with the two `KN` v `K` cases skipped at
-  that cap and re-run at a higher cap).
+  re-implements the component enumeration and agrees on all **10** positions it
+  can enumerate within a 400,000-state cap (bare kings both sides, `KB` v `K`
+  both sides, `KQ` v `K`, `KR` v `K`, `KP` v `K` both sides, and the blocked pawn
+  structure both sides). The two `KN` v `K` cases are printed as `SKIP` because
+  their component exceeds 400,000 python-chess states; StockBear decides them
+  statically (`KN` v `K` cannot mate) so they are covered by the corpus and by
+  the exhaustive three-piece sweep instead. A 1,500,000-state reference rerun was
+  started for those two rows but not completed within the session and is
+  therefore not cited as evidence.
 * exhaustive reduced spaces (CTest `deadpos`): all legal two-king placements
   with either side to move, and all legal three-piece placements with a bishop or
   knight and either side to move, are classified correctly, with stalemates
