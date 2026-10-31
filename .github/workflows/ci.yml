@@ -48,8 +48,17 @@ jobs:
         shell: bash
         run: |
           set -eu
+          # Multi-config generators (Visual Studio) put the binary under
+          # build/<Config>/, so the configuration must come from the matrix.
           exe=build/stockbear
-          [ -f "$exe" ] || exe=build/Release/stockbear.exe
+          if [ ! -f "$exe" ]; then
+            exe="build/${{ matrix.config }}/stockbear.exe"
+          fi
+          if [ ! -f "$exe" ]; then
+            echo "engine binary not found for ${{ matrix.config }}" >&2
+            ls -R build | head -40 >&2
+            exit 1
+          fi
           "$exe" bench --depth 6 --hash 16 > bench-a.txt
           "$exe" bench --depth 6 --hash 16 > bench-b.txt
           # The signature absorbs the name, best move, depth, score, node count
