@@ -52,8 +52,26 @@ jobs:
           [ -f "$exe" ] || exe=build/Release/stockbear.exe
           "$exe" bench --depth 6 --hash 16 > bench-a.txt
           "$exe" bench --depth 6 --hash 16 > bench-b.txt
-          diff bench-a.txt bench-b.txt
-          grep -m1 '^# signature ' bench-a.txt
+          # The signature absorbs the name, best move, depth, score, node count
+          # and PV of every position. Wall time, NPS and hashfull are excluded on
+          # purpose: they vary between runs on the same build.
+          sig_a=$(grep -m1 '^# signature ' bench-a.txt)
+          sig_b=$(grep -m1 '^# signature ' bench-b.txt)
+          head_a=$(grep -m1 '^# StockBear ' bench-a.txt)
+          head_b=$(grep -m1 '^# StockBear ' bench-b.txt)
+          [ -n "$sig_a" ]
+          [ "$sig_a" = "$sig_b" ]
+          [ -n "$head_a" ]
+          [ "$head_b" = "$head_a" ] || { echo 'header (version/mode/hash/params) differs'; exit 1; }
+          echo "$head_a"
+          echo "$sig_a"
+          # The deterministic CSV columns must also match row for row.
+          strip() {
+            awk -F',' 'NR > 1 && $1 !~ /^#/ { printf "%s|%s|%s|%s|%s|%s|%s\n", $1, $2, $3, $4, $5, $6, $10 }' "$1"
+          }
+          strip bench-a.txt > bench-a.det
+          strip bench-b.txt > bench-b.det
+          diff bench-a.det bench-b.det
       - name: Package Linux binary
         if: runner.os == 'Linux' && matrix.config == 'Release'
         shell: bash
