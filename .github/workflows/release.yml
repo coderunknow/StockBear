@@ -65,7 +65,7 @@ jobs:
           set -eu
           version=$(tr -d '\r\n' < VERSION)
           mkdir package
-          cp build/stockbear LICENSE README.md package/
+          cp build/stockbear LICENSE README.md THIRD_PARTY.md package/
           tar -czf "stockbear-${version}-linux-x64.tar.gz" -C package .
       - name: Package Windows
         if: runner.os == 'Windows'
@@ -73,8 +73,32 @@ jobs:
         run: |
           $version = (Get-Content VERSION -Raw).Trim()
           New-Item -ItemType Directory -Force package | Out-Null
-          Copy-Item build/Release/stockbear.exe, LICENSE, README.md package/
+          Copy-Item build/Release/stockbear.exe, LICENSE, README.md, THIRD_PARTY.md package/
           Compress-Archive -Path package/* -DestinationPath "stockbear-$version-windows-x64.zip"
+      - name: Verify extracted Linux archive
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(tr -d '\r\n' < VERSION)
+          mkdir extracted
+          tar -xzf "stockbear-${version}-linux-x64.tar.gz" -C extracted
+          cmp build/stockbear extracted/stockbear
+          test -f extracted/LICENSE && test -f extracted/README.md && test -f extracted/THIRD_PARTY.md
+          test "$(extracted/stockbear --version)" = "StockBear $version"
+          printf 'uci\nquit\n' | extracted/stockbear | grep -Fx uciok
+      - name: Verify extracted Windows archive
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $version = (Get-Content VERSION -Raw).Trim()
+          Expand-Archive "stockbear-$version-windows-x64.zip" -DestinationPath extracted
+          if ((Get-FileHash build/Release/stockbear.exe).Hash -ne (Get-FileHash extracted/stockbear.exe).Hash) { throw 'Binary mismatch' }
+          foreach ($name in 'LICENSE', 'README.md', 'THIRD_PARTY.md') { if (!(Test-Path "extracted/$name")) { throw "Missing $name" } }
+          if ((& extracted/stockbear.exe --version) -ne "StockBear $version") { throw 'Version mismatch' }
+          $output = @('uci', 'quit') | & extracted/stockbear.exe
+          if ($LASTEXITCODE -ne 0 -or !($output -contains 'uciok')) { throw 'UCI smoke test failed' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: runner.os == 'Linux'
         with:
@@ -150,6 +174,12 @@ jobs:
           jq -e --arg linux "$linux" --arg windows "$windows" \
             '.isDraft and .isPrerelease and
              ([.assets[].name] | sort) == ([$linux, $windows, "SHA256SUMS.txt"] | sort)' release.json
+          # Verify bytes downloaded from the draft against locally built assets,
+          # not just the names returned by the release API.
+          mkdir downloaded
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --dir downloaded
+          cmp release-assets/SHA256SUMS.txt downloaded/SHA256SUMS.txt
+          (cd downloaded && sha256sum -c SHA256SUMS.txt)
           gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --draft=false --prerelease
           gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft,isPrerelease,url \
             --jq 'select(.isDraft == false and .isPrerelease == true)'

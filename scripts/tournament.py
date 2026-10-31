@@ -9,8 +9,9 @@ For example:
       --pgn match.pgn --jsonl match.jsonl
 """
 import argparse
+import hashlib
+import random
 import json
-import math
 import os
 from pathlib import Path
 import platform
@@ -153,31 +154,13 @@ def read_openings(path):
     return openings
 
 
-def elo_for(score):
-    if score <= 0:
-        return "-inf"
-    if score >= 1:
-        return "+inf"
-    return round(400 * math.log10(score / (1 - score)), 1)
-
-
 def statistics(results):
     n = len(results)
     wins, draws, losses = results.count(1), results.count(.5), results.count(0)
     if not n:
         return {"games": 0, "wins": 0, "draws": 0, "losses": 0, "note": "no completed games"}
-    p = sum(results) / n
-    # Approximate Wilson interval on fractional scores. It avoids the false
-    # zero-width interval at 0%/100%, but does not model opening-pair effects.
-    z = 1.959963984540054
-    denominator = 1 + z*z/n
-    center = (p + z*z/(2*n)) / denominator
-    half = z * math.sqrt(p*(1-p)/n + z*z/(4*n*n)) / denominator
-    lo, hi = max(0, center-half), min(1, center+half)
     return {"games": n, "wins": wins, "draws": draws, "losses": losses,
-            "score": round(p, 4), "score_ci95_approx": [round(lo, 4), round(hi, 4)],
-            "elo_difference": elo_for(p), "elo_ci95_approx": [elo_for(lo), elo_for(hi)],
-            "ci_method": "Wilson on fractional game scores; approximation ignores pair dependence"}
+            "score": round(sum(results) / n, 4)}
 
 
 def play_game(a, b, index, opening, base_ms, inc_ms, max_plies):
@@ -218,8 +201,9 @@ def play_game(a, b, index, opening, base_ms, inc_ms, max_plies):
         elapsed = (time.monotonic_ns() - start) / 1_000_000
         clocks[color] -= elapsed
         if clocks[color] < 0:
-            result = "0-1" if color == chess.WHITE else "1-0"
-            termination = f"TIME_FORFEIT ({engine.name}, {elapsed:.1f}ms move)"
+            # Article 6.9 requires proving whether the opponent can ever mate,
+            # not just material heuristics. Do not award an unsupported win.
+            termination = f"UNADJUDICATED_TIME_FORFEIT ({engine.name}, {elapsed:.1f}ms move; error={error})"
             break
         if error is None:
             try:
@@ -251,7 +235,8 @@ def play_game(a, b, index, opening, base_ms, inc_ms, max_plies):
         white_won = result == "1-0"
         score_a = 1 if (white is a) == white_won else 0
     return game, {"game": index+1, "opening": opening_name, "white": white.name,
-                  "black": black.name, "result": result, "score_a": score_a,
+                  "black": black.name, "engine_a_color": "white" if white is a else "black",
+                  "result": result, "score_a": score_a,
                   "termination": termination, "plies": len(moves),
                   "remaining_white_ms": round(clocks[chess.WHITE], 2),
                   "remaining_black_ms": round(clocks[chess.BLACK], 2)}
@@ -269,6 +254,7 @@ def main():
     parser.add_argument("--max-plies", type=int, default=300)
     parser.add_argument("--openings", default=str(Path(__file__).resolve().parents[1] /
                                                  "benchmarks/positions/openings.txt"))
+    parser.add_argument("--seed", type=int, default=20261031, help="opening shuffle seed")
     parser.add_argument("--pgn", default="match.pgn")
     parser.add_argument("--jsonl", default="match.jsonl")
     args = parser.parse_args()
@@ -277,6 +263,13 @@ def main():
     if args.base_ms < 1 or args.inc_ms < 0 or not 1 <= args.hash <= 512 or args.threads < 1 or args.max_plies < 1:
         parser.error("invalid clock, hash, thread or ply limit")
     openings = read_openings(args.openings)
+    random.Random(args.seed).shuffle(openings)
+    def sha256(path):
+        digest = hashlib.sha256()
+        with open(path, "rb") as source:
+            for chunk in iter(lambda: source.read(1024 * 1024), b""):
+                digest.update(chunk)
+        return digest.hexdigest()
     engines = []
     try:
         engines.append(UciEngine(args.engine_a, args.hash, args.threads))
@@ -284,14 +277,17 @@ def main():
         a, b = engines
         config = {"engine_a": a.name, "engine_b": b.name,
                   "engine_a_path": a.path, "engine_b_path": b.path,
+                  "engine_a_sha256": sha256(a.path), "engine_b_sha256": sha256(b.path),
                   "engine_a_options": a.effective, "engine_b_options": b.effective,
                   "base_ms": args.base_ms, "increment_ms": args.inc_ms,
                   "hash_requested_mb_each": args.hash, "threads_requested_each": args.threads,
                   "host": platform.platform(), "machine": platform.machine(),
                   "python_chess": chess.__version__, "opening_file": args.openings,
-                  "policy": "claimable draws automatically claimed; capped games unadjudicated"}
+                  "opening_sha256": sha256(args.openings), "opening_shuffle_seed": args.seed,
+                  "policy": "claimable draws automatically claimed; capped and time-forfeit games unadjudicated; python-chess is not a general dead-position adjudicator"}
         print(json.dumps({"configuration": config}), flush=True)
         scores = []
+        records = []
         with open(args.pgn, "w", encoding="utf-8") as pgn, open(args.jsonl, "w", encoding="utf-8") as log:
             log.write(json.dumps({"configuration": config}) + "\n")
             for i in range(args.games):
@@ -302,10 +298,19 @@ def main():
                 print(game, file=pgn, flush=True)
                 log.write(json.dumps(record) + "\n"); log.flush()
                 print(json.dumps(record), flush=True)
+                records.append(record)
                 if record["score_a"] is not None:
                     scores.append(record["score_a"])
             summary = statistics(scores)
             summary["unadjudicated"] = args.games - len(scores)
+            summary["engine_failures"] = sum(r["termination"].startswith("ENGINE_FAILURE") for r in records)
+            summary["time_forfeits_unadjudicated"] = sum(r["termination"].startswith("UNADJUDICATED_TIME_FORFEIT") for r in records)
+            summary["complete_pairs"] = sum(all(r["score_a"] is not None for r in records[i:i+2])
+                                            for i in range(0, len(records), 2))
+            # The Wilson-on-fractional-scores approximation is not valid for
+            # dependent paired games, censored games or tiny samples. Retain
+            # descriptive W/D/L only; a qualified external analysis is needed.
+            summary["inference"] = "not calculated: pairs, opening reuse, censoring and failures require qualified analysis"
             log.write(json.dumps({"summary": summary}) + "\n")
             print(json.dumps({"summary": summary}), flush=True)
     finally:

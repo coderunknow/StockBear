@@ -14,3 +14,5 @@ Optional **development/validation** software used in the recorded tests:
 | GitHub Actions checkout/setup-python/upload-artifact/download-artifact | SHA-pinned v4/v5 | MIT | Hosted CI and release automation, not runtime dependencies. |
 
 Standard algorithms used include alpha-beta/negamax, principal variation search, quiescence, Zobrist hashing, magic-bitboard indexing, and SplitMix64 for deterministic key/constant generation. These describe algorithmic ideas; the implementation and generated magic constants in this repository were written for this project, not copied from another engine. The C++ compiler/runtime and OS libraries are supplied by the build/target environment; GitHub Actions and Python are build/test infrastructure, not engine runtime components.
+
+Research references include Brunner et al. and Ambrona, linked in [the dead-position investigation](docs/DEAD_POSITION_RESEARCH.md). No code or datasets from these works were incorporated. Stockfish 19 was identified as an external benchmark candidate but was not downloaded or used.

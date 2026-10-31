@@ -29,3 +29,31 @@
 - Re-ran the baseline after the review-driven UCI change; the recorded paired match again finished 0–8 against Stockfish 11. The stored search/perft timings and PGNs now correspond to that rebuilt implementation.
 - The completed review also noted that a malformed `PERFT(...)` row could be silently skipped by the independent reference parser. Confirmed the issue, made the parser reject unrecognized or partially matched rows, and added a dedicated regression run in the reference CI job. Added a CMake 3.16 CI job so the compatibility regression remains covered. The proposed removal of `ExtMove` initializers was deferred: no profile demonstrates benefit, and retaining initialization is safer than an unmeasured micro-optimization.
 - Parsed and statically linted both workflows locally with PyYAML, actionlint and zizmor. Zizmor's default policy reported no findings; pedantic mode reported only low-level suggestions. Release publication now serializes concurrent runs for a tag and documents its narrowly scoped token permissions. The CI matrix values flagged as possible shell interpolation are fixed literals, not external input; CI jobs are intentionally not canceled by concurrency rules so mandatory checks are not skipped.
+
+## 2026-10-31 — dev2 investigation
+
+- Fetched remote tags and inspected GitHub releases, PRs and workflows. The
+  annotated dev1 tag resolves to `dab34b0adb278ed474d64e1a700f7555e416ef4e`,
+  equal to the branch base and current main; no existing worktree edits or
+  AGENTS.md instructions were found. Existing dev1 CI push run
+  https://github.com/coderunknow/StockBear/actions/runs/41017753636 succeeded.
+- Rebuilt dev1 and the initial research prototype using the same GCC 12.2,
+  CMake 3.16.8 and Release flags. Engine binaries were byte-identical; fixed
+  depth five raw CSV and limitations are in `benchmarks/results/0.1.0-dev2/`.
+  No strength improvement was measured. Stockfish 19 was identified via the
+  official release API but not downloaded or used in a match.
+- GCC Release, Debug and ASan+UBSan CTest passed 7/7 after the additions.
+  Python-chess 1.11.2 differential test: 2,000 seeded positions plus eight
+  curated, seed 20261031, passed; tournament smoke and timeout regression passed.
+  Independent movement-graph enumeration: 7,225 and 436,665 states respectively,
+  with zero mates, agrees with C++ count tests. This is not general verification.
+- The promotion test initially exhausted a 20,000-position budget; increasing
+  the explicit budget to 500,000 completed the graph. No exhaustion was
+  interpreted as a dead result. See `docs/DEAD_POSITION_RESEARCH.md` for scope,
+  proofs conditional on move generation, and missing release gates.
+- Rechecked the nine reference perft totals and parser with python-chess; all
+  passed. Updated packaging to include third-party notices, test extracted
+  archives and compare uploaded draft assets against local checksums. These
+  workflow changes have not been exercised by a release dispatch. The minimum
+  CMake test used `cmake -E chdir ... ctest`; `ctest --test-dir` from CMake
+  3.16 is unsupported and initially found no tests, so it was not counted.

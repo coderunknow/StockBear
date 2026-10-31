@@ -59,6 +59,7 @@ find_package(Threads REQUIRED)
 # --- Engine core (everything except main) -----------------------------------
 set(STOCKBEAR_CORE_SOURCES
     src/chess/bitboard.cpp
+    src/chess/dead_position.cpp
     src/chess/fen.cpp
     src/chess/move.cpp
     src/chess/position.cpp
@@ -100,6 +101,7 @@ if(STOCKBEAR_BUILD_TESTS)
         tests/test_main.cpp
         tests/unit/test_bitboard.cpp
         tests/unit/test_draws.cpp
+        tests/unit/test_dead_position.cpp
         tests/unit/test_eval.cpp
         tests/unit/test_fen.cpp
         tests/unit/test_move.cpp

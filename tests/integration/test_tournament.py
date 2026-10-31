@@ -3,6 +3,8 @@
 Requires optional chess==1.11.2 and a built StockBear executable.
 """
 import json
+import importlib.util
+import time
 from pathlib import Path
 import subprocess
 import sys
@@ -35,3 +37,21 @@ with tempfile.TemporaryDirectory() as tmp:
             assert game.headers["Result"] == "*"
         assert chess.pgn.read_game(stream) is None
 print("PASS tournament paired openings, legal PGN and unadjudicated results")
+
+# A flag fall is not necessarily a win: FIDE 6.9 requires opponent mate
+# reachability. This harness does not have a general solver, so censor it.
+spec = importlib.util.spec_from_file_location("tournament", root/"scripts/tournament.py")
+tournament = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(tournament)
+class SlowEngine:
+    name = "test engine"
+    def new_game(self): pass
+    def bestmove(self, *args):
+        time.sleep(.01)
+        return "e2e4"
+a, b = SlowEngine(), SlowEngine()
+game, record = tournament.play_game(a, b, 0, ("empty", []), 1, 0, 2)
+assert record["result"] == "*" and record["score_a"] is None, record
+assert record["termination"].startswith("UNADJUDICATED_TIME_FORFEIT"), record
+assert record["engine_a_color"] == "white"
+print("PASS timeout remains unadjudicated without FIDE mate reachability")

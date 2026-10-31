@@ -52,6 +52,16 @@ Wait for `bestmove` before issuing the next position. To analyze a FEN, use `pos
 
 The only advertised option is `Hash`. Ponder, `searchmoves`, MultiPV, Chess960, an opening book, tablebases and multiple search threads are **not** implemented. Malformed commands are reported as UCI `info string` messages and do not replace a valid position.
 
+### ScrispChess-Extended import
+
+On Windows x64 or Linux x64, unpack the appropriate StockBear executable; on
+Linux make it executable (`chmod +x stockbear`). In ScrispChess-Extended open
+Settings → **Engine Manager — Add Custom UCI Engines** → **Add Engine**, choose
+the executable path, and allow its UCI handshake to discover identity and Hash.
+StockBear is single-threaded and does not advertise Threads. The app's CLI
+fixed-depth match is not a clock-controlled tournament. No dev2 release exists
+until the [hard-gate investigation](docs/DEAD_POSITION_RESEARCH.md) is complete.
+
 ## Perft and benchmarks
 
 ```sh
