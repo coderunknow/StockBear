@@ -22,7 +22,8 @@ Windows with the multi-configuration Visual Studio generator uses
 
 | Test | What it covers |
 |---|---|
-| `unit` | FEN, bitboards/attacks/pins, castling, en passant, promotions, make/unmake and hash/accumulator invariants, null-move round trips, Zobrist/TT context, claimable versus automatic draws, mate precedence, time-manager contract, evaluation symmetry, search behaviour and cancellation, malformed UCI |
+| `unit` | FEN, bitboards/attacks/pins, castling, en passant, promotions, make/unmake and hash/accumulator invariants, Zobrist/TT context, claimable versus automatic draws, mate precedence, time-manager contract, evaluation symmetry, search behaviour and cancellation, malformed UCI |
+| `position_extra` | null-move round trips and null-move/unmake counter integrity (separate entry so the `unit` group stays fast) |
 | `regression` | capture/unmake, en-passant hashing, FEN symbols, king-capture API guard, retained TT context |
 | `perft_quick`, `perft_full` | legal move generation against independently regenerated perft totals |
 | `stress` | deterministic random games with FEN/key/state verification after every move |

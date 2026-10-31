@@ -107,6 +107,50 @@ def test_summary_is_valid_strict_json():
     assert "-inf" in match_stats.format_report(all_wins) or "+inf" in match_stats.format_report(all_wins)
 
 
+def test_zero_variance_reports_no_interval():
+    # Ten identical pair scores give zero variance; a zero-width interval would
+    # present a point estimate as certainty, so no interval is reported and the
+    # text report says so.
+    identical = match_stats.pentanomial([1.0] * 10)
+    assert identical["elo_ci95"] == [None, None]
+    assert "no variance" in identical["elo_ci95_note"]
+    summary = match_stats.summarise([0.5] * 20, [1.0] * 10,
+                                    pair_openings=["A", "B"] * 5)
+    text = match_stats.format_report(summary)
+    assert "interval not estimable" in text, text
+
+
+def test_unbounded_elo_keeps_its_direction():
+    # An all-wins sample is unbounded upwards, an all-losses sample downwards.
+    won = match_stats.summarise([1.0] * 4, [2.0, 2.0], pair_openings=["A", "B"])
+    lost = match_stats.summarise([0.0] * 4, [0.0, 0.0], pair_openings=["A", "B"])
+    won_text = match_stats.format_report(won)
+    lost_text = match_stats.format_report(lost)
+    # The point estimate and the naive lower bound are the unbounded direction
+    # of the result; the earlier code always printed "-inf" for both ends.
+    assert "+inf" in won_text, won_text
+    assert "[-inf," not in won_text, won_text
+    assert "-inf" in lost_text, lost_text
+    assert "+inf" not in lost_text, lost_text
+
+
+def test_opening_clustered_interval_accounts_for_repeats():
+    # Two openings replayed five times each: the clustered interval must be
+    # wider than the pentanomial one, which assumes 10 independent pairs.
+    pair_scores = [2.0, 2.0, 2.0, 2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    openings = ["A"] * 5 + ["B"] * 5
+    plain = match_stats.pentanomial(pair_scores)
+    clustered = match_stats.opening_clustered(pair_scores, openings)
+    assert clustered["clusters"] == 2
+    assert clustered["critical_value"] == 12.706
+    # stderr = 1.0 pair points here, so the t interval covers the whole range
+    # and both ends are unbounded, while the plain pentanomial interval is not.
+    assert clustered["elo_ci95"] == [None, None], clustered
+    assert plain["elo_ci95"] != [None, None], plain
+    # One opening only: no between-opening information, so no interval.
+    assert "note" in match_stats.opening_clustered([2.0, 1.0], ["A", "A"])
+
+
 def test_report_contains_uncertainty_and_sample_size():
     summary = match_stats.summarise([1.0, 0.5, 0.0, 1.0], [1.5, 1.0],
                                     match_stats.lmr_step([1.5, 1.0], 0.0, 5.0))

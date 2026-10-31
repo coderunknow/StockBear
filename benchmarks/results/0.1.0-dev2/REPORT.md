@@ -127,20 +127,29 @@ every game and validated every move.
 * Paired pentanomial estimate: 200 opening pairs, pair-score mean 1.5075 ± 0.0339,
   **Elo +194.3 [95 %: +164.5, +227.0]**, pair scores 2/1.5/1/0.5/0 =
   `[76, 66, 45, 11, 2]`.
-* SPRT (H0 = 0 Elo, H1 = +5 Elo, α = β = 0.05): LLR 6.26 > 2.94 → **accept H1**.
+* Opening-clustered estimate (CR1 on the 31 distinct openings, Student-t with 30
+  degrees of freedom, `match_stats.opening_clustered`): **Elo +194.3
+  [95 %: +158.5, +234.4]**. The suite replays each opening about 6.5 times, so the
+  200 pairs are *not* independent; this interval is the headline one because it
+  also absorbs the between-opening correlation.
+* SPRT (H0 = 0 Elo, H1 = +5 Elo, α = β = 0.05), evaluated after the match on the
+  recorded pair scores: LLR 6.26 > 2.94, i.e. the upper bound is crossed. The
+  harness did not stop early — it played the full 400 requested games and the LLR
+  was computed from the finished sample, so this is an upper-bound crossing, not a
+  sequential stopping event.
 * Terminations: 297 checkmate, 94 threefold repetition, 8 insufficient material,
   1 fifty-move. **No time forfeits, no illegal moves, no capped/unadjudicated
   games.** Median game length 106 plies (24–268).
 * dev2 is engine A, so positive scores favour dev2.
 
 Interpretation: at 80 ms + 8 ms per move the dev2 build scores 75 % against dev1,
-about **+194 Elo with a 95 % interval of +165 to +227**, and the sequential test
-stops for H1 at this sample size. The improvement is much larger than the earlier
-draft measurement because it includes the static-exchange-evaluation fix found in
-review (see below); the discarded earlier figure (+44 Elo) came from a build whose
-SEE dropped the final recapture and therefore treated losing captures as winning.
-This is a statement about dev1 at this time control, not about absolute strength
-or about other engines.
+about **+194 Elo with a 95 % interval of +158 to +234** once opening clustering is
+accounted for. The improvement is much larger than the earlier draft measurement
+because it includes the static-exchange-evaluation fix found in review (see
+below); the discarded earlier figure (+44 Elo) came from a build whose SEE dropped
+the final recapture and therefore treated losing captures as winning. This is a
+statement about dev1 at this time control, not about absolute strength or about
+other engines.
 
 ## External opponent: Stockfish
 
@@ -160,8 +169,11 @@ protocol at 100 ms + 10 ms, 16 MiB hash, one thread each:
 * Paired pentanomial: 10 pairs, pair scores `[0, 0, 0, 1, 9]`, Elo −636.4 with a
   lower bound that is unbounded (−inf, −439.0); the JSON stores the unbounded end
   as `null`, because `Infinity` is not valid JSON.
-* The SPRT's H0 (0 Elo) is accepted, i.e. the data exclude "dev2 is equal to
-  Stockfish 11".
+* Opening-clustered: 10 openings, Elo −636.4 [−inf, −420.7] (t = 2.262 on 9 df).
+* The SPRT's H0 (0 Elo) is accepted over H1 (+5 Elo) and the LLR is −5.51. That
+  decision alone does not *prove* equal strength — H0 here is the "not better"
+  hypothesis — but the paired and clustered intervals both lie entirely below
+  −420 Elo, so the data do exclude equality at this time control.
 
 This confirms the gap to a mature engine is large; 20 games cannot size it
 precisely, and Stockfish 11 is not the latest release.
@@ -194,8 +206,8 @@ limits. Recorded evidence:
   knight and either side to move, are classified correctly, with stalemates
   recognised as terminal rather than dead.
 * measured cost (distinct states / positions expanded): static proofs ~0 ms;
-  14 blocked pawns 768 / 3,809 in ~7 ms; locked pawn chains with bishops
-  152,352 / 1,268,497 in 0.58–0.75 s; `KNN` v `K` 100,745 / 300,000 in 148 ms;
+  14 blocked pawns 768 / 3,809 in 4.7–7 ms; locked pawn chains with bishops
+  152,352 / 1,268,497 in 0.44–0.75 s; `KNN` v `K` 100,745 / 300,000 in 136 ms;
   `KN` v `KN` 1,194,884 / 7,908,228 in 2.5 s. Budget exhaustion returns `unknown`,
   never `dead`; the default 3,000,000-expansion budget peaks at 85–105 MiB.
 

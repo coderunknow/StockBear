@@ -323,6 +323,8 @@ def main():
         scores = []
         pair_scores = []
         pair_games = {}
+        pair_openings = {}
+        openings_of_pairs = []
         csv_writer = None
         csv_handle = None
         if args.csv:
@@ -359,15 +361,20 @@ def main():
                 pair_index = i // 2
                 if pair_index not in pair_games:
                     pair_games[pair_index] = [None, None]
+                    pair_openings[pair_index] = record["opening"]
                 pair_games[pair_index][i % 2] = record["score_a"]
             for index in sorted(pair_games):
                 first, second = pair_games[index]
                 if first is None or second is None:
                     continue
                 pair_scores.append(first + second)
+                # The opening label travels with the pair so the clustered
+                # interval can group pairs that replay the same opening.
+                openings_of_pairs.append(pair_openings[index])
             summary = match_stats.summarise(scores, pair_scores,
                                             match_stats.lmr_step(pair_scores, 0.0,
-                                                                 args.sprt_elo))
+                                                                 args.sprt_elo),
+                                            pair_openings=openings_of_pairs)
             summary["unadjudicated"] = args.games - len(scores)
             summary["config"] = {"engine_a": a.name, "engine_b": b.name,
                                  "base_ms": args.base_ms, "increment_ms": args.inc_ms,

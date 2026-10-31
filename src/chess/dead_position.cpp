@@ -392,7 +392,12 @@ DeadResult analyze_dead_position(const Position& pos, const DeadLimits& limits) 
     // is small (locked structures, low material). Only positions that survive
     // both get the expensive passes.
     {
-        const DeadLimits quick{30000, 1, 8, budget.componentMaxDepth, false};
+        // The quick pass must respect the caller's witness budget as well: a
+        // fast_dead_limits() caller asks for 20,000 nodes and depth 6, and
+        // ignoring that made draw_status() spend more than it reserved.
+        const DeadLimits quick{
+            std::min<std::uint64_t>(limits.witnessNodes, 30000), 1,
+            std::min(limits.witnessMaxDepth, 8), budget.componentMaxDepth, false};
         for (int depth = 1; depth <= quick.witnessMaxDepth; ++depth) {
             bool concluded = false;
             for (Color attacker : {White, Black}) {

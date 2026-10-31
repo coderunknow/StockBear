@@ -7,8 +7,13 @@ Two estimators are produced for a paired-opening match:
   games sharing an opening are correlated, and
 * a *pentanomial* estimate that treats the two games of an opening pair as one
   observation with score in {0, 0.5, 1, 1.5, 2}. The pentanomial variance
-  captures the within-pair dependence, so its confidence interval is the honest
-  one when openings are reused with reversed colours.
+  captures the within-pair dependence, and
+* an *opening-clustered* variant of the pentanomial interval that also accounts
+  for the same opening being replayed several times: the variance is computed
+  from per-opening cluster totals (CR1) with a t critical value on G-1 degrees of
+  freedom. When the number of distinct openings is small relative to the number of
+  pairs this interval is wider than the plain pentanomial one, and it is the one
+  quoted in the release notes.
 
 Elo is reported only with an explicit interval and sample size. A point estimate
 without a sample size is not evidence.
@@ -67,20 +72,105 @@ def pentanomial(pair_scores):
     variance = sum((s - mean_pair) ** 2 for s in pair_scores) / (pairs - 1)
     stderr = math.sqrt(variance / pairs)
     score = mean_pair / 2.0
-    lo_score = max(0.0, min(1.0, (mean_pair - Z95 * stderr) / 2.0))
-    hi_score = max(0.0, min(1.0, (mean_pair + Z95 * stderr) / 2.0))
     counts = [pair_scores.count(v) for v in (2.0, 1.5, 1.0, 0.5, 0.0)]
-    return {
+    out = {
         "pairs": pairs,
         "score": score,
         "pair_score_mean": mean_pair,
         "pair_score_stderr": stderr,
         "pentanomial_counts_2_1.5_1_0.5_0": counts,
         "elo_difference": finite_or_none(score_to_elo(score)),
-        "elo_ci95": [finite_or_none(score_to_elo(lo_score)),
-                     finite_or_none(score_to_elo(hi_score))],
         "method": "pentanomial over opening pairs; normal interval on the pair mean",
     }
+    if variance <= 0.0:
+        # Every pair scored the same, so the sample carries no variance
+        # information at all; a zero-width interval would claim certainty.
+        out["elo_ci95"] = [None, None]
+        out["elo_ci95_note"] = (
+            "all pairs scored identically: the sample gives no variance "
+            "information, so no interval is reported")
+        return out
+    lo_score = max(0.0, min(1.0, (mean_pair - Z95 * stderr) / 2.0))
+    hi_score = max(0.0, min(1.0, (mean_pair + Z95 * stderr) / 2.0))
+    out["elo_ci95"] = [finite_or_none(score_to_elo(lo_score)),
+                       finite_or_none(score_to_elo(hi_score))]
+    return out
+
+
+# Two-sided 95 % Student-t critical values for the small cluster counts this
+# script realistically sees. Above the table the normal value is used, which is
+# conservative for df > 120 only by a fraction of a percent.
+_T975 = {
+    1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447, 7: 2.365,
+    8: 2.306, 9: 2.262, 10: 2.228, 11: 2.201, 12: 2.179, 13: 2.160, 14: 2.145,
+    15: 2.131, 16: 2.120, 17: 2.110, 18: 2.101, 19: 2.093, 20: 2.086,
+    21: 2.080, 22: 2.074, 23: 2.069, 24: 2.064, 25: 2.060, 26: 2.056,
+    27: 2.052, 28: 2.048, 29: 2.045, 30: 2.042, 40: 2.021, 60: 2.000,
+    120: 1.980,
+}
+
+
+def _t95(df):
+    if df in _T975:
+        return _T975[df]
+    keys = sorted(_T975)
+    lower = max((k for k in keys if k < df), default=None)
+    upper = min((k for k in keys if k > df), default=None)
+    if lower is None:
+        return Z95
+    if upper is None:
+        return _T975[lower]
+    # Linear interpolation between table entries (conservative enough).
+    a, b = _T975[lower], _T975[upper]
+    return a + (b - a) * (df - lower) / (upper - lower)
+
+
+def opening_clustered(pair_scores, pair_openings):
+    """Cluster-robust interval for the mean pair score, clustered by opening.
+
+    Games sharing an opening are not independent, and this suite replays each
+    opening many times, so treating every pair as an independent observation
+    understates the uncertainty. This estimator sums the pair scores inside each
+    opening and uses the CR1 variance of the cluster totals with a Student-t
+    critical value on G-1 degrees of freedom.
+    """
+    n = len(pair_scores)
+    if n < 2 or len(pair_openings) != n:
+        return {"clusters": 0, "note": "clustered interval needs pairs and their openings"}
+    clusters = {}
+    for score, opening in zip(pair_scores, pair_openings):
+        clusters.setdefault(opening, []).append(score)
+    groups = len(clusters)
+    if groups < 2:
+        return {"clusters": groups,
+                "note": "fewer than two distinct openings: no clustered interval"}
+    mean_pair = sum(pair_scores) / n
+    total = 0.0
+    for scores in clusters.values():
+        studentised = sum(scores) - len(scores) * mean_pair
+        total += studentised * studentised
+    variance = groups / (groups - 1.0) * total / (n * n)
+    stderr = math.sqrt(variance)
+    critical = _t95(groups - 1)
+    score = mean_pair / 2.0
+    lo_score = max(0.0, min(1.0, (mean_pair - critical * stderr) / 2.0))
+    hi_score = max(0.0, min(1.0, (mean_pair + critical * stderr) / 2.0))
+    out = {
+        "clusters": groups,
+        "pair_score_mean": mean_pair,
+        "pair_score_stderr": stderr,
+        "critical_value": critical,
+        "elo_difference": finite_or_none(score_to_elo(score)),
+        "method": ("opening-clustered (CR1) variance of the pair mean with a "
+                   "Student-t interval on G-1 degrees of freedom"),
+    }
+    if variance <= 0.0:
+        out["elo_ci95"] = [None, None]
+        out["elo_ci95_note"] = "zero variance across openings: no interval reported"
+        return out
+    out["elo_ci95"] = [finite_or_none(score_to_elo(lo_score)),
+                       finite_or_none(score_to_elo(hi_score))]
+    return out
 
 
 def lmr_step(pair_scores, elo0, elo1, alpha=0.05, beta=0.05, sigma=None):
@@ -114,7 +204,7 @@ def lmr_step(pair_scores, elo0, elo1, alpha=0.05, beta=0.05, sigma=None):
             "method": "normal-approximation SPRT on paired scores (approximation)"}
 
 
-def summarise(game_scores, pair_scores, sprt=None):
+def summarise(game_scores, pair_scores, sprt=None, pair_openings=None):
     naive = wilson(game_scores)
     paired = pentanomial(pair_scores)
     out = {
@@ -125,14 +215,30 @@ def summarise(game_scores, pair_scores, sprt=None):
         "naive": naive,
         "paired": paired,
     }
+    if pair_openings is not None:
+        out["opening_clustered"] = opening_clustered(pair_scores, pair_openings)
     if sprt is not None:
         out["sprt"] = sprt
     return out
 
 
-def _num_or_inf(value, sign=-1.0):
-    """Map a null (unbounded) Elo value to -inf/+inf for human-readable text."""
+def _num_or_inf(value, sign):
+    """Map a null (unbounded) Elo value to -inf/+inf for human-readable text.
+
+    The direction has to come from the caller: a null can mean an unbounded
+    lower end (0 % score) or an unbounded upper end (100 % score), and guessing
+    "-inf" printed +inf as -inf for won or lost matches.
+    """
     return float("inf") * sign if value is None else value
+
+
+def _bounds_sign(pair_score_mean):
+    """Direction of the unbounded endpoints implied by the pair mean."""
+    if pair_score_mean <= 0.0:
+        return -1.0, -1.0
+    if pair_score_mean >= 2.0:
+        return 1.0, 1.0
+    return -1.0, 1.0
 
 
 def format_report(summary):
@@ -153,13 +259,37 @@ def format_report(summary):
     if paired.get("pairs", 0) >= 2:
         lo, hi = paired["elo_ci95"]
         # Unbounded (0% or 100%) results are stored as null so the JSON stays
-        # valid; print them the way a human reads them.
+        # valid; print them the way a human reads them, in the right direction.
+        low_sign, high_sign = _bounds_sign(paired.get("pair_score_mean", 1.0))
+        point_sign = 1.0 if paired.get("pair_score_mean", 1.0) >= 1.0 else -1.0
+        bounds = ("[interval not estimable]"
+                  if paired.get("elo_ci95_note")
+                  else f"[{elo_text(_num_or_inf(lo, low_sign))}, "
+                       f"{elo_text(_num_or_inf(hi, high_sign))}]")
         lines.append(
             f"paired     : {paired['pairs']} opening pairs, score {paired['score']:.3f}, "
-            f"Elo {elo_text(_num_or_inf(paired['elo_difference']))} "
-            f"[{elo_text(_num_or_inf(lo))}, {elo_text(_num_or_inf(hi))}]")
+            f"Elo {elo_text(_num_or_inf(paired['elo_difference'], point_sign))} {bounds}")
+        if paired.get("elo_ci95_note"):
+            lines.append(f"             note: {paired['elo_ci95_note']}")
         counts = paired["pentanomial_counts_2_1.5_1_0.5_0"]
         lines.append(f"             pair scores 2/1.5/1/0.5/0 = {counts}")
+    clustered = summary.get("opening_clustered", {})
+    if clustered.get("clusters", 0) >= 2:
+        low_sign, high_sign = _bounds_sign(clustered.get("pair_score_mean", 1.0))
+        point_sign = 1.0 if clustered.get("pair_score_mean", 1.0) >= 1.0 else -1.0
+        if clustered.get("elo_ci95") and not clustered.get("elo_ci95_note"):
+            lo, hi = clustered["elo_ci95"]
+            lines.append(
+                f"clustered  : {clustered['clusters']} openings, "
+                f"Elo {elo_text(_num_or_inf(clustered['elo_difference'], point_sign))} "
+                f"[{elo_text(_num_or_inf(lo, low_sign))}, "
+                f"{elo_text(_num_or_inf(hi, high_sign))}] "
+                f"(t={clustered['critical_value']:.3f} on {clustered['clusters'] - 1} df)")
+        else:
+            lines.append(f"clustered  : {clustered['clusters']} openings, "
+                         f"{clustered.get('elo_ci95_note', 'no interval')}")
+    elif clustered.get("note"):
+        lines.append(f"clustered  : {clustered['note']}")
     sprt = summary.get("sprt")
     if sprt:
         if "lower_bound" in sprt:
@@ -178,5 +308,6 @@ if __name__ == "__main__":
     # Tiny self-check so the module can be exercised without a match.
     import sys
     print(format_report(summarise([1.0, 1.0, 0.5, 0.0], [2.0, 0.5],
-                                  lmr_step([2.0, 0.5], 0, 5))))
+                                  lmr_step([2.0, 0.5], 0, 5),
+                                  pair_openings=["A", "B"])))
     sys.exit(0)

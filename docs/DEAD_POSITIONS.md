@@ -170,11 +170,11 @@ Measured with the dev2 Release build (GCC 12.2, `-O3`), one thread, on the
 | Position | Verdict | Distinct states | Expanded | Time | Peak RSS |
 |---|---|---:|---:|---:|---:|
 | bare kings, `KB` v `K`, `KN` v `K`, same-colour bishops | dead | 0 (static proof) | 0 | ≤ 0.02 ms | 10 MiB |
-| 14 blocked pawns (either side to move) | dead | 768 | 3,809 | 6–11 ms | 10 MiB |
-| locked pawn chains plus bishops (either side) | dead | 152,352 | 1,268,497 | 0.49–0.75 s | 46 MiB |
-| `KQ` v `K` / `KR` v `K` / `KP` v `K` | alive | 17,846 / 21,904 / 25,500 | 70,914 / 80,995 / 90,870 | 25–55 ms | 13 MiB |
-| `KNN` v `K` | alive | 100,745 | 300,000 (witness pass cap) | 150–185 ms | 13 MiB |
-| starting position | alive | 44,368 | 135,973 | 43–73 ms | 13 MiB |
+| 14 blocked pawns (either side to move) | dead | 768 | 3,809 | 4.7–11 ms | 10 MiB |
+| locked pawn chains plus bishops (either side) | dead | 152,352 | 1,268,497 | 0.44–0.75 s | 46 MiB |
+| `KQ` v `K` / `KR` v `K` / `KP` v `K` | alive | 17,846 / 21,904 / 25,500 | 70,914 / 80,995 / 90,870 | 22–55 ms | 13 MiB |
+| `KNN` v `K` | alive | 100,745 | 300,000 (witness pass cap) | 136–185 ms | 13 MiB |
+| starting position | alive | 44,368 | 135,973 | 38–73 ms | 13 MiB |
 | Kiwipete, Italian middlegame | alive | 0 (witness) | 0 | 1–5 ms | 10 MiB |
 | `KB` v `KB`, opposite colours | alive | 446,393 | 4,053,677 | 1.1–1.4 s | 46 MiB |
 | `KN` v `KN` | alive | 1,194,884 | 7,908,228 | 2.1–3.3 s | 146 MiB |

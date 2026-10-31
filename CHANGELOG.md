@@ -30,8 +30,9 @@ met by a general decision procedure.
   `SEEPruning`, `CheckExtension` expose every switch (all default to the released
   behaviour). Measured: depth-6 suite 1,683,192 → 106,558 nodes and 1,041 → 52 ms
   (15.8× fewer nodes, 19.9× faster); depth-7 32.8× fewer nodes; 400 paired games
-  vs dev1 scored +250 =103 −47 (Elo +194.3 [95 %: +164.5, +227.0], paired
-  pentanomial, SPRT accept H1).
+  vs dev1 scored +250 =103 −47 (Elo +194.3; paired pentanomial 95 % interval
+  +164.5 to +227.0, opening-clustered interval +158.5 to +234.4; the LLR computed
+  on the finished sample crosses the +5 Elo upper bound).
 - **Transposition table.** Bucketed entries with a depth/generation replacement
   policy, mate-score conversion at store/probe, and context separation retained.
 - **Time management.** Documented soft/hard budget contract, `movestogo` handling,

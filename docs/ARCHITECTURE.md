@@ -128,7 +128,8 @@ adds no parallel search.
 * `scripts/tournament.py` plays paired-opening matches with colour reversal,
   python-chess adjudication, PGN/JSONL/CSV output, per-engine option overrides
   (`--a-option`/`--b-option`) and honest uncertainty (`scripts/match_stats.py`:
-  Wilson, pentanomial over opening pairs, normal-approximation SPRT).
+  Wilson, pentanomial over opening pairs, opening-clustered CR1 estimate with a
+  Student-t interval, normal-approximation SPRT).
 * `scripts/dead_position_reference.py` and `scripts/dead_position_corpus.py`
   provide the independent cross-check and the regression corpus.
 

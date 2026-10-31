@@ -9,7 +9,8 @@ wrap or require another engine. There is no neural-network evaluation.
 Evidence and limitations are in the [dev2 benchmark report](benchmarks/results/0.1.0-dev2/REPORT.md),
 the [dead-position specification](docs/DEAD_POSITIONS.md) and the
 [release notes](RELEASE_NOTES.md). Summary: dev2 uses 15.8× fewer nodes (19.9× less time) than dev1 on the depth-6
-suite and scored +194 Elo (95 % interval +165 to +227) over 400 paired games; it
+suite and scored +194 Elo (95 % interval +159 to +234, opening-clustered) over
+400 paired games; it
 scored 0.5/20 against Stockfish 11 (one draw, nineteen losses). No match against Stockfish 19 was possible in the build environment, and no
 superiority claim is made.
 
@@ -92,8 +93,11 @@ executable path at the StockBear binary (`stockbear` on Linux,
 `stockbear.exe` on Windows). Leave the argument list empty, set the working
 directory to the folder containing the binary, and leave the thread setting at
 one. After saving, select StockBear as the analysis/play engine; if the manager
-offers engine options, `Hash` is the only setting that changes strength, so
-32–256 MiB is a reasonable choice. StockBear answers `uci`, `isready` and all
+offers engine options, `Hash` is the usual setting to tune, so 32–256 MiB is a
+reasonable choice. The remaining options (`NullMove`, `LMR`, `Aspiration`,
+`Futility`, `ReverseFutility`, `SEEPruning`, `CheckExtension`) are experimental
+search-feature switches kept for ablations; changing them *does* change playing
+strength, so leave them at their defaults for play. StockBear answers `uci`, `isready` and all
 standard `position`/`go` commands, and it never claims draws itself — the GUI
 remains responsible for adjudicating repetition, move-count and dead-position
 draws. Nothing in ScrispChess-Extended is modified or required at run time.

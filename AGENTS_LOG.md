@@ -130,3 +130,41 @@
 - Still open at the time of writing: commit/push of these fixes, exact-head CI,
   CodeRabbit re-review of the final head, merge, tag and release. Nothing in this
   log claims those succeeded.
+
+## 2026-10-31 — second review pass (CodeRabbit full review on 9c5e36e)
+
+- CodeRabbit performed a full review of head `9c5e36e` (8 actionable comments, 1
+  nitpick). Codex was rate-limited ("You have reached your Codex usage limits for
+  code reviews") and Copilot's review quota was already exhausted, so this pass
+  has one automated reviewer, recorded as such.
+- **Statistics (major).** The 400-game match replays 31 openings ~6.5 times each,
+  so treating the 200 pairs as independent understates uncertainty. Added
+  `match_stats.opening_clustered()`: CR1 cluster-robust variance of the pair mean
+  over opening clusters with a Student-t critical value on G-1 df (`_t95`).
+  `tournament.py` now carries the opening label alongside each pair into the
+  summary. Re-computed on the recorded match: **Elo +194.3, clustered 95 %
+  interval +158.5 to +234.4** (31 openings, t = 2.042 on 30 df) versus the plain
+  pentanomial +164.5 to +227.0. The clustered interval is now the headline in
+  README, CHANGELOG, RELEASE_NOTES, ROADMAP and the report.
+- **Zero-variance samples** no longer produce a zero-width interval
+  (`[null, null]` plus a note, printed as `[interval not estimable]`); **unbounded
+  Elo values keep their direction** (`_bounds_sign`), so an all-wins sample prints
+  `+inf` instead of `-inf`. Two new known-value tests; `test_statistics.py` 11/11.
+- **SPRT wording.** The harness plays the full requested game count and computes
+  the LLR afterwards, so the report now says the upper bound was crossed on the
+  finished sample instead of claiming a sequential stop. The Stockfish-11 section
+  now states that accepting H0 does not prove equality and relies on the reported
+  intervals (both entirely below -420 Elo) for that statement.
+- **Documents.** `BENCHMARKING.md` describes the narrowed CI determinism
+  comparison (header, signature and deterministic columns only); `TESTING.md`
+  lists `position_extra` as its own CTest entry (null-move round trips);
+  `README.md` no longer claims `Hash` is the only strength-relevant option — the
+  feature switches change strength and are documented as experimental;
+  `ARCHITECTURE.md` mentions the clustered estimator.
+- **Nitpick fixed:** the 30,000-node / depth-8 quick witness pass now clamps to the
+  caller's `DeadLimits`, so `draw_status()` cannot spend more than its
+  `fast_dead_limits()` reservation.
+- Re-verified after these changes: CTest 9/9 in Release, Debug, ASan+UBSan and
+  ThreadSanitizer; `position_extra` runs 4 tests; corpus 23 cases / 0 failures and
+  the independent reference 10 compared / 2 skipped / 0 failures were re-run on
+  the rebuilt binary and the report timings updated.

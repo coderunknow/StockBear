@@ -38,7 +38,12 @@ deterministic FNV-1a fingerprint of the name, best move, depth, score, node
 count and PV of every position. Two builds or two parameter settings that
 differ anywhere in those fields have different signatures, so behaviour
 regressions can be caught without comparing timings. CI runs the same command
-twice and requires byte-identical output.
+twice and compares a *narrowed* projection of the output, not the whole text: the
+CSV contains wall-clock microseconds, NPS and `hashfull`, which legitimately vary
+between runs on the same binary. The check requires both runs to agree on the
+`# StockBear` header line, the `# signature` line and the deterministic columns
+(name, best move, depth, score, nodes, PV) of every row, and ignores the timing
+columns.
 
 For fixed depth/nodes the move, score, node and PV fields are deterministic;
 wall time, NPS and `hashfull` are not. Node counts are the primary optimisation
