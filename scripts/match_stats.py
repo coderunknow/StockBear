@@ -27,6 +27,16 @@ def score_to_elo(score):
     return 400.0 * math.log10(score / (1.0 - score))
 
 
+def finite_or_none(value):
+    """Return `value` if it is finite, else None.
+
+    JSON has no representation for infinities or NaN, and writing "Infinity"
+    produces a document that strict parsers reject, so unbounded Elo estimates
+    are serialised as null while `elo_text` still prints "-inf" for humans.
+    """
+    return value if isinstance(value, (int, float)) and math.isfinite(value) else None
+
+
 def elo_text(value):
     if value == float("-inf"):
         return "-inf"
@@ -66,8 +76,9 @@ def pentanomial(pair_scores):
         "pair_score_mean": mean_pair,
         "pair_score_stderr": stderr,
         "pentanomial_counts_2_1.5_1_0.5_0": counts,
-        "elo_difference": score_to_elo(score),
-        "elo_ci95": [score_to_elo(lo_score), score_to_elo(hi_score)],
+        "elo_difference": finite_or_none(score_to_elo(score)),
+        "elo_ci95": [finite_or_none(score_to_elo(lo_score)),
+                     finite_or_none(score_to_elo(hi_score))],
         "method": "pentanomial over opening pairs; normal interval on the pair mean",
     }
 
@@ -119,6 +130,11 @@ def summarise(game_scores, pair_scores, sprt=None):
     return out
 
 
+def _num_or_inf(value, sign=-1.0):
+    """Map a null (unbounded) Elo value to -inf/+inf for human-readable text."""
+    return float("inf") * sign if value is None else value
+
+
 def format_report(summary):
     """Human readable multi-line summary used by the tournament CLI."""
     lines = []
@@ -136,10 +152,12 @@ def format_report(summary):
     paired = summary.get("paired", {})
     if paired.get("pairs", 0) >= 2:
         lo, hi = paired["elo_ci95"]
+        # Unbounded (0% or 100%) results are stored as null so the JSON stays
+        # valid; print them the way a human reads them.
         lines.append(
             f"paired     : {paired['pairs']} opening pairs, score {paired['score']:.3f}, "
-            f"Elo {elo_text(paired['elo_difference'])} "
-            f"[{elo_text(lo)}, {elo_text(hi)}]")
+            f"Elo {elo_text(_num_or_inf(paired['elo_difference']))} "
+            f"[{elo_text(_num_or_inf(lo))}, {elo_text(_num_or_inf(hi))}]")
         counts = paired["pentanomial_counts_2_1.5_1_0.5_0"]
         lines.append(f"             pair scores 2/1.5/1/0.5/0 = {counts}")
     sprt = summary.get("sprt")

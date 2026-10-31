@@ -60,7 +60,11 @@ def test_pentanomial_matches_hand_computation():
     assert close(result["score"], mean / 2.0)
     assert close(result["elo_difference"], 400.0 * math.log10(0.75 / 0.25))
     lo, hi = result["elo_ci95"]
-    assert lo < result["elo_difference"] < hi
+    assert lo < result["elo_difference"]
+    # A 75 % score with only four pairs has no finite upper bound once the
+    # interval is clamped at 100 %, so the upper end is serialised as null
+    # rather than as the invalid JSON token "Infinity".
+    assert hi is None or hi > result["elo_difference"]
     assert result["pentanomial_counts_2_1.5_1_0.5_0"] == [2, 1, 0, 1, 0]
 
 
@@ -81,6 +85,26 @@ def test_sprt_decisions():
     degenerate = match_stats.lmr_step([2.0] * 5, 0.0, 5.0)
     assert degenerate["decision"] == "continue"
     assert "degenerate" in degenerate["note"]
+
+
+def test_summary_is_valid_strict_json():
+    # Every match summary must survive a strict JSON round trip, including
+    # all-wins and all-losses samples where Elo is unbounded.
+    import json
+    for scores, pairs in (([1.0] * 20, [2.0] * 10),
+                          ([0.0] * 20, [0.0] * 10),
+                          ([1.0, 0.5, 0.0, 1.0], [1.5, 1.0])):
+        summary = match_stats.summarise(scores, pairs,
+                                        match_stats.lmr_step(pairs, 0.0, 5.0))
+        text = json.dumps({"summary": summary}, allow_nan=False)
+        assert "Infinity" not in text and "NaN" not in text
+        assert json.loads(text)["summary"]["paired"] is not None
+    all_wins = match_stats.summarise([1.0] * 20, [2.0] * 10,
+                                     match_stats.lmr_step([2.0] * 10, 0.0, 5.0))
+    assert all_wins["paired"]["elo_difference"] is None
+    assert "elo_ci95" in all_wins["paired"]
+    # The human-readable report still shows the unbounded direction.
+    assert "-inf" in match_stats.format_report(all_wins) or "+inf" in match_stats.format_report(all_wins)
 
 
 def test_report_contains_uncertainty_and_sample_size():

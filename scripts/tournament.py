@@ -322,7 +322,7 @@ def main():
         print(json.dumps({"configuration": config}), flush=True)
         scores = []
         pair_scores = []
-        pair_openings = []
+        pair_games = {}
         csv_writer = None
         csv_handle = None
         if args.csv:
@@ -349,15 +349,22 @@ def main():
                                          record["remaining_white_ms"], record["remaining_black_ms"]])
                 if record["score_a"] is not None:
                     scores.append(record["score_a"])
-                    # The two games of an opening pair are consecutive; combine
-                    # them into a single pentanomial observation.
-                    opening = record["opening"]
-                    if opening in pair_openings:
-                        pair_scores[-1] += record["score_a"]
-                        pair_openings.pop()
-                    else:
-                        pair_openings.append(opening)
-                        pair_scores.append(record["score_a"])
+                # Pair accumulation is keyed by the pair index, not by opening
+                # name: the two games of a pair are indices 2k and 2k+1, and a
+                # pair contributes a pentanomial observation only when *both*
+                # games were adjudicated. Pairing by name would let an
+                # unadjudicated game leave a half-filled pair behind and let a
+                # later game of the same opening (the suite is reused) merge
+                # into the wrong pair.
+                pair_index = i // 2
+                if pair_index not in pair_games:
+                    pair_games[pair_index] = [None, None]
+                pair_games[pair_index][i % 2] = record["score_a"]
+            for index in sorted(pair_games):
+                first, second = pair_games[index]
+                if first is None or second is None:
+                    continue
+                pair_scores.append(first + second)
             summary = match_stats.summarise(scores, pair_scores,
                                             match_stats.lmr_step(pair_scores, 0.0,
                                                                  args.sprt_elo))
@@ -367,8 +374,11 @@ def main():
                                  "hash_mb_each": args.hash, "threads_each": args.threads,
                                  "openings": args.openings, "seed": args.seed,
                                  "max_plies": args.max_plies}
-            log.write(json.dumps({"summary": summary}) + "\n")
-            print(json.dumps({"summary": summary}), flush=True)
+            # allow_nan=False makes a non-finite value fail loudly instead of
+            # writing "Infinity", which is not valid JSON (RFC 8259).
+            summary_text = json.dumps({"summary": summary}, allow_nan=False)
+            log.write(summary_text + "\n")
+            print(summary_text, flush=True)
             print(match_stats.format_report(summary), flush=True)
     finally:
         if csv_handle is not None:
