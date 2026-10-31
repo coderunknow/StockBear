@@ -54,3 +54,27 @@
   discarded because it overlapped compilation and produced mass clock forfeits;
   the recorded run was made on an idle machine with a verified engine identity
   line and a clean termination distribution.
+
+## 2026-10-31 — corrections after review of the dev2 head
+
+- **Static exchange evaluation had a fold bug.** The negamax fold stopped one
+  recapture too early (`while (--d > 0)` instead of `while (d-- > 0)`), so a knight
+  capturing a pawn defended by a pawn returned +100 instead of −220. That both
+  mis-ordered losing captures and fed the SEE pruning rule a false "win", so part
+  of the earlier dev2 gain was an artefact of a broken SEE. It is now a free
+  function `static_exchange_evaluation()` with hand-checked unit tests
+  (knight × defended pawn = −220, pawn × defended pawn = −100, equal trade = 0,
+  losing capture ≤ −depth). Every number in this release was measured after the
+  fix: the sign of the result did not change, the size did.
+- **Correcting the collision claim above.** The dev2 entry says a transposition
+  collision "can then only cost a missed analysis, never correctness". That is too
+  strong: within the dead-position enumeration a collision can *skip* a state and
+  thereby hide a mate, which would turn `Alive` into a wrong `Dead`. What the 128-bit
+  mixed key buys is a negligible probability — the birthday bound over a full
+  enumeration is about 2^-77 at the 50,000,000-state hard maximum (2^-65 at 2^32
+  states) — not immunity. `docs/DEAD_POSITIONS.md` states the bound and the
+  residual risk explicitly.
+- **Dead-position cost reporting.** `DeadResult` now separates `states` (distinct
+  states reached) from `expanded` (move applications charged against the budget),
+  because the two differ by up to 6.6× on the locked-pawn-with-bishops component
+  and only the second one bounds runtime. `bench`/`deadpos` print both.

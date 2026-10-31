@@ -8,10 +8,9 @@ wrap or require another engine. There is no neural-network evaluation.
 
 Evidence and limitations are in the [dev2 benchmark report](benchmarks/results/0.1.0-dev2/REPORT.md),
 the [dead-position specification](docs/DEAD_POSITIONS.md) and the
-[release notes](RELEASE_NOTES.md). Summary: dev2 is about 6× cheaper in nodes and
-about 4× faster than dev1 on the depth-6 suite, and scored +43.7 Elo
-(95 % interval +14.3 to +73.7) over 400 paired games; it lost 0–20 to Stockfish
-11. No match against Stockfish 19 was possible in the build environment, and no
+[release notes](RELEASE_NOTES.md). Summary: dev2 uses 15.8× fewer nodes (19.9× less time) than dev1 on the depth-6
+suite and scored +194 Elo (95 % interval +165 to +227) over 400 paired games; it
+scored 0.5/20 against Stockfish 11 (one draw, nineteen losses). No match against Stockfish 19 was possible in the build environment, and no
 superiority claim is made.
 
 ## Requirements
@@ -116,8 +115,9 @@ component, and answers `unknown` when its budget is exhausted. See
 correctness argument, the measurements and the resource limits.
 
 Search uses iterative deepening, negamax alpha-beta/PVS, quiescence, aspiration
-windows, null-move pruning, late move reductions, futility pruning, SEE,
-killer/history ordering and a context-checked transposition table; its
+windows, null-move pruning, late move reductions, futility pruning, static
+exchange evaluation, killer/history ordering and a context-checked transposition
+table; its
 handcrafted tapered evaluation covers material, piece-square activity, pawn
 structure, passed pawns, bishop pair, mobility, king safety and rook files. The
 search assumes available draw claims are taken and treats cycles inside its own

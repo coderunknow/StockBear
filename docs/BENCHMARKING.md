@@ -78,8 +78,11 @@ Rules that the harness enforces so a result cannot be inflated:
 * opening moves are preplayed without clock charge, and the opening order is
   shuffled with a recorded seed;
 * wall time includes protocol overhead, and a clock overrun or an illegal move
-  terminates the game as a **loss for the offender** (`TIME_FORFEIT`,
-  `ILLEGAL_MOVE`);
+  terminates the game as a **loss for the offender**. The recorded termination
+  strings are `TIME_FORFEIT (<engine>, <n>ms move)` for a clock overrun and
+  `ENGINE_FAILURE (<engine>: illegal move <uci>)` (or another engine error) for an
+  illegal move, crash or protocol failure — there is no bare `ILLEGAL_MOVE` value,
+  so filter by prefix;
 * claimable draws are claimed by the controller exactly as the rules allow;
   fivefold/75-move/insufficient-material/dead-position endings are recorded with
   their rule;

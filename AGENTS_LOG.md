@@ -92,3 +92,41 @@
 - Open items at the time of writing: exact-head CI, CodeRabbit review, merge,
   tag and release remain to be verified on the final head; nothing in this log
   claims those operations succeeded.
+
+## 2026-10-31 — review fixes on the dev2 head, re-verification
+
+- Classified the PR #3 review comments (Copilot review did not run — quota; Codex
+  2 × P1; CodeRabbit 16 actionable + 4 nitpicks) and fixed every substantive one.
+- **SEE correctness defect (real, found by review):** the exchange fold dropped the
+  final recapture. Knight × defended pawn scored +100 instead of −220. Refactored
+  into `static_exchange_evaluation()`, fixed the fold, added known-value unit tests
+  (verified the test FENs with `perft --divide` first). All previously published
+  dev2 measurements were re-measured on the fixed build; the old +43.7 Elo match
+  was discarded and regenerated.
+- **Tournament script:** pairs are accumulated by game index and only complete
+  pairs are scored; summaries are serialised with `allow_nan=False` and unbounded
+  Elo intervals become `null` (`finite_or_none`/`_num_or_inf`) so the JSONL is
+  strict RFC 8259. `test_statistics.py` 8/8 including a strict-JSON test.
+- **CI:** the determinism step resolves the binary as
+  `build/<config>/stockbear.exe` in the Visual Studio multi-config matrix; the
+  `windows-2022 / Debug` job failure was diagnosed from the step script because the
+  log download itself returned `EOF` from blob storage.
+- **Dead-position reporting:** `states` (distinct) separated from `expanded`
+  (budget unit), printed by `bench`/`deadpos` and by the corpus script; the header
+  soundness comment was rewritten to claim only closure-by-prefixing.
+- **CMake:** added the `position_extra` CTest entry (9 entries).
+- Re-measured on the fixed build: depth-6 suite 106,558 nodes / 52.3 ms
+  (signature `733440501ed37d3d`), depth-7 252,556 / 121.7 ms
+  (`4e96e77c6c849463`), ablation table, 400-game dev1 match (+250 =103 −47,
+  Elo +194.3 [+164.5, +227.0], SPRT accept H1, 0 forfeits, 0 capped), 20 games
+  vs Stockfish 11 (0 W / 1 D / 19 L), corpus 23 cases 0 failures, independent
+  reference `--full --max-states 400000` 10 compared / 2 skipped / 0 failures.
+- Suites: CTest Release 9/9, Debug 9/9, ASan+UBSan 9/9, TSan 4/4; reference perft,
+  differential (2,000 + 8 positions, seed 20261030), tournament and statistics
+  scripts green.
+- Docs corrected to the re-measured values (README, CHANGELOG, RELEASE_NOTES,
+  ROADMAP, BENCHMARKING, DEAD_POSITIONS, REPORT.md); DESIGN_LOG carries an appended
+  correction instead of an edit to the earlier entry.
+- Still open at the time of writing: commit/push of these fixes, exact-head CI,
+  CodeRabbit re-review of the final head, merge, tag and release. Nothing in this
+  log claims those succeeded.

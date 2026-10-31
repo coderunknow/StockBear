@@ -33,10 +33,13 @@ Four consequences drive the design:
    legal moves with no move-count limit, so the fifty-move and seventy-five-move
    rules are *not* part of the definition. A detector that consulted the
    halfmove counter would answer a different question.
-3. **Deadness is closed under legal moves.** If `B` is reachable from `A` in one
-   legal move, `A` is reachable from `B` by the inverse move, so `dead(A)`
-   implies `dead(B)`. The unit test `locked_pawn_structure_is_dead` verifies the
-   closure property over every successor of a locked position.
+3. **Deadness is closed under legal moves.** Legal moves are not reversible
+   (captures, pawn pushes and castling cannot be undone), but the closure follows
+   differently: any legal continuation from a successor `B` of `A` can be
+   prefixed with the move `A -> B`, so `mate_reachable(B)` implies
+   `mate_reachable(A)`, hence `dead(A)` implies `dead(B)`. The unit test
+   `locked_pawn_structure_is_dead` verifies the property over every successor of
+   a locked position.
 4. **Checkmate and stalemate are decided by other articles.** Articles 5.1.1
    and 5.2.1 terminate such positions before 5.2.2 can apply. The detector
    reports them as `terminal` and never claims them for 5.2.2.
@@ -55,7 +58,7 @@ detector proves and the reference implementation confirms:
 | two knights v bare king | **alive** | with cooperation the defender's king can be driven into a corner and mated by two knights |
 | `KB` v `KN`, `KN` v `KN` | **alive** | the defender's own knight blocks a flight square while the attacker gives a protected check |
 | 14 blocked pawns plus kings | **dead** | no pawn can ever move, capture or promote; only king moves exist and kings cannot mate |
-| locked pawn chains plus a bishop each | **dead** | the bishops roam freely, but the entire reachable component (1,268,497 states) contains no checkmate |
+| locked pawn chains plus a bishop each | **dead** | the bishops roam freely, but the entire reachable component (152,352 distinct states, reached by 1,268,497 move applications) contains no checkmate |
 
 The last two rows are the reason the requirement cannot be met by signatures:
 they are dead with 18 and 10 pieces on the board respectively, and any
@@ -98,20 +101,30 @@ by a deeper witness pass.
 
 ## 4. Correctness argument
 
-**A `Dead` verdict is never wrong.** `Dead` is returned only after Stage 1's
-material proof, or after Stage 3/4 enumerated every reachable state and found no
+**A `Dead` verdict is sound.** `Dead` is returned only after Stage 1's material
+proof, or after Stage 3/4 enumerated every reachable state and found no
 checkmate. The enumeration is exhaustive by construction: it applies every legal
-move of every visited position and skips a state only when an identical state
-was already visited. Two independent 64-bit fingerprints derived from different
-functions of the position identify a state; a false match has probability about
-2^-97 at billions of states, and it can only cause a state to be skipped (a
-missed mate), never a state to be invented. The en-passant square is mixed in
-explicitly, so a Zobrist key that ignored it could not merge two states with
-different legal-move sets.
+move of every visited position and skips a state only when an identical state was
+already visited. Two independent 64-bit fingerprints derived from different
+functions of the position identify a state, and the en-passant square is mixed in
+explicitly, so a Zobrist key that ignored it cannot merge two states with
+different legal-move sets. The one assumption is that no two distinct states
+share a fingerprint batch; the relevant bound is the birthday bound for a whole
+run, about `n^2 / 2^129` — about `2^-65` for `n = 2^32` states and about `2^-77`
+at the 50,000,000-state maximum. If such a collision happened, a state could be
+skipped and a reachable mate missed, which would produce a wrong `Dead` verdict.
+The probability is astronomically small but not zero, which is why this document
+never claims absolute certainty.
 
-**An `Alive` verdict is never wrong.** `Alive` is returned only with an explicit
-legal move sequence ending in checkmate, or after a checkmate state was found
-inside the reachable component. The unit tests replay every witness through the
+**An `Alive` verdict is never wrong.** `Alive` is returned after a checkmate
+state was found inside the reachable component, in which case the witness holds
+an explicit legal move sequence ending in checkmate. Two documented exceptions
+exist: a *terminal* position (checkmate or stalemate) is reported as `Alive` with
+a `terminal: ...` reason and **no witness**, because Articles 5.1.1 and 5.2.1
+decide it; and a static material proof returns `Dead` with `exhaustiveComplete`
+set and no enumeration, because that class is settled without search. Callers
+must therefore not assume every `Alive` result carries a witness — check
+`witness.empty()` and `reason`. The unit tests replay every witness through the
 engine's own legality checks and assert that the final position is checkmate;
 the CLI prints `witness_ends_in_mate`.
 
@@ -143,30 +156,40 @@ tablebase ranges.
 
 ## 5. Measured performance and documented limits
 
+Two counters are reported, because they measure different things:
+
+* **distinct states** — the size of the reachable component (each state is
+  inserted into the 128-bit visited set once);
+* **positions expanded** — legal moves applied plus the root. This is what the
+  `componentStates` budget limits, so it exceeds the distinct-state count
+  whenever a state is entered by more than one move.
+
 Measured with the dev2 Release build (GCC 12.2, `-O3`), one thread, on the
 2-vCPU benchmark machine:
 
-| Position | Verdict | States enumerated | Time |
-|---|---|---:|---:|
-| bare kings, `KB` v `K`, `KN` v `K`, same-colour bishops | dead | 0 (static proof) | ≤ 0.02 ms |
-| 14 blocked pawns (either side to move) | dead | 3,809 | 6.8 ms / 5.6 ms |
-| locked pawn chains plus bishops (either side) | dead | 1,268,497 | 558 ms / 567 ms |
-| `KQ` v `K` / `KR` v `K` / `KP` v `K` | alive | 70,914 / 80,995 / 90,870 | 26 / 24 / 33 ms |
-| `KNN` v `K` | alive | 300,000 (witness pass) | 149 ms |
-| starting position | alive | 135,973 | 55 ms |
-| Kiwipete, Italian middlegame | alive | 0 (witness) | 2.6 / 0.7 ms |
-| `KB` v `KB`, opposite colours | alive | 4,053,677 | 1.24 s |
-| `KN` v `KN` | alive | 7,908,228 | 2.33 s |
+| Position | Verdict | Distinct states | Expanded | Time | Peak RSS |
+|---|---|---:|---:|---:|---:|
+| bare kings, `KB` v `K`, `KN` v `K`, same-colour bishops | dead | 0 (static proof) | 0 | ≤ 0.02 ms | 10 MiB |
+| 14 blocked pawns (either side to move) | dead | 768 | 3,809 | 6–11 ms | 10 MiB |
+| locked pawn chains plus bishops (either side) | dead | 152,352 | 1,268,497 | 0.49–0.75 s | 46 MiB |
+| `KQ` v `K` / `KR` v `K` / `KP` v `K` | alive | 17,846 / 21,904 / 25,500 | 70,914 / 80,995 / 90,870 | 25–55 ms | 13 MiB |
+| `KNN` v `K` | alive | 100,745 | 300,000 (witness pass cap) | 150–185 ms | 13 MiB |
+| starting position | alive | 44,368 | 135,973 | 43–73 ms | 13 MiB |
+| Kiwipete, Italian middlegame | alive | 0 (witness) | 0 | 1–5 ms | 10 MiB |
+| `KB` v `KB`, opposite colours | alive | 446,393 | 4,053,677 | 1.1–1.4 s | 46 MiB |
+| `KN` v `KN` | alive | 1,194,884 | 7,908,228 | 2.1–3.3 s | 146 MiB |
+| a 4-piece position that exhausts the default budget | unknown | 412,666 | 3,000,000 (budget hit) | 1.6 s | 86 MiB |
 
-The generated table (every corpus case, with verdict, state count, timing and
-witness check) is written by `scripts/dead_position_corpus.py --markdown`; the
-committed copy is
+The generated table for every corpus case is written by
+`scripts/dead_position_corpus.py --markdown`; the committed copy is
 [benchmarks/results/0.1.0-dev2/dead-positions-corpus.md](../benchmarks/results/0.1.0-dev2/dead-positions-corpus.md).
-
-Memory is the binding constraint: the visited set costs 16 bytes per state below
-a 0.7 load factor, so the default budget of 3,000,000 states needs about 70 MiB
-and finishes in roughly 1.5 s. The CLI exposes `--states` (up to 50,000,000) and
-`--depth`.
+Peak RSS was measured with `resource.getrusage(RUSAGE_CHILDREN).ru_maxrss` around
+a single process run, so it is the whole process, not just the visited set. In
+practice the default budget of 3,000,000 expanded positions needs 85–105 MiB and
+about 1.3–1.6 s, depending on how many of those expansions are distinct states.
+The visited set stores two 64-bit fingerprints per slot (24 bytes with alignment)
+in an open-addressing table kept below a 0.7 load factor, and the traversal frames
+add a few hundred bytes per ply.
 
 Documented limits:
 
@@ -174,13 +197,20 @@ Documented limits:
   middlegames, pawnless four-piece endings at the default budget) returns
   `Unknown`. It is reported as such, never as dead.
 * States are identified by 128-bit fingerprints rather than stored positions, so
-  a collision is theoretically possible. The probability is negligible but not
-  zero, and a collision can only cause a missed analysis.
-* The enumerator's `--depth` cap and the witness depth cap are conservative:
-  hitting either produces `Unknown`.
+  a collision is theoretically possible. A collision can hide a mate and hence
+  produce a wrong `Dead` verdict; the probability is bounded by the birthday
+  argument above (≈2^-77 at the 50,000,000-state maximum) but is not zero.
+* The `--depth` path cap and the witness depth cap are conservative: hitting
+  either produces `Unknown`.
 * The detector is an adjudication and analysis tool, deliberately not on the
   search hot path. The search uses the cheap, sound, incomplete
   `insufficient_material()` subset and never declares a FIDE draw by itself.
+
+**Verdict exceptions.** A caller must not assume every `Alive` result carries a
+witness: terminal positions (checkmate, stalemate) are reported as `Alive` with a
+`terminal: ...` reason and an empty witness, because Articles 5.1.1 and 5.2.1
+decide them. Conversely, the impossible-material class returns `Dead` without any
+enumeration (`exhaustiveComplete` is set).
 
 ## 6. Verification evidence
 
@@ -199,12 +229,15 @@ Documented limits:
    * **exhaustive reduced state spaces**: all legal two-king placements with
      either side to move, and all legal three-piece placements with a bishop or
      a knight and either side to move (about 250k placements each; stalemates
-     are recognised as terminal, everything else must be `Dead`).
+     are recognised as terminal, everything else must be `Dead`);
+   * static exchange evaluation against hand-computed values, including the
+     losing-capture case that a mis-folded exchange sequence would report as a
+     win.
 2. **Independent reference** (`scripts/dead_position_reference.py`): a second,
    from-scratch implementation on top of python-chess that enumerates the same
    component with a different move generator and decides the same question. It
-   compares verdicts on bare kings, `KB`/`KQ`/`KR`/`KP` and locked or blocked
-   pawn structures in both side-to-move variants. The recorded dev2 run compared
+   compares verdicts on bare kings, `KB`/`KQ`/`KR`, a blocked e6/e7 pawn structure
+   and a locked pawn structure, each in both side-to-move variants. The recorded dev2 run compared
    10 positions with 0 failures and printed `SKIP` for the two `KN` v `K` rows,
    whose component exceeds the 400,000-state reference cap (StockBear decides
    those statically, and the exhaustive three-piece sweep covers them). The CI

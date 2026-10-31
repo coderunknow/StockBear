@@ -15,23 +15,33 @@ met by a general decision procedure.
   `stockbear deadpos --fen FEN [--states N] [--depth N]`, new
   `DrawStatus::AutomaticDeadPosition`, exhaustive two- and three-piece
   state-space tests, a 23-case corpus and an independent python-chess reference.
-  Specification and limits: `docs/DEAD_POSITIONS.md`.
+  `states` counts distinct reachable states and `expanded` counts applied moves
+  (the budget applies to the latter). Two documented exceptions: a terminal
+  position (checkmate/stalemate) is reported as `alive` with a `terminal:` reason
+  and no witness, and the impossible-material class is `dead` by static proof
+  without enumeration. Specification and limits: `docs/DEAD_POSITIONS.md`.
 - **Search strength and speed.** Aspiration windows, null-move pruning with guards,
   late move reductions with integer scheduling, reverse futility, futility
   pruning, static exchange evaluation for ordering and pruning, delta pruning in
   quiescence, mate-distance pruning, a selection-sort move picker, improved
   history/killer updates and a soft/hard time budget with an early-stability stop.
+  `static_exchange_evaluation()` is a public, unit-tested function.
   UCI options `NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`,
   `SEEPruning`, `CheckExtension` expose every switch (all default to the released
-  behaviour). Measured: depth-6 suite 1,683,192 → 276,352 nodes and 1,041 → 257 ms;
-  depth-7 16.0× fewer nodes; 400 paired games vs dev1 scored +159 =132 −109
-  (Elo +43.7 [95 %: +14.3, +73.7], paired pentanomial).
+  behaviour). Measured: depth-6 suite 1,683,192 → 106,558 nodes and 1,041 → 52 ms
+  (15.8× fewer nodes, 19.9× faster); depth-7 32.8× fewer nodes; 400 paired games
+  vs dev1 scored +250 =103 −47 (Elo +194.3 [95 %: +164.5, +227.0], paired
+  pentanomial, SPRT accept H1).
 - **Transposition table.** Bucketed entries with a depth/generation replacement
   policy, mate-score conversion at store/probe, and context separation retained.
 - **Time management.** Documented soft/hard budget contract, `movestogo` handling,
   a 30-move default, a 1 ms floor and usage-based stopping, covered by new
   contract tests.
-- **Bug fixes.** `unmake_null_move()` decremented the fullmove counter that
+- **Bug fixes.** Static exchange evaluation dropped the final recapture in its
+  negamax fold, so a knight taking a defended pawn scored +100 instead of −220 and
+  losing captures were ordered and pruned as if they were wins; fixed, unit-tested
+  against hand-computed values, and every measurement in this release was taken
+  after the fix. `unmake_null_move()` decremented the fullmove counter that
   `make_null_move()` never incremented, drifting the FEN after every null move;
   fixed and covered by null-move round-trip tests. `go` commands with unknown
   tokens are now ignored (as UCI requires) instead of being refused.
@@ -49,7 +59,7 @@ met by a general decision procedure.
 
 See [release notes](RELEASE_NOTES.md) and
 [the dev2 evidence report](benchmarks/results/0.1.0-dev2/REPORT.md). This
-prerelease makes no Strength parity claim; against Stockfish 11 it lost 0–20.
+prerelease makes no strength-parity claim; against Stockfish 11 it scored 0.5/20.
 
 ## 0.1.0-dev1 — 2026-10-30
 

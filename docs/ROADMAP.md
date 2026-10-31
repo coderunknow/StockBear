@@ -21,9 +21,10 @@
    futility, futility pruning, SEE for ordering and pruning, delta pruning in
    quiescence, a selection-sort move picker, history/killer improvements, a
    soft/hard time budget with an early-stability stop, and UCI switches for
-   every feature so ablations can be measured by matches. Recorded effect:
-   about 6.1× fewer nodes and about 4× faster on the depth-6 suite, and
-   +80 Elo [52, 110] over dev1 in a 400-game paired match.
+   every feature so ablations can be measured by matches. Recorded effect: far
+   15.8x fewer nodes on the depth-6 suite and +194.3 Elo (95 % interval +164.5 to
+   +227.0) over dev1 in the retained 400-game paired match; the exact figures are
+   in `benchmarks/results/0.1.0-dev2/REPORT.md`.
 4. **Tournament statistics, opening diversity and uncertainty.** Done:
    `scripts/match_stats.py` (Wilson, pentanomial over opening pairs,
    normal-approximation SPRT), a 31-opening suite with seeded shuffling, CSV
