@@ -1,3 +1,5 @@
+> **dev2 status:** Not released. The general FIDE dead-position and strength gates remain unsatisfied; see [investigation](docs/DEAD_POSITION_RESEARCH.md) and [preliminary evidence](benchmarks/results/0.1.0-dev2/REPORT.md). The notes below describe dev1.
+
 # StockBear v0.1.0-dev1 — development prerelease
 
 StockBear is a new independent C++17 UCI engine. Its board, legal move generation, state management, alpha-beta search, evaluation and UCI controller are implemented here; it neither embeds nor calls another engine to select moves. This is an early development release, not a stable or leading-strength engine.

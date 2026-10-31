@@ -10,3 +10,18 @@
 - Distinguish claimable versus automatic draw status, including intended-move claims. Search deliberately assumes claims and treats internal cycles as draws; the GUI/referee owns actual game adjudication. Recognize common dead-material signatures but document that arbitrary blocked dead positions are not fully solved.
 - Make the C++ executable self-contained apart from OS runtime libraries; Python and python-chess are optional development tools. Keep external opponents outside the repository and do not use them for engine search.
 - Record perft/search/match methodology and actual results under the versioned benchmark directory. Perft uses leaf bulk counting, so its NPS must not be compared to search NPS.
+
+## 2026-10-31 — bounded reachability research, not release adjudication
+
+- Investigate cooperative mate reachability separately from adversarial WDL and
+  claims. The exact-identity bounded BFS is a research probe, not a general FIDE
+  detector or a search shortcut. Exhaustion means unknown. The graph deliberately
+  ignores automatic draw history; its mate witnesses may be FIDE-impossible.
+- Censor time forfeits in the optional match harness rather than assert a FIDE
+  result without the required one-sided reachability proof. Preserve engine
+  failures and capped games in raw output; remove misleading CI/Elo estimates.
+- Keep VERSION at dev1 while this incomplete branch is not a release candidate.
+  No search or evaluation change is claimed without ablation and match evidence.
+- Package notices and smoke-test extracted binaries; compare downloaded draft
+  assets against locally generated checksums before publication. Workflow
+  changes remain unverified until an actual guarded release execution.

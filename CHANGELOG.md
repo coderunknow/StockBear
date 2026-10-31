@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — dev2 investigation (blocked)
+
+- Add a bounded movement-only mate-reachability research probe, not a general FIDE adjudicator.
+- Avoid fabricated results for time forfeits; record opening seeds and file hashes, and omit unsupported Elo intervals.
+- Add reduced-state independent validation and document unresolved release gates.
+- Include third-party notices in packages and add release archive and uploaded-byte checks (not yet exercised in a release).
+
+
 ## 0.1.0-dev1 — 2026-10-30
 
 First independent development prerelease.

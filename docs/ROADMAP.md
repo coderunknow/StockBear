@@ -1,6 +1,8 @@
 # Roadmap
 
-## v0.1.0-dev2 priorities
+## v0.1.0-dev2 priorities (release blocked)
+
+General FIDE dead-position detection and defensible strength/performance evidence are mandatory, not optional. See [investigation](DEAD_POSITION_RESEARCH.md) and [preliminary evidence](../benchmarks/results/0.1.0-dev2/REPORT.md).
 
 1. Expand independent move-generation/property tests, especially rare en-passant, promotion, repetition and malformed-history edge cases; reproduce any reported bug before fixing it.
 2. Improve FIDE dead-position adjudication beyond the current material signatures, and make claim decisions less simplistic in search. Keep the GUI/referee responsible for actual claims.

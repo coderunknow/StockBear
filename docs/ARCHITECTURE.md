@@ -30,3 +30,7 @@ The main thread reads UCI and serializes output. A single search worker owns a p
 - Insufficient material is a recognized subset of all possible FIDE dead positions; no arbitrary-position retrograde proof is attempted.
 - Repetition prior to the supplied FEN is unknowable; supply the game move sequence where possible.
 - Clock management and evaluation are baseline heuristics. No statistically reliable Elo claim follows from the small included match.
+
+## Research-only reachability
+
+A bounded exact-identity movement-graph probe exists in `chess/dead_position.*` for testing. It is not used in search or adjudication and is not a complete FIDE solver. See [the investigation](DEAD_POSITION_RESEARCH.md).

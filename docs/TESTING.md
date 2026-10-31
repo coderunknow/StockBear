@@ -37,3 +37,7 @@ ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=print_stacktrace=1:hal
 ```
 
 The CI workflow tests Linux x64 and Windows x64 Debug and Release, Linux ASan+UBSan, and an independent-reference job. It uploads Release binaries only after the corresponding build/tests pass. Local evidence is recorded in the [versioned report](../benchmarks/results/0.1.0-dev1/REPORT.md); CI must be checked for the exact commit under review and after merge. Test success is evidence for the exercised cases, not a proof of a bug-free engine.
+
+## Reachability investigation
+
+`python scripts/reference_reachability.py` exhausts two small movement-only graphs independently and compares the recorded counts. The promotion case is relatively expensive. The C++ unit suite exercises the corresponding bounded probe, budget exhaustion and a mate witness; these cases do not prove general FIDE adjudication.
