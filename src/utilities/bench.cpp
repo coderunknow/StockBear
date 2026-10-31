@@ -122,6 +122,7 @@ int deadpos_cli(int argc, char** argv) {
               << "exhaustive_complete " << (result.exhaustiveComplete ? "yes" : "no") << '\n'
               << "witness_visited " << result.visited << '\n'
               << "component_states " << result.states << '\n'
+              << "component_expanded " << result.expanded << '\n'
               << "time_us " << us << '\n'
               << "reason " << result.reason << '\n';
     if (!result.witness.empty()) {

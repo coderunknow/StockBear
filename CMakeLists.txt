@@ -119,6 +119,9 @@ if(STOCKBEAR_BUILD_TESTS)
     target_include_directories(stockbear_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
     add_test(NAME unit        COMMAND stockbear_tests unit)
+    # The runner filters by group name, so every group needs its own entry;
+    # without this the position_extra group would never run under CTest.
+    add_test(NAME position_extra COMMAND stockbear_tests position_extra)
     add_test(NAME regression  COMMAND stockbear_tests regression)
     add_test(NAME perft_quick COMMAND stockbear_tests perft_quick)
     add_test(NAME stress      COMMAND stockbear_tests stress)

@@ -85,6 +85,7 @@ def main() -> int:
         fields = parse(proc.stdout)
         status = fields.get("status", "missing")
         states = int(fields.get("component_states", "0"))
+        expanded = int(fields.get("component_expanded", "0"))
         micros = int(fields.get("time_us", "0"))
         witness_ok = fields.get("witness_ends_in_mate", "-")
         problem = ""
@@ -94,17 +95,18 @@ def main() -> int:
             problem = "witness does not end in checkmate"
         if problem:
             failures.append(f"{label}: {problem}")
-        rows.append((label, status, states, micros / 1000.0, witness_ok, problem))
-        print(f"{label:<42} {status:<8} states={states:<9} "
+        rows.append((label, status, states, expanded, micros / 1000.0, witness_ok, problem))
+        print(f"{label:<42} {status:<8} states={states:<9} expanded={expanded:<9} "
               f"{micros / 1000.0:8.2f} ms witness_mate={witness_ok} {problem}")
 
     if args.markdown:
         with open(args.markdown, "w", encoding="utf-8") as handle:
-            handle.write("| Position | Verdict | States enumerated | Time (ms) | Witness ends in mate |\n")
-            handle.write("|---|---|---:|---:|---|\n")
-            for label, status, states, ms, witness_ok, problem in rows:
+            handle.write("| Position | Verdict | Distinct states | Positions expanded | Time (ms) "
+                         "| Witness ends in mate |\n")
+            handle.write("|---|---|---:|---:|---:|---|\n")
+            for label, status, states, expanded, ms, witness_ok, problem in rows:
                 note = f" **{problem}**" if problem else ""
-                handle.write(f"| {label} | {status} | {states} | {ms:.2f} | "
+                handle.write(f"| {label} | {status} | {states} | {expanded} | {ms:.2f} | "
                              f"{witness_ok if witness_ok != '-' else 'n/a'} |{note}\n")
 
     print(f"\ncases {len(CASES)}, failures {len(failures)}")

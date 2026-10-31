@@ -18,12 +18,11 @@
 //     and fullmove counters cannot influence it: Article 5.2.2 quantifies over
 //     series of legal moves without a move-count limit, so the fifty-move and
 //     seventy-five-move rules are not part of the definition.
-//   * Legal moves are reversible in the sense that they describe a graph: if B
-//     is reachable from A in one legal move then A is reachable from B (by the
-//     inverse move). Castling rights only ever decrease, so the position graph
-//     is a directed acyclic component in the castling-rights dimension. Dead
-//     positions therefore form a "closed" set: every successor of a dead
-//     position is dead as well.
+//   * Legal moves are not reversible (captures, pawn pushes and castling cannot
+//     be undone), but they still give a closure property: any legal continuation
+//     from a successor B of A can be prefixed with the move A -> B, so
+//     mate_reachable(B) implies mate_reachable(A), and therefore dead(A) implies
+//     dead(B). Dead positions are a "closed" set under legal moves.
 //   * Deciding mate_reachable is PSPACE-complete (arXiv:2010.09271), so no
 //     polynomial-time complete procedure exists. The procedure implemented
 //     here is exact: it either finds a helpmate witness (=> Alive), or proves
@@ -71,7 +70,14 @@ struct DeadResult {
     // present whenever status == Alive and a witness was constructed.
     std::vector<Move> witness;
     std::uint64_t visited = 0;    // positions expanded by the witness pass
-    std::uint64_t states = 0;     // distinct reachable states enumerated
+    // Distinct states enumerated by the component pass (each state is inserted
+    // into the visited set once, so this is the size of the reachable
+    // component). Zero for the static-proof and terminal verdicts.
+    std::uint64_t states = 0;
+    // Positions expanded by the component pass, i.e. legal moves applied plus
+    // the root. This is what the componentStates budget limits, so it is larger
+    // than `states` whenever a reachable state is entered by several moves.
+    std::uint64_t expanded = 0;
     bool exhaustiveComplete = false;
     bool depthLimited = false;    // the enumeration hit componentMaxDepth
     std::string reason;           // human readable explanation for the verdict

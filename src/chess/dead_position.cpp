@@ -250,6 +250,7 @@ public:
     }
 
     std::uint64_t states() const { return states_; }
+    std::uint64_t distinct() const { return seen_.size(); }
     bool aborted() const { return aborted_; }
     bool depth_limited() const { return depthLimited_; }
     const std::vector<Move>& witness() const { return witness_; }
@@ -417,7 +418,8 @@ DeadResult analyze_dead_position(const Position& pos, const DeadLimits& limits) 
         Position work = pos;
         const bool found = explorer.explore(work, Mode::Component,
                                             budget.componentMaxDepth, firstBudget);
-        result.states = explorer.states();
+        result.expanded = explorer.states();
+        result.states = explorer.distinct();
         if (found) {
             result.status = DeadStatus::Alive;
             result.witness = explorer.witness();
@@ -465,7 +467,8 @@ DeadResult analyze_dead_position(const Position& pos, const DeadLimits& limits) 
         const bool found = explorer.explore(work, Mode::Component,
                                             budget.componentMaxDepth,
                                             budget.componentStates);
-        result.states = explorer.states();
+        result.expanded = explorer.states();
+        result.states = explorer.distinct();
         if (found) {
             result.status = DeadStatus::Alive;
             result.witness = explorer.witness();
