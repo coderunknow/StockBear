@@ -22,12 +22,12 @@ release, not a stable or leading-strength engine.
   exchange evaluation, delta pruning in quiescence, mate-distance pruning, a
   better move picker and a real soft/hard time budget.
 - **Measurable evidence**: the depth-6 benchmark suite went from 1,683,192 to
-  106,558 nodes (685 ms → 57 ms, measured alternately in one session), the
-  depth-7 suite from 8,276,659 to 252,556
-  nodes, and 400 paired games against dev1 scored +250 =103 −47, i.e.
-  **Elo +194.3 with a 95 % interval of +158.5 to +234.4** (opening-clustered over
-  the 31 distinct openings; the plain pentanomial interval over the 200 opening
-  pairs, which treats them as independent, is the narrower +164.5 to +227.0).
+  108,910 nodes (622 ms → 49 ms, measured alternately in one idle session), the
+  depth-7 suite from 8,276,659 to 250,053 nodes, and 400 paired games against dev1
+  scored +277 =82 −41, i.e. **Elo +235.4 with a 95 % interval of +193.4 to
+  +284.5** (opening-clustered over the 31 distinct openings; the plain pentanomial
+  interval over the 200 opening pairs, which treats them as independent, is the
+  narrower +202.8 to +272.2).
 - **Honest tournament statistics**: Wilson intervals, a pentanomial model over
   opening pairs, an approximate SPRT, seeded opening shuffling, 31 verified
   openings, and a harness that records time forfeits and capped games instead of
@@ -57,7 +57,7 @@ substitute for them.
 
 ## Strength statement
 
-Against dev1 the improvement is supported (400 paired games, +250 =103 −47, +194.3
+Against dev1 the improvement is supported (400 paired games, +277 =82 −41, +235.4
 Elo). Against a mature engine the gap remains very large: dev2 scored **0.5/20**
 against Stockfish 11 at 100 ms + 10 ms (one draw, nineteen losses), with no
 forfeits. The latest stable Stockfish (19) could **not** be built in the release

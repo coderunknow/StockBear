@@ -8,9 +8,9 @@ wrap or require another engine. There is no neural-network evaluation.
 
 Evidence and limitations are in the [dev2 benchmark report](benchmarks/results/0.1.0-dev2/REPORT.md),
 the [dead-position specification](docs/DEAD_POSITIONS.md) and the
-[release notes](RELEASE_NOTES.md). Summary: dev2 uses 15.8× fewer nodes (12×
-less time) than dev1 on the depth-6 suite and scored +194 Elo (95 % interval
-+159 to +234, opening-clustered) over 400 paired games; it scored 0.5/20 against
+[release notes](RELEASE_NOTES.md). Summary: dev2 uses 15.5× fewer nodes (12.8×
+less time) than dev1 on the depth-6 suite and scored +235 Elo (95 % interval
++193 to +285, opening-clustered) over 400 paired games; it scored 0.5/20 against
 Stockfish 11 (one draw, nineteen losses). No match against Stockfish 19 was
 possible in the build environment, and no superiority claim is made.
 
@@ -143,8 +143,10 @@ python3 scripts/tournament.py --engine-a ./build/stockbear --engine-b /path/to/o
 ```
 
 `bench` prints CSV plus a `# signature` fingerprint that is deterministic for a
-given build and parameter set, so behaviour changes are visible without comparing
-timings. `tournament.py` reports Elo only with confidence intervals and paired
+given build and parameter set in `--depth`/`--nodes` mode, so behaviour changes
+are visible without comparing timings. `--movetime` mode is time-limited, so it
+prints `# signature unavailable` instead of a fingerprint that would differ
+between runs of the same build. `tournament.py` reports Elo only with confidence intervals and paired
 (pentanomial) uncertainty, never turns a capped game into a draw, and records
 time forfeits and illegal moves as losses. See
 [benchmark methodology](docs/BENCHMARKING.md).

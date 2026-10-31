@@ -88,8 +88,10 @@ The CI workflow runs, on every push and pull request:
 
 * Linux (`ubuntu-22.04`) and Windows (`windows-2022`) Debug and Release builds
   with the full CTest suite, a build-provenance record and a search-determinism
-  check (two identical `bench --depth 6` runs must produce identical CSV and
-  signature);
+  check (two identical `bench --depth 6` runs must agree on the `# StockBear`
+  header, the `# signature` line and the deterministic CSV columns — name, best
+  move, depth, score, nodes, PV; the `time_us`, `nps` and `hashfull` columns are
+  ignored because they legitimately vary between runs);
 * a Linux ASan+UBSan job;
 * a Linux ThreadSanitizer job;
 * a Linux Clang Release job;

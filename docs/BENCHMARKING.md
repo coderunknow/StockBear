@@ -35,7 +35,11 @@ cp/mate score, nodes, elapsed microseconds, NPS, hash fullness and PV. Every run
 also prints a header line with the version, mode, requested/allocated hash and
 the active `SearchParams`, plus a final `# signature <hex>` line: a
 deterministic FNV-1a fingerprint of the name, best move, depth, score, node
-count and PV of every position. Two builds or two parameter settings that
+count and PV of every position — in `--depth` and `--nodes` mode. Both fields are
+reproducible there; `--movetime` (and any other time-limited run) depends on the
+machine, so those runs print `# signature unavailable (movetime mode is not
+deterministic)` instead of a fingerprint that would change between runs of one
+build. Two builds or two parameter settings that
 differ anywhere in those fields have different signatures, so behaviour
 regressions can be caught without comparing timings. CI runs the same command
 twice and compares a *narrowed* projection of the output, not the whole text: the

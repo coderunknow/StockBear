@@ -78,3 +78,22 @@
   states reached) from `expanded` (move applications charged against the budget),
   because the two differ by up to 6.6× on the locked-pawn-with-bishops component
   and only the second one bounds runtime. `bench`/`deadpos` print both.
+
+## 2026-11-01 — static exchange values and the king
+
+- **A king cannot recapture into an attacked square, but SEE thought it could.**
+  `SeeValue[King]` was 0. In `4k3/3p4/8/8/8/8/3R4/3R2K1 w - - 0 1`, `d2d7` is a
+  won pawn because the king may not take back while the second rook x-rays d7, yet
+  SEE scored it −400 (king "recaptures" for 0, then the rook falls). A zero value
+  for the king also made it the least valuable attacker, so it was picked first.
+  The king now carries a dominant value (20,000), which keeps it last in the
+  least-valuable-attacker order and makes any line in which it captures look
+  catastrophic, so SEE never reads an illegal king recapture as a gain. Covered by
+  a known-value test.
+- **Consequence for measurement.** SEE feeds both move ordering and the SEE
+  pruning rule, so this is a real playing-strength change, not a cosmetic one. The
+  dev2 benchmarks and both matches were re-run after the fix and the earlier
+  numbers are superseded (the report keeps them, labelled, as discarded
+  measurements). Node counts move slightly (106,558 → 108,910 at depth 6); the
+  match result moves from +250 =103 −47 to +277 =82 −41, which is the same
+  conclusion with a different magnitude.

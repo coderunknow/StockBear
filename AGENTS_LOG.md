@@ -200,3 +200,41 @@
   `test_statistics.py` 11/11; `test_tournament.py` and `recompute_summary.py`
   pass; bench signatures unchanged (`733440501ed37d3d`, `4e96e77c6c849463`), so
   the search behaviour itself did not move.
+
+## 2026-11-01 — fourth review pass (CodeRabbit on 5e58917) and re-measurement
+
+- CodeRabbit reviewed `5e58917` (6 actionable comments, several re-statements of
+  earlier rounds). One was a genuine, previously missed defect:
+  - **`SeeValue[King] == 0`.** SEE believed an illegal king recapture was
+    available, so a won pawn (`d2d7` in `4k3/3p4/8/8/8/8/3R4/3R2K1`) scored −400
+    instead of +100. The king now has a dominant exchange value, with a
+    known-value test that fails on the old value. Because SEE drives ordering and
+    pruning, everything measured was re-run.
+  - **`bench --movetime` no longer prints a signature**: it absorbs depth and node
+    count, which are wall-clock dependent in that mode, so the run prints
+    `# signature unavailable (movetime mode is not deterministic)` and the docs say
+    the fingerprint applies to `--depth`/`--nodes` only.
+  - **`tournament.py` validates option values** against the advertised UCI type
+    (check/spin with min-max/combo) and fails on an `info string` rejection from
+    `setoption`, so `--a-option NullMove=flase` cannot be recorded as an effective
+    ablation. `--sprt-elo` now requires a finite positive value at parse time.
+    Two new assertions in `test_tournament.py` cover both.
+  - Docs: `docs/DEAD_POSITIONS.md` piece counts corrected to 16 and 12;
+    `docs/TESTING.md` describes the narrowed determinism comparison.
+- Re-measured on the fixed build: depth-6 1,683,192 → 108,910 nodes and
+  622 → 49 ms; depth-7 8,276,659 → 250,053 and 2,896 → 125 ms (both binaries run
+  alternately in one idle session); new signatures `e06c4352681ae8eb` (depth 6)
+  and `5bceff035f2a4ae4` (depth 7); ablation table re-run.
+- New 400-game match vs dev1 (identical protocol and seed): **+277 =82 −41**,
+  score 0.795, Elo +235.4, paired pentanomial [95, 57, 39, 7, 2] CI +202.8 to
+  +272.2, opening-clustered CI +193.4 to +284.5, LLR 7.69 crossing the +5 Elo
+  bound; 318 checkmate / 75 threefold / 6 insufficient material / 1 fifty-move,
+  0 forfeits, 0 capped.
+- Stockfish 11 match re-run (identical binaries and protocol): 0 W / 1 D / 19 L.
+- Dead-position evidence re-generated on the same binary: corpus 23 cases, 0
+  failures; independent reference `--full --max-states 400000` 10 compared,
+  2 skipped, 0 failures.
+- Suites on this head: CTest 9/9 in Release, Debug, ASan+UBSan and ThreadSanitizer
+  (TSan runs the whole set, including `deadpos`); `reference_perft.py` 9/9;
+  `differential.py --samples 2000 --seed 20261030` pass; `test_statistics.py`
+  11/11; `test_tournament.py` 2/2.

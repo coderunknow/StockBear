@@ -46,31 +46,31 @@ the committed CSVs are the last pass of that alternation. An earlier draft quote
 a dev1 timing measured while the machine was compiling, which inflated the speed
 ratio; the numbers below are the matched ones.
 
-**Depth 6, 12 positions (dev2 signature `733440501ed37d3d`):**
+**Depth 6, 12 positions (dev2 signature `e06c4352681ae8eb`):**
 
 | Measure | dev1 | dev2 | ratio |
 |---|---:|---:|---:|
-| Total nodes | 1,683,192 | 106,558 | **0.063×** (15.8× fewer) |
-| Total search time | 685.1 ms | 57.1 ms | **0.083×** (12.0× faster) |
+| Total nodes | 1,683,192 | 108,910 | **0.065×** (15.5× fewer) |
+| Total search time | 622.1 ms | 48.6 ms | **0.078×** (12.8× faster) |
 
-**Depth 7 (`4e96e77c6c849463`):** 8,276,659 → 252,556 nodes (**0.031×**, 32.8×
-fewer) and 3,171.3 ms → 136.6 ms (**0.043×**, 23.2× faster).
+**Depth 7 (`5bceff035f2a4ae4`):** 8,276,659 → 250,053 nodes (**0.030×**, 33.1×
+fewer) and 2,896.0 ms → 125.3 ms (**0.043×**, 23.1× faster).
 
 Per position at depth 6:
 
 | Position | dev1 nodes | dev2 nodes | ratio | dev1 ms | dev2 ms | dev1 move | dev2 move | dev1 score | dev2 score |
 |---|---:|---:|---:|---:|---:|---|---|---:|---:|
-| Starting position | 69,191 | 12,539 | 0.181 | 36.1 | 6.1 | `b1c3` | `d2d4` | 0 | 0 |
-| Complex middlegame | 723,143 | 63,542 | 0.088 | 313.2 | 32.4 | `e2a6` | `e2a6` | +7 | +7 |
-| Mate in one | 62,173 | 163 | 0.003 | 12.9 | 0.0 | `f7g7` | `f7g7` | mate 1 | mate 1 |
-| Rook and pawn ending | 22,991 | 3,823 | 0.166 | 7.3 | 1.4 | `b4c4` | `b4f4` | +38 | +126 |
-| Promotion race | 2,976 | 1,244 | 0.418 | 0.7 | 0.5 | `g1h2` | `g1h2` | +998 | +998 |
+| Starting position | 69,191 | 12,539 | 0.181 | 26.9 | 5.4 | `b1c3` | `d2d4` | 0 | 0 |
+| Complex middlegame | 723,143 | 64,442 | 0.089 | 291.9 | 30.1 | `e2a6` | `e2a6` | +7 | +7 |
+| Mate in one | 62,173 | 163 | 0.003 | 12.8 | 0.0 | `f7g7` | `f7g7` | mate 1 | mate 1 |
+| Rook and pawn ending | 22,991 | 5,275 | 0.229 | 6.5 | 1.7 | `b4c4` | `b4c4` | +38 | +41 |
+| Promotion race | 2,976 | 1,244 | 0.418 | 0.7 | 0.3 | `g1h2` | `g1h2` | +998 | +998 |
 | Hanging queen | 852 | 452 | 0.531 | 0.2 | 0.1 | `e4d5` | `e4d5` | 0 | 0 |
-| Developed middlegame | 542,997 | 20,310 | 0.037 | 251.7 | 15.0 | `b1a3` | `b1a3` | +441 | +457 |
+| Developed middlegame | 542,997 | 20,310 | 0.037 | 226.0 | 9.8 | `b1a3` | `b1a3` | +441 | +457 |
 | Bare kings drawn | 0 | 0 | — | 0.0 | 0.0 | `e1d1` | `e1d1` | 0 | 0 |
-| Mate in two | 244,870 | 556 | 0.002 | 59.4 | 0.2 | `b2c3` | `b2c3` | mate 2 | mate 2 |
-| Forced check evasion | 4,113 | 805 | 0.196 | 1.0 | 0.4 | `g1h1` | `g1h1` | mate -3 | mate -3 |
-| Avoid immediate mate | 5,998 | 2,362 | 0.394 | 1.7 | 0.8 | `a1a3` | `a1a3` | -1017 | -1011 |
+| Mate in two | 244,870 | 556 | 0.002 | 53.8 | 0.1 | `b2c3` | `b2c3` | mate 2 | mate 2 |
+| Forced check evasion | 4,113 | 805 | 0.196 | 0.9 | 0.2 | `g1h1` | `g1h1` | mate -3 | mate -3 |
+| Avoid immediate mate | 5,998 | 2,362 | 0.394 | 1.6 | 0.5 | `a1a3` | `a1a3` | -1017 | -1011 |
 | Stalemate avoidance | 3,888 | 762 | 0.196 | 0.9 | 0.2 | `f1f2` | `f1e2` | mate 3 | +1033 |
 
 The two changed moves are equal-scoring alternatives at this depth (start
@@ -82,14 +82,14 @@ the mate-in-one, the mate-in-two, the forced evasion and the promotion.
 
 | Configuration | Nodes | Time (ms) | Signature |
 |---|---:|---:|---|
-| all features on (baseline) | 252,556 | 132.2 | `4e96e77c6c849463` |
-| `aspiration=0` | 331,215 | 160.8 | `c372ce4355e0fd02` |
-| `nullMove=0` | 231,094 | 117.2 | `7a98a1a2c3e5ddf9` |
-| `lmr=0` | 466,352 | 239.7 | `bea0c8645b4457ea` |
-| `reverseFutility=0` | 351,275 | 167.5 | `f6f7e99bd82b63e4` |
-| `futility=0` | 329,343 | 144.7 | `f02b4259e6eaf791` |
-| `seePruning=0` | 650,548 | 247.8 | `a0ea0d32b426a8f1` |
-| `checkExtension=0` | 213,373 | 114.1 | `7132842d4634dc15` |
+| all features on (baseline) | 250,053 | 110.0 | `5bceff035f2a4ae4` |
+| `aspiration=0` | 367,761 | 164.5 | `3c18011ef06ed16c` |
+| `nullMove=0` | 227,376 | 108.1 | `8709493fb370ebcc` |
+| `lmr=0` | 463,963 | 215.2 | `e75fc23609899ce1` |
+| `reverseFutility=0` | 352,246 | 194.7 | `407aaa48b99eba34` |
+| `futility=0` | 326,199 | 149.7 | `da6f376a7704de87` |
+| `seePruning=0` | 650,548 | 248.6 | `a0ea0d32b426a8f1` |
+| `checkExtension=0` | 217,620 | 101.4 | `cac9faedd0b1cdc1` |
 
 Reading this honestly: disabling **aspiration windows, LMR, reverse futility,
 futility or SEE pruning** increases both nodes and time, so those features do the
@@ -125,37 +125,36 @@ Both engines: `Hash` 16 MiB, one thread, same clocks, 31 openings in
 played twice with colours reversed, `--max-plies 300`. python-chess adjudicated
 every game and validated every move.
 
-* Result: **+250 =103 −47** over 400 games, score 0.7538.
-* Naive Wilson 95 %: [0.709, 0.793] → Elo +194.3 [+154.9, +233.8] (ignores pair
+* Result: **+277 =82 −41** over 400 games, score 0.7950.
+* Naive Wilson 95 %: [0.753, 0.832] → Elo +235.4 [+193.4, +277.5] (ignores pair
   dependence).
-* Paired pentanomial estimate: 200 opening pairs, pair-score mean 1.5075 ± 0.0339,
-  **Elo +194.3 [95 %: +164.5, +227.0]**, pair scores 2/1.5/1/0.5/0 =
-  `[76, 66, 45, 11, 2]`.
+* Paired pentanomial estimate: 200 opening pairs, pair-score mean 1.59 ± 0.0330,
+  **Elo +235.4 [95 %: +202.8, +272.2]**, pair scores 2/1.5/1/0.5/0 =
+  `[95, 57, 39, 7, 2]`.
 * Opening-clustered estimate (CR1 on the 31 distinct openings, Student-t with 30
-  degrees of freedom, `match_stats.opening_clustered`): **Elo +194.3
-  [95 %: +158.5, +234.4]**. The suite replays each opening about 6.5 times, so the
+  degrees of freedom, `match_stats.opening_clustered`): **Elo +235.4
+  [95 %: +193.4, +284.5]**. The suite replays each opening about 6.5 times, so the
   200 pairs are *not* independent; this interval is the headline one because it
   also absorbs the between-opening correlation. The `summary` line of
   `match-dev1.jsonl` was recomputed from the unchanged game records by
   `scripts/recompute_summary.py`, which adds this block without replaying games.
 * SPRT (H0 = 0 Elo, H1 = +5 Elo, α = β = 0.05), evaluated after the match on the
-  recorded pair scores: LLR 6.26 > 2.94, i.e. the upper bound is crossed. The
+  recorded pair scores: LLR 7.69 > 2.94, i.e. the upper bound is crossed. The
   harness did not stop early — it played the full 400 requested games and the LLR
   was computed from the finished sample, so this is an upper-bound crossing, not a
   sequential stopping event.
-* Terminations: 297 checkmate, 94 threefold repetition, 8 insufficient material,
+* Terminations: 318 checkmate, 75 threefold repetition, 6 insufficient material,
   1 fifty-move. **No time forfeits, no illegal moves, no capped/unadjudicated
-  games.** Median game length 106 plies (24–268).
+  games.** Median game length 111 plies (24–256).
 * dev2 is engine A, so positive scores favour dev2.
 
-Interpretation: at 80 ms + 8 ms per move the dev2 build scores 75 % against dev1,
-about **+194 Elo with a 95 % interval of +158 to +234** once opening clustering is
-accounted for. The improvement is much larger than the earlier draft measurement
-because it includes the static-exchange-evaluation fix found in review (see
-below); the discarded earlier figure (+44 Elo) came from a build whose SEE dropped
-the final recapture and therefore treated losing captures as winning. This is a
-statement about dev1 at this time control, not about absolute strength or about
-other engines.
+Interpretation: at 80 ms + 8 ms per move the dev2 build scores 79.5 % against dev1,
+about **+235 Elo with a 95 % interval of +193 to +285** once opening clustering is
+accounted for. Earlier drafts of this match quoted +44 and then +194 Elo; both were
+measured on builds with a broken static exchange evaluation (see "Rejected and
+failed experiments"), so they described engines that could not be released. This
+is a statement about dev1 at this time control, not about absolute strength or
+about other engines.
 
 ## External opponent: Stockfish
 
@@ -212,15 +211,16 @@ limits. Recorded evidence:
   knight and either side to move, are classified correctly, with stalemates
   recognised as terminal rather than dead.
 * measured cost (distinct states / positions expanded): static proofs ~0 ms;
-  14 blocked pawns 768 / 3,809 in 4.7–7 ms; locked pawn chains with bishops
-  152,352 / 1,268,497 in 0.44–0.75 s; `KNN` v `K` 100,745 / 300,000 in 136 ms;
-  `KN` v `KN` 1,194,884 / 7,908,228 in 2.5 s. Budget exhaustion returns `unknown`,
+  14 blocked pawns 768 / 3,809 in 5.0–5.3 ms; locked pawn chains with bishops
+  152,352 / 1,268,497 in 0.44–0.75 s; `KNN` v `K` 100,745 / 300,000 in 136–145 ms;
+  `KN` v `KN` 1,194,884 / 7,908,228 in 1.9–3.3 s; `KB` v `KB` opposite colours
+  446,393 / 4,053,677 in 1.1 s; starting position 44,368 / 135,973 in 38 ms. Budget exhaustion returns `unknown`,
   never `dead`; the default 3,000,000-expansion budget peaks at 85–105 MiB.
 
 ## Tests run for this evidence
 
 Local, on the committed head: CTest Release 9/9, Debug 9/9, ASan+UBSan 9/9,
-ThreadSanitizer 4/4 (`unit|position_extra|regression|uci_integration`).
+ThreadSanitizer 9/9 (the same CTest set compiled with `-fsanitize=thread`).
 Independent scripts: `reference_perft.py` (9 positions),
 `differential.py --samples 2000 --seed 20261030` (exact move sets and per-move
 depth-2 counts, 2,000 generated + 8 curated positions), `test_tournament.py`,
@@ -236,12 +236,16 @@ Exact-commit CI on the PR head, merge commit and tag is the authoritative record
   +191 =109 −100. Contaminated runs were discarded rather than published. Lesson:
   verify the engines' self-reported identity and the termination distribution
   before trusting a match.
-- **The first SEE implementation was wrong and the first match measured it.**
-  Review found that the exchange fold dropped the final recapture, so a knight
-  taking a defended pawn returned +100 instead of −220. Fixed, covered by
-  known-value tests, and every measurement in this report was re-run afterwards.
-  The pre-fix 400-game result (+159 =132 −109, +43.7 Elo) was discarded because it
-  described a build that could not be released.
+- **Static exchange evaluation was wrong twice, and matches measured it both
+  times.** (1) The negamax fold dropped the final recapture, so a knight taking a
+  defended pawn returned +100 instead of −220; fixed and covered by known-value
+  tests. (2) The king's exchange value was 0, so SEE believed an illegal king
+  recapture was available and turned a won pawn (`d2d7` in
+  `4k3/3p4/8/8/8/8/3R4/3R2K1`) into −400; fixed by giving the king a dominant
+  value, covered by a known-value test. Two intermediate 400-game results
+  (+159 =132 −109, +43.7 Elo, and +250 =103 −47, +194.3 Elo) were superseded by
+  the run recorded below because they described builds that could not be
+  released. The direction was stable across all of them; the magnitude was not.
 - **`aspiration=0` apparently reducing nodes** in an early patch was an ordering
   artefact, not a bug; after the SEE fix the expected direction appears.
 - **Stockfish 19 build** failed for the NNUE-network reason above. Stockfish 11 is

@@ -28,17 +28,24 @@ met by a general decision procedure.
   `static_exchange_evaluation()` is a public, unit-tested function.
   UCI options `NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`,
   `SEEPruning`, `CheckExtension` expose every switch (all default to the released
-  behaviour). Measured with both builds run alternately in one session: depth-6
-  suite 1,683,192 → 106,558 nodes and 685 → 57 ms (15.8× fewer nodes, 12×
-  faster); depth-7 32.8× fewer nodes and 23× faster; 400 paired games
-  vs dev1 scored +250 =103 −47 (Elo +194.3; paired pentanomial 95 % interval
-  +164.5 to +227.0, opening-clustered interval +158.5 to +234.4; the LLR computed
-  on the finished sample crosses the +5 Elo upper bound).
+  behaviour). Measured with both builds run alternately in one idle session:
+  depth-6 suite 1,683,192 → 108,910 nodes and 622 → 49 ms (15.5× fewer nodes,
+  12.8× faster); depth-7 33.1× fewer nodes and 23.1× faster; 400 paired games vs
+  dev1 scored +277 =82 −41 (Elo +235.4; paired pentanomial 95 % interval +202.8
+  to +272.2, opening-clustered interval +193.4 to +284.5; the LLR computed on the
+  finished sample crosses the +5 Elo upper bound).
 - **Transposition table.** Bucketed entries with a depth/generation replacement
   policy, mate-score conversion at store/probe, and context separation retained.
 - **Time management.** Documented soft/hard budget contract, `movestogo` handling,
   a 30-move default, a 1 ms floor and usage-based stopping, covered by new
   contract tests.
+- **Static exchange value of a king.** `SeeValue[King]` was 0, so SEE treated an
+  illegal king recapture as available: `4k3/3p4/8/8/8/8/3R4/3R2K1 w - - 0 1`,
+  `d2d7` returned −400 instead of +100 because the king appeared to win the rook
+  back while the second rook still x-rayed the square. The king now has a huge
+  value (so it is ordered last and its "capture" is never profitable), covered by
+  a known-value test. This changes search behaviour, so every dev2 measurement in
+  this release was taken after the fix.
 - **Time safety.** The hard-timer polling interval in `Search::visit` is back to
   64 nodes (dev1's value): 1024 allowed a `go movetime` search to overrun its hard
   budget by up to a thousand nodes and risk a clock forfeit.
@@ -53,7 +60,8 @@ met by a general decision procedure.
   `format_report()` no longer crashes when the SPRT cannot decide, and the match
   summary now reports the game count.
 - **Benchmark and measurement tooling.** `bench --movetime`, `bench --param
-  feature=0|1` ablations and a deterministic `# signature` fingerprint;
+  feature=0|1` ablations and a deterministic `# signature` fingerprint (depth and
+  node modes only; time-limited runs report it as unavailable);
   `scripts/match_stats.py` (Wilson, pentanomial over opening pairs,
   normal-approximation SPRT) with known-value unit tests; `tournament.py` gains
   `--csv`, `--seed`, `--sprt-elo` and `--a-option`/`--b-option`; the opening suite

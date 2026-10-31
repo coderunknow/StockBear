@@ -23,7 +23,11 @@ constexpr int MaxCheckExtensions = 3;
 // to a thousand nodes and risk a clock forfeit. The check is an atomic load plus
 // a cached deadline comparison, so 64 is affordable.
 constexpr int NodeCheckInterval = 64;
-constexpr int SeeValue[PieceTypeNB + 1] = {0, 100, 320, 335, 500, 975, 0, 0};
+// Static exchange values. The king is deliberately enormous: a king may not
+// legally recapture into a still-attacked square, and giving it 0 made SEE think
+// it could, so a rook capture of a pawn defended only by the king (with an
+// x-raying rook behind) came out as a loss of a rook instead of a won pawn.
+constexpr int SeeValue[PieceTypeNB + 1] = {0, 100, 320, 335, 500, 975, 20000, 0};
 
 // Integer-only reduction schedule; keeps results bit-identical across
 // platforms and compilers (a floating-point logarithm does not guarantee that).

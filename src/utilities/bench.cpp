@@ -253,7 +253,13 @@ int benchmark_cli(int argc, char** argv) {
                std::to_string(result.nodes));
         for (Move m : result.pv) absorb(move_to_uci(m));
     }
-    std::cout << "# signature " << std::hex << signature << std::dec << '\n';
+    if (gotMoveTime) {
+        // Depth and node count depend on wall-clock time here, and the signature
+        // absorbs both, so it is not reproducible between runs of the same build.
+        std::cout << "# signature unavailable (movetime mode is not deterministic)\n";
+    } else {
+        std::cout << "# signature " << std::hex << signature << std::dec << '\n';
+    }
     return 0;
 }
 }

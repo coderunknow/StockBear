@@ -31,6 +31,50 @@ except ImportError:
     sys.exit("Install the optional tournament dependency: pip install chess==1.11.2")
 
 
+def parse_option_line(line):
+    """Parse a UCI `option name ... type ...` line into (name, spec)."""
+    rest = line[len("option name "):]
+    name, _, tail = rest.partition(" type ")
+    spec = {"type": tail.split()[0].lower() if tail.split() else "unknown"}
+    for key in ("default", "min", "max"):
+        token = f" {key} "
+        if token in tail:
+            value = tail.split(token, 1)[1]
+            # default/min/max are single tokens; combo/string defaults may not be.
+            spec[key] = value.split()[0] if value.split() else ""
+    if " var " in tail:
+        spec["vars"] = [v.split()[0] for v in tail.split(" var ")[1:] if v.split()]
+    return name, spec
+
+
+def check_option_value(name, spec, value):
+    """Reject a value the engine would refuse, before the match starts.
+
+    Recording an option as "effective" without checking it is how an ablation
+    silently turns into "both engines identical": `--a-option NullMove=flase` is
+    rejected by the engine with an `info string`, which `ready()` would discard.
+    """
+    kind = spec.get("type", "unknown")
+    if kind == "check":
+        if value.strip().lower() not in ("true", "false"):
+            raise ValueError(f"option {name!r} expects true or false, got {value!r}")
+    elif kind == "spin":
+        try:
+            number = int(value)
+        except ValueError:
+            raise ValueError(f"option {name!r} expects an integer, got {value!r}") from None
+        if spec.get("min") not in (None, "") and number < int(spec["min"]):
+            raise ValueError(f"option {name!r} minimum is {spec['min']}, got {number}")
+        if spec.get("max") not in (None, "") and number > int(spec["max"]):
+            raise ValueError(f"option {name!r} maximum is {spec['max']}, got {number}")
+    elif kind == "combo":
+        if value not in spec.get("vars", []):
+            raise ValueError(f"option {name!r} expects one of {spec.get('vars')}, got {value!r}")
+    elif kind == "button":
+        raise ValueError(f"option {name!r} is a button and takes no value")
+    # string / unknown types are passed through unchanged.
+
+
 class UciEngine:
     def __init__(self, path, hash_mb, threads, extra_options=None):
         self.path = os.path.abspath(path)
@@ -40,6 +84,7 @@ class UciEngine:
         self.err = []
         self.name = os.path.basename(path)
         self.options = {}
+        self.option_specs = {}
         threading.Thread(target=self._reader, args=(self.p.stdout, self.out), daemon=True).start()
         threading.Thread(target=self._stderr, daemon=True).start()
         try:
@@ -52,14 +97,15 @@ class UciEngine:
                 if line.startswith("id name "):
                     self.name = line[8:]
                 if line.startswith("option name ") and " type " in line:
-                    name = line[len("option name "):].split(" type ", 1)[0]
+                    name, spec = parse_option_line(line)
                     self.options[name.lower()] = name
+                    self.option_specs[name.lower()] = spec
                 if time.monotonic() >= deadline:
                     raise TimeoutError(f"{self.name} did not complete UCI handshake")
             self.effective = {}
             for option, value in (("hash", hash_mb), ("threads", threads)):
                 if option in self.options:
-                    self.send(f"setoption name {self.options[option]} value {value}")
+                    self.set_option(self.options[option], str(value))
                     self.effective[option] = f"requested {value}"
                 elif option == "threads" and self.name.startswith("StockBear "):
                     if threads != 1:
@@ -76,7 +122,9 @@ class UciEngine:
                     raise ValueError(f"expected NAME=VALUE, got {item!r}")
                 if name.lower() not in self.options:
                     raise ValueError(f"{self.name} does not advertise option {name!r}")
-                self.send(f"setoption name {self.options[name.lower()]} value {value}")
+                canonical = self.options[name.lower()]
+                check_option_value(canonical, self.option_specs.get(name.lower(), {}), value)
+                self.set_option(canonical, value)
                 self.effective[name.lower()] = value
             self.ready()
 
@@ -113,13 +161,25 @@ class UciEngine:
         return line
 
     def ready(self):
+        """Send isready and return any `info string` lines seen before readyok."""
         self.send("isready")
         deadline = time.monotonic() + 10
+        messages = []
         while True:
-            if self.read(deadline - time.monotonic()) == "readyok":
-                return
+            line = self.read(deadline - time.monotonic())
+            if line == "readyok":
+                return messages
+            if line.startswith("info string "):
+                messages.append(line)
             if time.monotonic() >= deadline:
                 raise TimeoutError(f"{self.name} did not become ready")
+
+    def set_option(self, name, value):
+        """Apply an option and fail loudly if the engine refuses it."""
+        self.send(f"setoption name {name} value {value}")
+        for line in self.ready():
+            if "setoption" in line:
+                raise ValueError(f"{self.name} rejected {name}={value}: {line}")
 
     def new_game(self):
         self.send("ucinewgame")
@@ -149,6 +209,22 @@ class UciEngine:
             except (OSError, RuntimeError, subprocess.TimeoutExpired):
                 self.p.kill()
                 self.p.wait(timeout=3)
+
+
+def positive_finite_float(text):
+    """argparse type for the SPRT hypothesis: finite and strictly positive.
+
+    `nan` or `inf` would propagate into the summary, where the strict-JSON
+    writer (allow_nan=False) would then fail after the games had already been
+    played. Reject the value at argument-parsing time instead.
+    """
+    try:
+        value = float(text)
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"not a number: {text!r}") from None
+    if not math.isfinite(value) or value <= 0.0:
+        raise argparse.ArgumentTypeError(f"expected a finite positive Elo, got {text!r}")
+    return value
 
 
 def read_openings(path):
@@ -294,7 +370,7 @@ def main():
     parser.add_argument("--csv", default=None, help="optional per-game CSV output")
     parser.add_argument("--seed", type=int, default=20261031,
                         help="deterministic opening-order shuffle seed")
-    parser.add_argument("--sprt-elo", type=float, default=5.0,
+    parser.add_argument("--sprt-elo", type=positive_finite_float, default=5.0,
                         help="H1 Elo gain for the reported SPRT log-likelihood ratio")
     args = parser.parse_args()
     if args.games < 2 or args.games % 2:

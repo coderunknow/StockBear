@@ -61,7 +61,7 @@ detector proves and the reference implementation confirms:
 | locked pawn chains plus a bishop each | **dead** | the bishops roam freely, but the entire reachable component (152,352 distinct states, reached by 1,268,497 move applications) contains no checkmate |
 
 The last two rows are the reason the requirement cannot be met by signatures:
-they are dead with 18 and 10 pieces on the board respectively, and any
+they are dead with 16 and 12 pieces on the board respectively, and any
 material-only rule calls them alive.
 
 ## 3. Algorithm
@@ -177,7 +177,7 @@ Measured with the dev2 Release build (GCC 12.2, `-O3`), one thread, on the
 | starting position | alive | 44,368 | 135,973 | 38–73 ms | 13 MiB |
 | Kiwipete, Italian middlegame | alive | 0 (witness) | 0 | 1–5 ms | 10 MiB |
 | `KB` v `KB`, opposite colours | alive | 446,393 | 4,053,677 | 1.1–1.4 s | 46 MiB |
-| `KN` v `KN` | alive | 1,194,884 | 7,908,228 | 2.1–3.3 s | 146 MiB |
+| `KN` v `KN` | alive | 1,194,884 | 7,908,228 | 1.9–3.3 s | 146 MiB |
 | a 4-piece position that exhausts the default budget | unknown | 412,666 | 3,000,000 (budget hit) | 1.6 s | 86 MiB |
 
 The generated table for every corpus case is written by

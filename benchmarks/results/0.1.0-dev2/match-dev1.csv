@@ -1,401 +1,401 @@
 game,opening,white,black,result,score_a,termination,plies,remaining_white_ms,remaining_black_ms
-1,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,115,45.79,32.54
-2,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,109,28.89,48.78
-3,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,77,67.72,40.62
-4,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,110,29.21,63.86
-5,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,56,67.58,32.11
-6,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,80,49.62,58.75
-7,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,129,41.37,30.41
-8,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,99,28.52,60.76
-9,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,114,51.01,33.9
-10,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,100,41.12,50.34
-11,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,60,61.45,54.22
-12,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,84,34.94,59.45
-13,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,51,65.74,45.09
-14,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,160,26.93,59.02
-15,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,121,64.79,29.56
-16,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,41,56.09,63.7
-17,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,109,53.52,29.8
-18,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,193,27.62,46.73
-19,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,170,60.21,28.14
-20,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,125,31.27,60.37
-21,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,155,41.38,30.5
-22,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,28,58.01,55.74
-23,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,141,35.91,25.31
-24,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,74,28.77,53.58
-25,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,118,59.15,31.83
-26,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,FIFTY_MOVES,268,30.57,64.58
-27,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,99,66.52,32.46
-28,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,112,27.91,57.38
-29,Grünfeld,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,89,61.57,35.94
-30,Grünfeld,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,131,37.99,64.33
-31,Pirc,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,154,37.33,28.08
-32,Pirc,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,47,56.98,66.34
-33,Vienna,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,93,39.67,33.4
-34,Vienna,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,132,31.32,74.09
-35,Sicilian Dragon,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,113,47.01,30.49
-36,Sicilian Dragon,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,100,33.34,62.02
-37,Caro-Kann,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,81,60.37,30.23
-38,Caro-Kann,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,103,33.7,59.84
-39,English,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,89,54.23,27.28
-40,English,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,105,33.16,60.63
-41,Nimzo-Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,151,64.84,27.44
-42,Nimzo-Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,136,30.49,60.41
-43,Italian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,105,70.91,31.66
-44,Italian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,84,34.21,69.24
-45,Scandinavian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,95,53.18,29.81
-46,Scandinavian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,116,26.01,69.08
-47,Open game,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,137,49.91,29.62
-48,Open game,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,150,33.3,61.87
-49,Queen's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,113,58.33,28.77
-50,Queen's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,102,28.94,66.08
-51,Sicilian Najdorf,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,148,41.3,28.39
-52,Sicilian Najdorf,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,128,29.27,66.55
-53,Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,79,60.55,45.73
-54,Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,122,35.03,63.47
-55,Réti,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,77,62.91,44.21
-56,Réti,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,104,38.71,69.67
-57,King's Indian attack,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,141,70.03,30.75
-58,King's Indian attack,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,82,59.74,73.84
-59,Alekhine,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,63,70.92,43.71
-60,Alekhine,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,120,30.74,55.34
-61,Modern,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,109,46.98,29.15
-62,Modern,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,66,52.31,57.79
-63,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,129,69.13,27.12
-64,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,109,29.97,61.82
-65,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,121,61.87,33.71
-66,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,90,41.63,68.89
-67,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,127,59.86,44.16
-68,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,109,32.75,52.23
-69,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,141,50.44,30.11
-70,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,92,30.15,77.2
-71,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,137,50.55,29.29
-72,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,123,29.56,49.3
-73,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,37,66.77,52.16
-74,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,118,32.12,66.92
-75,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,57,79.07,29.16
-76,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,136,28.14,50.11
-77,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,99,69.8,35.72
-78,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,66,39.73,85.77
-79,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,93,62.98,37.06
-80,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,131,28.7,57.51
-81,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,98,71.33,27.56
-82,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,85,30.83,65.67
-83,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,91,74.09,27.97
-84,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,28,53.04,67.38
-85,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,168,46.52,63.82
-86,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,135,37.82,56.61
-87,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,77,57.25,29.74
-88,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,182,27.77,59.36
-89,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,129,56.67,32.02
-90,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,118,42.87,34.78
-91,Grünfeld,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,180,63.49,28.45
-92,Grünfeld,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,118,28.36,55.84
-93,Pirc,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,151,54.18,29.24
-94,Pirc,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,76,29.44,59.61
-95,Vienna,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,119,67.5,33.18
-96,Vienna,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,140,26.76,69.7
-97,Sicilian Dragon,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,102,49.43,52.92
-98,Sicilian Dragon,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,86,28.71,60.08
-99,Caro-Kann,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,81,60.1,44.06
-100,Caro-Kann,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,83,32.19,54.7
-101,English,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,133,64.73,42.41
-102,English,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,106,42.38,57.83
-103,Nimzo-Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,211,40.15,25.96
-104,Nimzo-Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,117,31.91,64.76
-105,Italian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,28,59.53,50.92
-106,Italian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,101,30.29,59.92
-107,Scandinavian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,156,38.48,27.96
-108,Scandinavian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,136,29.37,56.58
-109,Open game,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,103,67.74,30.78
-110,Open game,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,120,28.02,44.36
-111,Queen's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,109,55.44,37.82
-112,Queen's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,118,29.1,64.96
-113,Sicilian Najdorf,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,153,65.44,26.9
-114,Sicilian Najdorf,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,66,29.79,68.8
-115,Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,93,49.89,43.17
-116,Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,91,33.32,50.66
-117,Réti,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,105,65.47,26.36
-118,Réti,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,111,28.32,60.77
-119,King's Indian attack,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,111,75.4,31.95
-120,King's Indian attack,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,97,34.05,51.72
-121,Alekhine,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,63,67.64,48.55
-122,Alekhine,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,207,27.82,35.02
-123,Modern,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,99,48.65,26.96
-124,Modern,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,146,27.15,57.32
-125,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,117,61.02,30.85
-126,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,114,34.34,53.78
-127,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,54,66.6,42.92
-128,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,126,36.86,68.21
-129,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,123,52.1,29.19
-130,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,104,30.94,69.31
-131,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,95,51.91,28.43
-132,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,75,32.42,36.88
-133,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,119,68.22,26.91
-134,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,136,27.36,70.73
-135,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,57,63.79,50.82
-136,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,78,28.07,70.74
-137,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,87,56.95,31.0
-138,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,60,32.67,55.67
-139,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,77,71.22,29.09
-140,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,66,43.32,79.52
-141,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,93,71.71,31.42
-142,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,79,30.38,57.55
-143,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,74,66.58,47.8
-144,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,133,26.4,43.86
-145,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,85,54.5,27.79
-146,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,24,58.88,63.32
-147,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,137,40.04,25.38
-148,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,126,29.48,53.67
-149,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,98,55.82,28.14
-150,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,135,27.37,52.65
-151,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,128,69.05,41.45
-152,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,112,35.87,65.21
-153,Grünfeld,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,163,75.02,30.38
-154,Grünfeld,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,156,31.3,50.15
-155,Pirc,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,95,61.61,30.41
-156,Pirc,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,107,28.88,63.27
-157,Vienna,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,111,67.62,28.71
-158,Vienna,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,116,31.65,61.18
-159,Sicilian Dragon,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,115,54.27,29.58
-160,Sicilian Dragon,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,134,31.16,60.47
-161,Caro-Kann,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,127,39.51,47.13
-162,Caro-Kann,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,105,27.69,39.8
-163,English,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,182,66.95,29.45
-164,English,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,213,36.5,47.41
-165,Nimzo-Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,155,34.22,29.95
-166,Nimzo-Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,24,57.0,61.05
-167,Italian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,131,59.68,29.19
-168,Italian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,69,28.26,66.33
-169,Scandinavian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,106,44.42,39.72
-170,Scandinavian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,86,28.46,61.27
-171,Open game,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,85,56.56,31.45
-172,Open game,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,100,46.4,84.05
-173,Queen's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,152,53.16,32.6
-174,Queen's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,94,27.95,58.16
-175,Sicilian Najdorf,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,76,59.58,34.27
-176,Sicilian Najdorf,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,36,58.24,58.85
-177,Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,131,80.61,28.38
-178,Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,137,45.71,29.09
-179,Réti,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,87,56.38,44.11
-180,Réti,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,117,33.58,69.65
-181,King's Indian attack,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,129,53.94,31.32
-182,King's Indian attack,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,172,26.59,42.61
-183,Alekhine,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,56,49.33,55.54
-184,Alekhine,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,92,33.09,49.1
-185,Modern,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,71,48.49,50.48
-186,Modern,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,103,35.33,53.85
-187,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,97,44.93,27.67
-188,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,110,36.61,55.8
-189,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,77,68.06,37.11
-190,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,124,29.74,61.31
-191,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,172,47.51,30.83
-192,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,138,27.68,51.49
-193,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,115,57.14,44.63
-194,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,166,32.42,43.12
-195,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,55,60.1,30.92
-196,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,120,28.85,59.95
-197,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,57,54.61,59.66
-198,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,68,36.5,51.53
-199,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,157,38.67,21.84
-200,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,170,28.28,54.42
-201,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,61,60.56,46.92
-202,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,48,54.66,70.35
-203,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,125,64.96,28.13
-204,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,166,32.5,56.69
-205,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,178,56.77,30.58
-206,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,172,26.73,35.88
-207,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,39,70.2,48.29
-208,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,28,60.04,61.36
-209,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,107,60.42,28.54
-210,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,80,32.72,45.75
-211,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,79,53.05,26.98
-212,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,86,41.17,59.34
-213,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,61,41.65,32.63
-214,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,149,30.09,61.83
-215,Grünfeld,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,105,40.05,35.65
-216,Grünfeld,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,106,33.08,53.69
-217,Pirc,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,87,63.18,35.99
-218,Pirc,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,164,36.86,62.93
-219,Vienna,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,133,39.02,29.26
-220,Vienna,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,125,35.65,45.71
-221,Sicilian Dragon,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,91,46.98,28.6
-222,Sicilian Dragon,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,116,28.45,57.7
-223,Caro-Kann,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,131,43.38,33.66
-224,Caro-Kann,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,142,34.77,58.39
-225,English,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,87,45.37,33.21
-226,English,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,141,46.66,34.04
-227,Nimzo-Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,87,66.15,41.72
-228,Nimzo-Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,139,28.95,49.13
-229,Italian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,115,50.87,31.04
-230,Italian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,72,47.3,63.8
-231,Scandinavian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,53,48.12,56.72
-232,Scandinavian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,128,43.04,64.29
-233,Open game,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,41,66.04,45.64
-234,Open game,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,90,29.06,51.31
-235,Queen's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,97,52.62,38.79
-236,Queen's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,66,35.48,67.57
-237,Sicilian Najdorf,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,74,45.81,36.31
-238,Sicilian Najdorf,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,108,34.55,47.93
-239,Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,121,42.96,28.37
-240,Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,125,29.38,58.3
-241,Réti,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,112,65.7,28.98
-242,Réti,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,75,44.56,60.43
-243,King's Indian attack,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,159,52.51,28.98
-244,King's Indian attack,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,148,26.83,42.66
-245,Alekhine,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,77,68.28,45.23
-246,Alekhine,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,56,55.93,48.04
-247,Modern,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,51,54.63,50.18
-248,Modern,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,98,40.29,40.68
-249,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,73,71.62,33.77
-250,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,110,27.89,79.15
-251,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,74,44.97,29.72
-252,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,130,40.88,52.99
-253,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,89,60.4,33.61
-254,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,120,30.97,64.58
-255,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,76,39.39,30.72
-256,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,137,33.03,45.8
-257,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,52,56.7,48.18
-258,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,62,27.82,65.47
-259,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,133,48.4,29.77
-260,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,76,29.44,66.4
-261,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,57,68.31,32.74
-262,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,132,27.93,57.37
-263,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,67,58.9,32.42
-264,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,52,40.7,65.9
-265,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,137,61.1,32.35
-266,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,90,27.27,53.14
-267,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,97,71.43,27.18
-268,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,89,29.62,47.33
-269,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,50,43.84,39.41
-270,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,24,56.14,58.02
-271,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,97,56.31,27.15
-272,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,117,31.12,67.51
-273,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,87,34.95,45.71
-274,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,62,30.97,60.24
-275,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,94,39.26,34.48
-276,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,130,31.96,57.87
-277,Grünfeld,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,83,69.61,29.35
-278,Grünfeld,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,76,41.34,57.19
-279,Pirc,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,117,42.49,27.4
-280,Pirc,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,73,29.49,55.19
-281,Vienna,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,123,66.8,29.24
-282,Vienna,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,122,28.6,45.02
-283,Sicilian Dragon,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,103,39.91,28.97
-284,Sicilian Dragon,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,136,30.3,42.28
-285,Caro-Kann,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,79,70.96,28.86
-286,Caro-Kann,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,134,26.9,60.39
-287,English,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,117,67.39,28.57
-288,English,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,124,30.43,42.01
-289,Nimzo-Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,117,56.3,27.87
-290,Nimzo-Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,138,34.76,61.09
-291,Italian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,28,70.15,53.52
-292,Italian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,132,28.66,63.1
-293,Scandinavian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,145,61.92,33.52
-294,Scandinavian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,50,37.06,78.91
-295,Open game,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,103,74.04,37.06
-296,Open game,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,75,59.27,53.09
-297,Queen's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,81,48.79,42.07
-298,Queen's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,94,29.81,54.74
-299,Sicilian Najdorf,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,108,53.68,30.27
-300,Sicilian Najdorf,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,66,47.34,68.09
-301,Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,119,54.16,35.6
-302,Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,99,27.98,49.57
-303,Réti,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,159,43.25,30.14
-304,Réti,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,68,38.06,52.96
-305,King's Indian attack,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,95,57.48,28.45
-306,King's Indian attack,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,120,27.5,49.63
-307,Alekhine,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,121,57.95,35.04
-308,Alekhine,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,138,31.34,58.41
-309,Modern,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,63,54.45,39.38
-310,Modern,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,95,30.69,59.65
-311,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,141,49.11,28.22
-312,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,116,31.27,59.1
-313,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,75,65.69,32.07
-314,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,66,38.73,59.27
-315,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,74,37.37,34.25
-316,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,130,31.34,53.36
-317,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,152,23.91,37.26
-318,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,206,29.38,70.84
-319,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,130,53.36,30.18
-320,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,85,42.76,64.25
-321,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,140,58.01,33.02
-322,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,58,50.39,55.4
-323,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,107,73.98,28.04
-324,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,146,27.07,58.55
-325,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,57,54.83,47.66
-326,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,143,31.69,56.32
-327,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,117,71.47,43.54
-328,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,137,31.11,42.87
-329,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,79,51.04,32.75
-330,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,114,29.61,41.52
-331,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,67,68.84,28.71
-332,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,24,55.79,58.78
-333,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,103,46.01,32.23
-334,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,82,31.18,32.88
-335,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,88,34.92,29.67
-336,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,74,30.12,30.15
-337,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,92,65.82,45.58
-338,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,128,28.62,53.33
-339,Grünfeld,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,113,51.41,29.25
-340,Grünfeld,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,130,27.88,71.88
-341,Pirc,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,154,56.26,31.57
-342,Pirc,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,162,32.59,60.97
-343,Vienna,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,65,42.95,29.86
-344,Vienna,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,101,28.64,74.77
-345,Sicilian Dragon,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,71,43.74,33.12
-346,Sicilian Dragon,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,94,31.54,67.53
-347,Caro-Kann,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,71,64.66,30.68
-348,Caro-Kann,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,124,30.48,43.49
-349,English,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,52,59.6,38.77
-350,English,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,110,37.35,39.23
-351,Nimzo-Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,107,46.17,34.71
-352,Nimzo-Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,112,24.92,61.95
-353,Italian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,51,63.69,38.38
-354,Italian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,107,44.31,46.74
-355,Scandinavian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,55,53.99,55.98
-356,Scandinavian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,156,27.24,32.27
-357,Open game,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,157,63.47,31.22
-358,Open game,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,105,41.12,54.67
-359,Queen's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,106,62.34,31.39
-360,Queen's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,98,48.08,65.93
-361,Sicilian Najdorf,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,154,66.97,27.91
-362,Sicilian Najdorf,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,92,26.56,60.14
-363,Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,104,57.5,36.57
-364,Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,68,30.01,67.77
-365,Réti,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,177,38.55,30.42
-366,Réti,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,96,37.69,58.37
-367,King's Indian attack,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,71,72.53,42.1
-368,King's Indian attack,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,163,28.59,50.64
-369,Alekhine,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,131,38.69,35.31
-370,Alekhine,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,140,48.67,51.88
-371,Modern,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,101,59.18,27.58
-372,Modern,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,135,36.8,53.0
-373,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,119,53.6,27.92
-374,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,128,30.08,38.64
-375,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,146,58.35,33.83
-376,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,130,32.59,69.94
-377,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,103,54.93,29.0
-378,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,80,38.24,51.13
-379,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,95,55.24,28.89
-380,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,100,29.33,58.06
-381,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,114,54.12,28.28
-382,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,114,31.75,39.18
-383,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,130,71.06,32.72
-384,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,74,32.25,71.21
-385,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,152,53.13,27.31
-386,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,62,30.3,59.44
-387,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,87,50.45,31.41
-388,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,99,32.76,58.31
-389,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,63,70.98,38.4
-390,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,140,31.3,60.69
-391,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,124,51.11,29.39
-392,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,119,33.06,58.84
-393,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,95,62.66,26.87
-394,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,28,54.26,57.19
-395,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,126,72.14,29.65
-396,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,160,33.41,31.16
-397,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,79,49.68,30.52
-398,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,56,41.37,63.49
-399,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,69,45.84,33.53
-400,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,142,27.8,61.71
+1,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,128,67.42,29.45
+2,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,122,28.48,54.31
+3,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,94,47.79,30.99
+4,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,102,32.46,68.63
+5,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,93,51.46,27.44
+6,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,136,28.33,65.88
+7,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,41,69.83,58.34
+8,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,157,41.7,47.49
+9,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,107,43.26,46.56
+10,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,176,30.69,44.91
+11,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,57,63.81,50.82
+12,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,140,27.63,47.68
+13,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,71,66.72,37.11
+14,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,122,32.64,45.16
+15,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,149,66.2,35.37
+16,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,62,41.81,70.58
+17,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,173,53.31,22.72
+18,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,87,32.44,66.72
+19,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,80,59.49,42.41
+20,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,78,28.08,63.61
+21,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,101,53.42,34.03
+22,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,28,67.42,53.26
+23,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,119,79.35,44.27
+24,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,98,36.67,42.43
+25,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,102,58.17,29.72
+26,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,34,49.41,69.74
+27,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,97,44.42,40.25
+28,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,52,54.08,56.19
+29,Grünfeld,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,117,60.24,31.34
+30,Grünfeld,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,63,58.03,30.89
+31,Pirc,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,49,63.92,51.59
+32,Pirc,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,121,28.26,52.5
+33,Vienna,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,142,71.93,29.21
+34,Vienna,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,126,30.47,51.33
+35,Sicilian Dragon,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,105,51.27,27.06
+36,Sicilian Dragon,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,102,32.69,43.11
+37,Caro-Kann,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,155,60.41,36.62
+38,Caro-Kann,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,130,34.14,76.43
+39,English,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,121,65.68,35.5
+40,English,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,98,32.91,53.82
+41,Nimzo-Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,117,61.84,28.95
+42,Nimzo-Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,108,35.28,58.32
+43,Italian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,27,72.24,52.75
+44,Italian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,122,32.9,58.74
+45,Scandinavian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,75,66.94,30.86
+46,Scandinavian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,124,33.34,68.36
+47,Open game,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,71,67.95,51.37
+48,Open game,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,103,32.35,70.13
+49,Queen's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,117,51.07,29.12
+50,Queen's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,111,29.58,68.67
+51,Sicilian Najdorf,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,109,59.88,28.66
+52,Sicilian Najdorf,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,130,34.41,51.51
+53,Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,114,52.29,30.89
+54,Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,119,27.31,72.08
+55,Réti,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,87,54.36,28.47
+56,Réti,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,118,30.15,54.28
+57,King's Indian attack,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,256,44.6,29.66
+58,King's Indian attack,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,136,43.93,63.1
+59,Alekhine,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,75,66.3,34.5
+60,Alekhine,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,141,30.89,45.62
+61,Modern,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,114,67.07,35.89
+62,Modern,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,149,27.95,51.16
+63,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,59,70.96,31.17
+64,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,87,36.56,67.12
+65,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,83,80.05,28.54
+66,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,128,27.27,67.74
+67,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,115,55.97,28.6
+68,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,118,24.8,63.13
+69,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,113,49.24,33.61
+70,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,FIFTY_MOVES,220,33.15,58.5
+71,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,109,71.99,31.02
+72,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,162,29.01,45.35
+73,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,57,62.84,48.98
+74,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,106,32.93,51.97
+75,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,101,57.47,35.33
+76,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,140,26.57,44.2
+77,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,71,56.65,47.28
+78,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,106,33.92,45.08
+79,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,78,66.55,38.3
+80,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,130,27.85,59.97
+81,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,83,62.29,28.76
+82,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,108,50.05,68.48
+83,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,69,66.08,36.85
+84,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,24,61.69,61.28
+85,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,109,60.48,30.92
+86,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,106,33.74,55.08
+87,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,143,71.76,31.4
+88,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,116,28.12,61.9
+89,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,71,72.29,27.96
+90,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,94,31.73,68.42
+91,Grünfeld,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,55,60.06,39.82
+92,Grünfeld,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,160,32.94,45.49
+93,Pirc,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,123,71.84,29.65
+94,Pirc,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,104,28.94,53.34
+95,Vienna,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,101,72.31,29.3
+96,Vienna,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,130,28.93,53.13
+97,Sicilian Dragon,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,119,66.44,28.71
+98,Sicilian Dragon,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,106,30.22,72.57
+99,Caro-Kann,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,129,67.61,44.3
+100,Caro-Kann,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,136,32.24,47.23
+101,English,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,159,57.38,32.05
+102,English,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,124,37.04,72.4
+103,Nimzo-Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,120,58.39,31.59
+104,Nimzo-Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,103,30.42,62.06
+105,Italian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,27,62.24,54.7
+106,Italian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,124,38.34,69.2
+107,Scandinavian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,103,53.96,28.24
+108,Scandinavian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,124,38.63,58.87
+109,Open game,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,36,60.78,59.89
+110,Open game,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,130,29.64,52.3
+111,Queen's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,152,47.87,29.42
+112,Queen's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,107,29.63,72.93
+113,Sicilian Najdorf,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,113,61.4,29.38
+114,Sicilian Najdorf,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,155,32.76,60.36
+115,Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,141,46.8,28.11
+116,Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,86,29.61,60.24
+117,Réti,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,85,65.58,28.18
+118,Réti,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,118,28.81,56.24
+119,King's Indian attack,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,169,58.62,28.79
+120,King's Indian attack,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,136,31.48,76.73
+121,Alekhine,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,135,47.12,29.5
+122,Alekhine,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,116,31.6,55.87
+123,Modern,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,141,55.78,29.64
+124,Modern,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,92,32.05,59.54
+125,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,63,65.44,43.49
+126,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,101,33.84,59.06
+127,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,111,64.41,38.41
+128,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,116,29.18,54.07
+129,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,144,68.82,25.89
+130,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,60,52.11,71.83
+131,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,87,67.16,29.52
+132,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,58,42.77,48.62
+133,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,96,69.68,35.75
+134,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,180,32.89,67.15
+135,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,103,54.96,29.98
+136,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,80,45.67,70.2
+137,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,72,32.79,30.39
+138,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,140,28.93,60.15
+139,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,179,55.91,39.36
+140,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,128,27.43,48.86
+141,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,111,49.06,27.81
+142,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,83,29.2,58.86
+143,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,75,54.57,32.54
+144,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,116,28.8,69.32
+145,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,93,74.81,25.98
+146,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,24,53.75,67.12
+147,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,115,64.14,28.81
+148,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,106,27.98,59.16
+149,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,195,53.79,35.85
+150,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,88,28.57,61.8
+151,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,135,54.09,33.03
+152,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,110,27.57,67.86
+153,Grünfeld,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,123,70.96,29.6
+154,Grünfeld,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,152,26.8,37.34
+155,Pirc,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,111,73.6,32.63
+156,Pirc,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,152,29.02,61.38
+157,Vienna,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,101,65.45,35.74
+158,Vienna,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,150,32.39,68.83
+159,Sicilian Dragon,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,97,60.93,28.65
+160,Sicilian Dragon,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,134,28.55,57.76
+161,Caro-Kann,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,77,65.52,35.34
+162,Caro-Kann,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,136,29.8,59.11
+163,English,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,76,49.99,29.78
+164,English,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,102,39.69,67.88
+165,Nimzo-Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,104,61.69,39.77
+166,Nimzo-Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,101,30.4,68.48
+167,Italian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,27,62.28,62.62
+168,Italian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,119,29.22,61.11
+169,Scandinavian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,81,52.01,28.34
+170,Scandinavian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,150,31.45,53.11
+171,Open game,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,107,44.47,28.6
+172,Open game,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,96,34.05,59.68
+173,Queen's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,97,59.52,29.49
+174,Queen's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,96,27.62,62.48
+175,Sicilian Najdorf,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,125,56.09,27.85
+176,Sicilian Najdorf,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,72,35.73,60.22
+177,Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,131,44.5,27.87
+178,Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,125,32.45,69.19
+179,Réti,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,83,50.6,35.06
+180,Réti,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,166,32.29,61.57
+181,King's Indian attack,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,131,64.94,27.95
+182,King's Indian attack,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,140,30.44,65.56
+183,Alekhine,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,79,63.39,31.16
+184,Alekhine,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,130,32.96,59.48
+185,Modern,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,95,69.68,32.46
+186,Modern,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,140,27.05,41.0
+187,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,59,68.43,35.4
+188,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,43,43.21,71.8
+189,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,59,61.97,35.31
+190,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,96,43.1,54.46
+191,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,123,60.62,29.01
+192,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,96,36.33,65.5
+193,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,99,55.03,34.56
+194,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,129,28.98,50.93
+195,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,111,70.83,43.54
+196,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,64,33.9,42.67
+197,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,84,49.81,27.89
+198,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,126,29.13,71.15
+199,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,109,51.83,25.94
+200,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,146,28.95,56.98
+201,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,55,70.8,55.54
+202,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,150,29.48,62.29
+203,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,95,59.29,28.18
+204,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,137,28.51,34.77
+205,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,69,72.58,33.84
+206,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,130,28.35,75.93
+207,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,144,36.69,28.89
+208,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,24,51.12,75.22
+209,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,111,50.39,29.45
+210,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,67,46.39,50.82
+211,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,177,63.06,24.27
+212,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,98,33.71,58.17
+213,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,99,52.44,36.88
+214,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,70,38.15,62.86
+215,Grünfeld,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,130,44.57,30.01
+216,Grünfeld,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,142,39.02,86.75
+217,Pirc,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,137,67.85,28.45
+218,Pirc,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,165,30.35,65.3
+219,Vienna,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,95,56.94,28.9
+220,Vienna,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,121,33.1,61.4
+221,Sicilian Dragon,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,135,67.25,28.59
+222,Sicilian Dragon,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,140,28.24,68.21
+223,Caro-Kann,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,63,62.03,54.09
+224,Caro-Kann,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,91,28.43,44.3
+225,English,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,41,59.78,53.43
+226,English,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,100,31.78,69.37
+227,Nimzo-Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,130,52.92,30.54
+228,Nimzo-Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,120,29.72,63.58
+229,Italian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,129,68.57,42.49
+230,Italian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,114,28.23,68.1
+231,Scandinavian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,129,47.32,29.93
+232,Scandinavian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,97,33.15,70.96
+233,Open game,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,125,70.18,27.5
+234,Open game,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,130,29.22,51.26
+235,Queen's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,136,56.38,27.79
+236,Queen's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,124,29.04,54.1
+237,Sicilian Najdorf,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,105,45.87,28.29
+238,Sicilian Najdorf,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,62,45.65,62.36
+239,Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,131,45.02,27.55
+240,Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,120,31.54,66.79
+241,Réti,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,123,62.87,31.6
+242,Réti,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,46,58.41,74.12
+243,King's Indian attack,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,131,61.2,28.6
+244,King's Indian attack,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,150,30.25,63.95
+245,Alekhine,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,73,84.09,28.49
+246,Alekhine,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,123,35.83,55.3
+247,Modern,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,77,47.33,30.96
+248,Modern,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,105,26.89,59.56
+249,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,145,52.19,32.25
+250,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,132,29.53,49.73
+251,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,83,76.46,27.57
+252,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,90,54.17,65.83
+253,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,123,43.18,28.96
+254,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,90,32.15,69.5
+255,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,41,70.95,47.57
+256,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,123,25.38,40.27
+257,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,141,51.99,31.92
+258,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,78,30.09,57.79
+259,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,107,85.5,26.14
+260,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,152,38.11,59.36
+261,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,114,47.25,28.25
+262,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,78,32.18,53.16
+263,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,157,74.57,31.32
+264,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,126,31.5,54.47
+265,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,123,71.33,29.61
+266,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,141,44.59,77.25
+267,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,124,61.13,33.79
+268,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,132,33.26,50.66
+269,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,77,42.11,36.22
+270,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,24,55.1,61.44
+271,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,151,51.21,27.36
+272,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,102,36.56,53.13
+273,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,90,59.78,28.37
+274,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,76,29.19,78.65
+275,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,73,74.27,28.06
+276,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,68,28.57,54.4
+277,Grünfeld,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,124,53.61,30.86
+278,Grünfeld,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,118,44.88,52.77
+279,Pirc,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,147,52.27,28.12
+280,Pirc,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,95,28.15,53.69
+281,Vienna,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,111,69.94,28.75
+282,Vienna,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,136,27.2,73.3
+283,Sicilian Dragon,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,57,59.99,45.33
+284,Sicilian Dragon,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,74,28.01,66.06
+285,Caro-Kann,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,115,62.35,28.62
+286,Caro-Kann,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,98,29.06,43.27
+287,English,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,164,53.73,28.79
+288,English,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,111,36.7,89.25
+289,Nimzo-Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,86,62.56,35.05
+290,Nimzo-Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,92,37.66,63.81
+291,Italian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,27,67.63,52.85
+292,Italian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,147,27.73,62.78
+293,Scandinavian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,105,38.85,31.77
+294,Scandinavian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,84,31.82,47.4
+295,Open game,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,0-1,0,CHECKMATE,128,68.19,25.65
+296,Open game,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,132,27.89,69.44
+297,Queen's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,159,63.12,28.83
+298,Queen's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,83,29.03,70.13
+299,Sicilian Najdorf,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,109,55.65,29.97
+300,Sicilian Najdorf,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,175,34.8,64.34
+301,Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,125,53.27,35.01
+302,Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,201,31.2,59.29
+303,Réti,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,95,82.21,27.73
+304,Réti,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,103,39.75,57.46
+305,King's Indian attack,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,132,40.78,52.2
+306,King's Indian attack,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,114,27.69,44.68
+307,Alekhine,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,85,78.09,31.8
+308,Alekhine,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,130,28.39,53.41
+309,Modern,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,91,73.29,30.21
+310,Modern,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,138,31.64,46.13
+311,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,121,51.06,32.05
+312,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,123,40.53,52.19
+313,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,161,60.88,29.42
+314,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,131,31.6,59.74
+315,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,65,70.86,39.8
+316,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,47,40.11,65.07
+317,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,41,69.32,49.11
+318,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,112,28.85,55.53
+319,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,67,62.89,32.5
+320,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,98,31.07,59.32
+321,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,137,67.74,34.1
+322,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,80,29.38,52.37
+323,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,84,57.61,43.0
+324,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,131,43.94,68.34
+325,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,129,45.77,48.51
+326,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,110,28.19,38.35
+327,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,109,50.79,33.21
+328,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,131,32.23,50.03
+329,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,75,66.35,34.97
+330,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,111,28.57,55.7
+331,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,75,58.52,37.95
+332,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,24,54.42,59.47
+333,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,161,50.28,27.87
+334,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,151,24.9,25.79
+335,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,86,56.5,32.05
+336,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,118,28.19,66.97
+337,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,127,59.98,32.04
+338,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,90,33.2,57.11
+339,Grünfeld,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,163,47.68,36.36
+340,Grünfeld,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,63,31.01,57.31
+341,Pirc,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,55,69.0,42.88
+342,Pirc,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,152,26.71,78.35
+343,Vienna,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,136,60.63,35.01
+344,Vienna,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,70,48.0,62.14
+345,Sicilian Dragon,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,125,45.91,31.96
+346,Sicilian Dragon,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,62,46.84,58.55
+347,Caro-Kann,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,61,49.99,40.32
+348,Caro-Kann,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,74,44.73,70.49
+349,English,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,109,65.81,28.24
+350,English,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,92,28.62,67.18
+351,Nimzo-Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,101,75.27,31.06
+352,Nimzo-Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,124,28.15,57.68
+353,Italian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,103,59.59,29.62
+354,Italian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,147,30.24,70.26
+355,Scandinavian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,35,65.47,44.3
+356,Scandinavian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,121,40.69,60.56
+357,Open game,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,114,65.57,31.34
+358,Open game,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,138,29.98,48.94
+359,Queen's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,121,54.96,28.4
+360,Queen's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,174,31.45,75.79
+361,Sicilian Najdorf,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,64,49.2,52.35
+362,Sicilian Najdorf,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,82,32.42,71.85
+363,Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,143,51.62,30.52
+364,Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,92,29.25,61.55
+365,Réti,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,121,42.61,28.75
+366,Réti,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,80,49.0,35.43
+367,King's Indian attack,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,131,39.53,31.08
+368,King's Indian attack,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,108,29.37,67.38
+369,Alekhine,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,87,73.0,29.63
+370,Alekhine,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,130,30.25,60.36
+371,Modern,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,151,68.27,30.87
+372,Modern,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,203,29.88,69.88
+373,Queen's gambit accepted,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,125,74.28,26.26
+374,Queen's gambit accepted,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,127,34.94,59.64
+375,Queen's gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,103,49.72,30.83
+376,Queen's gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,76,41.99,63.69
+377,Borg,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,164,61.14,34.17
+378,Borg,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,153,31.2,50.38
+379,Start position,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,139,52.03,34.33
+380,Start position,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,100,38.47,43.25
+381,Semi-Slav,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,139,65.12,32.65
+382,Semi-Slav,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,114,40.46,60.31
+383,French Winawer,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,107,60.51,32.55
+384,French Winawer,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,102,30.25,50.8
+385,Dutch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,65,46.94,36.22
+386,Dutch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,INSUFFICIENT_MATERIAL,112,31.36,67.85
+387,Benoni,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,69,65.78,33.53
+388,Benoni,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,46,53.71,84.7
+389,English symmetric,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,117,59.41,28.26
+390,English symmetric,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,133,26.89,27.81
+391,Bird,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,113,45.52,34.93
+392,Bird,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,69,41.8,53.2
+393,Benko gambit,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,73,54.53,41.09
+394,Benko gambit,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,24,56.75,65.29
+395,Ruy Lopez,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1/2-1/2,0.5,THREEFOLD_REPETITION,115,68.83,27.8
+396,Ruy Lopez,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,1/2-1/2,0.5,THREEFOLD_REPETITION,113,28.61,61.0
+397,King's Indian,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,105,70.12,33.88
+398,King's Indian,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,116,27.67,46.61
+399,Scotch,StockBear 0.1.0-dev2,StockBear 0.1.0-dev1,1-0,1,CHECKMATE,113,57.71,28.48
+400,Scotch,StockBear 0.1.0-dev1,StockBear 0.1.0-dev2,0-1,1,CHECKMATE,100,32.69,57.73

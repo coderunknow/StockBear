@@ -90,7 +90,7 @@ int see_of(const char* fen, const char* uci) {
 }
 }
 
-TEST(search, static_exchange_evaluation_known_values) {
+TEST(unit, static_exchange_evaluation_known_values) {
     // Pawn takes an undefended pawn: +100.
     CHECK_EQ(see_of("4k3/8/8/3p4/4P3/8/8/4K3 w - - 0 1", "e4d5"), 100);
     // Knight takes a pawn defended by a pawn: 100 - 320 = -220. The final
@@ -107,9 +107,13 @@ TEST(search, static_exchange_evaluation_known_values) {
     CHECK_EQ(see_of("4k3/8/8/8/8/8/8/4K3 w - - 0 1", "e1e2"), 0);
     // En passant removes the captured pawn from the exchange square.
     CHECK_EQ(see_of("4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 2", "e5d6"), 100);
+    // A king cannot recapture into a square still attacked by the second rook:
+    // rook takes pawn (Rx d7) wins a pawn (+100) even though the king defends it.
+    // With a zero king value SEE let the king "recapture" and returned -400.
+    CHECK_EQ(see_of("4k3/3p4/8/8/8/8/3R4/3R2K1 w - - 0 1", "d2d7"), 100);
 }
 
-TEST(search, static_exchange_evaluation_promotions) {
+TEST(unit, static_exchange_evaluation_promotions) {
     // Promoting to a queen upgrades the pawn's value: 975 - 100.
     CHECK_EQ(see_of("4k3/1P6/8/8/8/8/8/4K3 w - - 0 1", "b7b8q"), 875);
     // A capture-promotion adds the captured rook: 500 + 975 - 100.
