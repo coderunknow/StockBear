@@ -95,16 +95,39 @@ void UciEngine::handle_setoption(const std::string& arguments) {
         if (!name.empty()) name += ' ';
         name += token;
     }
-    if (lower(name) != "hash" || lower(token) != "value" || !(in >> value)) {
-        emit("info string setoption: only Hash is supported"); return;
+    if (lower(token) != "value" || !(in >> value)) {
+        emit("info string setoption: expected name and value"); return;
     }
     std::string extra;
-    std::uint64_t mb = 0;
-    if ((in >> extra) || !number(value, mb, 512) || mb < 1) {
-        emit("info string setoption: Hash must be 1..512 MB"); return;
+    const std::string key = lower(name);
+    if (key == "hash") {
+        std::uint64_t mb = 0;
+        if ((in >> extra) || !number(value, mb, 512) || mb < 1) {
+            emit("info string setoption: Hash must be 1..512 MB"); return;
+        }
+        try { table_.resize(static_cast<std::size_t>(mb)); }
+        catch (const std::exception& e) { emit(std::string("info string Hash allocation failed: ") + e.what()); }
+        return;
     }
-    try { table_.resize(static_cast<std::size_t>(mb)); }
-    catch (const std::exception& e) { emit(std::string("info string Hash allocation failed: ") + e.what()); }
+    // Boolean ablation switches for the search features. They default to the
+    // values the engine ships with, so a GUI that never sends them is
+    // unaffected; matches can compare "all on" against a single feature off.
+    bool* flag = nullptr;
+    if (key == "nullmove") flag = &params_.nullMove;
+    else if (key == "lmr") flag = &params_.lmr;
+    else if (key == "aspiration") flag = &params_.aspiration;
+    else if (key == "futility") flag = &params_.futility;
+    else if (key == "reversefutility") flag = &params_.reverseFutility;
+    else if (key == "seepruning") flag = &params_.seePruning;
+    else if (key == "checkextension") flag = &params_.checkExtension;
+    if (flag == nullptr) {
+        emit("info string setoption: unknown option " + name); return;
+    }
+    if ((in >> extra)) { emit("info string setoption: unexpected value for " + name); return; }
+    const std::string lowered = lower(value);
+    if (lowered == "true" || lowered == "1") *flag = true;
+    else if (lowered == "false" || lowered == "0") *flag = false;
+    else { emit("info string setoption: " + name + " expects true or false"); return; }
 }
 
 void UciEngine::handle_go(const std::string& arguments) {
@@ -117,7 +140,14 @@ void UciEngine::handle_go(const std::string& arguments) {
         if (key == "infinite") { limits.infinite = true; continue; }
         if (!(key == "depth" || key == "nodes" || key == "movetime" ||
               key == "wtime" || key == "btime" || key == "winc" || key == "binc" || key == "movestogo")) {
-            emit("info string go: unsupported parameter " + key); return;
+            // The UCI specification tells engines to ignore parameters they do
+            // not understand (for example "ponder", "searchmoves" or a GUI
+            // extension) instead of refusing the search. Malformed *values* of
+            // the parameters we do understand are still rejected below, because
+            // starting a search with a bogus clock or depth is worse than
+            // ignoring the token.
+            if (debug_) emit("info string go: ignoring unsupported token " + key);
+            continue;
         }
         std::uint64_t n = 0;
         const std::uint64_t maximum = key == "nodes" ? std::numeric_limits<std::uint64_t>::max()
@@ -163,7 +193,7 @@ void UciEngine::handle_go(const std::string& arguments) {
     try {
         worker_ = std::thread([this, root = std::move(root), limits, fallback]() mutable {
             try {
-                auto search = std::make_unique<Search>(table_);
+                auto search = std::make_unique<Search>(table_, params_);
                 const SearchResult result = search->run(std::move(root), limits, stop_,
                     [this](const SearchResult& r) { emit(info_text(r)); });
                 emit("bestmove " + (is_ok(result.bestMove) ? move_to_uci(result.bestMove) : "0000"));
@@ -190,6 +220,13 @@ void UciEngine::loop() {
             emit(std::string("id name ") + kEngineName + " " + kEngineVersion);
             emit(std::string("id author ") + kEngineAuthors);
             emit("option name Hash type spin default 16 min 1 max 512");
+            emit("option name NullMove type check default true");
+            emit("option name LMR type check default true");
+            emit("option name Aspiration type check default true");
+            emit("option name Futility type check default true");
+            emit("option name ReverseFutility type check default true");
+            emit("option name SEEPruning type check default true");
+            emit("option name CheckExtension type check default true");
             emit("uciok");
         } else if (command == "isready") emit("readyok");
         else if (command == "position") handle_position(arguments);

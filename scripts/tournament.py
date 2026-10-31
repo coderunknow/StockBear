@@ -9,16 +9,21 @@ For example:
       --pgn match.pgn --jsonl match.jsonl
 """
 import argparse
+import csv
 import json
 import math
 import os
 from pathlib import Path
 import platform
 import queue
+import random
 import subprocess
 import sys
 import threading
 import time
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import match_stats
 try:
     import chess
     import chess.pgn
@@ -27,7 +32,7 @@ except ImportError:
 
 
 class UciEngine:
-    def __init__(self, path, hash_mb, threads):
+    def __init__(self, path, hash_mb, threads, extra_options=None):
         self.path = os.path.abspath(path)
         self.p = subprocess.Popen([self.path], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE, text=True, bufsize=1)
@@ -62,6 +67,17 @@ class UciEngine:
                     self.effective[option] = "1 (StockBear single-threaded build)"
                 else:
                     self.effective[option] = "not advertised / unverified"
+            # Additional engine options (used for search-feature ablations such
+            # as NullMove=false). Refuse anything the engine does not advertise
+            # so a typo cannot silently turn into "both engines identical".
+            for item in extra_options or []:
+                name, _, value = item.partition("=")
+                if not name or not value:
+                    raise ValueError(f"expected NAME=VALUE, got {item!r}")
+                if name.lower() not in self.options:
+                    raise ValueError(f"{self.name} does not advertise option {name!r}")
+                self.send(f"setoption name {self.options[name.lower()]} value {value}")
+                self.effective[name.lower()] = value
             self.ready()
 
         except BaseException:
@@ -261,6 +277,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--engine-a", required=True)
     parser.add_argument("--engine-b", required=True)
+    parser.add_argument("--a-option", action="append", default=[], metavar="NAME=VALUE",
+                        help="extra engine option for engine A (repeatable; used for ablations)")
+    parser.add_argument("--b-option", action="append", default=[], metavar="NAME=VALUE",
+                        help="extra engine option for engine B (repeatable)")
     parser.add_argument("--games", type=int, default=8, help="even number; paired colors per opening")
     parser.add_argument("--base-ms", type=int, default=1000)
     parser.add_argument("--inc-ms", type=int, default=20)
@@ -271,16 +291,24 @@ def main():
                                                  "benchmarks/positions/openings.txt"))
     parser.add_argument("--pgn", default="match.pgn")
     parser.add_argument("--jsonl", default="match.jsonl")
+    parser.add_argument("--csv", default=None, help="optional per-game CSV output")
+    parser.add_argument("--seed", type=int, default=20261031,
+                        help="deterministic opening-order shuffle seed")
+    parser.add_argument("--sprt-elo", type=float, default=5.0,
+                        help="H1 Elo gain for the reported SPRT log-likelihood ratio")
     args = parser.parse_args()
     if args.games < 2 or args.games % 2:
         parser.error("--games must be positive and even")
     if args.base_ms < 1 or args.inc_ms < 0 or not 1 <= args.hash <= 512 or args.threads < 1 or args.max_plies < 1:
         parser.error("invalid clock, hash, thread or ply limit")
     openings = read_openings(args.openings)
+    # Deterministic shuffle: with a fixed seed a match is reproducible, and the
+    # paired structure (each opening played twice with reversed colours) is kept.
+    random.Random(args.seed).shuffle(openings)
     engines = []
     try:
-        engines.append(UciEngine(args.engine_a, args.hash, args.threads))
-        engines.append(UciEngine(args.engine_b, args.hash, args.threads))
+        engines.append(UciEngine(args.engine_a, args.hash, args.threads, args.a_option))
+        engines.append(UciEngine(args.engine_b, args.hash, args.threads, args.b_option))
         a, b = engines
         config = {"engine_a": a.name, "engine_b": b.name,
                   "engine_a_path": a.path, "engine_b_path": b.path,
@@ -289,9 +317,20 @@ def main():
                   "hash_requested_mb_each": args.hash, "threads_requested_each": args.threads,
                   "host": platform.platform(), "machine": platform.machine(),
                   "python_chess": chess.__version__, "opening_file": args.openings,
+                  "seed": args.seed,
                   "policy": "claimable draws automatically claimed; capped games unadjudicated"}
         print(json.dumps({"configuration": config}), flush=True)
         scores = []
+        pair_scores = []
+        pair_openings = []
+        csv_writer = None
+        csv_handle = None
+        if args.csv:
+            csv_handle = open(args.csv, "w", encoding="utf-8", newline="")
+            csv_writer = csv.writer(csv_handle)
+            csv_writer.writerow(["game", "opening", "white", "black", "result",
+                                 "score_a", "termination", "plies",
+                                 "remaining_white_ms", "remaining_black_ms"])
         with open(args.pgn, "w", encoding="utf-8") as pgn, open(args.jsonl, "w", encoding="utf-8") as log:
             log.write(json.dumps({"configuration": config}) + "\n")
             for i in range(args.games):
@@ -302,13 +341,38 @@ def main():
                 print(game, file=pgn, flush=True)
                 log.write(json.dumps(record) + "\n"); log.flush()
                 print(json.dumps(record), flush=True)
+                if csv_writer is not None:
+                    csv_writer.writerow([record["game"], record["opening"], record["white"],
+                                         record["black"], record["result"],
+                                         "" if record["score_a"] is None else record["score_a"],
+                                         record["termination"], record["plies"],
+                                         record["remaining_white_ms"], record["remaining_black_ms"]])
                 if record["score_a"] is not None:
                     scores.append(record["score_a"])
-            summary = statistics(scores)
+                    # The two games of an opening pair are consecutive; combine
+                    # them into a single pentanomial observation.
+                    opening = record["opening"]
+                    if opening in pair_openings:
+                        pair_scores[-1] += record["score_a"]
+                        pair_openings.pop()
+                    else:
+                        pair_openings.append(opening)
+                        pair_scores.append(record["score_a"])
+            summary = match_stats.summarise(scores, pair_scores,
+                                            match_stats.lmr_step(pair_scores, 0.0,
+                                                                 args.sprt_elo))
             summary["unadjudicated"] = args.games - len(scores)
+            summary["config"] = {"engine_a": a.name, "engine_b": b.name,
+                                 "base_ms": args.base_ms, "increment_ms": args.inc_ms,
+                                 "hash_mb_each": args.hash, "threads_each": args.threads,
+                                 "openings": args.openings, "seed": args.seed,
+                                 "max_plies": args.max_plies}
             log.write(json.dumps({"summary": summary}) + "\n")
             print(json.dumps({"summary": summary}), flush=True)
+            print(match_stats.format_report(summary), flush=True)
     finally:
+        if csv_handle is not None:
+            csv_handle.close()
         for e in engines:
             e.close()
 

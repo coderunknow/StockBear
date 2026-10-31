@@ -34,6 +34,26 @@ jobs:
         run: cmake --build build --config ${{ matrix.config }} --parallel 2
       - name: Unit, regression, full perft, stress, and UCI integration tests
         run: cmake -E chdir build ctest -C ${{ matrix.config }} --output-on-failure
+      - name: Record build provenance
+        shell: bash
+        run: |
+          set -eu
+          echo "commit $(git rev-parse HEAD)"
+          echo "version $(cat VERSION)"
+          echo "runner ${{ runner.os }} $(uname -a 2>/dev/null || true)"
+          echo "cpu $(nproc 2>/dev/null || echo n/a) logical cores"
+          c++ --version 2>/dev/null | head -1 || true
+          cmake --version | head -1
+      - name: Search determinism (same build, same input, same signature)
+        shell: bash
+        run: |
+          set -eu
+          exe=build/stockbear
+          [ -f "$exe" ] || exe=build/Release/stockbear.exe
+          "$exe" bench --depth 6 --hash 16 > bench-a.txt
+          "$exe" bench --depth 6 --hash 16 > bench-b.txt
+          diff bench-a.txt bench-b.txt
+          grep -m1 '^# signature ' bench-a.txt
       - name: Package Linux binary
         if: runner.os == 'Linux' && matrix.config == 'Release'
         shell: bash
@@ -85,7 +105,7 @@ jobs:
         run: cmake -E chdir build ctest --output-on-failure
 
   independent-reference:
-    name: Independent move generation and tournament harness
+    name: Independent reference, statistics and dead positions
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -104,8 +124,44 @@ jobs:
         run: python scripts/reference_perft.py
       - name: Compare seeded legal positions and divides
         run: python scripts/differential.py ./build/stockbear --samples 2000 --seed 20261030
-      - name: Verify tournament harness and PGN
+      - name: Verify tournament harness, PGN and CSV
         run: python tests/integration/test_tournament.py ./build/stockbear
+      - name: Verify match statistics against known values
+        run: python tests/integration/test_statistics.py
+      - name: Dead-position corpus (expected verdicts, witnesses, timings)
+        run: python scripts/dead_position_corpus.py ./build/stockbear --markdown deadpos-corpus.md
+      - name: Dead-position independent reference comparison
+        run: python scripts/dead_position_reference.py ./build/stockbear --full
+      - name: Dead-position exhaustive reduced state spaces
+        run: ./build/stockbear_tests deadpos
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: dead-position-evidence
+          path: deadpos-corpus.md
+          if-no-files-found: error
+
+  thread-sanitizer:
+    name: Linux ThreadSanitizer
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      # The engine searches on a worker thread and reports through the UCI
+      # thread; ThreadSanitizer validates the stop flag, the shared transposition
+      # table and the position hand-off between them.
+      - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DSTOCKBEAR_SANITIZE=thread -DSTOCKBEAR_BUILD_TESTS=ON -DSTOCKBEAR_REQUIRE_PYTHON_TESTS=ON
+      - run: cmake --build build --parallel 2
+      - name: Run tests under ThreadSanitizer
+        env:
+          TSAN_OPTIONS: halt_on_error=1:second_deadlock_stack=1
+        # The full perft/stress suites are pure single-threaded work and would
+        # only make this job slow; the threaded code paths live in the UCI
+        # controller and the unit tests.
+        run: cmake -E chdir build ctest -R 'unit|regression|uci_integration' --output-on-failure
 
   clang:
     name: Linux Clang Release

@@ -88,7 +88,11 @@ void generate_moves(const Position& pos, MoveList& ml, GenType type = GenType::A
 enum class DrawStatus {
     None, ClaimableThreefold, ClaimableFiftyMove,
     AutomaticFivefold, AutomaticSeventyFiveMove,
-    AutomaticInsufficientMaterial, AutomaticStalemate
+    AutomaticInsufficientMaterial, AutomaticStalemate,
+    // FIDE Article 5.2.2: no series of legal moves can reach checkmate.
+    // Decided by the general detector in chess/dead_position.hpp, which proves
+    // the verdict by exhaustively enumerating the reachable state component.
+    AutomaticDeadPosition
 };
 
 class Position {
@@ -150,6 +154,17 @@ public:
     // public entry point additionally rejects attempts to capture either king.
     void make_move(Move m);
     void unmake_move(Move m);
+    // Same as make_move, but skips the backward repetition scan. Used by the
+    // dead-position enumerator, which never inspects repetition distances and
+    // can therefore keep deep enumerations linear instead of quadratic in the
+    // path length. The resulting state is otherwise identical.
+    void make_move_without_repetition(Move m);
+    // Passes the turn without changing the placement ("null move"). Only legal
+    // when the side to move is not in check; used by search for null-move
+    // pruning. Repetition information is deliberately reset for the null state
+    // so that the search never mistakes a pass for a repetition.
+    void make_null_move();
+    void unmake_null_move();
 
     // --- Draw / terminal detection ----------------------------------------------
     // Recognizes provably dead material configurations (bare kings, one minor,
@@ -205,6 +220,7 @@ private:
     StateInfo&       st()       { return history_.back(); }
     const StateInfo& st() const { return history_.back(); }
 
+    void make_move_impl(Move m, bool trackRepetition);
     void put_piece(Piece pc, Square s);
     void remove_piece(Square s);
     void move_piece(Square from, Square to);

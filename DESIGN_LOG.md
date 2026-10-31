@@ -10,3 +10,47 @@
 - Distinguish claimable versus automatic draw status, including intended-move claims. Search deliberately assumes claims and treats internal cycles as draws; the GUI/referee owns actual game adjudication. Recognize common dead-material signatures but document that arbitrary blocked dead positions are not fully solved.
 - Make the C++ executable self-contained apart from OS runtime libraries; Python and python-chess are optional development tools. Keep external opponents outside the repository and do not use them for engine search.
 - Record perft/search/match methodology and actual results under the versioned benchmark directory. Perft uses leaf bulk counting, so its NPS must not be compared to search NPS.
+
+## 2026-10-31 — dev2: general dead positions, stronger search, honest statistics
+
+- **Dead positions must be decided, not guessed.** Article 5.2.2 quantifies over
+  *all* legal move series, so material signatures are only a subset and the
+  "obvious" generalisations are wrong in both directions (`KNN` v `K` and
+  `KB` v `KN` are alive; 14 blocked pawns and locked pawn chains with bishops are
+  dead). Deciding `mate_reachable` is PSPACE-complete, so the only honest design
+  is an exact procedure with an explicit resource bound: prove `Dead` by
+  enumerating the complete reachable state component, prove `Alive` with a legal
+  checkmate witness, and answer `Unknown` when either budget runs out. This is
+  the architecture used by published helpmate analysers, and it satisfies the
+  requirement without pretending to a polynomial algorithm.
+- **128-bit state identity.** A single Zobrist key is not enough: the en-passant
+  square and castling rights must be part of identity, and a collision could hide
+  a mate and thereby *prove* a false deadness. Every enumerated state therefore
+  carries the Zobrist key plus an independent mix of placement, side, castling
+  rights and en-passant square. Collisions can then only cost a missed analysis,
+  never correctness.
+- **Adjudication and search stay separate.** The search keeps the cheap, sound,
+  incomplete `insufficient_material()` predicate; only `draw_status()` and the
+  `deadpos` CLI call the exact analysis, and only a proved verdict can produce
+  `AutomaticDeadPosition`. This keeps search strength independent of an
+  exponential analysis.
+- **Search features are switches, not lore.** Every pruning/reduction feature is
+  a `SearchParams` flag, exposed through `bench --param` and through UCI check
+  options, so a decision can be re-measured by nodes *and* by matches. Node
+  ablations are explicitly treated as insufficient evidence where disabling a
+  feature shrinks the tree for ordering reasons (null move, reverse futility,
+  check extension); those features are justified only by the aggregate match.
+- **Statistics must show dependence.** Two games of one opening are correlated,
+  so the paired pentanomial estimate (pair score in {0, 0.5, 1, 1.5, 2}) is the
+  headline number, the naive Wilson interval is kept only for reference, SPRT is
+  labelled an approximation, and every Elo figure carries an interval and a
+  sample size. Capped games remain `unadjudicated` and are excluded from scores;
+  time forfeits and illegal moves are losses for the offender.
+- **No invented external opponent.** Stockfish 19 cannot be built without NNUE
+  network files that this environment cannot fetch, so the release records that
+  fact and uses a pinned, checksummed Stockfish 11 built from source instead of
+  claiming a Stockfish 19 result. The 0–20 outcome is reported as a loss.
+- **Trust no match without a provenance check.** The first dev2-vs-dev1 run was
+  discarded because it overlapped compilation and produced mass clock forfeits;
+  the recorded run was made on an idle machine with a verified engine identity
+  line and a clean termination distribution.

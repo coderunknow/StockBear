@@ -59,6 +59,7 @@ find_package(Threads REQUIRED)
 # --- Engine core (everything except main) -----------------------------------
 set(STOCKBEAR_CORE_SOURCES
     src/chess/bitboard.cpp
+    src/chess/dead_position.cpp
     src/chess/fen.cpp
     src/chess/move.cpp
     src/chess/position.cpp
@@ -99,11 +100,13 @@ if(STOCKBEAR_BUILD_TESTS)
     add_executable(stockbear_tests
         tests/test_main.cpp
         tests/unit/test_bitboard.cpp
+        tests/unit/test_dead_position.cpp
         tests/unit/test_draws.cpp
         tests/unit/test_eval.cpp
         tests/unit/test_fen.cpp
         tests/unit/test_move.cpp
         tests/unit/test_position.cpp
+        tests/unit/test_position_extra.cpp
         tests/unit/test_search.cpp
         tests/unit/test_timeman.cpp
         tests/unit/test_uci_parsing.cpp
@@ -121,6 +124,11 @@ if(STOCKBEAR_BUILD_TESTS)
     add_test(NAME stress      COMMAND stockbear_tests stress)
     add_test(NAME perft_full  COMMAND stockbear_tests perft_full)
     set_tests_properties(perft_full PROPERTIES LABELS slow)
+    # FIDE Article 5.2.2 dead-position analysis, including the exhaustive
+    # two- and three-piece state-space sweeps; these are slower than the rest of
+    # the unit suite, so they get their own CTest entry.
+    add_test(NAME deadpos     COMMAND stockbear_tests deadpos)
+    set_tests_properties(deadpos PROPERTIES LABELS slow)
 
     # UCI integration test (requires a Python 3 interpreter; skipped otherwise).
     if(STOCKBEAR_REQUIRE_PYTHON_TESTS)

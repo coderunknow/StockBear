@@ -22,6 +22,7 @@
 #include "chess/position.hpp"
 #include "evaluation/evaluation.hpp"
 #include "chess/fen.hpp"
+#include "chess/dead_position.hpp"
 
 #include <algorithm>
 #include <array>
@@ -335,7 +336,11 @@ Bitboard Position::legal_en_passant_capturers() const {
 // ---------------------------------------------------------------------------
 // Make / unmake
 // ---------------------------------------------------------------------------
-void Position::make_move(Move m) {
+void Position::make_move(Move m) { make_move_impl(m, true); }
+
+void Position::make_move_without_repetition(Move m) { make_move_impl(m, false); }
+
+void Position::make_move_impl(Move m, bool trackRepetition) {
     if (history_.empty() || !is_ok(m)) throw std::invalid_argument("move requires an initialized position");
     const Square from = move_from(m), to = move_to(m);
     const Piece pc = board_[from];
@@ -442,6 +447,7 @@ void Position::make_move(Move m) {
     // 9) Check/pin info for the new side to move.
     set_check_info();
 
+    if (!trackRepetition) return;
     // Only scan the stored, reversible history; a FEN can have a large clock
     // even though we do not know the preceding game positions.
     const size_t idx = history_.size() - 1;
@@ -453,6 +459,31 @@ void Position::make_move(Move m) {
             break;
         }
     }
+}
+
+void Position::make_null_move() {
+    if (history_.empty()) throw std::invalid_argument("null move requires an initialized position");
+    StateInfo newState = st();
+    history_.push_back(newState);
+    StateInfo& newSt = history_.back();
+    if (legal_en_passant_capturers())
+        newSt.key ^= Zobrist::epFile[file_of(Square(newState.epSquare))];
+    newSt.epSquare = SQ_NONE;
+    newSt.repetition = 0;
+    newSt.pliesFromStart = newState.pliesFromStart + 1;
+    sideToMove_ = ~sideToMove_;
+    newSt.key ^= Zobrist::side;
+    newSt.historyContext = Zobrist::context_seed(newSt.key);
+    set_check_info();
+}
+
+void Position::unmake_null_move() {
+    if (history_.size() < 2) throw std::invalid_argument("no null move to unmake");
+    // make_null_move() never touches fullmoveNumber_, so unmaking must not
+    // either: doing so drifted the counter (and the FEN) after every null move,
+    // which null-move pruning performs many times per search.
+    sideToMove_ = ~sideToMove_;
+    history_.pop_back();
 }
 
 void Position::unmake_move(Move m) {
@@ -646,6 +677,11 @@ DrawStatus Position::draw_status() const {
     if (!has_legal_moves())
         return in_check() ? DrawStatus::None : DrawStatus::AutomaticStalemate;
     if (insufficient_material()) return DrawStatus::AutomaticInsufficientMaterial;
+    // Article 5.2.2 ends the game immediately, before any move-count rule can
+    // apply. Only a proved verdict is reported; an inconclusive analysis leaves
+    // the position alive for the remaining rules.
+    if (analyze_dead_position(*this, fast_dead_limits()).status == DeadStatus::Dead)
+        return DrawStatus::AutomaticDeadPosition;
     if (rule50() >= 150) return DrawStatus::AutomaticSeventyFiveMove;
     const int repetitions = repetition_count();
     if (repetitions >= 5) return DrawStatus::AutomaticFivefold;
@@ -655,12 +691,20 @@ DrawStatus Position::draw_status() const {
 }
 
 bool Position::is_search_draw(int plyFromRoot) const {
-    // Search treats claimable draws as claimed. A second occurrence inside the
-    // search path is a standard cycle-breaking heuristic, not a FIDE claim.
+    // Search treats claimable draws as claimed. A repeated position inside the
+    // search tree is a standard cycle-breaking heuristic, not a FIDE claim; a
+    // repetition that lies entirely before the search root must be a genuine
+    // threefold occurrence to count.
     const StateInfo& s = st();
-    const bool repetition = s.repetition &&
-        (s.repetition <= static_cast<size_t>(std::max(0, plyFromRoot)) || repetition_count() >= 3);
+    bool repetition = false;
+    if (s.repetition) {
+        if (s.repetition <= static_cast<size_t>(std::max(0, plyFromRoot)))
+            repetition = true;
+        else
+            repetition = repetition_count() >= 3;
+    }
     if (s.rule50 < 100 && !repetition && !insufficient_material()) return false;
+    // Checkmate always takes precedence over a move-count or repetition draw.
     return !in_check() || has_legal_moves();
 }
 

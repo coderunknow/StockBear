@@ -29,3 +29,66 @@
 - Re-ran the baseline after the review-driven UCI change; the recorded paired match again finished 0–8 against Stockfish 11. The stored search/perft timings and PGNs now correspond to that rebuilt implementation.
 - The completed review also noted that a malformed `PERFT(...)` row could be silently skipped by the independent reference parser. Confirmed the issue, made the parser reject unrecognized or partially matched rows, and added a dedicated regression run in the reference CI job. Added a CMake 3.16 CI job so the compatibility regression remains covered. The proposed removal of `ExtMove` initializers was deferred: no profile demonstrates benefit, and retaining initialization is safer than an unmeasured micro-optimization.
 - Parsed and statically linted both workflows locally with PyYAML, actionlint and zizmor. Zizmor's default policy reported no findings; pedantic mode reported only low-level suggestions. Release publication now serializes concurrent runs for a tag and documents its narrowly scoped token permissions. The CI matrix values flagged as possible shell interpolation are fixed literals, not external input; CI jobs are intentionally not canceled by concurrency rules so mandatory checks are not skipped.
+
+## 2026-10-31 — dev2 implementation and verification
+
+- Re-validated the dev2 tree from scratch: Release reconfigure, 52 C++ unit
+  cases, 8 CTest entries (the dead-position group was missing from CTest and now
+  has its own entry, `deadpos`), plus the UCI integration, fuzz, tournament and
+  statistics scripts. Found and fixed several real defects:
+  - `unmake_null_move()` decremented `fullmoveNumber_` although
+    `make_null_move()` never incremented it, so every null move drifted the FEN
+    counters. Removed the decrement; added `test_position_extra.cpp` with
+    null-move round-trip, repeated-null, in-sequence unwind and en-passant-key
+    tests (registered in CMake).
+  - `scripts/match_stats.format_report()` raised `KeyError` when the SPRT had no
+    bounds (too few pairs or a degenerate sample), i.e. the report crashed on the
+    very runs that produced no decision. It now prints the note instead, and the
+    summary includes the game count the tournament integration test expects.
+  - The UCI controller rejected a whole `go` command on an unknown token, which
+    contradicts the specification and makes GUIs that send `ponder` or
+    `searchmoves` unusable. Unknown tokens are now ignored (malformed values of
+    supported parameters are still rejected); the fuzz test's oracle was
+    rewritten to mirror that grammar, and the integration test now checks a
+    `go depth 2 ponder searchmoves ...` command still returns a legal move.
+  - `tests/integration/test_uci_integration.py` asserted the literal dev1 version
+    string; it now reads `VERSION` and also requires complete `info` lines
+    (seldepth, score, nodes, nps, hashfull, time, pv).
+  - The `--help` text did not mention `--movetime`, `--param` or the `deadpos`
+    depth option.
+- Dead-position evidence produced and recorded: 23-case corpus (0 failures,
+  witnesses replayed), independent python-chess reference comparison (10
+  compared, 0 failures at a 400,000-state cap, with two `KN` v `K` cases skipped
+  there and re-run at a 1,500,000-state cap), and two new exhaustive unit tests
+  over all legal two-king placements and all legal three-piece bishop/knight
+  placements with either side to move. The exhaustive test initially failed on
+  positions that are *stalemate* (terminal under Article 5.2.1, hence reported
+  `alive`-terminal, never `dead`); the assertion now distinguishes terminal
+  positions from dead ones, which is the correct reading of the rules.
+- Measurements (recorded with raw files): depth-6 suite 1,683,192 → 276,352 nodes
+  and 1,041 → 257 ms; depth-7 8,276,659 → 516,138 nodes and 3,605 → 397 ms;
+  depth-7 ablations for seven features; `bench` signature `838a0a824cb1686f`
+  (depth 6) and `ff1cf4d5109617aa` (depth 7).
+- Matches: a 400-game paired match on an idle machine ended +159 =132 −109
+  (score 0.5625, paired Elo +43.7 [95 %: +14.3, +73.7], SPRT LLR 0.93 →
+  continue, no forfeits or capped games). An earlier 400-game run that overlapped
+  compilation produced mass `TIME_FORFEIT`s and reported a *better* score (+191
+  =109 −100); it was discarded rather than published, and the incident is
+  recorded in the report.
+- External opponent: Stockfish 19 (`sf_19`, source SHA-256 recorded) could not be
+  built because its NNUE network files are unreachable from this environment
+  (build fails at `network.o`); Stockfish 11 was built from source
+  (`ARCH=x86-64-bmi2`, binary SHA-256 recorded) and won 20–0 at 100 ms + 10 ms
+  with no draws or forfeits. The report states that this says nothing about
+  Stockfish 19.
+- Verification: CTest Debug 8/8, Release 8/8, ASan+UBSan 8/8,
+  ThreadSanitizer 3/3 on `unit|regression|uci_integration`; independent perft,
+  differential (2,000 positions), tournament, statistics, dead-position corpus
+  and dead-position reference scripts all pass locally.
+- Documentation rewritten for dev2: README (including ScrispChess-Extended Custom
+  UCI Engine Manager import instructions), CHANGELOG, RELEASE_NOTES, ROADMAP,
+  ARCHITECTURE, TESTING, BENCHMARKING, THIRD_PARTY, a new
+  `docs/DEAD_POSITIONS.md` and `benchmarks/results/0.1.0-dev2/REPORT.md`.
+- Open items at the time of writing: exact-head CI, CodeRabbit review, merge,
+  tag and release remain to be verified on the final head; nothing in this log
+  claims those operations succeeded.
