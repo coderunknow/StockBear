@@ -168,3 +168,35 @@
   ThreadSanitizer; `position_extra` runs 4 tests; corpus 23 cases / 0 failures and
   the independent reference 10 compared / 2 skipped / 0 failures were re-run on
   the rebuilt binary and the report timings updated.
+
+## 2026-10-31 — third review pass (CodeRabbit full review on b9085b9)
+
+- CodeRabbit reviewed head `b9085b9` (13 inline comments; several restated the
+  previous round's findings, which were already fixed). Substantive items fixed:
+  - **Restored the 64-node hard-timer poll.** dev2 had widened
+    `NodeCheckInterval` to 1024, so a `go movetime 1` search could overrun its
+    hard budget by up to a thousand nodes. Now 64 again, with a comment, and
+    measured: `go movetime 1/5/20/50` returns at 1.1/1.1/15.2/45.2 ms median over
+    ten runs each, never above the budget.
+  - **`tournament.py` cleanup path.** `csv_handle` is initialised before the try
+    block, so an option-validation `ValueError` during engine construction no
+    longer turns the `finally` clause into `UnboundLocalError` and leak the first
+    engine.
+  - **Recorded summaries regenerated.** Added `scripts/recompute_summary.py`,
+    which derives a new summary line from the unchanged per-game records. Applied
+    to `match-dev1.jsonl` (adds the opening-clustered block: +194.3
+    [+158.5, +234.4]) and `match-stockfish11.jsonl` (-636.4 [-inf, -420.7]); the
+    game lines are byte-identical and the summary is marked as recomputed.
+  - Report/notes corrections: `test_statistics.py` has 11 tests, and the empty
+    "supported ()" parenthetical in the release notes now carries the result.
+- **Timing fairness.** The depth-6 dev1 timing had been taken while the machine
+  was compiling (1,041 ms), which inflated the speed ratio. Both binaries were
+  re-run alternately in one idle session (three passes each): 685 ms → 57 ms
+  (12×) at depth 6 and 3,171 ms → 137 ms (23×) at depth 7, with node counts
+  unchanged (15.8× / 32.8× fewer). The bench CSVs, the per-position table and the
+  ablation table (re-run in the same session, same signatures) were regenerated
+  and README/CHANGELOG/RELEASE_NOTES/REPORT updated to the matched numbers.
+- Re-verified: CTest 9/9 in Release, Debug, ASan+UBSan and ThreadSanitizer;
+  `test_statistics.py` 11/11; `test_tournament.py` and `recompute_summary.py`
+  pass; bench signatures unchanged (`733440501ed37d3d`, `4e96e77c6c849463`), so
+  the search behaviour itself did not move.

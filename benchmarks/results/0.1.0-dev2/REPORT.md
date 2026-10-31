@@ -40,33 +40,37 @@ failed experiments").
 ## Search performance
 
 Identical embedded suite (`bench`), identical hash, one thread, same machine.
-Node counts and signatures are deterministic; timings vary by a few percent.
+Node counts and signatures are deterministic; timings vary with machine load, so
+the two engines were run alternately in the same session (three passes each) and
+the committed CSVs are the last pass of that alternation. An earlier draft quoted
+a dev1 timing measured while the machine was compiling, which inflated the speed
+ratio; the numbers below are the matched ones.
 
 **Depth 6, 12 positions (dev2 signature `733440501ed37d3d`):**
 
 | Measure | dev1 | dev2 | ratio |
 |---|---:|---:|---:|
 | Total nodes | 1,683,192 | 106,558 | **0.063×** (15.8× fewer) |
-| Total wall time | 1,041.3 ms | 52.3 ms | **0.050×** (19.9× faster) |
+| Total search time | 685.1 ms | 57.1 ms | **0.083×** (12.0× faster) |
 
 **Depth 7 (`4e96e77c6c849463`):** 8,276,659 → 252,556 nodes (**0.031×**, 32.8×
-fewer) and 3,604.9 ms → 121.7 ms (29.6× faster).
+fewer) and 3,171.3 ms → 136.6 ms (**0.043×**, 23.2× faster).
 
 Per position at depth 6:
 
 | Position | dev1 nodes | dev2 nodes | ratio | dev1 ms | dev2 ms | dev1 move | dev2 move | dev1 score | dev2 score |
 |---|---:|---:|---:|---:|---:|---|---|---:|---:|
-| Starting position | 69,191 | 12,539 | 0.181 | 64.7 | 6.2 | `b1c3` | `d2d4` | 0 | 0 |
-| Complex middlegame | 723,143 | 63,542 | 0.088 | 631.3 | 32.2 | `e2a6` | `e2a6` | +7 | +7 |
-| Mate in one | 62,173 | 163 | 0.003 | 28.8 | 0.0 | `f7g7` | `f7g7` | mate 1 | mate 1 |
-| Rook and pawn ending | 22,991 | 3,823 | 0.166 | 13.8 | 1.4 | `b4c4` | `b4f4` | +38 | +126 |
-| Promotion race | 2,976 | 1,244 | 0.418 | 1.5 | 0.3 | `g1h2` | `g1h2` | +998 | +998 |
-| Hanging queen | 852 | 452 | 0.531 | 0.4 | 0.2 | `e4d5` | `e4d5` | 0 | 0 |
-| Developed middlegame | 542,997 | 20,310 | 0.037 | 238.9 | 10.8 | `b1a3` | `b1a3` | +441 | +457 |
+| Starting position | 69,191 | 12,539 | 0.181 | 36.1 | 6.1 | `b1c3` | `d2d4` | 0 | 0 |
+| Complex middlegame | 723,143 | 63,542 | 0.088 | 313.2 | 32.4 | `e2a6` | `e2a6` | +7 | +7 |
+| Mate in one | 62,173 | 163 | 0.003 | 12.9 | 0.0 | `f7g7` | `f7g7` | mate 1 | mate 1 |
+| Rook and pawn ending | 22,991 | 3,823 | 0.166 | 7.3 | 1.4 | `b4c4` | `b4f4` | +38 | +126 |
+| Promotion race | 2,976 | 1,244 | 0.418 | 0.7 | 0.5 | `g1h2` | `g1h2` | +998 | +998 |
+| Hanging queen | 852 | 452 | 0.531 | 0.2 | 0.1 | `e4d5` | `e4d5` | 0 | 0 |
+| Developed middlegame | 542,997 | 20,310 | 0.037 | 251.7 | 15.0 | `b1a3` | `b1a3` | +441 | +457 |
 | Bare kings drawn | 0 | 0 | — | 0.0 | 0.0 | `e1d1` | `e1d1` | 0 | 0 |
-| Mate in two | 244,870 | 556 | 0.002 | 58.5 | 0.1 | `b2c3` | `b2c3` | mate 2 | mate 2 |
-| Forced check evasion | 4,113 | 805 | 0.196 | 0.9 | 0.3 | `g1h1` | `g1h1` | mate −3 | mate −3 |
-| Avoid immediate mate | 5,998 | 2,362 | 0.394 | 1.6 | 0.6 | `a1a3` | `a1a3` | −1017 | −1011 |
+| Mate in two | 244,870 | 556 | 0.002 | 59.4 | 0.2 | `b2c3` | `b2c3` | mate 2 | mate 2 |
+| Forced check evasion | 4,113 | 805 | 0.196 | 1.0 | 0.4 | `g1h1` | `g1h1` | mate -3 | mate -3 |
+| Avoid immediate mate | 5,998 | 2,362 | 0.394 | 1.7 | 0.8 | `a1a3` | `a1a3` | -1017 | -1011 |
 | Stalemate avoidance | 3,888 | 762 | 0.196 | 0.9 | 0.2 | `f1f2` | `f1e2` | mate 3 | +1033 |
 
 The two changed moves are equal-scoring alternatives at this depth (start
@@ -78,14 +82,14 @@ the mate-in-one, the mate-in-two, the forced evasion and the promotion.
 
 | Configuration | Nodes | Time (ms) | Signature |
 |---|---:|---:|---|
-| all features on (baseline) | 252,556 | 119.7 | `4e96e77c6c849463` |
-| `aspiration=0` | 331,215 | 152.7 | `c372ce4355e0fd02` |
-| `nullMove=0` | 231,094 | 110.9 | `7a98a1a2c3e5ddf9` |
-| `lmr=0` | 466,352 | 221.3 | `bea0c8645b4457ea` |
-| `reverseFutility=0` | 351,275 | 191.3 | `f6f7e99bd82b63e4` |
-| `futility=0` | 329,343 | 139.7 | `f02b4259e6eaf791` |
-| `seePruning=0` | 650,548 | 262.6 | `a0ea0d32b426a8f1` |
-| `checkExtension=0` | 213,373 | 97.5 | `7132842d4634dc15` |
+| all features on (baseline) | 252,556 | 132.2 | `4e96e77c6c849463` |
+| `aspiration=0` | 331,215 | 160.8 | `c372ce4355e0fd02` |
+| `nullMove=0` | 231,094 | 117.2 | `7a98a1a2c3e5ddf9` |
+| `lmr=0` | 466,352 | 239.7 | `bea0c8645b4457ea` |
+| `reverseFutility=0` | 351,275 | 167.5 | `f6f7e99bd82b63e4` |
+| `futility=0` | 329,343 | 144.7 | `f02b4259e6eaf791` |
+| `seePruning=0` | 650,548 | 247.8 | `a0ea0d32b426a8f1` |
+| `checkExtension=0` | 213,373 | 114.1 | `7132842d4634dc15` |
 
 Reading this honestly: disabling **aspiration windows, LMR, reverse futility,
 futility or SEE pruning** increases both nodes and time, so those features do the
@@ -131,7 +135,9 @@ every game and validated every move.
   degrees of freedom, `match_stats.opening_clustered`): **Elo +194.3
   [95 %: +158.5, +234.4]**. The suite replays each opening about 6.5 times, so the
   200 pairs are *not* independent; this interval is the headline one because it
-  also absorbs the between-opening correlation.
+  also absorbs the between-opening correlation. The `summary` line of
+  `match-dev1.jsonl` was recomputed from the unchanged game records by
+  `scripts/recompute_summary.py`, which adds this block without replaying games.
 * SPRT (H0 = 0 Elo, H1 = +5 Elo, α = β = 0.05), evaluated after the match on the
   recorded pair scores: LLR 6.26 > 2.94, i.e. the upper bound is crossed. The
   harness did not stop early — it played the full 400 requested games and the LLR
@@ -218,7 +224,7 @@ ThreadSanitizer 4/4 (`unit|position_extra|regression|uci_integration`).
 Independent scripts: `reference_perft.py` (9 positions),
 `differential.py --samples 2000 --seed 20261030` (exact move sets and per-move
 depth-2 counts, 2,000 generated + 8 curated positions), `test_tournament.py`,
-`test_statistics.py` (8 known-value tests), `dead_position_corpus.py` (23/23) and
+`test_statistics.py` (11 tests), `recompute_summary.py`, `dead_position_corpus.py` (23/23) and
 `dead_position_reference.py --full` (10 compared, 2 skipped, 0 failures).
 Exact-commit CI on the PR head, merge commit and tag is the authoritative record.
 

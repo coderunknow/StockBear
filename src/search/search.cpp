@@ -18,7 +18,11 @@ namespace stockbear {
 namespace {
 
 constexpr int MaxCheckExtensions = 3;
-constexpr int NodeCheckInterval = 1024;
+// Hard-timer polling interval. dev1 polled every 64 nodes; dev2 briefly widened
+// it to 1024, which lets a `go movetime 1` search overrun its hard budget by up
+// to a thousand nodes and risk a clock forfeit. The check is an atomic load plus
+// a cached deadline comparison, so 64 is affordable.
+constexpr int NodeCheckInterval = 64;
 constexpr int SeeValue[PieceTypeNB + 1] = {0, 100, 320, 335, 500, 975, 0, 0};
 
 // Integer-only reduction schedule; keeps results bit-identical across

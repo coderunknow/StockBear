@@ -306,6 +306,10 @@ def main():
     # paired structure (each opening played twice with reversed colours) is kept.
     random.Random(args.seed).shuffle(openings)
     engines = []
+    # Initialised before the engines are constructed: an option-validation error
+    # in UciEngine must not turn the cleanup path into an UnboundLocalError and
+    # leak an already started engine.
+    csv_handle = None
     try:
         engines.append(UciEngine(args.engine_a, args.hash, args.threads, args.a_option))
         engines.append(UciEngine(args.engine_b, args.hash, args.threads, args.b_option))
@@ -326,7 +330,6 @@ def main():
         pair_openings = {}
         openings_of_pairs = []
         csv_writer = None
-        csv_handle = None
         if args.csv:
             csv_handle = open(args.csv, "w", encoding="utf-8", newline="")
             csv_writer = csv.writer(csv_handle)

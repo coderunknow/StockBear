@@ -104,9 +104,21 @@ Uncertainty is reported by `scripts/match_stats.py`:
   with score in `{0, 0.5, 1, 1.5, 2}`, reporting the pair-score mean, its
   standard error and a 95 % normal interval on the implied Elo, plus the counts
   of the five pair outcomes;
+* an **opening-clustered** interval around the same pentanomial mean: the suite
+  replays each opening several times, so even pairs are not independent. The CR1
+  variance is computed from per-opening cluster totals with a Student-t critical
+  value on G-1 degrees of freedom. This is the interval quoted in the release;
+  when the record has fewer than two distinct openings, no clustered interval is
+  reported;
 * a normal-approximation **SPRT** log-likelihood ratio against `H0: 0 Elo` and
   `H1: +5 Elo` with α = β = 0.05 (bounds ±2.94), which is a stopping aid and is
-  labelled as an approximation, not a proof.
+  labelled as an approximation, not a proof. `tournament.py` plays the requested
+  number of games and evaluates the LLR afterwards, so a crossed bound is
+  reported as a crossing on the finished sample, not as an early stop.
+
+A recorded match does not have to be replayed when the estimators change:
+`scripts/recompute_summary.py` rewrites only the trailing summary line from the
+unchanged per-game records and marks the result as recomputed.
 
 Elo is always quoted with an interval and a sample size. A point estimate alone
 is not evidence, and a small match with an all-wins or all-losses record has an

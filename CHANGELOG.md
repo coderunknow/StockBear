@@ -28,8 +28,9 @@ met by a general decision procedure.
   `static_exchange_evaluation()` is a public, unit-tested function.
   UCI options `NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`,
   `SEEPruning`, `CheckExtension` expose every switch (all default to the released
-  behaviour). Measured: depth-6 suite 1,683,192 → 106,558 nodes and 1,041 → 52 ms
-  (15.8× fewer nodes, 19.9× faster); depth-7 32.8× fewer nodes; 400 paired games
+  behaviour). Measured with both builds run alternately in one session: depth-6
+  suite 1,683,192 → 106,558 nodes and 685 → 57 ms (15.8× fewer nodes, 12×
+  faster); depth-7 32.8× fewer nodes and 23× faster; 400 paired games
   vs dev1 scored +250 =103 −47 (Elo +194.3; paired pentanomial 95 % interval
   +164.5 to +227.0, opening-clustered interval +158.5 to +234.4; the LLR computed
   on the finished sample crosses the +5 Elo upper bound).
@@ -38,6 +39,9 @@ met by a general decision procedure.
 - **Time management.** Documented soft/hard budget contract, `movestogo` handling,
   a 30-move default, a 1 ms floor and usage-based stopping, covered by new
   contract tests.
+- **Time safety.** The hard-timer polling interval in `Search::visit` is back to
+  64 nodes (dev1's value): 1024 allowed a `go movetime` search to overrun its hard
+  budget by up to a thousand nodes and risk a clock forfeit.
 - **Bug fixes.** Static exchange evaluation dropped the final recapture in its
   negamax fold, so a knight taking a defended pawn scored +100 instead of −220 and
   losing captures were ordered and pruned as if they were wins; fixed, unit-tested
