@@ -11,17 +11,17 @@ the [dead-position specification](docs/DEAD_POSITIONS.md), the
 [tuning record](docs/TUNING.md) and the [release notes](RELEASE_NOTES.md).
 Summary: dev3 adds real MultiPV and `go searchmoves`, makes every evaluation
 weight a tunable parameter with an offline tuning pipeline, and adds EPD
-tactics/endgame suites certified by an independent mate oracle. Its search and
-evaluation are *unchanged from dev2*: three tuned evaluation candidates and two
-experimental search configurations were matched against the dev2 binary and none
-was stronger (+1.3 [−17.9, +20.5] and −16.2 [−33.0, +0.5] Elo for the search
-configurations; −119.1, −51.3 and +12.0 Elo for the evaluation candidates over
-571–600 decided games each). The shipped configuration is therefore
-behaviourally identical to dev2 in play — a 200-game regression match split every
-opening pair — and the release is a correctness, protocol and tooling release, not
-a strength claim. dev2's own result stands: +235 Elo over dev1 and 0.5/20 against
-Stockfish 11. No match against Stockfish 19 was possible in the build
-environment, and no superiority claim is made.
+tactics/endgame suites certified by an independent mate oracle. Its evaluation is
+*unchanged from dev2*, and its search is the dev2 feature set with the five new
+ordering switches off. Three tuned evaluation candidates and two experimental
+search configurations were matched against the dev2 binary and none was stronger
+(+1.3 [−17.9, +20.5] and −16.2 [−33.0, +0.5] Elo for the search configurations;
+−119.1, −51.3 and +12.0 Elo for the evaluation candidates; 571–600 decided games
+each). The shipped configuration plays as dev2 did — a 200-game regression match
+scored 0.5000 with every opening pair level — so the release is a correctness,
+protocol and tooling release, not a strength claim. dev2's own result stands:
++235 Elo over dev1 and 0.5/20 against Stockfish 11. No match against Stockfish 19
+was possible in the build environment, and no superiority claim is made.
 
 ## Requirements
 

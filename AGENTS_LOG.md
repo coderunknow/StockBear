@@ -395,3 +395,10 @@
 - The `Search` object was ~0.9 MB because two large tables were inline; that is
   fine on Linux (8 MiB stack) and fatal on Windows (1 MiB). Fixed by heap
   allocation plus a `static_assert`; bench signatures unchanged.
+- Added `configuration.engine_{a,b}_defaults` to `scripts/tournament.py` and
+  replayed both search-feature matches with all five switches set explicitly on
+  both sides; the numbers were unchanged to the decimal, which is the expected
+  outcome when the defaults were already off.
+- The `unit` runner now prints a flushed `RUN` line per test: a segfaulting test
+  otherwise leaves no record of which one died, and the Windows CI log was not
+  reachable from this sandbox.

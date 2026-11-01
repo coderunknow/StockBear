@@ -1,6 +1,6 @@
 {
- "engine": "StockBear 0.1.0-dev2",
- "engine_sha256": "6ee259b93d603cb00b7e4bf11750bf3a6190a77287e2efb245a78e290f28d10d",
+ "engine": "StockBear 0.1.0-dev3",
+ "engine_sha256": "e96cb712da0dc4431e5513184f31dfec9b58b5b53e801ec1c500735e71d0dd27",
  "mode": "tactics",
  "epd": "benchmarks/tactics/mate_suite.epd",
  "epd_sha256": "c3c3d499f4f7422033a1102ab66d2a25ef9cecff2398e1470843fe3e34eb50fc",
@@ -24,8 +24,9 @@
    "limit_reached": false,
    "nodes": 16377,
    "depth": 243,
-   "time_ms": 13,
-   "mate_score": "info depth 243 seldepth 8 score mate 2 nodes 16377 nps 1983648 hashfull 0 time 8 pv g8f8 h6g6 c4d3"
+   "mate_depth": 2,
+   "time_ms": 21,
+   "mate_score": "info depth 243 seldepth 8 score mate 2 nodes 16377 nps 1271012 hashfull 0 time 12 pv g8f8 h6g6 c4d3"
   },
   {
    "id": "mate02-3ply",
@@ -66,10 +67,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 18985,
+   "nodes": 19003,
    "depth": 243,
-   "time_ms": 10,
-   "mate_score": "info depth 243 seldepth 8 score mate 2 nodes 18985 nps 2724207 hashfull 0 time 6 pv g5g6 d4e3 a7a8"
+   "mate_depth": 3,
+   "time_ms": 12,
+   "mate_score": "info depth 243 seldepth 8 score mate 2 nodes 19003 nps 1705069 hashfull 0 time 11 pv g5g6 d4e3 a7a8"
   },
   {
    "id": "mate03-3ply",
@@ -92,8 +94,9 @@
    "limit_reached": false,
    "nodes": 16834,
    "depth": 243,
-   "time_ms": 11,
-   "mate_score": "info depth 243 seldepth 4 score mate 2 nodes 16834 nps 2232922 hashfull 0 time 7 pv g6f6 e8f8 d5f7"
+   "mate_depth": 3,
+   "time_ms": 13,
+   "mate_score": "info depth 243 seldepth 4 score mate 2 nodes 16834 nps 1414502 hashfull 0 time 11 pv g6f6 e8f8 d5f7"
   },
   {
    "id": "mate04-3ply",
@@ -106,10 +109,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 20501,
+   "nodes": 20518,
    "depth": 243,
-   "time_ms": 18,
-   "mate_score": "info depth 243 seldepth 4 score mate 2 nodes 20501 nps 1387640 hashfull 0 time 14 pv d5d6 g6g5 d7g4"
+   "mate_depth": 2,
+   "time_ms": 17,
+   "mate_score": "info depth 243 seldepth 4 score mate 2 nodes 20518 nps 1242310 hashfull 0 time 16 pv d5d6 g6g5 d7g4"
   },
   {
    "id": "mate05-3ply",
@@ -135,8 +139,9 @@
    "limit_reached": false,
    "nodes": 19052,
    "depth": 243,
-   "time_ms": 13,
-   "mate_score": "info depth 243 seldepth 5 score mate 2 nodes 19052 nps 1701983 hashfull 0 time 11 pv c6c7 b8a8 c7a7"
+   "mate_depth": 2,
+   "time_ms": 11,
+   "mate_score": "info depth 243 seldepth 5 score mate 2 nodes 19052 nps 1803483 hashfull 0 time 10 pv c6c7 b8a8 c7a7"
   },
   {
    "id": "mate06-3ply",
@@ -147,10 +152,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 15136,
+   "nodes": 15156,
    "depth": 243,
-   "time_ms": 8,
-   "mate_score": "info depth 243 seldepth 4 score mate 2 nodes 15136 nps 1965969 hashfull 0 time 7 pv h4h3 h1h2 g5g2"
+   "mate_depth": 3,
+   "time_ms": 12,
+   "mate_score": "info depth 243 seldepth 4 score mate 2 nodes 15156 nps 1354544 hashfull 0 time 11 pv h4h3 h1h2 g5g2"
   },
   {
    "id": "mate07-3ply",
@@ -165,10 +171,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 24124,
+   "nodes": 24041,
    "depth": 243,
-   "time_ms": 21,
-   "mate_score": "info depth 243 seldepth 8 score mate 2 nodes 24124 nps 1332891 hashfull 1 time 18 pv d1d4 b6b5 d7d6"
+   "mate_depth": 3,
+   "time_ms": 19,
+   "mate_score": "info depth 243 seldepth 8 score mate 2 nodes 24041 nps 1346985 hashfull 1 time 17 pv d1d4 b6b5 d7d6"
   },
   {
    "id": "mate08-3ply",
@@ -192,10 +199,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 19173,
+   "nodes": 19135,
    "depth": 243,
-   "time_ms": 14,
-   "mate_score": "info depth 243 seldepth 6 score mate 2 nodes 19173 nps 1565398 hashfull 0 time 12 pv d1g1 f2e2 c1e3"
+   "mate_depth": 2,
+   "time_ms": 15,
+   "mate_score": "info depth 243 seldepth 6 score mate 2 nodes 19135 nps 1309181 hashfull 0 time 14 pv d1g1 f2e2 c1e3"
   },
   {
    "id": "mate09-3ply",
@@ -220,10 +228,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 24568,
+   "nodes": 24572,
    "depth": 243,
-   "time_ms": 17,
-   "mate_score": "info depth 243 seldepth 4 score mate 2 nodes 24568 nps 1683546 hashfull 0 time 14 pv h1e4 e6d7 f4c7"
+   "mate_depth": 2,
+   "time_ms": 18,
+   "mate_score": "info depth 243 seldepth 4 score mate 2 nodes 24572 nps 1411291 hashfull 0 time 17 pv h1e4 e6d7 f4c7"
   },
   {
    "id": "mate10-3ply",
@@ -237,10 +246,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 23095,
+   "nodes": 23117,
    "depth": 243,
-   "time_ms": 17,
-   "mate_score": "info depth 243 seldepth 4 score mate 2 nodes 23095 nps 1633656 hashfull 0 time 14 pv h8h2 a2a1 h2b2"
+   "mate_depth": 2,
+   "time_ms": 19,
+   "mate_score": "info depth 243 seldepth 4 score mate 2 nodes 23117 nps 1247275 hashfull 0 time 18 pv h8h2 a2a1 h2b2"
   },
   {
    "id": "mate11-3ply",
@@ -261,8 +271,9 @@
    "limit_reached": false,
    "nodes": 26739,
    "depth": 243,
-   "time_ms": 19,
-   "mate_score": "info depth 243 seldepth 4 score mate 2 nodes 26739 nps 1609522 hashfull 0 time 16 pv g8c4 a4a3 e5a1"
+   "mate_depth": 2,
+   "time_ms": 20,
+   "mate_score": "info depth 243 seldepth 4 score mate 2 nodes 26739 nps 1407463 hashfull 0 time 18 pv g8c4 a4a3 e5a1"
   },
   {
    "id": "mate12-3ply",
@@ -300,10 +311,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 20187,
+   "nodes": 20238,
    "depth": 243,
+   "mate_depth": 2,
    "time_ms": 13,
-   "mate_score": "info depth 243 seldepth 9 score mate 2 nodes 20187 nps 1938448 hashfull 0 time 10 pv e6e7 g7h8 e7e5"
+   "mate_score": "info depth 243 seldepth 9 score mate 2 nodes 20238 nps 1655324 hashfull 0 time 12 pv e6e7 g7h8 e7e5"
   },
   {
    "id": "mate13-3ply",
@@ -317,10 +329,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 30405,
+   "nodes": 30311,
    "depth": 243,
-   "time_ms": 25,
-   "mate_score": "info depth 243 seldepth 8 score mate 2 nodes 30405 nps 1376352 hashfull 0 time 22 pv f4d2 a3a4 h1a1"
+   "mate_depth": 3,
+   "time_ms": 23,
+   "mate_score": "info depth 243 seldepth 8 score mate 2 nodes 30311 nps 1347275 hashfull 0 time 22 pv f4d2 a3a4 h1a1"
   },
   {
    "id": "mate14-3ply",
@@ -374,10 +387,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 24460,
+   "nodes": 24486,
    "depth": 243,
-   "time_ms": 14,
-   "mate_score": "info depth 243 seldepth 6 score mate 2 nodes 24460 nps 1911236 hashfull 0 time 12 pv d7d8n f7e7 d4d6"
+   "mate_depth": 1,
+   "time_ms": 16,
+   "mate_score": "info depth 243 seldepth 6 score mate 2 nodes 24486 nps 1582907 hashfull 0 time 15 pv d7d8n f7e7 d4d6"
   },
   {
    "id": "mate15-3ply",
@@ -403,10 +417,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 13851,
+   "nodes": 13881,
    "depth": 243,
-   "time_ms": 11,
-   "mate_score": "info depth 243 seldepth 6 score mate 2 nodes 13851 nps 1599053 hashfull 0 time 8 pv d8d7 h6h5 d7h7"
+   "mate_depth": 3,
+   "time_ms": 12,
+   "mate_score": "info depth 243 seldepth 6 score mate 2 nodes 13881 nps 1249527 hashfull 0 time 11 pv d8d7 h6h5 d7h7"
   },
   {
    "id": "mate16-3ply",
@@ -424,8 +439,9 @@
    "limit_reached": false,
    "nodes": 18839,
    "depth": 243,
-   "time_ms": 10,
-   "mate_score": "info depth 243 seldepth 8 score mate 2 nodes 18839 nps 2096483 hashfull 0 time 8 pv c6f6 e7e8 d5d8"
+   "mate_depth": 2,
+   "time_ms": 15,
+   "mate_score": "info depth 243 seldepth 8 score mate 2 nodes 18839 nps 1268961 hashfull 0 time 14 pv c6f6 e7e8 d5d8"
   },
   {
    "id": "mate17-3ply",
@@ -438,10 +454,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 19137,
+   "nodes": 19145,
    "depth": 243,
+   "mate_depth": 3,
    "time_ms": 16,
-   "mate_score": "info depth 243 seldepth 6 score mate 2 nodes 19137 nps 1368101 hashfull 0 time 13 pv c6d5 a1b1 f2f1"
+   "mate_score": "info depth 243 seldepth 6 score mate 2 nodes 19145 nps 1248532 hashfull 0 time 15 pv c6d5 a1b1 f2f1"
   },
   {
    "id": "mate18-3ply",
@@ -453,10 +470,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 23332,
+   "nodes": 23347,
    "depth": 243,
-   "time_ms": 15,
-   "mate_score": "info depth 243 seldepth 6 score mate 2 nodes 23332 nps 1754549 hashfull 0 time 13 pv d5d7 f8g8 e2e8"
+   "mate_depth": 3,
+   "time_ms": 17,
+   "mate_score": "info depth 243 seldepth 6 score mate 2 nodes 23347 nps 1426642 hashfull 0 time 16 pv d5d7 f8g8 e2e8"
   },
   {
    "id": "mate19-3ply",
@@ -481,10 +499,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 25664,
+   "nodes": 25652,
    "depth": 243,
-   "time_ms": 20,
-   "mate_score": "info depth 243 seldepth 6 score mate 2 nodes 25664 nps 1514010 hashfull 0 time 16 pv a8d5 e5f4 g8g5"
+   "mate_depth": 2,
+   "time_ms": 19,
+   "mate_score": "info depth 243 seldepth 6 score mate 2 nodes 25652 nps 1428841 hashfull 0 time 17 pv a8d5 e5f4 d5f5"
   },
   {
    "id": "mate01-5ply",
@@ -526,10 +545,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 58781,
+   "nodes": 59165,
    "depth": 49,
-   "time_ms": 30,
-   "mate_score": "info depth 49 seldepth 10 score mate 3 nodes 58781 nps 2196763 hashfull 1 time 26 pv g3h4 d5d4 a7e7 d4e3 e7e8"
+   "mate_depth": 5,
+   "time_ms": 31,
+   "mate_score": "info depth 49 seldepth 10 score mate 3 nodes 59165 nps 1947818 hashfull 1 time 30 pv g3h4 e6e5 a7e7 g8h8 f7f8"
   },
   {
    "id": "mate02-5ply",
@@ -554,10 +574,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 59138,
+   "nodes": 59002,
    "depth": 26,
-   "time_ms": 25,
-   "mate_score": "info depth 26 seldepth 11 score mate 3 nodes 59138 nps 2735590 hashfull 1 time 21 pv c3b5 d4d3 c6b6 b8a8 b5c7"
+   "mate_depth": 4,
+   "time_ms": 24,
+   "mate_score": "info depth 26 seldepth 11 score mate 3 nodes 59002 nps 2520268 hashfull 2 time 23 pv c3b5 d4d3 c6b6 b8a8 b5c7"
   },
   {
    "id": "mate03-5ply",
@@ -590,10 +611,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 59402,
+   "nodes": 59313,
    "depth": 52,
-   "time_ms": 29,
-   "mate_score": "info depth 52 seldepth 8 score mate 3 nodes 59402 nps 2191470 hashfull 1 time 27 pv d2d1q e2f2 d1g1 f2f3 c1e3"
+   "mate_depth": 3,
+   "time_ms": 26,
+   "mate_score": "info depth 52 seldepth 8 score mate 3 nodes 59313 nps 2366084 hashfull 1 time 25 pv d2d1q e2f2 d1g1 f2e2 c1e3"
   },
   {
    "id": "mate04-5ply",
@@ -607,10 +629,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 58350,
+   "nodes": 58359,
    "depth": 31,
-   "time_ms": 26,
-   "mate_score": "info depth 31 seldepth 8 score mate 3 nodes 58350 nps 2646138 hashfull 3 time 22 pv h7h8q a3a2 d5c3 a2a1 h8h1"
+   "mate_depth": 4,
+   "time_ms": 22,
+   "mate_score": "info depth 31 seldepth 8 score mate 3 nodes 58359 nps 2725018 hashfull 3 time 21 pv h7h8q a3a2 d5c3 a2a1 b7b1"
   },
   {
    "id": "mate05-5ply",
@@ -627,10 +650,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 58616,
+   "nodes": 58398,
    "depth": 24,
-   "time_ms": 24,
-   "mate_score": "info depth 24 seldepth 8 score mate 3 nodes 58616 nps 2606313 hashfull 2 time 22 pv g7g8q b4a4 g8a2 a4b4 e5a5"
+   "mate_depth": 4,
+   "time_ms": 22,
+   "mate_score": "info depth 24 seldepth 8 score mate 3 nodes 58398 nps 2741561 hashfull 2 time 21 pv g7g8q b4a4 g8a2 a4b4 e5a5"
   },
   {
    "id": "mate06-5ply",
@@ -649,10 +673,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 58333,
-   "depth": 12,
-   "time_ms": 23,
-   "mate_score": "info depth 12 seldepth 9 score mate 3 nodes 58333 nps 2643689 hashfull 5 time 22 pv f4d2 a4a3 h2h1q a3a4 h1a1"
+   "nodes": 58280,
+   "depth": 11,
+   "mate_depth": 5,
+   "time_ms": 24,
+   "mate_score": "info depth 11 seldepth 9 score mate 3 nodes 58280 nps 2477259 hashfull 9 time 23 pv f4d2 a4a3 h2h1q a3a4 h1a1"
   },
   {
    "id": "mate07-5ply",
@@ -678,10 +703,11 @@
    ],
    "solved": true,
    "limit_reached": false,
-   "nodes": 57033,
+   "nodes": 57249,
    "depth": 20,
-   "time_ms": 24,
-   "mate_score": "info depth 20 seldepth 10 score mate 3 nodes 57033 nps 2701065 hashfull 1 time 21 pv g7g8q f6e5 a8d5 e5f4 g8g5"
+   "mate_depth": 4,
+   "time_ms": 25,
+   "mate_score": "info depth 20 seldepth 10 score mate 3 nodes 57249 nps 2469864 hashfull 2 time 23 pv g7g8q f6e5 a8b8 e5e4 g8d5"
   }
  ]
 }

@@ -16,6 +16,36 @@ import chess
 MATE = 100000
 
 
+def _child_score(board, move, max_plies, memo):
+    """Mate score for the side to move after `move`, with the distance counted.
+
+    Returns None when nothing is proven inside the budget, 0 for a drawn
+    continuation, and a mate score whose distance is measured from the position
+    *before* `move`, so a mate in three plies and a mate in one ply can never
+    compare equal.
+    """
+    board.push(move)
+    try:
+        if board.is_checkmate():
+            return MATE - 1
+        if board.is_stalemate() or board.is_insufficient_material():
+            return 0
+        if max_plies <= 1:
+            return None
+        child = forced_mate(board, max_plies - 1, memo)
+        if child is None:
+            return None
+        if child == 0:
+            return 0
+        # Same mate, one ply further away, seen from the other side. The sign
+        # decides which way the distance moves: a mate for us gets one ply
+        # longer (MATE - k becomes MATE - (k + 1)), and a mate for the opponent
+        # gets one ply further away too (-MATE + k becomes -MATE + (k + 1)).
+        return (-child - 1) if child < 0 else (1 - child)
+    finally:
+        board.pop()
+
+
 def forced_mate(board, max_plies, memo=None):
     """Best mate score for the side to move within `max_plies`, or None.
 
@@ -23,6 +53,11 @@ def forced_mate(board, max_plies, memo=None):
     best defence, -MATE + k when it is the side to move that gets mated, 0 for
     a draw that is already on the board, and None when nothing is proven inside
     the ply budget (which is *not* evidence that the position is drawn).
+
+    A negative result is only reported when every legal move has been scored:
+    an unexplored move might be a draw or a win, so with any unknown branch an
+    "I am getting mated" claim would be unsound. A *positive* result is a
+    witness — one move that provably mates — and stands on its own.
     """
     if memo is None:
         memo = {}
@@ -30,20 +65,16 @@ def forced_mate(board, max_plies, memo=None):
     if key in memo:
         return memo[key]
     best = None
+    unknown = False
     for move in board.legal_moves:
-        board.push(move)
-        if board.is_checkmate():
-            value = MATE - 1
-        elif board.is_stalemate() or board.is_insufficient_material():
-            value = 0
-        elif max_plies <= 1:
-            value = None
-        else:
-            child = forced_mate(board, max_plies - 1, memo)
-            value = None if child is None else -child
-        board.pop()
-        if value is not None and (best is None or value > best):
+        value = _child_score(board, move, max_plies, memo)
+        if value is None:
+            unknown = True
+            continue
+        if best is None or value > best:
             best = value
+    if best is not None and best <= 0 and unknown:
+        best = None
     memo[key] = best
     return best
 
@@ -103,18 +134,9 @@ def acceptable_moves(board, max_plies):
     if best is None or best <= 0:
         return []
     chosen = []
+    memo = {}
     for move in board.legal_moves:
-        board.push(move)
-        if board.is_checkmate():
-            score = MATE - 1
-        elif board.is_stalemate() or board.is_insufficient_material():
-            score = 0
-        elif max_plies <= 1:
-            score = None
-        else:
-            child = forced_mate(board, max_plies - 1)
-            score = None if child is None else -child
-        board.pop()
+        score = _child_score(board, move, max_plies, memo)
         if score is not None and score == best:
             chosen.append(move.uci())
     return chosen
@@ -131,18 +153,7 @@ def principal_variation(board, max_plies):
             break
         chosen = None
         for move in b.legal_moves:
-            b.push(move)
-            if b.is_checkmate():
-                score = MATE - 1
-            elif b.is_stalemate() or b.is_insufficient_material():
-                score = 0
-            elif depth <= 1:
-                score = None
-            else:
-                child = forced_mate(b, depth - 1)
-                score = None if child is None else -child
-            b.pop()
-            if score == best:
+            if _child_score(b, move, depth, {}) == best:
                 chosen = move
                 break
         if chosen is None:

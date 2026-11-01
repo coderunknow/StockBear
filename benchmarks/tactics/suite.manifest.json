@@ -1,11 +1,11 @@
 {
- "pgn": "/home/user/tuning/selfplay.pgn",
+ "pgn": "benchmarks/tuning/selfplay.pgn",
  "pgn_sha256": "34c3f496c66a8ceacccbd821b8230aeb151aafea0d01388e261a8df60e397f4b",
  "games_scanned": 2000,
  "tactics": 26,
  "endgames": 24,
- "positions_sha256": "00b443287b0c8c6039779be3c5b7997f92fab3eb2a32d1695cf317d04855f514",
- "endgames_sha256": "948cf3e869310363a6eca5a0231abb209ef2a389f2422ecd152cb9b7a51e6b34",
+ "mate_suite_sha256": "c3c3d499f4f7422033a1102ab66d2a25ef9cecff2398e1470843fe3e34eb50fc",
+ "endgame_suite_sha256": "948cf3e869310363a6eca5a0231abb209ef2a389f2422ecd152cb9b7a51e6b34",
  "oracle": "scripts/chess_oracle.py (own mate proof on python-chess 1.11.2)",
  "seed": 20261101,
  "note": "A position is only included when the oracle proves a forced mate and the recorded game move is one of the accepted moves."

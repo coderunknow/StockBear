@@ -4,6 +4,8 @@
 // calling into the engine's own feature code) so that a refactoring mistake
 // cannot hide by changing both sides at once.
 #include <algorithm>
+#include <filesystem>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -271,4 +273,59 @@ TEST(unit, evaluation_parameters_are_validated) {
     EvalParams other = default_eval_params();
     other.eg[std::size_t(MatRook)] += 1;
     CHECK(eval_params_checksum(other) != eval_params_checksum(default_eval_params()));
+}
+
+namespace {
+// Write a temporary parameter file and return its path. The tests below only need
+// a file the loader can read; nothing is left behind in the repository.
+std::string write_params_file(const std::string& name, const std::string& contents) {
+    const std::string path = (std::filesystem::temp_directory_path() / name).string();
+    std::ofstream out(path, std::ios::trunc);
+    out << contents;
+    out.close();
+    return path;
+}
+} // namespace
+
+TEST(unit, evaluation_parameter_file_parses_both_documented_forms) {
+    // The documented format is "<name> <mg> <eg>", and "=" is accepted as a
+    // separator. Both must produce the same set; a loader that advertises a
+    // form it cannot parse is worse than one that documents only one.
+    std::string error;
+    const std::string plain = write_params_file("params_plain.txt", "MaterialPawn 60 70\n");
+    EvalParams a = default_eval_params();
+    CHECK(load_eval_params_file(plain, &a, &error));
+    CHECK_EQ(a.mg[std::size_t(MatPawn)], 60);
+    CHECK_EQ(a.eg[std::size_t(MatPawn)], 70);
+
+    const std::string dashed = write_params_file("params_dashed.txt", "MaterialPawn = 60 70\n");
+    EvalParams b = default_eval_params();
+    CHECK(load_eval_params_file(dashed, &b, &error));
+    CHECK(a == b);
+
+    // A single value applies to both phases.
+    const std::string single = write_params_file("params_single.txt", "MaterialPawn = 55\n");
+    EvalParams c = default_eval_params();
+    CHECK(load_eval_params_file(single, &c, &error));
+    CHECK_EQ(c.mg[std::size_t(MatPawn)], 55);
+    CHECK_EQ(c.eg[std::size_t(MatPawn)], 55);
+}
+
+TEST(unit, evaluation_parameter_file_rejects_malformed_values) {
+    // `std::stoll` happily turns "120junk" into 120. Accepting that would mean
+    // the engine is running a set the file does not describe.
+    std::string error;
+    for (const std::string& bad : {std::string("MaterialPawn 100 120junk\n"),
+                                   std::string("MaterialPawn 100 120 extra\n"),
+                                   std::string("MaterialPawn 10x 120\n"),
+                                   std::string("MaterialPawn =\n"),
+                                   std::string("NotAParameter 1 2\n")}) {
+        const std::string path = write_params_file("params_bad.txt", bad);
+        EvalParams loaded = default_eval_params();
+        error.clear();
+        CHECK(!load_eval_params_file(path, &loaded, &error));
+        CHECK(!error.empty());
+    }
+    // And nothing was installed by those failures.
+    CHECK(active_eval_params() == default_eval_params());
 }

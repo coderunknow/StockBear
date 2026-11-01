@@ -29,15 +29,15 @@ release, not a stable or leading-strength engine.
   three candidates it produced were matched against the shipped evaluation and
   **none of them improved on it** (−119.1 Elo, confirmed worse by both reported
   intervals; −51.3 and +12.0 Elo, not shown to be worse but not improvements
-  either; 590–591 decided games each), and a fourth, more conservative fit
-  changed no parameter at all. The shipped release therefore keeps the dev2
-  coefficients. Record and
+  either; 590–591 decided games each), and a fourth, more conservative fit moves
+  seven positional terms by one or two points without a match to justify them.
+  The shipped release therefore keeps the dev2 coefficients. Record and
   reproduction commands: [docs/TUNING.md](docs/TUNING.md).
 - **Five new search-ordering features, implemented, tested and left off.**
   Counter-move history, continuation history, capture history, history maluses and
   a history-aware LMR adjustment each have an independent UCI switch and a
   documented rationale. Two matches measured them: all five on scored +1.3 Elo
-  [−17.9, +20.5] against the dev2 binary, and the history-malus/LMR/continuation
+  [−17.9, +20.5] against the dev2 binary, and the history-malus + history-LMR
   subset scored −16.2 Elo [−33.0, +0.5] against the same binary with them off.
   They are off by default, and with them off the rewrite reproduces dev2's
   benchmark signatures exactly (`e06c4352681ae8eb` at depth 6,
@@ -47,7 +47,7 @@ release, not a stable or leading-strength engine.
   games, each re-proved by a python-chess oracle that lists *all* mating moves)
   and `benchmarks/tactics/endgame_suite.epd` (24 three-man endgames). Fixed-node,
   reproducible runs with raw output retained: **26/26** mates solved at 60 k
-  nodes, **22/24** endgames converted at 400 k nodes.
+  nodes, **24/24** endgames converted at 400 k nodes.
 - **A search audit with fixes.** The mate-score, transposition-table, repetition
   and fifty-move, null-move-zugzwang, interruption and PV-construction paths were
   re-derived and covered by new unit tests, including MultiPV ordering, MultiPV
@@ -62,8 +62,9 @@ release, not a stable or leading-strength engine.
 
 **dev3 does not claim to be stronger than dev2, and is not.** Its search and
 evaluation are the dev2 ones with the new features switched off; a 200-game
-paired regression match against a rebuilt `v0.1.0-dev2` binary split every
-opening pair one win each way (70 =60 −70, 100 of 100 pairs at 1.0). dev2's own
+paired regression match against a rebuilt `v0.1.0-dev2` binary scored 0.5000
+(70 =60 −70), with 70 pairs split one win each way and 30 pairs drawn twice, so
+every one of the 100 pairs scored 1.0. dev2's own
 strength result stands unchanged: **+235.4 Elo over dev1** (400 paired games,
 opening-clustered 95 % interval +193.4 to +284.5) and **0.5/20 against
 Stockfish 11**. No match against Stockfish 19 was possible in the release
@@ -104,10 +105,12 @@ Windows Debug/Release and produces the Release archives. No AVX2/AVX-512, GPU or
 external engine is required at run time, and builds are portable (no
 `-march=native`).
 
-Known limitations: two of the 24 endgame-suite positions (one KQK, one KRK) reach
-a claimable repetition at 400 k nodes and are scored as draws; the evaluation
-tuning did not improve play; all matches are node-limited and therefore measure
-strength per node rather than per second; there is no Stockfish 19 measurement.
+Known limitations: the search has no fifty-move or progress term, so a won
+endgame can in principle still be shuffled into a claimable repetition (no
+position in the committed suite does at 400 k nodes, but the mechanism is
+unchanged); the evaluation tuning did not improve play; all matches are
+node-limited and therefore measure strength per node rather than per second;
+there is no Stockfish 19 measurement.
 
 The dead-position analysis is exact but exponential in the worst case; positions
 whose reachable component exceeds the configured budget return `unknown` rather

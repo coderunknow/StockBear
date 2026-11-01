@@ -80,9 +80,14 @@ in `SearchParams` that a UCI option or `bench --param` exposes:
 The dev3 ordering and history features cost nodes (depth 7: 250 053 without them,
 255 021 with all of them) and did not win a match: +1.3 Elo [−17.9, +20.5] with
 everything on over 571 decided games, and −16.2 [−33.0, +0.5] for the
-history-malus/LMR/continuation subset over 600 games. They therefore ship
-**disabled** by default, each behind its own switch, so the shipped search is
-bit-identical to dev2's and a future engine can re-measure them. See
+history-malus + history-LMR subset over 600 games. They therefore ship
+**disabled** by default, each behind its own switch, so the shipped search is the
+dev2 feature set and a future engine can re-measure them. With them off the
+benchmark signature equals dev2's on all twelve benchmark positions; that is not
+the same statement as "identical everywhere", and it is not claimed to be: a
+review fix in `negamax` (a null move now clears the previous-move slot) changes
+quiet ordering after a null move while leaving those twelve positions untouched.
+See
 [benchmarks/results/0.1.0-dev3/REPORT.md](../benchmarks/results/0.1.0-dev3/REPORT.md).
 
 `search_root` sorts root moves best-first and re-searches with a null window for

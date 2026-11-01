@@ -62,7 +62,11 @@ The `NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`, `SEEPruning`
 `HistoryMaluses` and `LMRHistory` UCI options expose the same switches, so the
 tournament harness can measure a feature by strength. The last five default to
 off because the dev3 matches found no benefit; they are kept switchable so the
-measurement can be repeated:
+measurement can be repeated. **Set every switch explicitly on both sides** and
+keep the record's `configuration` line: it stores the options that were sent to
+each engine *and* the defaults each engine advertised, so the configuration can
+be read out of the evidence years later, when a build's defaults have changed —
+as they did within dev3 itself:
 
 ```sh
 python3 scripts/tournament.py --engine-a ./build-release/stockbear \
@@ -85,8 +89,12 @@ construction, `v0.1.0-dev2`):
 | tuned evaluation variant A | 6 | `3df569cc3b5a5ff7` |
 
 The shipped rows are identical to the rebuilt `v0.1.0-dev2` binary, which is the
-intended outcome of shipping the dev2 search and evaluation with new switches
-turned off. Per-set node counts for the shipped build at depth 6/7:
+intended outcome of shipping the dev2 search and evaluation with the new switches
+turned off. A signature is a statement about these twelve positions only: the
+review fix that made a null move clear the "previous move" slot changed how
+quiets are ordered after a null move without altering any of these rows, and it
+did change play in deeper endgames. Use the signature to catch a regression on
+the suite, and a match to measure behaviour. Per-set node counts for the shipped build at depth 6/7:
 
 | suite | depth 6 nodes | depth 7 nodes |
 | --- | --- | --- |
@@ -114,6 +122,13 @@ comparison, not a tournament result: record it as such and do not quote an Elo
 estimate from it without the usual paired-opening sample.
 
 ## Matches
+
+A match is only evidence for the configuration its record describes. The harness
+writes a `configuration` line first and a `summary` line last; the first is the
+one that proves what was played (engine names, paths, per-engine option values,
+per-engine advertised defaults, node budget, seed, opening file, host), so quote
+it next to any result and do not reconstruct a configuration from the command
+line you think you typed.
 
 The harness uses its own UCI subprocess controller and python-chess for
 independent legal-move checking, draw adjudication and PGN. No opponent is

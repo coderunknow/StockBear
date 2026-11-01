@@ -165,7 +165,9 @@ def main():
                     lo_bounds[index] = max(lo_bounds[index], 0.0)
                 elif value < 0:
                     hi_bounds[index] = min(hi_bounds[index], 0.0)
-    bounds = np.concatenate([pairs] * 2)
+    # The sign restriction above is part of the contract, so the search must be
+    # bounded by the adjusted box, not by the raw [min,max] pairs.
+    bounds = np.concatenate([np.stack([lo_bounds, hi_bounds], axis=1)] * 2)
     span = np.tile(np.maximum(1.0, hi_bounds - lo_bounds), 2)
     # Regularisation and a movement cap keep a small, correlated dataset from
     # driving single parameters to their box limits: the loss is flat along
@@ -199,7 +201,7 @@ def main():
     history = []
     for sweep in range(args.sweeps):
         improved = 0
-        step = max(1, args.max_step >> min(sweep, 5))
+        step = max(1, args.max_step >> min(sweep, 6))
         for i in range(2 * param_count):
             column = zt[:, i]
             if not np.any(column) or i in fixed:
@@ -226,7 +228,10 @@ def main():
                         "train_loss": float(loss_of(current, tt, k))})
         print(f"sweep {sweep}: step {step} changes {improved} objective {loss0:.6f}"
               f" loss {loss_of(current, tt, k):.6f}")
-        if improved == 0:
+        # Keep going to smaller steps: a sweep with no 64-point improvement says
+        # nothing about 32-, 16- or 1-point moves, and stopping there would turn
+        # "the coarse step was too big" into a false claim of convergence.
+        if improved == 0 and step == 1:
             break
 
     best_k = k

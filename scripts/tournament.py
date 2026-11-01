@@ -420,6 +420,13 @@ def main():
         engines.append(UciEngine(args.engine_b, args.hash, args.threads, args.b_option))
         a, b = engines
         config = {"engine_a": a.name, "engine_b": b.name,
+                  # The advertised defaults are recorded next to the values that
+                  # were actually sent. A feature ablation is only reproducible
+                  # if a reader can tell what each side was set to *and* what it
+                  # would have been left at, because a build's defaults change
+                  # between releases (the dev3 ordering switches flipped to off).
+                  "engine_a_defaults": {k: v.get("default") for k, v in a.option_specs.items()},
+                  "engine_b_defaults": {k: v.get("default") for k, v in b.option_specs.items()},
                   "engine_a_path": a.path, "engine_b_path": b.path,
                   "engine_a_options": a.effective, "engine_b_options": b.effective,
                   "base_ms": args.base_ms, "increment_ms": args.inc_ms,

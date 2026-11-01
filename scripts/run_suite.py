@@ -23,9 +23,11 @@ Usage:
 """
 import argparse
 import json
+import queue
 import shutil
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -52,6 +54,12 @@ class Engine:
         self.process = subprocess.Popen([path], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                         stderr=subprocess.PIPE, text=True, bufsize=1)
         self.log = []
+        # A reader thread keeps the deadline in `until` meaningful: a blocking
+        # readline() would hang forever if the engine stayed alive but stopped
+        # writing, which is exactly the failure this harness must not have.
+        self.queue = queue.Queue()
+        self.reader = threading.Thread(target=self._pump, daemon=True)
+        self.reader.start()
         self.send("uci")
         hello = self.until(lambda line: line == "uciok")
         self.name = next((line[len("id name "):] for line in hello if line.startswith("id name ")),
@@ -61,6 +69,11 @@ class Engine:
         self.until(lambda line: line == "readyok")
         self.send("ucinewgame")
 
+    def _pump(self):
+        for raw in self.process.stdout:
+            self.queue.put(raw.rstrip("\r\n"))
+        self.queue.put(None)  # end of stream
+
     def send(self, line):
         self.process.stdin.write(line + "\n")
         self.process.stdin.flush()
@@ -68,16 +81,22 @@ class Engine:
     def until(self, predicate, timeout=300):
         batch = []
         deadline = time.monotonic() + timeout
-        while time.monotonic() < deadline:
-            line = self.process.stdout.readline()
-            if not line:
+        while True:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                self.process.kill()
+                raise SystemExit(f"timed out waiting for engine; last lines {batch[-5:]}")
+            try:
+                line = self.queue.get(timeout=remaining)
+            except queue.Empty:
+                self.process.kill()
+                raise SystemExit(f"timed out waiting for engine; last lines {batch[-5:]}")
+            if line is None:
                 raise SystemExit(f"engine exited; stderr={self.process.stderr.read()}")
-            line = line.rstrip("\r\n")
             self.log.append(line)
             batch.append(line)
             if predicate(line):
                 return batch
-        raise SystemExit(f"timed out waiting for engine; last lines {batch[-5:]}")
 
     def search(self, fen, nodes):
         self.send("position fen " + fen)
@@ -85,12 +104,25 @@ class Engine:
         lines = self.until(lambda line: line.startswith("bestmove "))
         bestmove = lines[-1].split()[1]
         depth = nodes_reported = 0
+        mate_line = None
         for line in lines:
             fields = line.split()
             if line.startswith("info ") and "depth" in fields and "pv" in fields:
                 depth = int(fields[fields.index("depth") + 1])
                 if "nodes" in fields:
                     nodes_reported = int(fields[fields.index("nodes") + 1])
+                if mate_line is None and "mate" in fields:
+                    mate_line = line
+        # Once a forced mate is proved, every further iteration is nearly free
+        # (the mate bounds cut the tree immediately), so the reported depth climbs
+        # to the search horizon instead of stopping. The interesting numbers are
+        # therefore the first mate line and the node count, not the last depth;
+        # both are kept so nobody has to guess which one is quoted.
+        mate_depth = 0
+        if mate_line is not None:
+            fields = mate_line.split()
+            mate_depth = int(fields[fields.index("depth") + 1])
+        self.last_mate_depth = mate_depth
         return bestmove, depth, nodes_reported, lines
 
     def close(self):
@@ -152,6 +184,7 @@ def run_tactics(engine, entries, nodes):
             "limit_reached": limit_reached,
             "nodes": nodes_reported,
             "depth": depth,
+            "mate_depth": engine.last_mate_depth,
             "time_ms": round(elapsed * 1000),
             "mate_score": next((line for line in reversed(lines)
                                 if line.startswith("info ") and "score mate" in line), ""),
@@ -168,14 +201,14 @@ def run_endgames(engine, entries, nodes, max_plies):
         plies = 0
         start = time.monotonic()
         moves = []
+        illegal = None
         while plies < max_plies and not board.is_game_over(claim_draw=True):
             bestmove, _, nodes_reported, _ = engine.search(board.fen(), nodes)
             if bestmove == "0000":
                 break
             move = chess.Move.from_uci(bestmove)
             if move not in board.legal_moves:
-                results.append({"id": entry["id"], "fen": entry["fen"], "error": "illegal move",
-                                "bestmove": bestmove})
+                illegal = bestmove
                 break
             moves.append(bestmove)
             board.push(move)
@@ -185,8 +218,9 @@ def run_endgames(engine, entries, nodes, max_plies):
         results.append({
             "id": entry["id"],
             "fen": entry["fen"],
+            "illegal_move": illegal,
             "mate": mated,
-            "solved": bool(mated and plies <= max_plies),
+            "solved": bool(mated and plies <= max_plies and illegal is None),
             "plies": plies,
             "moves": moves,
             "termination": ("CHECKMATE" if mated else

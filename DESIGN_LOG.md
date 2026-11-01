@@ -178,3 +178,21 @@
   "this objective on this data cannot distinguish these sets", which is why the
   release states the negative result and keeps the coefficients it inherited
   rather than shipping a set on the strength of its holdout loss.
+
+- **Correction to the entry above about bench signatures.** "With every switch off
+  the bench signatures are exactly dev2's" is true, but it is a statement about
+  the twelve benchmark positions, not about the whole search. The review fix that
+  makes a null move clear the `moveStack_` slot (the child of a null move was
+  ordering its quiets against a stale previous move) leaves both signatures
+  unchanged and still changes play: the two three-man endgames that had been
+  shuffled into a claimable repetition (`kqk-12`, `krk-17`) now mate, and the
+  endgame suite went from 22/24 to 24/24 at the same node budget. A deterministic
+  fingerprint of a fixed suite is a regression guard, not a proof of behavioural
+  identity, and the release documents now say so.
+- **Matched configurations must be recorded, not reconstructed.** The first dev3
+  search matches recorded only the effective options that the harness had been
+  given, and the *defaults* those options were competing against changed during
+  the release. Both matches were therefore replayed with every switch set
+  explicitly on both sides, and the harness now writes each engine's advertised
+  defaults into the record's `configuration` line. A result whose configuration
+  cannot be read out of its own evidence file is not a result.

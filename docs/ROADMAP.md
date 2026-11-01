@@ -55,16 +55,16 @@
 2. **Search-feature work with independent switches and ablations.** Done in form,
    negative in result. Counter-move history, continuation history, capture
    history, history maluses and a history-aware LMR adjustment were implemented,
-   unit-tested and measured: all five on scored +1.3 [−17.9, +20.5] Elo against
-   the dev2 binary over 571 decided games, and the history-malus/LMR/continuation
-   subset scored −16.2 [−33.0, +0.5] against the same binary with them off over
-   600 games. All five default to **off**, which makes the shipped search
+   unit-tested and measured with every switch set explicitly on both sides: all
+   five on scored +1.3 [−17.9, +20.5] Elo against the dev2 binary over 571
+   decided games, and the history-malus + history-LMR subset scored −16.2
+   [−33.0, +0.5] against the same binary with them off over 600 games. All five default to **off**, which makes the shipped search
    behaviourally identical to dev2 (`bench` signatures match exactly).
 3. **Tactics and endgame suites.** Done: `benchmarks/tactics/` holds a 26-position
    mate suite (sourced from StockBear self-play games, every position re-proved
    by an independent python-chess oracle that lists all mating moves) and a
    24-position three-man endgame suite. Fixed-node runs, raw output retained:
-   26/26 mates at 60 k nodes; 22/24 endgames converted at 400 k nodes.
+   26/26 mates at 60 k nodes; 24/24 endgames converted at 400 k nodes.
 4. **UCI completeness.** Done: `go searchmoves` parses, validates, restricts the
    root, reports illegal and all-illegal lists and never swallows the following
    keyword; real `MultiPV 1–8` reports ranked distinct root moves with exact
@@ -82,8 +82,10 @@ are retained rather than dropped.
 
 ## Next (v0.1.0-dev4 candidates)
 
-- Convert the endgame suite failures (`kqk-12`, `krk-17`) into a repetition-aware
-  eval or a claim-aware root policy; both currently draw games that are won.
+- Give the search a fifty-move or progress term. The two endgame positions that
+  used to be shuffled into a claimable repetition (`kqk-12`, `krk-17`) now convert
+  after a null-move ordering bug was fixed, but nothing in the search understands
+  progress, so the class of failure is still open.
 - Re-run the tuning pipeline on a much larger corpus from a stronger baseline.
   The dev3 analyser's data was produced by a 6,000-node search, and the fitted
   parameters' disagreement with play suggests the labels, not the optimiser, are

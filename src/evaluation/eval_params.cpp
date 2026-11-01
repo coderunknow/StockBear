@@ -109,6 +109,19 @@ bool apply_eval_params(const EvalParams& params, std::string* error) {
     return true;
 }
 
+namespace {
+// Strict integer parse: the whole token must be a number.
+bool parse_int(const std::string& text, long long& out) {
+    std::size_t used = 0;
+    try {
+        out = std::stoll(text, &used);
+    } catch (const std::exception&) {
+        return false;
+    }
+    return used == text.size();
+}
+} // namespace
+
 bool load_eval_params_file(const std::string& path, EvalParams* params, std::string* error) {
     std::ifstream in(path);
     if (!in) {
@@ -125,24 +138,41 @@ bool load_eval_params_file(const std::string& path, EvalParams* params, std::str
         const std::size_t hash = line.find('#');
         if (hash != std::string::npos) line.resize(hash);
         std::istringstream fields(line);
-        std::string name, eq;
+        std::string name, token;
         long long mg = 0, eg = 0;
         if (!(fields >> name)) continue;
-        if (!(fields >> mg)) {
+        // Accept both "Name mg eg" and "Name = mg eg", plus a single value that
+        // applies to both phases. Numbers must be consumed completely, so a
+        // typo like "120junk" is rejected instead of silently meaning 120.
+        if (!(fields >> token)) {
             if (error != nullptr) *error = "line " + std::to_string(lineNo) + ": missing value";
             return false;
         }
-        if (fields >> eq) {
-            // Accept both "Name mg eg" and "Name = mg eg".
-            if (eq == "=") { if (!(fields >> eg)) eg = mg; }
-            else {
-                try { eg = std::stoll(eq); }
-                catch (const std::exception&) {
+        if (token == "=" && !(fields >> token)) {
+            if (error != nullptr) *error = "line " + std::to_string(lineNo) + ": missing value";
+            return false;
+        }
+        if (!parse_int(token, mg)) {
+            if (error != nullptr) *error = "line " + std::to_string(lineNo) + ": bad value " + token;
+            return false;
+        }
+        eg = mg;
+        if (fields >> token) {
+            if (token == "=") {
+                if (!(fields >> token) || !parse_int(token, eg)) {
                     if (error != nullptr) *error = "line " + std::to_string(lineNo) + ": bad value";
                     return false;
                 }
+            } else if (!parse_int(token, eg)) {
+                if (error != nullptr) *error = "line " + std::to_string(lineNo) + ": bad value " + token;
+                return false;
             }
-        } else eg = mg;
+        }
+        if (fields >> token) {
+            if (error != nullptr)
+                *error = "line " + std::to_string(lineNo) + ": unexpected extra field " + token;
+            return false;
+        }
         const int id = index_of(name);
         if (id < 0) {
             if (error != nullptr) *error = "line " + std::to_string(lineNo) + ": unknown parameter " + name;

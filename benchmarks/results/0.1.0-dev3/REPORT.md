@@ -77,11 +77,15 @@ reported as unadjudicated and are never counted as draws.
 | all five switches on | 571 | 205/152/214 | 0.5018 | **+1.3 [−17.9, +20.5]** | **+1.3 [−62.9, +65.6]** | 10/68/126/48/19 | 29 |
 | historyMaluses/LMR/continuation subset | 600 | 195/182/223 | 0.4767 | **−16.2 [−33.0, +0.5]** | **−16.2 [−71.6, +38.3]** | 19/29/166/77/9 | 0 |
 
-Both results are inside the noise band by both intervals and neither shows an
-improvement; neither configuration is a strength
-improvement, and the all-on configuration costs 8 % more time at a fixed depth.
-The switches therefore default to **off**, and the shipped search is dev2's. Raw
-records: `match-dev2-search-allon.jsonl`, `match-dev2-search-subset.jsonl`.
+Both results are inside the noise band by both intervals, and neither shows an
+improvement; the all-on configuration additionally costs about 8 % more time at a
+fixed depth. The switches therefore default to **off**. Raw records:
+`match-dev2-search-allon.jsonl`, `match-dev2-search-subset.jsonl`.
+
+Every record's `config` object names the options that were actually sent to each
+engine and the defaults the engine advertised, so the configuration can be read
+out of the evidence instead of being inferred from a build's defaults — which
+matter here, because those defaults changed during this release.
 
 ### Evaluation: tuned candidates against the shipped evaluation
 
@@ -94,19 +98,19 @@ differs (`--b-option EvalParams=…`).
 | B (`--ridge 0.10 --max-delta-fraction 0.20`) | 590 | 249/187/154 | **−51.3 [−72.1, −30.8]** | **−51.3 [−122.4, +15.7]** | no improvement |
 | C (`--ridge 0.04 --max-delta-fraction 0.30`) | 590 | 202/176/212 | **+12.0 [−10.3, +34.4]** | **+12.0 [−61.4, +86.4]** | indistinguishable |
 
-A fourth fit with the Texel scale pinned at K = 400 (so fitted scores stay
-calibrated against the search's pruning margins), ridge 0.10, a 20 % movement cap,
-sign preservation and anchored material values changed **no parameter at all**:
-its train and holdout losses are identical to the baseline's. It was therefore not
-matched — there is nothing to test — and it is the clearest statement of the
-result: under a conservative bound the data cannot justify moving a single
-coefficient of the shipped evaluation.
+A fourth fit (`D`) pins the Texel scale at K = 400 (so fitted scores stay
+calibrated against the search's pruning margins), uses ridge 0.10, a 20 % movement
+cap, sign preservation and anchored material values. It moves seven positional
+terms by one or two points and lowers the holdout loss from 0.5777 to 0.5719. It
+was not matched and not shipped: the changes are smaller than the resolution of
+the matches above, and the objective's improvement comes from shrinking already
+small terms, not from a direction the games can confirm.
 
 The candidate with the best tuning-loss improvement (A) was the worst in play.
 Only A is separated from the baseline by both intervals; for B and C the claim is
 "no improvement was demonstrated", which is enough to reject them without
 overstating the measurement.
-Details, dataset hashes and the reproduction commands: [../../docs/TUNING.md](../../docs/TUNING.md).
+Details, dataset hashes and the reproduction commands: [../../../docs/TUNING.md](../../../docs/TUNING.md).
 
 ### Regression check: the shipped configuration against dev2
 
@@ -118,9 +122,10 @@ opening pairs (200 games), `--nodes 4000`, seed `20261108`:
 | --- | --- | --- | --- | --- | --- |
 | 200 | 70/60/70 | **0.5000** | **100 of 100** | 0/0/100/0/0 | 0 |
 
-Every pair split exactly one win each way, which is what identical play under
-colour reversal looks like; the harness reports a null interval because the
-sample has zero variance. That is the intended outcome: the protocol layer and
+The 100 pairs are 70 pairs split one win each way plus 30 pairs of two draws;
+every pair therefore scored 1.0, which is what identical play under colour
+reversal looks like. The harness reports a null interval because the sample has
+zero variance. That is the intended outcome: the protocol layer and
 the option plumbing changed, the play did not. Raw record:
 `match-dev2-shipped-regression.jsonl`.
 
@@ -159,7 +164,14 @@ move", not "agreed with one arbitrary choice".
 
 | run | node budget | solved | notes |
 | --- | --- | --- | --- |
-| dev3 shipped | 60,000 | **26/26** | all solved well inside the budget; mate scores reported from depth 2 |
+| dev3 shipped (`e96cb712…`) | 60,000 | **26/26** | no position reached the budget; the first mate score appears at reported depth 1–5 |
+
+Once a forced mate is proved, each further iteration is nearly free because the
+mate bounds cut the tree immediately, so the engine keeps deepening to its
+horizon (depth 243) in a few thousand nodes instead of stopping. That is the
+behaviour dev2 had and it is kept, but it means the *last* reported depth says
+nothing useful; the JSON records both `depth` (last) and `mate_depth` (first mate
+line), and only the latter is quoted.
 
 `benchmarks/tactics/endgame_suite.epd` — 24 constructed three-man endgames
 (12 K+Q v K, 12 K+R v K), all theoretical wins, played out with the engine on both
@@ -167,14 +179,28 @@ sides and adjudicated by python-chess.
 
 | run | node budget | mate inside 120 plies | failures |
 | --- | --- | --- | --- |
-| dev3 shipped | 400,000 | **22/24** | `kqk-12`, `krk-17` |
-| dev3 shipped | 200,000 | 22/24 | `kqk-04`, `kqk-09` (different positions) |
-| dev3 shipped | 20,000 | 12/24 | 12 repeats/fifty-move |
+| dev3 shipped (`e96cb712…`) | 400,000 | **24/24** | none |
+| pre-review build of the same source | 400,000 | 22/24 | `kqk-12`, `krk-17` |
+| pre-review build | 200,000 | 22/24 | `kqk-04`, `kqk-09` (different positions) |
+| pre-review build | 20,000 | 12/24 | 12 repeats/fifty-move |
 
-The two failures are not engine bugs but a real weakness: the winning side allowed
-a **second** repetition, which lets the defender claim the third, and a
-repetition is only scored as a draw once it is claimable. It is reported as a
-known limitation, not hidden — see [Known limitations](#known-limitations).
+The difference between the first two rows is a real bug that the review found: a
+null move left the "previous move" slot untouched, so the child of a null move
+read a stale move from an earlier branch and ordered its quiets against the wrong
+context. Bench signatures did not change, because the benchmark positions do not
+reach that case at depth 6 or 7, but the play did — the two repetitions that
+spoiled `kqk-12` and `krk-17` no longer occur. The engine's search behaviour is
+now *not* bit-identical to dev2's in positions with null-move pruning and history
+ordering; the benchmark signatures are identical, and the regression match below
+was replayed after the fix.
+
+The pre-review failures were not crashes: in both the winning side allowed a
+**second** repetition, which lets the defender claim the third, and a repetition
+is only scored as a draw once it is claimable, so from a distance the shuffle
+looks free. After the null-move fix neither occurs, but the underlying weakness —
+a search with no fifty-move or progress term can still walk into a claim in a
+position it cannot yet see is drawn — is unchanged, and it is why the suite also
+records the termination of every game rather than only the score.
 
 Raw records and the complete engine output: `tactics-mate.json`,
 `tactics-mate.raw.txt`, `endgame-conversion.json`, `endgame-conversion.raw.txt`.
@@ -192,7 +218,10 @@ internals:
   a single legal move, illegal entries reported and dropped, an all-illegal list
   reported and ignored, a list followed by another keyword), and **MultiPV**
   (3 ranked distinct lines, best move equals line 1, scores non-increasing,
-  fewer legal moves than requested, return to single-PV output).
+  fewer legal moves than requested, return to single-PV output), and
+  **`EvalParams`** (a candidate file whose path contains spaces, an unreadable
+  file reported and ignored, and a reset that provably restores the shipped
+  evaluation).
 * `uci_fuzz` — 300 seeded malformed inputs and cancellations, unchanged.
 
 Everything the engine advertises it implements; pondering, Chess960 and threads
@@ -213,7 +242,7 @@ are neither implemented nor advertised.
 * **No Stockfish 19 measurement.** See above.
 * **The evaluation did not improve.** The tuning pipeline works and is
   reproducible, but its candidates lost their matches; see
-  [TUNING.md](../../docs/TUNING.md).
+  [TUNING.md](../../../docs/TUNING.md).
 * **Node-limited matches.** All matches use a fixed node budget per move, so they
   measure strength per node, not per second. The all-on search configuration costs
   8 % more time at equal depth, which a time control would expose; that is part of

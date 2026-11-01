@@ -347,10 +347,15 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
     if (params_.nullMove && allowNull && !pvNode && !inCheck && !mateWindow && depth >= 3 &&
         staticEval >= beta && has_non_pawn_material(pos)) {
         const int reduction = 3 + depth / 5;
+        // A null move is not a move: clear the slot so the child does not read
+        // a stale previous move from a sibling branch or an earlier iteration.
+        const Move savedPrevious = moveStack_[ply];
+        moveStack_[ply] = MOVE_NONE;
         pos.make_null_move();
         const int value = -negamax(pos, depth - 1 - reduction, -beta, -beta + 1, ply + 1,
                                    false, extensions, false);
         pos.unmake_null_move();
+        moveStack_[ply] = savedPrevious;
         if (aborted_) return 0;
         if (value >= beta) return value >= MATE_BOUND ? beta : value;
     }

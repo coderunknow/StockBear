@@ -117,6 +117,17 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     }
     std::string extra;
     const std::string key = lower(name);
+    if (key == "evalparams") {
+        // A `type string` option is a path, and a path may contain spaces. The
+        // parser above stopped at the first token, so take the rest of the line.
+        std::string rest;
+        std::getline(in, rest);
+        while (!rest.empty() && std::isspace(static_cast<unsigned char>(rest.front())))
+            rest.erase(rest.begin());
+        while (!rest.empty() && std::isspace(static_cast<unsigned char>(rest.back())))
+            rest.pop_back();
+        if (!rest.empty()) value += " " + rest;
+    }
     if (key == "multipv") {
         std::uint64_t count = 0;
         if ((in >> extra) || !number(value, count, 64) || count < 1 || count > 8) {
@@ -131,10 +142,16 @@ void UciEngine::handle_setoption(const std::string& arguments) {
         // evaluation differs and the change is isolated. It also lets a user
         // reproduce the dev2 baseline (benchmarks/params/dev2-baseline.txt) or a
         // recorded candidate without rebuilding.
-        if ((in >> extra)) { emit("info string setoption: unexpected value for EvalParams"); return; }
         std::string applyError;
         if (value.empty() || lower(value) == "<empty>") {
+            // init_evaluation() is a one-time bootstrap and has already run, so
+            // it cannot undo a custom set; install the shipped table explicitly.
             init_evaluation();
+            std::string resetError;
+            if (!apply_eval_params(default_eval_params(), &resetError)) {
+                emit("info string setoption: EvalParams reset failed: " + resetError);
+                return;
+            }
             table_.clear();
             emit("info string EvalParams reset: shipped set");
             return;

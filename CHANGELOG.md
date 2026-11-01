@@ -18,8 +18,10 @@ and the negative result are documented instead of shipping an unvalidated set.
   MultiPV by re-running the root with the reported moves excluded, and swaps the
   alpha-improving move into the reported slot so `(move, score, pv)` cannot
   disagree. With every new switch off, the depth-6 and depth-7 bench signatures
-  are exactly dev2's (`e06c4352681ae8eb`, `5bceff035f2a4ae4`), which is the proof
-  that the rewrite did not change single-PV search.
+  are exactly dev2's (`e06c4352681ae8eb`, `5bceff035f2a4ae4`), so the rewrite
+  reproduces dev2 on the benchmark suite; that is a suite-level regression guard,
+  not a proof of identical behaviour everywhere, and a null-move ordering fix
+  found in review leaves both signatures unchanged while changing play.
 - **Real MultiPV.** `setoption name MultiPV value 1..8` is advertised and
   implemented; lines are reported best-first with `multipv N`, exact scores and
   a PV that starts with its own move. A position with fewer legal moves than
@@ -43,14 +45,15 @@ and the negative result are documented instead of shipping an unvalidated set.
   and measured against the shipped evaluation (590–591 decided games each, paired
   colour-reversed, fixed node budget): −119.1 Elo (worse by both the pentanomial
   and the opening-clustered interval), −51.3 and +12.0 Elo (neither shown to be
-  worse, neither an improvement). A fourth, conservative fit (Texel scale pinned,
-  ridge 0.10, 20 % movement cap, anchored material) changed no parameter at all.
-  None justified a change, so dev3 ships the dev2 values. Full record:
-  [docs/TUNING.md](docs/TUNING.md).
+  worse, neither an improvement). A fourth, conservative fit (Texel scale pinned
+  at 400, ridge 0.10, 20 % movement cap, anchored material) moves seven positional
+  terms by one or two points. None justified a change, so dev3 ships the dev2
+  values. Full record: [docs/TUNING.md](docs/TUNING.md).
 - **Tactics and endgame regression suites.** `benchmarks/tactics/mate_suite.epd`
   (26 forced mates, certified by an independent mate proof on python-chess with
   *all* mating moves accepted) and `benchmarks/tactics/endgame_suite.epd`
-  (24 constructed KQK/KRK conversions). `scripts/run_suite.py` records per
+  (24 constructed KQK/KRK conversions, all converted at 400 k nodes after the
+  null-move ordering fix). `scripts/run_suite.py` records per
   position the move, depth, node count, time and whether the node budget was
   exhausted, and keeps the raw engine output.
 - **Deterministic match control** (from the dev2 line, now released):

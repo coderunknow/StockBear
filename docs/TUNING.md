@@ -83,19 +83,34 @@ game: 1 498 / 374 games, 60 651 / 14 765 positions). Files:
 | set | flags | changed | holdout loss (baseline → tuned) | ship? |
 | --- | --- | --- | --- | --- |
 | baseline (dev2, shipped) | — | — | 0.5544 | **yes** |
-| A | `--ridge 0.02 --max-delta-fraction 0.35 --no-preserve-sign` | 22 | 0.5603 → 0.5320 | no |
-| B | `--ridge 0.10 --max-delta-fraction 0.20` | 7 | 0.5544 → 0.5470 | no |
-| C | `--ridge 0.04 --max-delta-fraction 0.30` | 13 | 0.5544 → 0.5411 | no |
+| A | `--ridge 0.02 --max-delta-fraction 0.35 --no-preserve-sign --tune-k` | 22 | 0.5603 → 0.5320 | no |
+| B | `--ridge 0.10 --max-delta-fraction 0.20 --tune-k` | 7 | 0.5544 → 0.5470 | no |
+| C | `--ridge 0.04 --max-delta-fraction 0.30 --tune-k` | 13 | 0.5544 → 0.5411 | no |
+| D | `--k 400 --ridge 0.10 --max-delta-fraction 0.20`, material anchored | 7 | 0.5777 → 0.5719 | no |
 
-The baseline loss differs between A and B/C because `K` is picked on the training
-split for each set (A: 450, B and C: 600), and each row reports the loss at its
-own `K`.
+The baseline loss differs between the rows because `K` is either picked on the
+training split for that set (A: 500, B and C: 600) or pinned (`D`: 400), and each
+row reports the loss at its own `K`. The numbers above are the ones recorded in
+each `variant*.json`; the earlier drafts of this file quoted the K values and the
+candidate-A coefficients from memory, which is exactly the kind of drift the
+committed reports exist to prevent.
 
 Every candidate lowered the holdout loss. A lowered it the most, and it is also
-the one whose parameters are least believable: it wants pawns worth 50 (the table
-minimum), knights 248, and an isolated-pawn *bonus* of +9 in the middlegame. That
-is the classic signature of a flat loss surface, not a discovery — exactly the
-case the release criteria exist for.
+the one whose parameters are least believable: it wants knights 248 (from 296),
+bishops 263, rooks 400 (from 500), queens 1045, and an isolated-pawn *bonus* of
++9 in the middlegame while the endgame value stays −13. A set that changes its
+mind about the sign of a term between phases, without that being the point of the
+experiment, is the classic signature of a flat loss surface, not a discovery —
+exactly the case the release criteria exist for.
+
+`D` is the conservative set: the Texel scale is pinned at 400 so the fitted
+numbers stay calibrated against the search's pruning margins, the movement from
+the shipped values is capped at 20 % of each parameter's range, signs are
+preserved and the five material values are anchored. It moves seven
+positional terms by one or two points (for example `PstPawnRank` 5/9 → 6/10,
+`IsolatedPawn` −11/−9 → −6/−9) and lowers both the training and the holdout loss.
+Its per-parameter changes are the size of the noise the matches below could not
+resolve, so it is recorded, not shipped.
 
 ## Matches
 
@@ -111,15 +126,14 @@ Elo always means "engine A (the shipped evaluation) was stronger".
 | baseline vs candidate B | 590 | 0.5733, W/D/L 249/187/154 | **−51.3 [−72.1, −30.8]** | **−51.3 [−122.4, +15.7]** | no improvement; the worse reading is not confirmed |
 | baseline vs candidate C | 590 | 0.4828, W/D/L 202/176/212 | **+12.0 [−10.3, +34.4]** | **+12.0 [−61.4, +86.4]** | cannot distinguish |
 
-A fourth fit was run with the scale pinned and the search in mind: `--k 400`
-(the default, so the fitted scores stay calibrated against the pruning margins),
-`--ridge 0.10 --max-delta-fraction 0.20`, sign preservation, and the five material
-values anchored. It **changed no parameter at all** — the training and holdout
-losses are identical to the baseline to the last digit (`variantD.txt`,
-`variantD.json`). Under a 20 % movement bound the data does not contain enough
-signal to justify moving a single coefficient, which is the strongest available
-statement that the shipped set sits at an optimum of this objective, not that a
-better set is hidden nearby.
+Candidate `D` (scale pinned at 400, ridge 0.10, 20 % movement cap, signs
+preserved, material anchored) changes seven positional terms by one or two points
+and lowers the holdout loss from 0.5777 to 0.5719 (`variantD.txt`,
+`variantD.json`). It was **not** shipped: the changes are the size of the noise
+the matches cannot resolve, and the earlier measurement records for it were
+produced by a tuner that stopped at its first unchanged 64-point sweep. The step
+schedule now continues down to a one-point step before declaring convergence, and
+this is the record produced after that fix.
 
 Both intervals are reported because they answer different questions: the
 pentanomial one treats the 295 opening pairs as independent, the clustered one

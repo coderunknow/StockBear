@@ -200,9 +200,14 @@ int benchmark_cli(int argc, char** argv) {
             overrides.emplace_back(text.substr(0, eq), text.substr(eq + 1));
             continue;
         }
-        if (arg == "--params" && i + 1 < argc) {
+        if (arg == "--params") {
             // Same parameter file format as `eval`/`evaldata`: bench a candidate
-            // evaluation without rebuilding the engine.
+            // evaluation without rebuilding the engine. An empty path is an
+            // error, not a silent fallback to the default evaluation.
+            if (i + 1 >= argc || std::string(argv[i + 1]).empty()) {
+                std::cerr << "--params needs a file path\n";
+                return 2;
+            }
             evalParamsPath = argv[++i];
             continue;
         }

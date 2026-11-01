@@ -21,15 +21,15 @@
  "holdout_fraction": 0.2,
  "loss": {
   "baseline_train": 0.5901611519408481,
-  "tuned_train": 0.5901611519408481,
+  "tuned_train": 0.5839301236174621,
   "baseline_holdout": 0.5777319397712778,
-  "tuned_holdout": 0.5777319397712778
+  "tuned_holdout": 0.5718703031461843
  },
  "score_rmse_cp": {
   "baseline_train": 542.9228940900413,
-  "tuned_train": 542.9228940900413,
+  "tuned_train": 543.0551151429945,
   "baseline_holdout": 555.6821049690116,
-  "tuned_holdout": 555.6821049690116
+  "tuned_holdout": 555.8049896967468
  },
  "sweeps": [
   {
@@ -38,6 +38,55 @@
    "changes": 0,
    "train_objective": 0.5901611519408481,
    "train_loss": 0.5901611519408481
+  },
+  {
+   "sweep": 1,
+   "step": 32,
+   "changes": 0,
+   "train_objective": 0.5901611519408481,
+   "train_loss": 0.5901611519408481
+  },
+  {
+   "sweep": 2,
+   "step": 16,
+   "changes": 0,
+   "train_objective": 0.5901611519408481,
+   "train_loss": 0.5901611519408481
+  },
+  {
+   "sweep": 3,
+   "step": 8,
+   "changes": 1,
+   "train_objective": 0.5897260224374816,
+   "train_loss": 0.5879482446597039
+  },
+  {
+   "sweep": 4,
+   "step": 4,
+   "changes": 1,
+   "train_objective": 0.5894684587236497,
+   "train_loss": 0.5890240142792053
+  },
+  {
+   "sweep": 5,
+   "step": 2,
+   "changes": 2,
+   "train_objective": 0.5881526079666202,
+   "train_loss": 0.5863192746332868
+  },
+  {
+   "sweep": 6,
+   "step": 1,
+   "changes": 10,
+   "train_objective": 0.5872769206696163,
+   "train_loss": 0.5839301236174621
+  },
+  {
+   "sweep": 7,
+   "step": 1,
+   "changes": 0,
+   "train_objective": 0.5872769206696163,
+   "train_loss": 0.5839301236174621
   }
  ],
  "baseline": {
@@ -192,8 +241,8 @@
    938
   ],
   "PstPawnRank": [
-   5,
-   9
+   6,
+   10
   ],
   "PstPawnFile": [
    3,
@@ -205,7 +254,7 @@
   ],
   "PstBishopCenter": [
    5,
-   4
+   3
   ],
   "PstRookRank": [
    2,
@@ -240,24 +289,24 @@
    38
   ],
   "IsolatedPawn": [
-   -11,
+   -6,
    -9
   ],
   "DoubledPawn": [
-   -8,
-   -12
+   -7,
+   -13
   ],
   "PassedPawnAdvance": [
-   2,
-   5
+   1,
+   7
   ],
   "MobilityKnight": [
    4,
    3
   ],
   "MobilityBishop": [
-   4,
-   4
+   3,
+   3
   ],
   "MobilityRook": [
    2,
@@ -276,7 +325,7 @@
    6
   ],
   "PawnShield": [
-   8,
+   7,
    0
   ],
   "KingDangerPawn": [
@@ -300,5 +349,76 @@
    0
   ]
  },
- "changed": {}
+ "changed": {
+  "PstPawnRank": {
+   "from": [
+    5,
+    9
+   ],
+   "to": [
+    6,
+    10
+   ]
+  },
+  "PstBishopCenter": {
+   "from": [
+    5,
+    4
+   ],
+   "to": [
+    5,
+    3
+   ]
+  },
+  "IsolatedPawn": {
+   "from": [
+    -11,
+    -9
+   ],
+   "to": [
+    -6,
+    -9
+   ]
+  },
+  "DoubledPawn": {
+   "from": [
+    -8,
+    -12
+   ],
+   "to": [
+    -7,
+    -13
+   ]
+  },
+  "PassedPawnAdvance": {
+   "from": [
+    2,
+    5
+   ],
+   "to": [
+    1,
+    7
+   ]
+  },
+  "MobilityBishop": {
+   "from": [
+    4,
+    4
+   ],
+   "to": [
+    3,
+    3
+   ]
+  },
+  "PawnShield": {
+   "from": [
+    8,
+    0
+   ],
+   "to": [
+    7,
+    0
+   ]
+  }
+ }
 }

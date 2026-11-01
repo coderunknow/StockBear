@@ -3,8 +3,10 @@
 import os
 import queue
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 
@@ -15,6 +17,21 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 def read_version():
     with open(os.path.join(ROOT, "VERSION"), encoding="utf-8") as handle:
         return handle.read().strip()
+def scored_line(lines):
+    """The deterministic part of the last scored info line: score and PV only.
+
+    Node count, NPS and time are machine-dependent, so comparing them would make
+    this test flaky for no benefit.
+    """
+    for line in reversed(lines):
+        if " score " in line and " pv " in line:
+            fields = line.split()
+            score = " ".join(fields[fields.index("score"):fields.index("score") + 3])
+            pv = " ".join(fields[fields.index("pv"):])
+            return score + " | " + pv
+    raise AssertionError(f"no scored line in {lines[-3:]}")
+
+
 MOVE = re.compile(r"^(?:[a-h][1-8][a-h][1-8][qrbn]?|0000)$")
 
 class Engine:
@@ -300,6 +317,54 @@ def main():
     finally:
         e.close()
     print("PASS UCI searchmoves and MultiPV over depth, nodes, movetime and clocks")
+
+    # --- EvalParams: loading, paths with spaces, and reset ------------------
+    midgame = "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4"
+    baseline = {}
+    e = Engine()
+    try:
+        e.send("uci")
+        _, hello = e.until(lambda x: x == "uciok")
+        assert any(x.startswith("option name EvalParams type string") for x in hello), hello
+        e.ready()
+        e.send(f"position fen {midgame}")
+        e.send("go depth 5")
+        best, lines = e.best(10)
+        baseline["best"], baseline["score"] = best, scored_line(lines)
+
+        # A parameter file whose path contains spaces must load: the option is a
+        # `type string` path, and Windows user directories contain spaces.
+        directory = tempfile.mkdtemp(prefix="stockbear params ")
+        params = os.path.join(directory, "candidate set.txt")
+        with open(params, "w", encoding="utf-8") as handle:
+            handle.write("MaterialPawn 100 120\nMaterialQueen 1200 1300\n")
+        e.send(f"setoption name EvalParams value {params}")
+        _, loaded = e.until(lambda x: x.startswith("info string EvalParams"))
+        assert "loaded" in loaded[-1], loaded
+        e.ready()
+
+        # An unreadable file must be reported and must not change anything.
+        e.send("setoption name EvalParams value does/not/exist.txt")
+        _, failed = e.until(lambda x: x.startswith("info string setoption"))
+        assert "could not load" in failed[-1], failed
+
+        # Reset must actually restore the shipped evaluation, not just say so:
+        # after the reset the same position at the same depth must produce the
+        # same score line as a fresh engine did before any file was loaded.
+        e.send("setoption name EvalParams value <empty>")
+        _, reset = e.until(lambda x: x.startswith("info string EvalParams"))
+        assert "reset" in reset[-1], reset
+        e.ready()
+        e.send(f"position fen {midgame}")
+        e.send("go depth 5")
+        best, lines = e.best(10)
+        assert (best, scored_line(lines)) == (baseline["best"], baseline["score"]), \
+            (best, scored_line(lines), baseline)
+        shutil.rmtree(directory, ignore_errors=True)
+    finally:
+        e.close()
+    print("PASS UCI EvalParams loading, spaced paths, invalid file and reset")
+
 
 if __name__ == "__main__":
     main()
