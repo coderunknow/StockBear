@@ -35,7 +35,9 @@ jobs:
         run: |
           set -u
           cmake -E chdir build ctest -C ${{ matrix.config }} --output-on-failure > /tmp/ctest.log 2>&1 || true
-          "$PWD/build/${{ matrix.config }}/stockbear_tests.exe" unit > /tmp/unit.log 2>&1 || echo "EXIT $?" >> /tmp/unit.log
+          exe=$(find build -name 'stockbear_tests.exe' -o -name 'stockbear_tests' | head -1)
+          echo "exe=$exe" > /tmp/unit.log
+          "$exe" unit >> /tmp/unit.log 2>&1 || echo "EXIT $?" >> /tmp/unit.log
           {
             echo '### Windows ${{ matrix.config }} unit output'
             echo '```'
