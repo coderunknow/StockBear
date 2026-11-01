@@ -16,7 +16,7 @@ tactics/endgame suites certified by an independent mate oracle. Its evaluation i
 ordering switches off. Three tuned evaluation candidates and two experimental
 search configurations were matched against the dev2 binary and none was stronger
 (+1.3 [−17.9, +20.5] and −16.2 [−33.0, +0.5] Elo for the search configurations;
-−119.1, −51.3 and +12.0 Elo for the evaluation candidates; 571–600 decided games
+−132.5, 0.0 and −9.2 Elo for the evaluation candidates; 571–600 decided games
 each). The shipped configuration plays as dev2 did — a 200-game regression match
 scored 0.5000 with every opening pair level — so the release is a correctness,
 protocol and tooling release, not a strength claim. dev2's own result stands:

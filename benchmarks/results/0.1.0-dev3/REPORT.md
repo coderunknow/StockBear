@@ -40,11 +40,19 @@ otherwise idle machine and are given as a range.
 | **dev3 shipped** | 7 | **250,053** | **130 ms** | **`5bceff035f2a4ae4`** |
 | dev3 with all five new ordering switches on | 6 | 118,548 | 69–72 ms | `8d99b4e28a6231a0` |
 | dev3 with all five new ordering switches on | 7 | 255,021 | 140–143 ms | `f6103610012f7f9d` |
+| dev3 with the tuned candidate A | 6 | — | — | `269a852faa999f37` |
 
-The shipped build's depth-6 and depth-7 signatures are byte-identical to dev2's,
-which is a stronger statement than "similar node counts": with the new switches
-off, the rewritten search produces the same moves, scores, depths, node counts
-and principal variations on every benchmark position.
+The raw output of each run is committed: `bench-depth6.csv`, `bench-depth7.csv`
+and `bench-depth7-allon.csv`.
+
+The shipped build's depth-6 and depth-7 signatures are byte-identical to dev2's:
+with the new switches off, the rewritten search produces the same moves, scores,
+depths, node counts and principal variations on every benchmark position. That is
+a statement about these twelve positions, and this release provides a concrete
+counter-example to reading it as "identical behaviour everywhere": the review fix
+that makes a null move clear the previous-move slot leaves both signatures
+untouched and changes play in deeper endgames (see
+[the endgame suite](#tactics-and-endgame-suites)).
 
 Ablation of the new ordering features at depth 7 (nodes; all five on = 255,021):
 
@@ -75,7 +83,12 @@ reported as unadjudicated and are never counted as draws.
 | configuration (engine A) | decided | W/D/L | A score | Elo, pentanomial | Elo, opening-clustered | pairs 0/0.5/1/1.5/2 | unadj. |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | all five switches on | 571 | 205/152/214 | 0.5018 | **+1.3 [−17.9, +20.5]** | **+1.3 [−62.9, +65.6]** | 10/68/126/48/19 | 29 |
-| historyMaluses/LMR/continuation subset | 600 | 195/182/223 | 0.4767 | **−16.2 [−33.0, +0.5]** | **−16.2 [−71.6, +38.3]** | 19/29/166/77/9 | 0 |
+| historyMaluses + historyLMR | 600 | 195/182/223 | 0.4767 | **−16.2 [−33.0, +0.5]** | **−16.2 [−71.6, +38.3]** | 19/29/166/77/9 | 0 |
+
+Both matches were replayed from the reviewed build with **all five switches set
+explicitly on both engines** and reproduce the earlier numbers exactly; the
+records' `configuration` line now lists every option sent to each side and every
+default each engine advertised.
 
 Both results are inside the noise band by both intervals, and neither shows an
 improvement; the all-on configuration additionally costs about 8 % more time at a
@@ -94,9 +107,9 @@ differs (`--b-option EvalParams=…`).
 
 | candidate | decided | engine A (shipped) W/D/L | candidate Elo, pentanomial | candidate Elo, opening-clustered | verdict |
 | --- | --- | --- | --- | --- | --- |
-| A (`--ridge 0.02 --max-delta-fraction 0.35 --no-preserve-sign`) | 591 | 328/136/127 | **−119.1 [−140.8, −98.2]** | **−119.1 [−195.9, −52.1]** | worse by both intervals |
-| B (`--ridge 0.10 --max-delta-fraction 0.20`) | 590 | 249/187/154 | **−51.3 [−72.1, −30.8]** | **−51.3 [−122.4, +15.7]** | no improvement |
-| C (`--ridge 0.04 --max-delta-fraction 0.30`) | 590 | 202/176/212 | **+12.0 [−10.3, +34.4]** | **+12.0 [−61.4, +86.4]** | indistinguishable |
+| A (`--ridge 0.02 --max-delta-fraction 0.35 --no-preserve-sign`) | 590 | 339/133/118 | **−132.5 [−158.6, −107.7]** | **−132.5 [−227.3, −53.6]** | worse by both intervals |
+| B (`--ridge 0.10 --max-delta-fraction 0.20`) | 600 | 204/192/204 | **0.0 [−22.1, +22.1]** | **0.0 [−74.5, +74.5]** | indistinguishable |
+| C (`--ridge 0.04 --max-delta-fraction 0.30`) | 582 | 162/234/186 | **−9.2 [−32.4, +13.8]** | **−9.2 [−87.6, +68.2]** | indistinguishable |
 
 A fourth fit (`D`) pins the Texel scale at K = 400 (so fitted scores stay
 calibrated against the search's pruning margins), uses ridge 0.10, a 20 % movement
@@ -106,10 +119,14 @@ was not matched and not shipped: the changes are smaller than the resolution of
 the matches above, and the objective's improvement comes from shrinking already
 small terms, not from a direction the games can confirm.
 
-The candidate with the best tuning-loss improvement (A) was the worst in play.
+The candidate with the best tuning-loss improvement (A) was the worst in play, in
+both the first run (−119.1 Elo) and the replay from the reviewed build (−132.5).
 Only A is separated from the baseline by both intervals; for B and C the claim is
 "no improvement was demonstrated", which is enough to reject them without
-overstating the measurement.
+overstating the measurement. As the seeding and 600-game budget are identical,
+the difference between a candidate's two runs is the same measurement repeated —
+A moved by about 13 Elo between runs, which is a useful reminder of how wide these
+intervals are in practice.
 Details, dataset hashes and the reproduction commands: [../../../docs/TUNING.md](../../../docs/TUNING.md).
 
 ### Regression check: the shipped configuration against dev2
@@ -120,7 +137,7 @@ opening pairs (200 games), `--nodes 4000`, seed `20261108`:
 
 | decided | W/D/L | score | pairs scoring 1.0 | pentanomial | unadj. |
 | --- | --- | --- | --- | --- | --- |
-| 200 | 70/60/70 | **0.5000** | **100 of 100** | 0/0/100/0/0 | 0 |
+| 200 (replayed from the reviewed build) | 70/60/70 | **0.5000** | **100 of 100** | 0/0/100/0/0 | 0 |
 
 The 100 pairs are 70 pairs split one win each way plus 30 pairs of two draws;
 every pair therefore scored 1.0, which is what identical play under colour
@@ -233,6 +250,42 @@ are neither implemented nor advertised.
 * `python3` with `chess==1.11.2`; the engine itself needs neither.
 * Every match file records the exact command line, seed, opening suite, node
   budget, hash size and thread count in its `config` object.
+
+## Review record
+
+CodeRabbit's first pass reported the pull request as skipped, so the review was
+triggered explicitly on `21d0d46`. It then produced a real review of that commit
+(20 inline findings, 3 major / 17 minor) and the commit after this one addresses
+them. What changed as a result:
+
+| finding | severity | resolution |
+| --- | --- | --- |
+| null move left a stale previous move in the ordering context | minor, correctness | fixed; endgame suite went 22/24 → 24/24, bench signatures unchanged |
+| `EvalParams` reset reported success without restoring the table | major, correctness | fixed, plus a black-box test that compares the score before and after |
+| `EvalParams` rejected paths containing spaces | minor | fixed, with a test using a directory whose name contains a space |
+| parameter-file parser could not read the `Name = mg eg` form it advertised | minor | fixed, both forms unit-tested |
+| `120junk` parsed as 120 | minor | fixed, five malformed inputs unit-tested |
+| `bench --params ""` silently benchmarked the default evaluation | minor | fixed, now an error |
+| oracle could certify a mate while a defensive reply was unproven | major, correctness | fixed; a negative score now requires every reply to be proven |
+| oracle did not advance the mate distance per ply | minor, correctness | fixed |
+| suite runner could block forever in `readline()` | major, stability | fixed with a reader thread and a real deadline |
+| suite runner recorded an illegal endgame move twice | minor | fixed |
+| tuner ignored its own sign-preserving bounds | minor | fixed |
+| tuner stopped at the first unchanged coarse sweep | major | fixed; the variant D record was regenerated |
+| matches did not record what each engine was set to | major, evidence | fixed; both matches replayed with explicit switches |
+| report links, stale suite manifest hash, candidate-A `K` and coefficients, pair-outcome wording | minor | fixed |
+| bench signature described as proof of unchanged search | minor | corrected to a suite-level statement, with the endgame counter-example added |
+
+The finding that the suite records identified `StockBear 0.1.0-dev2` was real and
+was resolved the expensive way: both suites were re-run from the reviewed build
+rather than relabelled, and the records now name `StockBear 0.1.0-dev3` with the
+binary hash `e96cb712…`. The endgame suite's 22/24 in that record was a genuine
+bug, not a flaky result, which is the clearest argument for keeping raw records
+with the engine identity inside them.
+
+No human review is claimed. Kilo Code and Qodo were out of credits and ChatGPT
+Codex was over its review quota for this repository during the session; those
+services did not review this change.
 
 ## Known limitations
 

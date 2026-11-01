@@ -27,9 +27,9 @@ release, not a stable or leading-strength engine.
   to a generated self-play corpus with separate training/holdout splits, recorded
   seeds, checksums and command lines. It is reproducible and it is honest: the
   three candidates it produced were matched against the shipped evaluation and
-  **none of them improved on it** (−119.1 Elo, confirmed worse by both reported
-  intervals; −51.3 and +12.0 Elo, not shown to be worse but not improvements
-  either; 590–591 decided games each), and a fourth, more conservative fit moves
+  **none of them improved on it** (−132.5 Elo, confirmed worse by both reported
+  intervals; 0.0 and −9.2 Elo, indistinguishable from the shipped set; 582–600
+  decided games each), and a fourth, more conservative fit moves
   seven positional terms by one or two points without a match to justify them.
   The shipped release therefore keeps the dev2 coefficients. Record and
   reproduction commands: [docs/TUNING.md](docs/TUNING.md).

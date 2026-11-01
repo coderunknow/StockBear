@@ -49,8 +49,8 @@
    generated self-play corpus with a separate holdout split and recorded
    checksums, and `scripts/tune_eval.py` fits it reproducibly. Three tuned
    parameter sets were produced and all three were matched against the shipped
-   evaluation: −119.1 [−140.8, −98.2], −51.3 [−72.2, −30.8] and +12.0
-   [−10.3, +34.4] Elo over 590–591 decided games. None was shipped; the release
+   evaluation: −132.5 [−158.6, −107.7], 0.0 [−22.1, +22.1] and −9.2 [−32.4,
+   +13.8] Elo over 582–600 decided games. None was shipped; the release
    keeps the dev2 coefficients. Record: [TUNING.md](TUNING.md).
 2. **Search-feature work with independent switches and ablations.** Done in form,
    negative in result. Counter-move history, continuation history, capture

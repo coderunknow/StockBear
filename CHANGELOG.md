@@ -43,9 +43,9 @@ and the negative result are documented instead of shipping an unvalidated set.
   (`benchmarks/tuning/`) produce parameter sets by coordinate descent on a Texel
   logistic loss, with a game-level holdout split. Three candidates were produced
   and measured against the shipped evaluation (590–591 decided games each, paired
-  colour-reversed, fixed node budget): −119.1 Elo (worse by both the pentanomial
-  and the opening-clustered interval), −51.3 and +12.0 Elo (neither shown to be
-  worse, neither an improvement). A fourth, conservative fit (Texel scale pinned
+  colour-reversed, fixed node budget): −132.5 Elo (worse by both the pentanomial
+  and the opening-clustered interval), 0.0 and −9.2 Elo (indistinguishable from
+  the shipped set). A fourth, conservative fit (Texel scale pinned
   at 400, ridge 0.10, 20 % movement cap, anchored material) moves seven positional
   terms by one or two points. None justified a change, so dev3 ships the dev2
   values. Full record: [docs/TUNING.md](docs/TUNING.md).

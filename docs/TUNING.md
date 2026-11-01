@@ -122,9 +122,17 @@ Elo always means "engine A (the shipped evaluation) was stronger".
 
 | match | decided games | engine A score | candidate Elo, pentanomial | candidate Elo, opening-clustered | verdict |
 | --- | --- | --- | --- | --- | --- |
-| baseline vs candidate A | 591 | 0.6649, W/D/L 328/136/127 | **−119.1 [−140.8, −98.2]** | **−119.1 [−195.9, −52.1]** | worse, by both intervals |
-| baseline vs candidate B | 590 | 0.5733, W/D/L 249/187/154 | **−51.3 [−72.1, −30.8]** | **−51.3 [−122.4, +15.7]** | no improvement; the worse reading is not confirmed |
-| baseline vs candidate C | 590 | 0.4828, W/D/L 202/176/212 | **+12.0 [−10.3, +34.4]** | **+12.0 [−61.4, +86.4]** | cannot distinguish |
+| baseline vs candidate A | 590 | 0.6819, W/D/L 339/133/118 | **−132.5 [−158.6, −107.7]** | **−132.5 [−227.3, −53.6]** | worse, by both intervals |
+| baseline vs candidate B | 600 | 0.5000, W/D/L 204/192/204 | **0.0 [−22.1, +22.1]** | **0.0 [−74.5, +74.5]** | cannot distinguish |
+| baseline vs candidate C | 582 | 0.4867, W/D/L 162/234/186 | **−9.2 [−32.4, +13.8]** | **−9.2 [−87.6, +68.2]** | cannot distinguish |
+
+These are the replays from the reviewed build. The first run of the same three
+matches (same seed, same game count, an earlier build without the null-move
+ordering fix) measured −119.1, −51.3 and +12.0 Elo: candidate A is worse in both
+runs, and B and C are indistinguishable in one run and the other, which is what
+"no improvement" means here. The 13-Elo movement on A between two identical
+schedules is a fair picture of the run-to-run spread, and it is why no candidate
+was shipped on a point estimate.
 
 Candidate `D` (scale pinned at 400, ridge 0.10, 20 % movement cap, signs
 preserved, material anchored) changes seven positional terms by one or two points
@@ -158,15 +166,14 @@ with no variance information, not a "proof of equality". If a future release
 changes the shipped set, this same command becomes a real match. Raw record:
 `benchmarks/results/0.1.0-dev3/match-dev2-shipped-regression.jsonl`.
 
-Pentanomial counts (0 / 0.5 / 1 / 1.5 / 2 pairs) are in
+Pentanomial counts (0 / 0.5 / 1 / 1.5 / 2 pairs) are in the records:
 `benchmarks/results/0.1.0-dev3/tuning/match-eval-{A,B,C}.jsonl`. Games that
-reached the ply cap are recorded as unadjudicated (9, 10 and 10 respectively) and
-were never converted into draws.
+reached the ply cap are recorded as unadjudicated (10, 0 and 18 in the replays)
+and were never converted into draws.
 
-Note the ordering: the set with the better holdout loss (A) is the one that lost
-by the largest margin, and the set with the worst holdout loss (C) is the only
-one that did not lose. The tuning objective simply does not rank these sets the
-way the match does.
+Note the ordering: the set with the best holdout loss (A) is the one that lost by
+the largest margin in both runs. The tuning objective simply does not rank these
+sets the way the match does.
 
 ## Why the tuning did not produce a stronger engine
 
