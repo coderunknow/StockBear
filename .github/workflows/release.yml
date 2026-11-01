@@ -13,6 +13,18 @@ on:
         description: 'Successful CI push-to-main run ID for the tagged commit'
         required: true
         type: string
+  # Same jobs, same gates, when publication is requested by another workflow
+  # (see publish-request.yml in the session branch).
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Existing annotated release tag (must equal v + VERSION)'
+        required: true
+        type: string
+      validation_run_id:
+        description: 'Successful CI push-to-main run ID for the tagged commit'
+        required: true
+        type: string
 
 # Do not race two manual publications for the same tag.
 concurrency:

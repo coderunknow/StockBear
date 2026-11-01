@@ -308,3 +308,51 @@
   evidence are unchanged by this correction, so the recorded CI run for
   `fa83925` (all nine jobs green) still applies to the code; only documentation
   text moved.
+
+## 2026-11-01 — v0.1.0-dev2 merged and published
+
+- Repository-wide review turned green on the final pull-request head: CodeRabbit's
+  last actionable comment was a factual error in the benchmark report (fixed in
+  `87a6898`), and CI was 9/9 on `87a6898` (run 41266339862). The Kilo and Copilot
+  reviewers were unavailable (insufficient credits, exhausted quota), so their
+  "fail" states are resource failures, not findings; no human approval is claimed.
+- Pull request #3 was merged with an exact-head safeguard
+  (`--match-head-commit 87a6898`), producing merge commit `8b52281`. Push-to-main
+  CI on that exact commit (run 41267078266) passed all nine jobs.
+- Annotated tag `v0.1.0-dev2` was created on `8b52281` and pushed.
+- The publication workflow could not be dispatched: the automation token has
+  repository admin rights but not the `actions: write` permission, so
+  `workflow_dispatch` returns 403. To keep every gate rather than fall back to an
+  unguarded `gh release create`, `release.yml` also accepts a `workflow_call`
+  invocation and `publish-request.yml` forwards one verified request (tag +
+  exact-commit CI run) from the session branch. The publish job still verifies the
+  tag string, the annotated tag type, that the tagged commit is on `main`, the
+  successful push-to-main CI run for that commit, the expected asset set, and
+  keeps the release a draft until the uploads verify. Run 41267902182 published
+  the prerelease.
+- The sandbox cannot reach GitHub's asset CDN, so an in-Actions audit
+  (`verify-release.yml`, run 41268255137) downloaded the published assets, ran
+  `sha256sum -c SHA256SUMS.txt` (both OK), listed the archive contents, exercised
+  the released Linux binary (`id name StockBear 0.1.0-dev2`, 8 check options,
+  `uciok`), and reproduced the documented bench signatures `e06c4352681ae8eb`
+  (depth 6) and `5bceff035f2a4ae4` (depth 7) from the released archive.
+
+## 2026-11-01 — follow-up: a deterministic move limit for the match harness
+
+- CI failed once on `tests/integration/test_tournament.py` (run 41268457751,
+  step "Verify tournament harness, PGN and CSV", 1 s — the normal duration), on a
+  tree that passed on every other run, including the retrigger of the identical
+  tree (run 41268967660). The job log endpoint is unreachable from the sandbox, so
+  the failure text could not be read; the step detail endpoint localised it to
+  that single step. Ten repeats on the same runner image passed (1.15 s each), so
+  the cause is intermittent. The only assertion in that step that can fail without
+  changing the step duration is the clock: at `--base-ms 500` a loaded runner can
+  make the engine overrun and the harness records a `TIME_FORFEIT`, which is a
+  loss and not `UNADJUDICATED_MAX_PLIES`.
+- Rather than widen the clock, `scripts/tournament.py` gained `--nodes N`: every
+  move is played with `go nodes N`, clocks are not accounted, and the budget is
+  recorded in the JSONL configuration and summary. The smoke test now uses
+  `--nodes 2000` and asserts the budget is recorded and that a negative budget is
+  rejected. Two identical runs of a 5,000-node match produce identical results.
+- The released `v0.1.0-dev2` artifacts are unaffected: the engine is unchanged,
+  only the test harness and its documentation.

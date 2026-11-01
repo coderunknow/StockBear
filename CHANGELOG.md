@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+- **Deterministic match control.** `scripts/tournament.py` gained `--nodes N`,
+  which plays every move with `go nodes N` instead of the clock and records
+  `nodes_per_move` in the JSONL configuration and summary. A node budget cannot
+  be lost on the clock, so a match or a test can be reproduced on a shared
+  machine. The tournament smoke test now uses it, removing a clock-dependent
+  intermittent failure (one occurrence observed while the release CI ran in
+  parallel with other jobs; the same tree passed every other run).
+- `--nodes` is validated like the other limits (negative values are rejected).
+
 ## 0.1.0-dev2 — 2026-10-31
 
 Second development prerelease. Playing-strength and search changes were chosen by

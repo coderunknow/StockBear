@@ -67,6 +67,22 @@ python3 scripts/tournament.py --engine-a ./build-release/stockbear \
   --games 200 --base-ms 80 --inc-ms 8
 ```
 
+### Fixed node budgets
+
+`--nodes N` replaces the clock with `go nodes N` for every move. Nothing can be
+lost on time, so the same command reproduces the same moves on a loaded machine,
+which is what the CI smoke test uses:
+
+```sh
+python3 scripts/tournament.py --engine-a ./build-release/stockbear \
+  --engine-b ./build-release/stockbear --games 2 --nodes 2000 --max-plies 20 \
+  --pgn match.pgn --jsonl match.jsonl
+```
+
+A node budget is not a time control, so a match played this way is a search-quality
+comparison, not a tournament result: record it as such and do not quote an Elo
+estimate from it without the usual paired-opening sample.
+
 ## Matches
 
 The harness uses its own UCI subprocess controller and python-chess for

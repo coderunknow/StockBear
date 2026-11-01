@@ -192,12 +192,18 @@ class UciEngine:
         self.send("ucinewgame")
         self.ready()
 
-    def bestmove(self, moves, clocks, increment, color):
+    def bestmove(self, moves, clocks, increment, color, nodes=0):
         suffix = " moves " + " ".join(moves) if moves else ""
         self.send("position startpos" + suffix)
-        self.send(f"go wtime {max(0, int(clocks[chess.WHITE]))} "
-                  f"btime {max(0, int(clocks[chess.BLACK]))} winc {increment} binc {increment}")
-        deadline = time.monotonic() + max(0, clocks[color]) / 1000 + 3
+        if nodes:
+            # Deterministic move limit: the engine cannot lose on the clock, so
+            # a node budget is the right control for tests and for reproducing a
+            # match on a shared machine.
+            self.send(f"go nodes {nodes}")
+        else:
+            self.send(f"go wtime {max(0, int(clocks[chess.WHITE]))} "
+                      f"btime {max(0, int(clocks[chess.BLACK]))} winc {increment} binc {increment}")
+        deadline = time.monotonic() + (60 if nodes else max(0, clocks[color]) / 1000 + 3)
         while True:
             line = self.read(deadline - time.monotonic())
             if line.startswith("bestmove "):
@@ -279,7 +285,7 @@ def statistics(results):
             "ci_method": "Wilson on fractional game scores; approximation ignores pair dependence"}
 
 
-def play_game(a, b, index, opening, base_ms, inc_ms, max_plies):
+def play_game(a, b, index, opening, base_ms, inc_ms, max_plies, nodes=0):
     opening_name, opening_moves = opening
     white, black = (a, b) if index % 2 == 0 else (b, a)
     board = chess.Board()
@@ -287,7 +293,8 @@ def play_game(a, b, index, opening, base_ms, inc_ms, max_plies):
     game.headers.update({"Event": "StockBear paired-opening match", "Site": "local",
                          "White": white.name, "Black": black.name,
                          "Round": str(index + 1), "Opening": opening_name,
-                         "TimeControl": f"{base_ms/1000:g}+{inc_ms/1000:g}"})
+                         "TimeControl": (f"nodes/{nodes}" if nodes else
+                                          f"{base_ms/1000:g}+{inc_ms/1000:g}")})
     node = game
     for text in opening_moves:
         move = board.parse_uci(text)
@@ -311,12 +318,13 @@ def play_game(a, b, index, opening, base_ms, inc_ms, max_plies):
         error = None
         text = None
         try:
-            text = engine.bestmove(moves, clocks, inc_ms, color)
+            text = engine.bestmove(moves, clocks, inc_ms, color, nodes)
         except (RuntimeError, TimeoutError, OSError) as exc:
             error = exc
         elapsed = (time.monotonic_ns() - start) / 1_000_000
-        clocks[color] -= elapsed
-        if clocks[color] < 0:
+        if not nodes:
+            clocks[color] -= elapsed
+        if not nodes and clocks[color] < 0:
             result = "0-1" if color == chess.WHITE else "1-0"
             termination = f"TIME_FORFEIT ({engine.name}, {elapsed:.1f}ms move)"
             break
@@ -334,7 +342,8 @@ def play_game(a, b, index, opening, base_ms, inc_ms, max_plies):
         board.push(move)
         node = node.add_variation(move)
         moves.append(move.uci())
-        clocks[color] += inc_ms
+        if not nodes:
+            clocks[color] += inc_ms
     if termination is None:
         outcome = board.outcome(claim_draw=True)
         if outcome is not None:
@@ -370,6 +379,9 @@ def main():
     parser.add_argument("--hash", type=int, default=16, help="requested MB for each engine")
     parser.add_argument("--threads", type=int, default=1)
     parser.add_argument("--max-plies", type=int, default=300)
+    parser.add_argument("--nodes", type=int, default=0, metavar="N",
+                        help="search N nodes per move instead of using the clock "
+                             "(deterministic; no time forfeits)")
     parser.add_argument("--openings", default=str(Path(__file__).resolve().parents[1] /
                                                  "benchmarks/positions/openings.txt"))
     parser.add_argument("--pgn", default="match.pgn")
@@ -384,7 +396,7 @@ def main():
     args = parser.parse_args()
     if args.games < 2 or args.games % 2:
         parser.error("--games must be positive and even")
-    if args.base_ms < 1 or args.inc_ms < 0 or not 1 <= args.hash <= 512 or args.threads < 1 or args.max_plies < 1:
+    if args.base_ms < 1 or args.inc_ms < 0 or not 1 <= args.hash <= 512 or args.threads < 1 or args.max_plies < 1 or args.nodes < 0:
         parser.error("invalid clock, hash, thread or ply limit")
     # The PGN, JSONL and CSV outputs are opened in write mode; if two options
     # name the same file the later open truncates the earlier one and the
@@ -411,6 +423,7 @@ def main():
                   "engine_a_path": a.path, "engine_b_path": b.path,
                   "engine_a_options": a.effective, "engine_b_options": b.effective,
                   "base_ms": args.base_ms, "increment_ms": args.inc_ms,
+                  "nodes_per_move": args.nodes,
                   "hash_requested_mb_each": args.hash, "threads_requested_each": args.threads,
                   "host": platform.platform(), "machine": platform.machine(),
                   "python_chess": chess.__version__, "opening_file": args.openings,
@@ -433,7 +446,8 @@ def main():
             log.write(json.dumps({"configuration": config}) + "\n")
             for i in range(args.games):
                 game, record = play_game(a, b, i, openings[(i//2) % len(openings)],
-                                         args.base_ms, args.inc_ms, args.max_plies)
+                                         args.base_ms, args.inc_ms, args.max_plies,
+                                         args.nodes)
                 if i:
                     print(file=pgn)  # one separator between games, none after the last
                 print(game, file=pgn, flush=True)
@@ -474,6 +488,7 @@ def main():
             summary["unadjudicated"] = args.games - len(scores)
             summary["config"] = {"engine_a": a.name, "engine_b": b.name,
                                  "base_ms": args.base_ms, "increment_ms": args.inc_ms,
+                                 "nodes_per_move": args.nodes,
                                  "hash_mb_each": args.hash, "threads_each": args.threads,
                                  "openings": args.openings, "seed": args.seed,
                                  "max_plies": args.max_plies}
