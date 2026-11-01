@@ -107,8 +107,10 @@ exactly the case the release criteria exist for.
 numbers stay calibrated against the search's pruning margins, the movement from
 the shipped values is capped at 20 % of each parameter's range, signs are
 preserved and the five material values are anchored. It moves seven
-positional terms by one or two points (for example `PstPawnRank` 5/9 → 6/10,
-`IsolatedPawn` −11/−9 → −6/−9) and lowers both the training and the holdout loss.
+positional terms, mostly by one or two points (`PstPawnRank` 5/9 → 6/10,
+`PstBishopCenter` 5/4 → 5/3, `PawnShield` 8/0 → 7/0), with the largest change a
+five-point middlegame shift in `IsolatedPawn` (−11 → −6, its endgame value
+unchanged at −9) and lowers both the training and the holdout loss.
 Its per-parameter changes are the size of the noise the matches below could not
 resolve, so it is recorded, not shipped.
 
@@ -120,7 +122,12 @@ clock artefacts), `--max-plies 200`, 30 openings, paired colour-reversed games,
 Hash 16 MB, 1 thread, `scripts/tournament.py` pentanomial statistics. Positive
 Elo always means "engine A (the shipped evaluation) was stronger".
 
-| match | decided games | engine A score | candidate Elo, pentanomial | candidate Elo, opening-clustered | verdict |
+The score column is the **paired** score of engine A (the mean of the two-game
+opening pairs), which is the estimator the pentanomial interval is built on; it is
+not exactly the arithmetic mean of the W/D/L counts, and both are given so the
+reader does not have to derive one from the other.
+
+| match | decided games | engine A paired score | candidate Elo, pentanomial | candidate Elo, opening-clustered | verdict |
 | --- | --- | --- | --- | --- | --- |
 | baseline vs candidate A | 590 | 0.6819, W/D/L 339/133/118 | **−132.5 [−158.6, −107.7]** | **−132.5 [−227.3, −53.6]** | worse, by both intervals |
 | baseline vs candidate B | 600 | 0.5000, W/D/L 204/192/204 | **0.0 [−22.1, +22.1]** | **0.0 [−74.5, +74.5]** | cannot distinguish |
@@ -144,7 +151,8 @@ schedule now continues down to a one-point step before declaring convergence, an
 this is the record produced after that fix.
 
 Both intervals are reported because they answer different questions: the
-pentanomial one treats the 295 opening pairs as independent, the clustered one
+pentanomial one treats each match's opening pairs (290, 300 and 282 here) as
+independent, the clustered one
 knows that each opening is replayed and is therefore much wider. Only candidate
 A is separated from the baseline by both. For B and C the honest statement is
 "no improvement was demonstrated", not "the candidate is worse", and no candidate

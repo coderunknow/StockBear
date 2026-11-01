@@ -35,12 +35,20 @@ def parse_option_line(line):
     """Parse a UCI `option name ... type ...` line into (name, spec)."""
     rest = line[len("option name "):]
     name, _, tail = rest.partition(" type ")
-    spec = {"type": tail.split()[0].lower() if tail.split() else "unknown"}
+    kind = tail.split()[0].lower() if tail.split() else "unknown"
+    spec = {"type": kind}
     for key in ("default", "min", "max"):
         token = f" {key} "
-        if token in tail:
-            value = tail.split(token, 1)[1]
-            # default/min/max are single tokens; combo/string defaults may not be.
+        if token not in tail:
+            continue
+        value = tail.split(token, 1)[1]
+        if key == "default" and kind in ("string", "combo"):
+            # A string or combo default may contain spaces ("Normal play"), so it
+            # runs to the next UCI field or to the end of the line.
+            for stop in (" min ", " max ", " var "):
+                value = value.split(stop, 1)[0]
+            spec[key] = value.strip()
+        else:
             spec[key] = value.split()[0] if value.split() else ""
     if " var " in tail:
         # UCI combo values are free-form strings and may contain spaces, so keep

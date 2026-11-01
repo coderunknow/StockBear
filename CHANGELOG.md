@@ -50,8 +50,8 @@ and the negative result are documented instead of shipping an unvalidated set.
   terms by one or two points. None justified a change, so dev3 ships the dev2
   values. Full record: [docs/TUNING.md](docs/TUNING.md).
 - **Tactics and endgame regression suites.** `benchmarks/tactics/mate_suite.epd`
-  (26 forced mates, certified by an independent mate proof on python-chess with
-  *all* mating moves accepted) and `benchmarks/tactics/endgame_suite.epd`
+  (25 forced mates, certified by an independent mate proof on python-chess that
+  accepts *all* moves forcing mate within the labelled number of plies) and `benchmarks/tactics/endgame_suite.epd`
   (24 constructed KQK/KRK conversions, all converted at 400 k nodes after the
   null-move ordering fix). `scripts/run_suite.py` records per
   position the move, depth, node count, time and whether the node budget was

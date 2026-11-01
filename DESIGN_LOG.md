@@ -196,3 +196,13 @@
   explicitly on both sides, and the harness now writes each engine's advertised
   defaults into the record's `configuration` line. A result whose configuration
   cannot be read out of its own evidence file is not a result.
+
+- **The corrected oracle narrowed the tactics suite, and that is the point of
+  having one.** With mate distances counted per ply, the oracle no longer accepts
+  a mate in five for a position labelled "mate in three". Regenerating the suite
+  dropped one position (its own game move turned out to be a slower mate) and
+  shrank most accepted-move sets — `mate02-3ply` went from 31 accepted moves to 7.
+  The earlier 26/26 was measured against the looser sets, so the release reports
+  25/25 on the strict suite and says plainly that the two numbers are not
+  comparable. A suite is only as strong as the oracle that certifies it, and this
+  is what it looks like when the oracle gets stricter.

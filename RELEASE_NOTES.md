@@ -43,10 +43,11 @@ release, not a stable or leading-strength engine.
   benchmark signatures exactly (`e06c4352681ae8eb` at depth 6,
   `5bceff035f2a4ae4` at depth 7).
 - **Tactics and endgame suites with an independent oracle.**
-  `benchmarks/tactics/mate_suite.epd` (26 mate positions from StockBear self-play
-  games, each re-proved by a python-chess oracle that lists *all* mating moves)
-  and `benchmarks/tactics/endgame_suite.epd` (24 three-man endgames). Fixed-node,
-  reproducible runs with raw output retained: **26/26** mates solved at 60 k
+  `benchmarks/tactics/mate_suite.epd` (25 mate positions from StockBear self-play
+  games, each re-proved by a python-chess oracle that lists *all* moves forcing
+  mate inside the stated number of plies) and
+  `benchmarks/tactics/endgame_suite.epd` (24 three-man endgames). Fixed-node,
+  reproducible runs with raw output retained: **25/25** mates solved at 60 k
   nodes, **24/24** endgames converted at 400 k nodes.
 - **A search audit with fixes.** The mate-score, transposition-table, repetition
   and fifty-move, null-move-zugzwang, interruption and PV-construction paths were

@@ -86,7 +86,7 @@ construction, `v0.1.0-dev2`):
 | shipped defaults | 7 | `5bceff035f2a4ae4` |
 | all five dev3 ordering switches on | 6 | `8d99b4e28a6231a0` |
 | all five dev3 ordering switches on | 7 | `f6103610012f7f9d` |
-| tuned evaluation variant A | 6 | `3df569cc3b5a5ff7` |
+| tuned evaluation candidate A (`tuning/variantA.txt`) | 6 | `269a852faa999f37` |
 
 The shipped rows are identical to the rebuilt `v0.1.0-dev2` binary, which is the
 intended outcome of shipping the dev2 search and evaluation with the new switches

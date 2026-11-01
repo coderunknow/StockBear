@@ -201,7 +201,9 @@ def main():
     history = []
     for sweep in range(args.sweeps):
         improved = 0
-        step = max(1, args.max_step >> min(sweep, 6))
+        # Halve the step every sweep, all the way down to one, so a large
+        # --max-step still gets a fine final pass when --sweeps allows it.
+        step = max(1, args.max_step >> sweep)
         for i in range(2 * param_count):
             column = zt[:, i]
             if not np.any(column) or i in fixed:

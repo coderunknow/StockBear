@@ -149,7 +149,9 @@ def load_epd(path):
             fen = fen + " 0 1"
         bm = []
         if " bm " in head:
-            bm = head.split(" bm ", 1)[1].split()
+            # The last bm token carries the operator separator ("... f5;").
+            bm = [token.rstrip(";") for token in head.split(" bm ", 1)[1].split()]
+            bm = [token for token in bm if token]
         identifier = "?"
         for op in ops:
             if ' id "' in op:

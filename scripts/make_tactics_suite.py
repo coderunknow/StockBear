@@ -196,8 +196,10 @@ def main():
         "games_scanned": games,
         "tactics": len(entries),
         "endgames": len(endgames),
-        "positions_sha256": hashlib.sha256(Path(args.positions).read_bytes()).hexdigest(),
-        "endgames_sha256": hashlib.sha256(Path(args.endgames).read_bytes()).hexdigest(),
+        # The keys name the files they hash, so a reader never has to guess which
+        # suite a digest belongs to; the committed manifest uses the same ones.
+        "mate_suite_sha256": hashlib.sha256(Path(args.positions).read_bytes()).hexdigest(),
+        "endgame_suite_sha256": hashlib.sha256(Path(args.endgames).read_bytes()).hexdigest(),
         "oracle": "scripts/chess_oracle.py (own mate proof on python-chess " + chess.__version__ + ")",
         "seed": args.seed,
         "note": "A position is only included when the oracle proves a forced mate "

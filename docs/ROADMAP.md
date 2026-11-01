@@ -62,9 +62,10 @@
    behaviourally identical to dev2 (`bench` signatures match exactly).
 3. **Tactics and endgame suites.** Done: `benchmarks/tactics/` holds a 26-position
    mate suite (sourced from StockBear self-play games, every position re-proved
-   by an independent python-chess oracle that lists all mating moves) and a
+   by an independent python-chess oracle that lists all moves forcing mate in the
+   labelled number of plies) and a
    24-position three-man endgame suite. Fixed-node runs, raw output retained:
-   26/26 mates at 60 k nodes; 24/24 endgames converted at 400 k nodes.
+   25/25 mates at 60 k nodes; 24/24 endgames converted at 400 k nodes.
 4. **UCI completeness.** Done: `go searchmoves` parses, validates, restricts the
    root, reports illegal and all-illegal lists and never swallows the following
    keyword; real `MultiPV 1–8` reports ranked distinct root moves with exact

@@ -63,11 +63,16 @@ python3 scripts/dead_position_reference.py ./build-release/stockbear --full
   Elo transform, SPRT decisions, degenerate-sample handling).
 * `scripts/chess_oracle.py` proves forced mates with a search written from
   scratch on python-chess; every position in `benchmarks/tactics/mate_suite.epd`
-  is certified by it and lists *all* mating moves, so a pass never depends on
-  agreeing with one arbitrary choice.
+  is certified by it and lists *all* moves that force mate inside the labelled
+  number of plies, so a pass never depends on agreeing with one arbitrary choice
+  and a slower mate does not count. Mate distances are counted at every ply, and
+  a "this side is getting mated" score is only reported when every legal reply was
+  proven.
 * `scripts/run_suite.py` runs the engine over the EPD suites at a fixed node
-  budget and records, per position, the search depth, node count, time, whether
-  the node budget was exhausted and the engine's raw output. Recorded results for
+  budget and records, per position, the search depth, the depth at which the mate
+  was first proved, node count, time, whether the node budget was exhausted and
+  the engine's raw output. The engine is read by a pump thread so a stuck engine
+  fails the run instead of hanging it. Recorded results for
   this release are in `benchmarks/results/0.1.0-dev3/`.
 * `scripts/dead_position_corpus.py` checks expected verdicts, witness legality,
   state counts and timings; `scripts/dead_position_reference.py` re-decides the

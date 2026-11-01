@@ -172,16 +172,28 @@ only engine-to-engine data point and is not extrapolated.
 
 ## Tactics and endgame suites
 
-`benchmarks/tactics/mate_suite.epd` — 26 positions taken from StockBear
+`benchmarks/tactics/mate_suite.epd` — **25** positions taken from StockBear
 self-play games that ended in checkmate, each re-proved by
 `scripts/chess_oracle.py` (an independent mate proof written on top of
 python-chess, sharing no code with the engine). Every position lists **all** moves
-that force mate in the stated number of plies, so a pass means "found a mating
-move", not "agreed with one arbitrary choice".
+that force mate *within the stated number of plies*, so a pass means "found a
+mating move in time", not "agreed with one arbitrary choice".
+
+The suite was regenerated after the review fixed the oracle, and that changed the
+evidence in two directions that both matter. The old oracle scored every mate as
+`MATE - 1` and so could not tell a mate in three plies from a mate in five; it
+therefore accepted moves that mate *later* than the position's label. The
+corrected oracle counts the distance at every ply and accepts strictly fewer
+moves — for example `mate02-3ply` drops from 31 accepted moves to 7. One position
+(`mate07-5ply`) no longer contains its own game move among the proven moves and is
+gone, which is why the suite is 25 positions and not 26. The earlier "26/26" was
+measured against the looser sets and is not comparable: the honest sequence is
+25/25 on the strict suite.
 
 | run | node budget | solved | notes |
 | --- | --- | --- | --- |
-| dev3 shipped (`e96cb712…`) | 60,000 | **26/26** | no position reached the budget; the first mate score appears at reported depth 1–5 |
+| dev3 shipped (`e96cb712…`), strict suite | 60,000 | **25/25** | no position reached the budget; every mate is proved within 2–5 plies of first report |
+| dev3 shipped, earlier looser suite | 60,000 | 26/26 | not comparable: the sets accepted late mates (see above) |
 
 Once a forced mate is proved, each further iteration is nearly free because the
 mate bounds cut the tree immediately, so the engine keeps deepening to its
