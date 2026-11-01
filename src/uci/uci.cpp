@@ -317,11 +317,18 @@ void UciEngine::loop() {
             emit("option name ReverseFutility type check default true");
             emit("option name SEEPruning type check default true");
             emit("option name CheckExtension type check default true");
-            emit("option name CounterMoves type check default true");
-            emit("option name ContinuationHistory type check default true");
-            emit("option name CaptureHistory type check default true");
-            emit("option name HistoryMaluses type check default true");
-            emit("option name LMRHistory type check default true");
+            // The dev3 ordering switches default to off: they measured neutral
+            // to slightly negative against the dev2 search and cost about 8 % of
+            // the time at a fixed depth. The advertised default is read from the
+            // live configuration, so it can never drift from what the search
+            // actually uses.
+            const auto check = [](bool on) { return on ? "true" : "false"; };
+            emit(std::string("option name CounterMoves type check default ") + check(params_.counterMoves));
+            emit(std::string("option name ContinuationHistory type check default ") +
+                 check(params_.continuationHistory));
+            emit(std::string("option name CaptureHistory type check default ") + check(params_.captureHistory));
+            emit(std::string("option name HistoryMaluses type check default ") + check(params_.historyMaluses));
+            emit(std::string("option name LMRHistory type check default ") + check(params_.lmrHistory));
             emit("option name MultiPV type spin default 1 min 1 max 8");
             emit("option name EvalParams type string default <empty>");
             emit("uciok");
