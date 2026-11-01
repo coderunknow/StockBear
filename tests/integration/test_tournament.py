@@ -13,12 +13,19 @@ engine = str(Path(sys.argv[1]).resolve())
 root = Path(__file__).resolve().parents[2]
 with tempfile.TemporaryDirectory() as tmp:
     pgn, log = Path(tmp)/"match.pgn", Path(tmp)/"match.jsonl"
+    # A node budget instead of the clock: on a shared runner the engine can miss
+    # a 500 ms allotment and forfeit, which would fail this smoke test for a
+    # reason it is not testing. `go nodes` removes the clock from the equation.
     cmd = [sys.executable, str(root/"scripts/tournament.py"), "--engine-a", engine,
-           "--engine-b", engine, "--games", "2", "--base-ms", "500", "--inc-ms", "5",
+           "--engine-b", engine, "--games", "2", "--nodes", "2000",
            "--hash", "1", "--threads", "1", "--max-plies", "20", "--pgn", str(pgn), "--jsonl", str(log)]
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
     assert result.returncode == 0, (result.stdout, result.stderr)
     records = [json.loads(line) for line in log.read_text().splitlines()]
+    # The budget must be recorded, otherwise a reader cannot tell whether the
+    # match was played to a clock or to a node limit.
+    assert records[0]["configuration"]["nodes_per_move"] == 2000, records[0]
+    assert records[-1]["summary"]["config"]["nodes_per_move"] == 2000, records[-1]
     games = [item for item in records if "game" in item]
     assert len(games) == 2 and games[0]["opening"] == games[1]["opening"], games
     assert all(item["result"] == "*" and item["termination"] == "UNADJUDICATED_MAX_PLIES" for item in games), games
@@ -46,6 +53,11 @@ with tempfile.TemporaryDirectory() as tmp:
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
     assert result.returncode != 0, result.stdout
     assert "expects true or false" in result.stderr, result.stderr
+    # A negative node budget is rejected during argument parsing.
+    cmd = [sys.executable, str(root/"scripts/tournament.py"), "--engine-a", engine,
+           "--engine-b", engine, "--nodes", "-5"]
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+    assert result.returncode != 0 and "invalid clock" in result.stderr, result.stderr
     # A non-finite SPRT hypothesis is rejected during argument parsing.
     cmd = [sys.executable, str(root/"scripts/tournament.py"), "--engine-a", engine,
            "--engine-b", engine, "--sprt-elo", "nan"]

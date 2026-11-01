@@ -336,3 +336,23 @@
   the released Linux binary (`id name StockBear 0.1.0-dev2`, 8 check options,
   `uciok`), and reproduced the documented bench signatures `e06c4352681ae8eb`
   (depth 6) and `5bceff035f2a4ae4` (depth 7) from the released archive.
+
+## 2026-11-01 — follow-up: a deterministic move limit for the match harness
+
+- CI failed once on `tests/integration/test_tournament.py` (run 41268457751,
+  step "Verify tournament harness, PGN and CSV", 1 s — the normal duration), on a
+  tree that passed on every other run, including the retrigger of the identical
+  tree (run 41268967660). The job log endpoint is unreachable from the sandbox, so
+  the failure text could not be read; the step detail endpoint localised it to
+  that single step. Ten repeats on the same runner image passed (1.15 s each), so
+  the cause is intermittent. The only assertion in that step that can fail without
+  changing the step duration is the clock: at `--base-ms 500` a loaded runner can
+  make the engine overrun and the harness records a `TIME_FORFEIT`, which is a
+  loss and not `UNADJUDICATED_MAX_PLIES`.
+- Rather than widen the clock, `scripts/tournament.py` gained `--nodes N`: every
+  move is played with `go nodes N`, clocks are not accounted, and the budget is
+  recorded in the JSONL configuration and summary. The smoke test now uses
+  `--nodes 2000` and asserts the budget is recorded and that a negative budget is
+  rejected. Two identical runs of a 5,000-node match produce identical results.
+- The released `v0.1.0-dev2` artifacts are unaffected: the engine is unchanged,
+  only the test harness and its documentation.
