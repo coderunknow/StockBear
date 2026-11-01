@@ -8,7 +8,7 @@ name: Verify published prerelease assets
 on:
   push:
     branches: [arena/7b82fbe2-stockbear]
-    paths: ['.github/verify-release']
+    paths: ['.github/verify-release', '.github/verify-signature']
 
 permissions:
   contents: read
@@ -52,8 +52,14 @@ jobs:
             mkdir -p x && tar xzf stockbear-0.1.0-dev2-linux-x64.tar.gz -C x
             printf 'uci\nquit\n' | ./x/stockbear | head -12
             echo
-            echo '$ ./stockbear bench --depth 6 (first 3 lines)'
+            echo '$ ./stockbear bench --depth 6 | head -3'
             ./x/stockbear bench --depth 6 | head -3
+            echo
+            echo '$ ./stockbear bench --depth 6 | tail -1'
+            ./x/stockbear bench --depth 6 | tail -1
+            echo
+            echo '$ ./stockbear bench --depth 7 | tail -1'
+            ./x/stockbear bench --depth 7 | tail -1
             echo '```'
           } > /tmp/evidence.md 2>&1 || true
           cat /tmp/evidence.md
