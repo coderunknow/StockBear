@@ -1,0 +1,60 @@
+name: Verify published prerelease assets
+
+# One-shot audit of the published release, run inside Actions because the
+# automation sandbox cannot reach GitHub's asset CDN. It downloads the release
+# assets, checks them against the uploaded SHA256SUMS.txt, exercises the Linux
+# binary from the archive, and posts the evidence to the pull request.
+
+on:
+  push:
+    branches: [arena/7b82fbe2-stockbear]
+    paths: ['.github/verify-release']
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read    # Download the published assets.
+      pull-requests: write # Post the evidence to the pull request.
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: v0.1.0-dev2
+    steps:
+      - name: Download and check the assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir assets && cd assets
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY"
+          ls -l
+          {
+            echo "### Published asset verification for \`$TAG\`"
+            echo
+            echo '```'
+            echo '$ sha256sum -c SHA256SUMS.txt'
+            sha256sum -c SHA256SUMS.txt
+            echo
+            echo '$ gh release view --json assets (digests reported by GitHub)'
+            gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets \
+              --jq '.assets[] | "\(.name)  \(.size) bytes  \(.digest // "no digest")"'
+            echo
+            echo '$ tar tzf stockbear-0.1.0-dev2-linux-x64.tar.gz'
+            tar tzf stockbear-0.1.0-dev2-linux-x64.tar.gz
+            echo
+            echo '$ python3 -c "zipfile namelist" stockbear-0.1.0-dev2-windows-x64.zip'
+            python3 -c 'import zipfile,sys; [print(n) for n in zipfile.ZipFile(sys.argv[1]).namelist()]' \
+              stockbear-0.1.0-dev2-windows-x64.zip
+            echo
+            echo '$ tar xzf linux archive; ./stockbear uci | head -12'
+            mkdir -p x && tar xzf stockbear-0.1.0-dev2-linux-x64.tar.gz -C x
+            printf 'uci\nquit\n' | ./x/stockbear | head -12
+            echo
+            echo '$ ./stockbear bench --depth 6 (first 3 lines)'
+            ./x/stockbear bench --depth 6 | head -3
+            echo '```'
+          } > /tmp/evidence.md 2>&1 || true
+          cat /tmp/evidence.md
+          gh pr comment 3 --repo "$GITHUB_REPOSITORY" --body-file /tmp/evidence.md
