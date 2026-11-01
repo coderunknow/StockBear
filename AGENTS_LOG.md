@@ -238,3 +238,28 @@
   (TSan runs the whole set, including `deadpos`); `reference_perft.py` 9/9;
   `differential.py --samples 2000 --seed 20261030` pass; `test_statistics.py`
   11/11; `test_tournament.py` 2/2.
+
+## 2026-11-01 — fifth review pass (CodeRabbit on d1414b7)
+
+- CodeRabbit reviewed `d1414b7` (5 actionable comments). Three were new and are
+  fixed; the rest repeated findings that earlier rounds had already resolved:
+  - **Output-path collision.** `--pgn`, `--jsonl` and `--csv` are all opened in
+    write mode, so two options naming one file would truncate each other's
+    records. The paths are now resolved and required to be distinct, with a test.
+  - **Corpus could pass an `alive` verdict without a certificate.** The check
+    only validated a witness *if one was present*; a non-terminal `alive` without
+    a `witness` line now fails, while the two terminal cases stay exempt. Re-ran
+    the corpus afterwards: 23 cases, 0 failures.
+  - **TT context across feature switches.** Changing a pruning switch left
+    transposition-table entries computed under the old settings, which are not
+    comparable with the new ones; `setoption` on a feature switch now clears the
+    table. A GUI that never sends those options is unaffected, and depth/node
+    bench signatures are unchanged (`e06c4352681ae8eb`, `5bceff035f2a4ae4`).
+  - Docs: `docs/DEAD_POSITIONS.md` now limits the independent-reference claim to
+    the ten positions that reference can actually decide (two are skipped at its
+    cap); `docs/ARCHITECTURE.md` separates the `perft` text output from the
+    `bench` CSV output and states that `--movetime` reports no signature.
+- Re-verified after the fixes: CTest 9/9 in Release, Debug, ASan+UBSan and
+  ThreadSanitizer; `test_tournament.py` 2/2; `test_statistics.py` 11/11; corpus
+  23/23; independent reference 10 compared / 2 skipped / 0 failures; bench
+  signatures unchanged, so the recorded measurements remain valid.

@@ -128,6 +128,12 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     if (lowered == "true" || lowered == "1") *flag = true;
     else if (lowered == "false" || lowered == "0") *flag = false;
     else { emit("info string setoption: " + name + " expects true or false"); return; }
+    // Stored scores were produced under the previous feature set and are not
+    // comparable with the new one: a pruning helper that was on when an entry
+    // was stored may be off now, so the same key can mean a different value.
+    // Clearing keeps a same-session ablation honest. A GUI that never sends
+    // these options pays nothing.
+    table_.clear();
 }
 
 void UciEngine::handle_go(const std::string& arguments) {

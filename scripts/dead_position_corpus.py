@@ -89,10 +89,17 @@ def main() -> int:
         micros = int(fields.get("time_us", "0"))
         witness_ok = fields.get("witness_ends_in_mate", "-")
         problem = ""
+        terminal = fields.get("reason", "").startswith("terminal:")
         if status != expected:
             problem = f"expected {expected}, got {status}"
-        elif status == "alive" and "witness" in fields and witness_ok != "yes":
-            problem = "witness does not end in checkmate"
+        elif status == "alive" and not terminal:
+            # Every non-terminal `alive` verdict must come with a checkmate
+            # certificate; otherwise a detector that simply answered "alive"
+            # without proof would pass the corpus.
+            if "witness" not in fields:
+                problem = "alive without a witness"
+            elif witness_ok != "yes":
+                problem = "witness does not end in checkmate"
         if problem:
             failures.append(f"{label}: {problem}")
         rows.append((label, status, states, expanded, micros / 1000.0, witness_ok, problem))

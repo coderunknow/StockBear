@@ -119,9 +119,13 @@ adds no parallel search.
 
 ## Tooling
 
-* `stockbear perft`, `bench --depth|--nodes|--movetime [--param feature=0|1]`
-  print CSV with a deterministic `# signature` fingerprint, so behaviour changes
-  are detected without comparing timings; `--param` runs the ablations.
+* `stockbear perft` prints a plain-text node count (with `--divide` a per-move
+  breakdown), not CSV.
+* `bench --depth|--nodes [--param feature=0|1]` prints CSV with a deterministic
+  `# signature` fingerprint, so behaviour changes are detected without comparing
+  timings; `--param` runs the ablations. `bench --movetime` prints the same CSV
+  but reports the signature as unavailable, because depth and node count — which
+  the fingerprint absorbs — depend on wall-clock time in that mode.
 * `stockbear deadpos --fen ... [--states N] [--depth N] [--no-exhaustive]`
   adjudicates Article 5.2.2 and prints the verdict, state counts, timings, the
   witness and whether the witness ends in checkmate.

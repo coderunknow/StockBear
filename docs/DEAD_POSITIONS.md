@@ -48,8 +48,12 @@ Four consequences drive the design:
 
 The classical "insufficient material" list is a *subset* of the dead positions,
 and the natural generalisations of it are wrong in both directions. Every row
-below is a corpus case (`scripts/dead_position_corpus.py`) whose verdict the
-detector proves and the reference implementation confirms:
+below is a corpus case (`scripts/dead_position_corpus.py`) that the detector
+decides, and every `alive` row carries a witness that is replayed to a checkmate.
+The independent reference implementation
+(`scripts/dead_position_reference.py`) confirms the *subset* it can compute within
+its own state cap — 10 compared, 2 skipped in the recorded full run — so the
+reference corroborates those rows rather than the whole table:
 
 | Position | Verdict | Reason |
 |---|---|---|

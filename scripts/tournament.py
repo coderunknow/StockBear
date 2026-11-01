@@ -367,6 +367,8 @@ def main():
                                                  "benchmarks/positions/openings.txt"))
     parser.add_argument("--pgn", default="match.pgn")
     parser.add_argument("--jsonl", default="match.jsonl")
+    # Guarded below: the three outputs are opened in write mode, so two options
+    # naming one file would overwrite each other's records.
     parser.add_argument("--csv", default=None, help="optional per-game CSV output")
     parser.add_argument("--seed", type=int, default=20261031,
                         help="deterministic opening-order shuffle seed")
@@ -377,6 +379,14 @@ def main():
         parser.error("--games must be positive and even")
     if args.base_ms < 1 or args.inc_ms < 0 or not 1 <= args.hash <= 512 or args.threads < 1 or args.max_plies < 1:
         parser.error("invalid clock, hash, thread or ply limit")
+    # The PGN, JSONL and CSV outputs are opened in write mode; if two options
+    # name the same file the later open truncates the earlier one and the
+    # match record is destroyed. Compare resolved paths, not the raw strings.
+    outputs = {"pgn": Path(args.pgn).resolve(), "jsonl": Path(args.jsonl).resolve()}
+    if args.csv:
+        outputs["csv"] = Path(args.csv).resolve()
+    if len(set(outputs.values())) != len(outputs):
+        parser.error("--pgn, --jsonl and --csv must name different files")
     openings = read_openings(args.openings)
     # Deterministic shuffle: with a fixed seed a match is reproducible, and the
     # paired structure (each opening played twice with reversed colours) is kept.
