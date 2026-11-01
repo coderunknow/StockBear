@@ -4,6 +4,8 @@
 #include "search/transposition_table.hpp"
 #include <array>
 #include <atomic>
+#include <cstddef>
+#include <memory>
 #include <cstdint>
 #include <functional>
 #include <vector>
@@ -95,6 +97,16 @@ private:
     bool quiet(const Position& pos, Move move) const;
     bool gives_check(Position& pos, Move move);
     Move previous_move(int ply) const { return ply > 0 ? moveStack_[ply - 1] : MOVE_NONE; }
+    // Row `ply` of the triangular principal-variation buffer.
+    Move* pv_row(int ply) { return pv_.get() + std::size_t(ply) * MAX_PLY; }
+    const Move* pv_row(int ply) const { return pv_.get() + std::size_t(ply) * MAX_PLY; }
+    // Continuation history: how good `move` has been after a given previous
+    // move. Kept for one ply of context, which is the variant that pays for
+    // itself without a large table.
+    int& continuation(PieceType previousType, Square previousTo, PieceType type, Square to) {
+        return continuation_[(((std::size_t(previousType) * SQ_NB + std::size_t(previousTo)) *
+                              PieceTypeNB + std::size_t(type)) * SQ_NB) + std::size_t(to)];
+    }
     void update_quiet_stats(const Position& pos, Move move, int depth, int ply, int bonus);
     void update_capture_stats(const Position& pos, Move move, int depth);
     void penalise_quiets(const Position& pos, const Move* moves, int count, int depth, int ply);
@@ -109,17 +121,21 @@ private:
     std::uint64_t nodes_ = 0;
     int selDepth_ = 0;
     Key rootContextSalt_ = 0;
-    Move pv_[MAX_PLY][MAX_PLY] = {};
+    // The two largest tables are heap-allocated. Inline, they make a Search
+    // object about a megabyte, which overflows the 1 MiB default stack on
+    // Windows as soon as two searches exist at once; they are also far too big
+    // to copy around, and the search never copies them.
+    static constexpr std::size_t PvSlots = std::size_t(MAX_PLY) * MAX_PLY;
+    static constexpr std::size_t ContinuationSlots =
+        std::size_t(PieceTypeNB) * SQ_NB * PieceTypeNB * SQ_NB;
+    std::unique_ptr<Move[]> pv_{new Move[PvSlots]()};
+    std::unique_ptr<int[]> continuation_{new int[ContinuationSlots]()};
     int pvLength_[MAX_PLY] = {};
     Move killers_[MAX_PLY][2] = {};
     int history_[ColorNB][SQ_NB][SQ_NB] = {};
     // Reply table: the move that most often refuted `previous`. Indexed by the
     // previous move's piece and destination square.
     Move counterMoves_[PieceNB][SQ_NB] = {};
-    // Continuation history: how good `move` has been after a given previous
-    // move. Kept for one ply of context, which is the variant that pays for
-    // itself without a large table.
-    int continuation_[PieceTypeNB][SQ_NB][PieceTypeNB][SQ_NB] = {};
     int captureHistory_[PieceTypeNB][SQ_NB][PieceTypeNB] = {};
     // The moves played along the current line, so ordering can see the previous
     // move without threading an extra parameter through every call.
@@ -132,4 +148,10 @@ private:
     };
     std::vector<RootMove> rootMoves_;
 };
+
+// A Search instance sits on the caller's stack in the tests and in the CLI, and
+// two of them must fit inside the 1 MiB default thread stack that Windows uses
+// (Linux gives 8 MiB, which is why an inline 0.9 MB object went unnoticed until
+// a Windows CI run segfaulted). Keep this bound honest when adding tables.
+static_assert(sizeof(Search) <= 64 * 1024, "Search must stay small enough for a 1 MiB stack");
 }

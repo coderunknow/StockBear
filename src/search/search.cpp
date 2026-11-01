@@ -176,9 +176,8 @@ void Search::score_moves(const Position& pos, MoveList& moves, Move hashMove, in
         } else {
             score = history_[us][move_from(m)][move_to(m)];
             if (params_.continuationHistory && previousType != NoPieceType) {
-                const int cont = continuation_[previousType][move_to(previous)]
-                                              [type_of(pos.piece_on(move_from(m)))]
-                                              [move_to(m)];
+                const int cont = continuation(previousType, move_to(previous),
+                                              type_of(pos.piece_on(move_from(m))), move_to(m));
                 // Bounded and secondary: continuation history refines the
                 // ordering among quiet moves without overriding the main table.
                 score += std::max(-8000, std::min(8000, cont / 4));
@@ -197,10 +196,12 @@ int Search::next_move(MoveList& moves, int index) {
 }
 
 void Search::update_pv(int ply, Move move) {
-    pv_[ply][0] = move;
+    Move* row = pv_row(ply);
+    row[0] = move;
     const int childLength = ply + 1 < MAX_PLY ? pvLength_[ply + 1] : 0;
     const int count = std::min(childLength, MAX_PLY - ply - 1);
-    for (int i = 0; i < count; ++i) pv_[ply][i + 1] = pv_[ply + 1][i];
+    const Move* child = ply + 1 < MAX_PLY ? pv_row(ply + 1) : nullptr;
+    for (int i = 0; i < count; ++i) row[i + 1] = child[i];
     pvLength_[ply] = count + 1;
 }
 
@@ -229,9 +230,8 @@ void Search::update_quiet_stats(const Position& pos, Move move, int depth, int p
                 for (int& value : from) value /= 2;
     }
     if (params_.continuationHistory && previousPiece != NoPiece) {
-        int& cont = continuation_[type_of(previousPiece)][move_to(previous)]
-                                  [type_of(pos.piece_on(move_from(move)))]
-                                  [move_to(move)];
+        int& cont = continuation(type_of(previousPiece), move_to(previous),
+                                 type_of(pos.piece_on(move_from(move))), move_to(move));
         cont = clamp_history(cont + bonus);
     }
 }
@@ -536,9 +536,7 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
     for (auto& color : history_)
         for (auto& row : color) std::fill(std::begin(row), std::end(row), 0);
     for (auto& row : counterMoves_) std::fill(std::begin(row), std::end(row), MOVE_NONE);
-    for (auto& a : continuation_)
-        for (auto& b : a)
-            for (auto& c : b) std::fill(std::begin(c), std::end(c), 0);
+    std::fill_n(continuation_.get(), ContinuationSlots, 0);
     for (auto& a : captureHistory_)
         for (auto& b : a) std::fill(std::begin(b), std::end(b), 0);
     std::fill(std::begin(moveStack_), std::end(moveStack_), MOVE_NONE);
@@ -645,8 +643,9 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
             if (aborted_) break;
             (void)passValue;
             pvLines_[std::size_t(pvIndex)].clear();
+            const Move* line = pv_row(0);
             for (int i = 0; i < pvLength_[0]; ++i)
-                pvLines_[std::size_t(pvIndex)].push_back(pv_[0][i]);
+                pvLines_[std::size_t(pvIndex)].push_back(line[i]);
             if (pvLines_[std::size_t(pvIndex)].empty())
                 pvLines_[std::size_t(pvIndex)].push_back(rootMoves_[std::size_t(pvIndex)].move);
         }
