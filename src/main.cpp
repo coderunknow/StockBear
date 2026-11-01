@@ -27,6 +27,10 @@ int main(int argc, char** argv) {
                       << "                  [--param FEATURE=0|1]  CSV + deterministic signature\n"
                       << "  stockbear deadpos --fen FEN [--states N] [--depth N] [--no-exhaustive]\n"
                       << "                                    FIDE 5.2.2 dead-position analysis\n"
+                      << "  stockbear eval --fen FEN [--params FILE] [--top N]\n"
+                      << "                                    Evaluation score and contributions\n"
+                      << "  stockbear evaldata --input FILE [--output FILE] [--params FILE] [--check]\n"
+                      << "                                    Tuner feature matrix / consistency check\n"
                       << "  bench features: aspiration nullMove lmr reverseFutility futility\n"
                       << "                  seePruning checkExtension\n";
             return 0;
@@ -34,6 +38,8 @@ int main(int argc, char** argv) {
         if (command == "perft") return stockbear::perft_cli(argc - 2, argv + 2);
         if (command == "bench") return stockbear::benchmark_cli(argc - 2, argv + 2);
         if (command == "deadpos") return stockbear::deadpos_cli(argc - 2, argv + 2);
+        if (command == "eval") return stockbear::eval_cli(argc - 2, argv + 2);
+        if (command == "evaldata") return stockbear::evaldata_cli(argc - 2, argv + 2);
         std::cerr << "Unknown command: " << command << ". Use --help.\n";
         return 2;
     } catch (const std::exception& e) {

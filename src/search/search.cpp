@@ -131,7 +131,11 @@ void Search::score_moves(const Position& pos, MoveList& moves, Move hashMove, in
         } else if (!quiet(pos, m)) {
             const int gain = gain_of(pos, m);
             const Piece attacker = pos.piece_on(move_from(m));
-            const int attackerValue = attacker == NoPiece ? 0 : PieceValueMg[type_of(attacker)];
+            // Ordering uses the exchange values, not the (now tunable) material
+            // weights: a tuned pawn value must not silently change which
+            // captures get a full SEE, and a capture ordering that depends on
+            // the evaluation parameters would make ablations incomparable.
+            const int attackerValue = attacker == NoPiece ? 0 : SeeValue[type_of(attacker)];
             // Static exchange evaluation is only needed where it can change the
             // verdict; a capture of a piece at least as valuable as the
             // capturing one is winning anyway.

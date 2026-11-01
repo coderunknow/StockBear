@@ -64,12 +64,14 @@ set(STOCKBEAR_CORE_SOURCES
     src/chess/move.cpp
     src/chess/position.cpp
     src/chess/zobrist.cpp
+    src/evaluation/eval_params.cpp
     src/evaluation/evaluation.cpp
     src/search/search.cpp
     src/search/timeman.cpp
     src/search/transposition_table.cpp
     src/uci/uci.cpp
     src/utilities/bench.cpp
+    src/utilities/evaldata.cpp
 )
 
 add_library(stockbear_core STATIC ${STOCKBEAR_CORE_SOURCES})
@@ -103,6 +105,7 @@ if(STOCKBEAR_BUILD_TESTS)
         tests/unit/test_dead_position.cpp
         tests/unit/test_draws.cpp
         tests/unit/test_eval.cpp
+        tests/unit/test_eval_baseline.cpp
         tests/unit/test_fen.cpp
         tests/unit/test_move.cpp
         tests/unit/test_position.cpp

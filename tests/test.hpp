@@ -36,5 +36,8 @@ inline void state_ok(const stockbear::Position& p) {
     static test::Register register_##group##_##name(#group, #name, test_##group##_##name); \
     static void test_##group##_##name()
 #define CHECK(expr) test::require(bool(expr), #expr, __FILE__, __LINE__)
-#define CHECK_EQ(a, b) do { const auto& test_a = (a); const auto& test_b = (b); \
+// Copies, not const references: `CHECK_EQ(x, default_params().field)` would
+// otherwise bind a reference to a member of a temporary and read it after the
+// temporary has been destroyed.
+#define CHECK_EQ(a, b) do { const auto test_a = (a); const auto test_b = (b); \
     test::require(test_a == test_b, #a " == " #b, __FILE__, __LINE__); } while (false)
