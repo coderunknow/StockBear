@@ -443,19 +443,30 @@ DeadResult analyze_dead_position(const Position& pos, const DeadLimits& limits) 
     // Cheap helpmate witness search for positions whose component is large:
     // alive positions almost always admit a short cooperative mate. Both
     // candidate mating sides are tried, since only one of them can mate.
-    for (int depth = 1; depth <= budget.witnessMaxDepth; ++depth) {
-        for (Color attacker : {White, Black}) {
-            Explorer explorer(limits, attacker);
-            Position work = pos;
-            if (explorer.explore(work, Mode::Witness, depth, budget.witnessNodes / 2)) {
-                result.status = DeadStatus::Alive;
-                result.witness = explorer.witness();
+    //
+    // The quick pass at the top of this function already ran this search with
+    // min(witnessNodes, 30000) / min(witnessMaxDepth, 8). If that is exactly the
+    // budget this pass would use, the search is deterministic and would repeat
+    // the same work, so it is skipped. The complete enumeration below is never
+    // skipped: it is the only pass that can prove `dead`.
+    const bool witnessRepeatsEarlierPass =
+        std::min<std::uint64_t>(limits.witnessNodes, 30000) == limits.witnessNodes &&
+        std::min(limits.witnessMaxDepth, 8) == limits.witnessMaxDepth;
+    if (!witnessRepeatsEarlierPass) {
+        for (int depth = 1; depth <= budget.witnessMaxDepth; ++depth) {
+            for (Color attacker : {White, Black}) {
+                Explorer explorer(limits, attacker);
+                Position work = pos;
+                if (explorer.explore(work, Mode::Witness, depth, budget.witnessNodes / 2)) {
+                    result.status = DeadStatus::Alive;
+                    result.witness = explorer.witness();
+                    result.visited = explorer.states();
+                    result.reason = "helpmate witness found (depth-limited search)";
+                    return result;
+                }
                 result.visited = explorer.states();
-                result.reason = "helpmate witness found (depth-limited search)";
-                return result;
+                if (explorer.aborted()) break;
             }
-            result.visited = explorer.states();
-            if (explorer.aborted()) break;
         }
     }
 

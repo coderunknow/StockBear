@@ -47,9 +47,10 @@ Raw data, commands and interpretation:
 against dev1, a 20-game match against Stockfish 11, and the dead-position corpus
 and its independent reference comparison.
 
-Verification: CTest entries `unit`, `regression`, `perft_quick`, `perft_full`,
-`stress`, `deadpos` (including exhaustive two- and three-piece state-space
-sweeps), `uci_integration` and `uci_fuzz`; Linux GCC Debug/Release,
+Verification: CTest entries `unit`, `position_extra` (null-move integrity),
+`regression`, `perft_quick`, `perft_full`, `stress`, `deadpos` (including the
+exhaustive two- and three-piece state-space sweeps), `uci_integration` and
+`uci_fuzz`; Linux GCC Debug/Release,
 ASan+UBSan and ThreadSanitizer runs; Clang Release and minimum-CMake-3.16 CI
 jobs; Windows Debug/Release CI; and python-chess differential and reference
 checks. Check the CI runs for the exact release commit — this document does not

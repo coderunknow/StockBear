@@ -90,7 +90,20 @@ def main():
 
     if args.in_place:
         lines = [line.rstrip("\n") for line in open(args.jsonl, encoding="utf-8") if line.strip()]
-        lines = [line for line in lines if '"summary"' not in line]
+        # Drop only records that actually carry a top-level `summary` key. A
+        # substring test could also match an engine name, an opening label or an
+        # option value and would delete a game record irreversibly.
+        kept = []
+        for line in lines:
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError:
+                raise SystemExit(f"{args.jsonl}: refusing to rewrite a file with "
+                                 f"an unparseable line: {line[:80]}")
+            if isinstance(record, dict) and "summary" in record:
+                continue
+            kept.append(line)
+        lines = kept
         lines.append(payload.rstrip("\n"))
         temporary = args.jsonl + ".tmp"
         with open(temporary, "w", encoding="utf-8") as handle:

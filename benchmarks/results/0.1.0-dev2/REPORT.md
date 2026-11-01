@@ -73,10 +73,20 @@ Per position at depth 6:
 | Avoid immediate mate | 5,998 | 2,362 | 0.394 | 1.6 | 0.5 | `a1a3` | `a1a3` | -1017 | -1011 |
 | Stalemate avoidance | 3,888 | 762 | 0.196 | 0.9 | 0.2 | `f1f2` | `f1e2` | mate 3 | +1033 |
 
-The two changed moves are equal-scoring alternatives at this depth (start
-position: `d2d4` and `b1c3` both 0 cp; stalemate avoidance: dev2 finds a
-non-mating but winning capture). Tactical results are unchanged: both builds find
-the mate-in-one, the mate-in-two, the forced evasion and the promotion.
+Three positions changed their chosen move, and they are not all equivalent.
+
+* Starting position: `d2d4` and `b1c3` are equal-scoring alternatives at this
+  depth (both 0 cp).
+* Rook and pawn ending: both builds play a rook move and the score differs only
+  slightly (`b4c4` +38 versus `b4f4` +41).
+* Stalemate avoidance (`8/1P6/8/8/8/8/8/5K1k w - - 0 1`): dev1 announces mate in
+  3 at depth 6, dev2 plays `f1e2` with `+1033`. Re-searching that position at
+  depth 12 shows both builds agree on `f1f2 h1h2 b7b8q h2h1 b8h8`, mate in 3, so
+  the mate is real and this is a shallower search at depth 6, not a rules or
+  evaluation defect. It is reported as a difference rather than as parity.
+
+Tactical results are unchanged where they are verified: both builds find the
+mate-in-one, the mate-in-two, the forced evasion and the promotion.
 
 ## Feature ablations (depth 7, dev2)
 

@@ -42,7 +42,19 @@ jobs:
           echo "version $(cat VERSION)"
           echo "runner ${{ runner.os }} $(uname -a 2>/dev/null || true)"
           echo "cpu $(nproc 2>/dev/null || echo n/a) logical cores"
-          c++ --version 2>/dev/null | head -1 || true
+          # Take the compiler identity from CMake, which is the compiler that
+          # actually built this binary; `c++ --version` is unreliable under the
+          # Visual Studio generator.
+          if [ ! -f build/CMakeCache.txt ]; then
+            echo "compiler unknown: build/CMakeCache.txt is missing" >&2
+            exit 1
+          fi
+          grep -E '^CMAKE_CXX_COMPILER:(FILEPATH|STRING)=' build/CMakeCache.txt \
+            | sed 's/^/compiler /'
+          grep -E '^CMAKE_GENERATOR:' build/CMakeCache.txt | sed 's/^/generator /'
+          # CMake writes the compiler id and version next to the compiler check.
+          cat build/CMakeFiles/*/CMakeCXXCompiler.cmake 2>/dev/null \
+            | grep -E '^set\(CMAKE_CXX_COMPILER_(ID|VERSION) ' || true
           cmake --version | head -1
       - name: Search determinism (same build, same input, same signature)
         shell: bash

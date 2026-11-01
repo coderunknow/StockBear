@@ -147,9 +147,13 @@ The residual risks are therefore explicit: a wrong `Dead` verdict would require
 a 128-bit fingerprint collision, and a missed verdict can only occur where the
 resource limit bites, in which case the answer is `Unknown`.
 
-**Completeness.** Deciding `mate_reachable` is PSPACE-complete ("Complexity of
-Retrograde and Helpmate Chess Problems: Even Cooperative Chess is Hard",
-arXiv:2010.09271), so no polynomial-time complete procedure can exist. Here
+**Completeness.** Deciding `mate_reachable` is PSPACE-complete for chess
+generalised to *n*×*n* boards ("Complexity of Retrograde and Helpmate Chess
+Problems: Even Cooperative Chess is Hard", arXiv:2010.09271). That is a
+statement about the generalised game, not an unconditional lower bound for the
+fixed 8×8 board this program accepts, and it does not by itself exclude a
+polynomial algorithm for the fixed board unless P ≠ PSPACE. What it does rule
+out is a cheap complete procedure that scales with the board. Here
 "complete" can only mean *exact until resources run out*, and that is what the
 procedure is: for any position, if the enumeration completes, the verdict is the
 truth, and the algorithm is a decision procedure for Article 5.2.2 whose worst

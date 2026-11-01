@@ -43,7 +43,9 @@ def parse_option_line(line):
             # default/min/max are single tokens; combo/string defaults may not be.
             spec[key] = value.split()[0] if value.split() else ""
     if " var " in tail:
-        spec["vars"] = [v.split()[0] for v in tail.split(" var ")[1:] if v.split()]
+        # UCI combo values are free-form strings and may contain spaces, so keep
+        # everything between two ` var ` tokens instead of the first word.
+        spec["vars"] = [v.strip() for v in tail.split(" var ")[1:]]
     return name, spec
 
 
@@ -178,7 +180,12 @@ class UciEngine:
         """Apply an option and fail loudly if the engine refuses it."""
         self.send(f"setoption name {name} value {value}")
         for line in self.ready():
-            if "setoption" in line:
+            # StockBear reports a rejected value as `info string setoption: ...`
+            # and a failed allocation as `info string Hash allocation failed:
+            # ...`; either way the requested value did not take effect, so it
+            # must not be recorded as effective.
+            lowered = line.lower()
+            if "setoption" in lowered or "failed" in lowered or "error" in lowered:
                 raise ValueError(f"{self.name} rejected {name}={value}: {line}")
 
     def new_game(self):

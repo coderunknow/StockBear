@@ -89,7 +89,10 @@ def main() -> int:
         micros = int(fields.get("time_us", "0"))
         witness_ok = fields.get("witness_ends_in_mate", "-")
         problem = ""
-        terminal = fields.get("reason", "").startswith("terminal:")
+        # The exemption is decided by the corpus, not by the engine: a case that
+        # expects `alive` needs a certificate unless it is one of the two
+        # explicitly terminal positions, whatever the engine's reason says.
+        terminal = label.startswith(("Checkmate", "Stalemate"))
         if status != expected:
             problem = f"expected {expected}, got {status}"
         elif status == "alive" and not terminal:

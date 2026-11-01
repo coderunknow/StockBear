@@ -263,3 +263,36 @@
   ThreadSanitizer; `test_tournament.py` 2/2; `test_statistics.py` 11/11; corpus
   23/23; independent reference 10 compared / 2 skipped / 0 failures; bench
   signatures unchanged, so the recorded measurements remain valid.
+
+## 2026-11-01 — sixth review pass (CodeRabbit on bf574df)
+
+- CodeRabbit reviewed `bf574df` (10 actionable comments). Seven repeated findings
+  already fixed in earlier rounds; the following were new and are fixed:
+  - **Duplicated witness work in the detector.** The quick pass and the second
+    witness pass run the same deterministic search when the caller's
+    `witnessNodes`/`witnessMaxDepth` are already at the quick-pass ceilings, so
+    the second pass is skipped in exactly that case. The complete enumeration is
+    never skipped; bench signatures are unchanged.
+  - **Corpus witness exemption.** The exemption was keyed on the engine's own
+    `reason` string, so an ordinary case whose reason said `terminal:` would have
+    skipped the certificate check. It is now keyed on the corpus case label.
+  - **`recompute_summary.py --in-place`** removed lines by substring matching;
+    it now parses each record and drops only records with a top-level `summary`
+    key, refusing to rewrite a file with an unparseable line.
+  - **Combo option values** containing spaces are preserved (`Very Aggressive`
+    was truncated to `Very`), and a `Hash allocation failed` `info string` is now
+    treated as a rejected option instead of being recorded as effective.
+  - **CI provenance** now records the CMake-selected compiler, generator and
+    compiler id/version from `build/CMakeCache.txt` and
+    `CMakeFiles/*/CMakeCXXCompiler.cmake`, instead of a `c++ --version` line that
+    is unreliable under the Visual Studio generator.
+  - Docs: the report's changed-move paragraph now separates the equal-score
+    alternative from the two real differences and records that the
+    stalemate-avoidance mate was re-verified at depth 12 on both builds;
+    `docs/DEAD_POSITIONS.md` scopes the PSPACE-completeness citation to
+    generalised *n*×*n* boards; `docs/TESTING.md` states that the independent
+    reference compares 10 positions and skips 2; `RELEASE_NOTES.md` lists
+    `position_extra` in the CTest inventory.
+- Re-verified: CTest 9/9 in Release, Debug, ASan+UBSan and ThreadSanitizer;
+  corpus 23/23; `test_statistics.py` 11/11; `test_tournament.py` 2/2;
+  `recompute_summary.py` reproduces the recorded summary exactly.

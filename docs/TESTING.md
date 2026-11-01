@@ -63,7 +63,9 @@ python3 scripts/dead_position_reference.py ./build-release/stockbear --full
   Elo transform, SPRT decisions, degenerate-sample handling).
 * `scripts/dead_position_corpus.py` checks expected verdicts, witness legality,
   state counts and timings; `scripts/dead_position_reference.py` re-decides the
-  same positions with an independent python-chess implementation.
+  positions it can compute with an independent python-chess implementation. That
+  reference is not exhaustive over the corpus: the recorded `--full` run compares
+  10 positions and skips 2 (the `KN` v `K` rows) at its own state cap.
 
 ## Sanitizers
 
