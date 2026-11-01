@@ -356,3 +356,9 @@
   rejected. Two identical runs of a 5,000-node match produce identical results.
 - The released `v0.1.0-dev2` artifacts are unaffected: the engine is unchanged,
   only the test harness and its documentation.
+- Follow-up reviewed by CI only: pull request #4 (head `e1c8482`, CI run
+  41269976082 green 9/9) was merged with the same exact-head safeguard, producing
+  merge commit `c1bf51a`; push-to-main CI on it (run 41270622904) passed 9/9.
+  `main` therefore sits one commit past the release tag, which stays on `8b52281`
+  and remains a valid ancestor of `main`. No second tag and no release change were
+  made: the published archives are byte-identical to what was verified.
