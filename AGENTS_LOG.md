@@ -402,3 +402,29 @@
 - The `unit` runner now prints a flushed `RUN` line per test: a segfaulting test
   otherwise leaves no record of which one died, and the Windows CI log was not
   reachable from this sandbox.
+
+## v0.1.0-dev3 release, 2026-11-01
+
+- Publication followed the same route as dev2 because `workflow_dispatch` returns
+  HTTP 403 for this token: tag `v0.1.0-dev3` (annotated object
+  `ecbb52ba5e915fb644c301b149b89e0e65579d49`) on merge commit
+  `32e7d9d1bde0bf65e2b500b653ff18be8c771c35`, then the `.github/publish-request`
+  marker forwarded `tag=v0.1.0-dev3` and the successful push-to-main run
+  `41303842721` to `release.yml`. Every gate in that workflow (annotated tag,
+  tag == `v` + VERSION, tag commit on main, supplied run is a push-to-main success
+  for that exact commit) ran and passed; the release went draft first and only
+  became public after the asset list, sizes and hashes were checked.
+- Published assets: `stockbear-0.1.0-dev3-linux-x64.tar.gz` (568 419 bytes,
+  sha256 `af688454820f3def95bfcbc8fd85e18eb73500158d8033b6ea36b73d39d0084b`),
+  `stockbear-0.1.0-dev3-windows-x64.zip` (254 821 bytes, sha256
+  `a220a3b2a0146b34da9addc141b19e246112fd4e00015a201c40c9568376bdeb`) and
+  `SHA256SUMS.txt` (207 bytes, sha256
+  `7f8ea5074ce9fa6921e175dcbc52d539c5fc835aec893485c3e6beb8069ee57d`).
+- Both published binaries were executed from the archives on runners, not just
+  hashed: `./stockbear uci` reports `StockBear 0.1.0-dev3`, and `bench --depth 6`
+  / `--depth 7` return signatures `e06c4352681ae8eb` / `5bceff035f2a4ae4` on
+  Windows and Linux alike — the same signatures as the committed records, so the
+  shipped artefacts are the build the evidence was measured on.
+- The first verification pass checked the Windows archive's structure and hash but
+  only executed the Linux binary; a windows-2022 job was added for the second pass
+  rather than describing an unexecuted binary as verified.
