@@ -57,15 +57,53 @@ turning a pruning feature off can reduce node counts at a fixed depth for
 ordering reasons, which says nothing about strength. Strength claims come only
 from matches.
 
-The `NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`, `SEEPruning`
-and `CheckExtension` UCI options expose the same switches, so the tournament
-harness can measure a feature by strength:
+The `NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`, `SEEPruning`,
+`CheckExtension`, `CounterMoves`, `ContinuationHistory`, `CaptureHistory`,
+`HistoryMaluses` and `LMRHistory` UCI options expose the same switches, so the
+tournament harness can measure a feature by strength. The last five default to
+off because the dev3 matches found no benefit; they are kept switchable so the
+measurement can be repeated. **Set every switch explicitly on both sides** and
+keep the record's `configuration` line: it stores the options that were sent to
+each engine *and* the defaults each engine advertised, so the configuration can
+be read out of the evidence years later, when a build's defaults have changed —
+as they did within dev3 itself:
 
 ```sh
 python3 scripts/tournament.py --engine-a ./build-release/stockbear \
   --engine-b ./build-release/stockbear --a-option NullMove=false \
   --games 200 --base-ms 80 --inc-ms 8
 ```
+
+### Released signatures
+
+Record the `# signature` of the shipped build, because a changed signature means
+behaviour changed and needs an explanation. For `v0.1.0-dev3` (and, by
+construction, `v0.1.0-dev2`):
+
+| build | depth | signature |
+| --- | --- | --- |
+| shipped defaults | 6 | `e06c4352681ae8eb` |
+| shipped defaults | 7 | `5bceff035f2a4ae4` |
+| all five dev3 ordering switches on | 6 | `8d99b4e28a6231a0` |
+| all five dev3 ordering switches on | 7 | `f6103610012f7f9d` |
+| tuned evaluation candidate A (`tuning/variantA.txt`) | 6 | `269a852faa999f37` |
+
+The shipped rows are identical to the rebuilt `v0.1.0-dev2` binary, which is the
+intended outcome of shipping the dev2 search and evaluation with the new switches
+turned off. A signature is a statement about these twelve positions only: the
+review fix that made a null move clear the "previous move" slot changed how
+quiets are ordered after a null move without altering any of these rows, and it
+did change play in deeper endgames. Use the signature to catch a regression on
+the suite, and a match to measure behaviour. Per-set node counts for the shipped build at depth 6/7:
+
+| suite | depth 6 nodes | depth 7 nodes |
+| --- | --- | --- |
+| total, 12 embedded positions | 108,910 | 250,053 |
+
+The all-on configuration costs about 8 % more time at equal depth (118,548 and
+255,021 nodes) without winning a match, which is why it is not the default. The
+full list of ablations and both feature matches is in
+`benchmarks/results/0.1.0-dev3/REPORT.md`.
 
 ### Fixed node budgets
 
@@ -84,6 +122,13 @@ comparison, not a tournament result: record it as such and do not quote an Elo
 estimate from it without the usual paired-opening sample.
 
 ## Matches
+
+A match is only evidence for the configuration its record describes. The harness
+writes a `configuration` line first and a `summary` line last; the first is the
+one that proves what was played (engine names, paths, per-engine option values,
+per-engine advertised defaults, node budget, seed, opening file, host), so quote
+it next to any result and do not reconstruct a configuration from the command
+line you think you typed.
 
 The harness uses its own UCI subprocess controller and python-chess for
 independent legal-move checking, draw adjudication and PGN. No opponent is
@@ -147,6 +192,14 @@ number. The Elo transform itself assumes the model `score = 1/(1+10^(-Δ/400))`
 and is only descriptive.
 
 ## External opponent
+
+The tuning pipeline has its own record: `docs/TUNING.md` documents the dataset,
+the trainer command lines, the parameter sets and the match that rejected each
+candidate. A tuning-loss improvement is not a strength result; every candidate
+must be matched against the shipped binary, one binary on both sides differing
+only in the `EvalParams` file, and a candidate is shipped only on a match that
+is not negative. In dev3 none was, so `benchmarks/params/dev3-shipped.txt` is
+byte-identical to `benchmarks/params/dev2-baseline.txt`.
 
 Stockfish is used **only** as an external opponent; it never participates in
 StockBear's move selection and is not bundled. Pin both the version tag and the

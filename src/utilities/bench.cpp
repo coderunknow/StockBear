@@ -1,4 +1,5 @@
 #include "utilities/bench.hpp"
+#include "evaluation/eval_params.hpp"
 #include "utilities/bench_positions.hpp"
 #include "chess/dead_position.hpp"
 #include "chess/fen.hpp"
@@ -151,6 +152,11 @@ bool apply_param(SearchParams& params, const std::string& key, const std::string
     else if (key == "futility") params.futility = on;
     else if (key == "seePruning") params.seePruning = on;
     else if (key == "checkExtension") params.checkExtension = on;
+    else if (key == "counterMoves") params.counterMoves = on;
+    else if (key == "continuationHistory") params.continuationHistory = on;
+    else if (key == "captureHistory") params.captureHistory = on;
+    else if (key == "historyMaluses") params.historyMaluses = on;
+    else if (key == "lmrHistory") params.lmrHistory = on;
     else return false;
     return true;
 }
@@ -163,7 +169,12 @@ std::string params_text(const SearchParams& params) {
         << ",reverseFutility=" << int(params.reverseFutility)
         << ",futility=" << int(params.futility)
         << ",seePruning=" << int(params.seePruning)
-        << ",checkExtension=" << int(params.checkExtension);
+        << ",checkExtension=" << int(params.checkExtension)
+        << ",counterMoves=" << int(params.counterMoves)
+        << ",continuationHistory=" << int(params.continuationHistory)
+        << ",captureHistory=" << int(params.captureHistory)
+        << ",historyMaluses=" << int(params.historyMaluses)
+        << ",lmrHistory=" << int(params.lmrHistory);
     return out.str();
 }
 }
@@ -174,6 +185,7 @@ int benchmark_cli(int argc, char** argv) {
     std::size_t hash = 16;
     SearchParams params;
     std::vector<std::pair<std::string, std::string>> overrides;
+    std::string evalParamsPath;
     bool perft = false, gotDepth = false, gotNodes = false, gotMoveTime = false;
     for (int i = 0; i < argc; ++i) {
         const std::string arg = argv[i];
@@ -186,6 +198,17 @@ int benchmark_cli(int argc, char** argv) {
                 return 2;
             }
             overrides.emplace_back(text.substr(0, eq), text.substr(eq + 1));
+            continue;
+        }
+        if (arg == "--params") {
+            // Same parameter file format as `eval`/`evaldata`: bench a candidate
+            // evaluation without rebuilding the engine. An empty path is an
+            // error, not a silent fallback to the default evaluation.
+            if (i + 1 >= argc || std::string(argv[i + 1]).empty()) {
+                std::cerr << "--params needs a file path\n";
+                return 2;
+            }
+            evalParamsPath = argv[++i];
             continue;
         }
         if ((arg == "--depth" || arg == "--nodes" || arg == "--hash" || arg == "--movetime") && i + 1 < argc) {
@@ -212,6 +235,17 @@ int benchmark_cli(int argc, char** argv) {
         std::cerr << "Choose one of --depth, --nodes, --movetime or --perft\n"; return 2;
     }
     if (perft) return perft_suite();
+
+    if (!evalParamsPath.empty()) {
+        // Install the candidate evaluation before any Position exists.
+        EvalParams loaded = default_eval_params();
+        std::string evalError;
+        if (!load_eval_params_file(evalParamsPath, &loaded, &evalError) ||
+            !apply_eval_params(loaded, &evalError)) {
+            std::cerr << "Invalid parameter file " << evalParamsPath << ": " << evalError << '\n';
+            return 2;
+        }
+    }
 
     TranspositionTable table(hash);
     std::cout << "# StockBear " << kEngineVersion << "; threads=1; hash_requested_mb=" << hash

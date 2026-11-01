@@ -1,6 +1,66 @@
 # Changelog
 
-## Unreleased
+## 0.1.0-dev3 — 2026-11-01
+
+Third development prerelease. The search was rewritten with auditable feature
+switches, MultiPV and `go searchmoves` became real, and the evaluation was made
+fully parameterisable with an offline tuning pipeline. Three tuned evaluation
+candidates were measured by paired matches, all were equal or worse than the
+existing one, and the release therefore keeps the dev2 evaluation: the pipeline
+and the negative result are documented instead of shipping an unvalidated set.
+
+- **Search rewrite (`src/search/search.{hpp,cpp}`).** `SearchParams` now owns
+  every pruning and ordering decision, with an independent switch for each.
+  Integer static exchange evaluation replaces the recursive form. New ordering
+  and history machinery: counter moves, continuation history, capture history,
+  history maluses for quiets that do not cut off, and a history-adjusted late
+  move reduction. `search_root(position, depth, alpha, beta, pvIndex)` implements
+  MultiPV by re-running the root with the reported moves excluded, and swaps the
+  alpha-improving move into the reported slot so `(move, score, pv)` cannot
+  disagree. With every new switch off, the depth-6 and depth-7 bench signatures
+  are exactly dev2's (`e06c4352681ae8eb`, `5bceff035f2a4ae4`), so the rewrite
+  reproduces dev2 on the benchmark suite; that is a suite-level regression guard,
+  not a proof of identical behaviour everywhere, and a null-move ordering fix
+  found in review leaves both signatures unchanged while changing play.
+- **Real MultiPV.** `setoption name MultiPV value 1..8` is advertised and
+  implemented; lines are reported best-first with `multipv N`, exact scores and
+  a PV that starts with its own move. A position with fewer legal moves than
+  requested reports only the lines that exist; a terminal position still reports
+  `bestmove 0000`.
+- **`go searchmoves`.** The move list is parsed up to the next known keyword,
+  validated against the position, and used to restrict the root. Illegal entries
+  are reported with `info string` and dropped; a list with no legal move is
+  reported and ignored, because answering `bestmove 0000` for a legal position
+  would be worse. Covered by black-box tests over depth, nodes, movetime and
+  clock limits.
+- **Evaluation parameters as data.** Every evaluation weight is one entry in a
+  32-entry table with a legal range; `stockbear eval --dump-params`,
+  `stockbear bench --params FILE` and `setoption name EvalParams value FILE`
+  expose it. The parameterised evaluation reproduces dev2 bit-for-bit
+  (`evaldata --check`, `tests/unit/test_eval_baseline.cpp`).
+- **Offline tuning pipeline.** `scripts/build_tuning_data.py`,
+  `scripts/tune_eval.py` and a 2,000-game self-play dataset
+  (`benchmarks/tuning/`) produce parameter sets by coordinate descent on a Texel
+  logistic loss, with a game-level holdout split. Three candidates were produced
+  and measured against the shipped evaluation (590–591 decided games each, paired
+  colour-reversed, fixed node budget): −132.5 Elo (worse by both the pentanomial
+  and the opening-clustered interval), 0.0 and −9.2 Elo (indistinguishable from
+  the shipped set). A fourth, conservative fit (Texel scale pinned
+  at 400, ridge 0.10, 20 % movement cap, anchored material) moves seven positional
+  terms by one or two points. None justified a change, so dev3 ships the dev2
+  values. Full record: [docs/TUNING.md](docs/TUNING.md).
+- **Tactics and endgame regression suites.** `benchmarks/tactics/mate_suite.epd`
+  (25 forced mates, certified by an independent mate proof on python-chess that
+  accepts *all* moves forcing mate within the labelled number of plies) and `benchmarks/tactics/endgame_suite.epd`
+  (24 constructed KQK/KRK conversions, all converted at 400 k nodes after the
+  null-move ordering fix). `scripts/run_suite.py` records per
+  position the move, depth, node count, time and whether the node budget was
+  exhausted, and keeps the raw engine output.
+- **Deterministic match control** (from the dev2 line, now released):
+  `scripts/tournament.py --nodes N` plays every move under a node budget so a
+  match is reproducible on a shared machine; the tournament smoke test uses it.
+
+## Unreleased (after 0.1.0-dev3)
 
 - **Deterministic match control.** `scripts/tournament.py` gained `--nodes N`,
   which plays every move with `go nodes N` instead of the clock and records

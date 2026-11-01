@@ -22,13 +22,13 @@ Windows with the multi-configuration Visual Studio generator uses
 
 | Test | What it covers |
 |---|---|
-| `unit` | FEN, bitboards/attacks/pins, castling, en passant, promotions, make/unmake and hash/accumulator invariants, Zobrist/TT context, claimable versus automatic draws, mate precedence, time-manager contract, evaluation symmetry, search behaviour and cancellation, malformed UCI |
+| `unit` | FEN, bitboards/attacks/pins, castling, en passant, promotions, make/unmake and hash/accumulator invariants, Zobrist/TT context, claimable versus automatic draws, mate precedence, time-manager contract, evaluation symmetry, the dev2 baseline reproduction (the shipped table evaluates exactly as dev2 did, pinned by checksum `da1921f604ae255e`), parameter-file validation and range checks, search behaviour and cancellation, malformed UCI |
 | `position_extra` | null-move round trips and null-move/unmake counter integrity (separate entry so the `unit` group stays fast) |
 | `regression` | capture/unmake, en-passant hashing, FEN symbols, king-capture API guard, retained TT context |
 | `perft_quick`, `perft_full` | legal move generation against independently regenerated perft totals |
 | `stress` | deterministic random games with FEN/key/state verification after every move |
 | `deadpos` | FIDE Article 5.2.2: dead and alive classes, witness replay, closure property, terminal exclusion, budget-exhaustion safety, and exhaustive two-king and three-piece state-space sweeps (slower, labelled `slow`) |
-| `uci_integration` | black-box protocol: handshake, options, `position`/`go` variants, clocks, `stop` during `infinite`, terminal positions, repeated searches, clean exit |
+| `uci_integration` | black-box protocol: handshake, options, `position`/`go` variants, clocks, `stop` during `infinite`, terminal positions, repeated searches, clean exit; `go searchmoves` over depth/nodes/movetime/clocks, illegal and empty move lists, a list followed by a real keyword; `MultiPV` 1–8 with distinct ranked lines, fewer legal moves than requested, and a return to single-PV output |
 | `uci_fuzz` | 300 seeded malformed/cancellation cases, including `go` commands that must be rejected versus unknown tokens that must be ignored |
 
 The `deadpos` entry runs the same tests as the CI step
@@ -61,6 +61,19 @@ python3 scripts/dead_position_reference.py ./build-release/stockbear --full
 * `tests/integration/test_statistics.py` pins the statistics to known values
   (Wilson interval for 5/10, hand-computed pentanomial mean and standard error,
   Elo transform, SPRT decisions, degenerate-sample handling).
+* `scripts/chess_oracle.py` proves forced mates with a search written from
+  scratch on python-chess; every position in `benchmarks/tactics/mate_suite.epd`
+  is certified by it and lists *all* moves that force mate inside the labelled
+  number of plies, so a pass never depends on agreeing with one arbitrary choice
+  and a slower mate does not count. Mate distances are counted at every ply, and
+  a "this side is getting mated" score is only reported when every legal reply was
+  proven.
+* `scripts/run_suite.py` runs the engine over the EPD suites at a fixed node
+  budget and records, per position, the search depth, the depth at which the mate
+  was first proved, node count, time, whether the node budget was exhausted and
+  the engine's raw output. The engine is read by a pump thread so a stuck engine
+  fails the run instead of hanging it. Recorded results for
+  this release are in `benchmarks/results/0.1.0-dev3/`.
 * `scripts/dead_position_corpus.py` checks expected verdicts, witness legality,
   state counts and timings; `scripts/dead_position_reference.py` re-decides the
   positions it can compute with an independent python-chess implementation. That

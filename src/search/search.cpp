@@ -1,6 +1,6 @@
 // Iterative-deepening negamax with alpha-beta/PVS, quiescence search,
 // aspiration windows, null-move pruning, late move reductions, reverse
-// futility pruning, static exchange evaluation, killer/history/counter-move
+// futility pruning, static exchange evaluation, history/counter-move/continuation
 // ordering and a context-checked transposition table.
 //
 // Every pruning decision is guarded so that it cannot change the value of a
@@ -28,6 +28,13 @@ constexpr int NodeCheckInterval = 64;
 // it could, so a rook capture of a pawn defended only by the king (with an
 // x-raying rook behind) came out as a loss of a rook instead of a won pawn.
 constexpr int SeeValue[PieceTypeNB + 1] = {0, 100, 320, 335, 500, 975, 20000, 0};
+// History values saturate here; ordering scores are far below the hash-move
+// bucket, so saturation can never reorder a capture above a hash move.
+constexpr int HistoryLimit = 60000;
+// Most quiet moves remembered per node for the penalty pass. A node with more
+// quiets than this still gets its cutoff rewarded; only the penalties are
+// truncated, which is a quality trade-off, not a correctness one.
+constexpr int MaxPenalisedQuiets = 24;
 
 // Integer-only reduction schedule; keeps results bit-identical across
 // platforms and compilers (a floating-point logarithm does not guarantee that).
@@ -52,6 +59,9 @@ inline int gain_of(const Position& pos, Move move) {
     return victim == NoPiece ? 0 : SeeValue[type_of(victim)];
 }
 
+inline int clamp_history(int value) {
+    return std::max(-HistoryLimit, std::min(HistoryLimit, value));
+}
 } // namespace
 
 int static_exchange_evaluation(const Position& pos, Move move) {
@@ -123,6 +133,10 @@ bool Search::visit(int ply) {
 
 void Search::score_moves(const Position& pos, MoveList& moves, Move hashMove, int ply) {
     const Color us = pos.side_to_move();
+    const Move previous = previous_move(ply);
+    // The piece that played the previous move is standing on its destination.
+    const Piece previousPiece = is_ok(previous) ? pos.piece_on(move_to(previous)) : NoPiece;
+    const PieceType previousType = previousPiece == NoPiece ? NoPieceType : type_of(previousPiece);
     for (int i = 0; i < moves.size(); ++i) {
         const Move m = moves[i].move;
         int score;
@@ -131,7 +145,11 @@ void Search::score_moves(const Position& pos, MoveList& moves, Move hashMove, in
         } else if (!quiet(pos, m)) {
             const int gain = gain_of(pos, m);
             const Piece attacker = pos.piece_on(move_from(m));
-            const int attackerValue = attacker == NoPiece ? 0 : PieceValueMg[type_of(attacker)];
+            // Ordering uses the exchange values, not the (now tunable) material
+            // weights: a tuned pawn value must not silently change which
+            // captures get a full SEE, and a capture ordering that depends on
+            // the evaluation parameters would make ablations incomparable.
+            const int attackerValue = attacker == NoPiece ? 0 : SeeValue[type_of(attacker)];
             // Static exchange evaluation is only needed where it can change the
             // verdict; a capture of a piece at least as valuable as the
             // capturing one is winning anyway.
@@ -140,12 +158,30 @@ void Search::score_moves(const Position& pos, MoveList& moves, Move hashMove, in
             score = 2000000 + (seeScore >= 0 ? 1000000 : 0) + 32 * gain + seeScore;
             if (move_type(m) == PromotionMove)
                 score += 900000 + SeeValue[promotion_type(m)];
+            if (params_.captureHistory) {
+                // A small, bounded tie-break between otherwise equal captures.
+                const Piece victim = pos.piece_on(move_to(m));
+                const int stat = captureHistory_[attacker == NoPiece ? NoPieceType : type_of(attacker)]
+                                                 [move_to(m)]
+                                                 [victim == NoPiece ? NoPieceType : type_of(victim)];
+                score += std::max(-1024, std::min(1024, stat));
+            }
         } else if (m == killers_[ply][0]) {
             score = 1500000;
         } else if (m == killers_[ply][1]) {
             score = 1490000;
+        } else if (params_.counterMoves && previousPiece != NoPiece &&
+                   m == counterMoves_[previousPiece][move_to(previous)]) {
+            score = 1485000;
         } else {
             score = history_[us][move_from(m)][move_to(m)];
+            if (params_.continuationHistory && previousType != NoPieceType) {
+                const int cont = continuation(previousType, move_to(previous),
+                                              type_of(pos.piece_on(move_from(m))), move_to(m));
+                // Bounded and secondary: continuation history refines the
+                // ordering among quiet moves without overriding the main table.
+                score += std::max(-8000, std::min(8000, cont / 4));
+            }
         }
         moves[i].score = score;
     }
@@ -160,27 +196,58 @@ int Search::next_move(MoveList& moves, int index) {
 }
 
 void Search::update_pv(int ply, Move move) {
-    pv_[ply][0] = move;
+    Move* row = pv_row(ply);
+    row[0] = move;
     const int childLength = ply + 1 < MAX_PLY ? pvLength_[ply + 1] : 0;
     const int count = std::min(childLength, MAX_PLY - ply - 1);
-    for (int i = 0; i < count; ++i) pv_[ply][i + 1] = pv_[ply + 1][i];
+    const Move* child = ply + 1 < MAX_PLY ? pv_row(ply + 1) : nullptr;
+    for (int i = 0; i < count; ++i) row[i + 1] = child[i];
     pvLength_[ply] = count + 1;
 }
 
-void Search::update_quiet_stats(const Position& pos, Move move, int depth, int ply) {
-    // Killer moves: two quiet moves per ply that recently caused a cutoff.
-    if (killers_[ply][0] != move) {
-        killers_[ply][1] = killers_[ply][0];
-        killers_[ply][0] = move;
+void Search::update_quiet_stats(const Position& pos, Move move, int depth, int ply, int bonus) {
+    const Color us = pos.side_to_move();
+    const Move previous = previous_move(ply);
+    const Piece previousPiece = is_ok(previous) ? pos.piece_on(move_to(previous)) : NoPiece;
+    (void)depth;
+    if (bonus > 0) {
+        // Killer moves: two quiet moves per ply that recently caused a cutoff.
+        if (killers_[ply][0] != move) {
+            killers_[ply][1] = killers_[ply][0];
+            killers_[ply][0] = move;
+        }
+        // Counter-move table: remember what refuted the move that led here.
+        if (params_.counterMoves && previousPiece != NoPiece)
+            counterMoves_[previousPiece][move_to(previous)] = move;
     }
-    int& entry = history_[pos.side_to_move()][move_from(move)][move_to(move)];
-    entry = std::min(60000, entry + depth * depth);
-    // Keep the history table from saturating: halve everything when it grows.
-    if (entry >= 60000) {
+    int& entry = history_[us][move_from(move)][move_to(move)];
+    entry = clamp_history(entry + bonus);
+    // Keep the table from saturating at the bound: halve everything when a
+    // positive update reaches the limit, as dev2 did.
+    if (entry >= HistoryLimit) {
         for (auto& color : history_)
             for (auto& from : color)
                 for (int& value : from) value /= 2;
     }
+    if (params_.continuationHistory && previousPiece != NoPiece) {
+        int& cont = continuation(type_of(previousPiece), move_to(previous),
+                                 type_of(pos.piece_on(move_from(move))), move_to(move));
+        cont = clamp_history(cont + bonus);
+    }
+}
+
+void Search::update_capture_stats(const Position& pos, Move move, int depth) {
+    if (!params_.captureHistory) return;
+    const Piece attacker = pos.piece_on(move_from(move));
+    const Piece victim = pos.piece_on(move_to(move));
+    const PieceType at = attacker == NoPiece ? NoPieceType : type_of(attacker);
+    const PieceType vt = victim == NoPiece ? NoPieceType : type_of(victim);
+    int& entry = captureHistory_[at][move_to(move)][vt];
+    entry = std::max(-HistoryLimit, std::min(HistoryLimit, entry + depth * depth));
+}
+
+void Search::penalise_quiets(const Position& pos, const Move* moves, int count, int depth, int ply) {
+    for (int i = 0; i < count; ++i) update_quiet_stats(pos, moves[i], depth, ply, -depth * depth);
 }
 
 int Search::quiescence(Position& pos, int alpha, int beta, int ply) {
@@ -217,6 +284,7 @@ int Search::quiescence(Position& pos, int alpha, int beta, int ply) {
         const Move m = moves[i].move;
         if (!inCheck && params_.seePruning && see(pos, m) < 0) continue;
         pos.make_move(m);
+        moveStack_[ply] = m;
         const int value = -quiescence(pos, -beta, -alpha, ply + 1);
         pos.unmake_move(m);
         if (aborted_) return 0;
@@ -225,7 +293,10 @@ int Search::quiescence(Position& pos, int alpha, int beta, int ply) {
             if (value > alpha) {
                 alpha = value;
                 update_pv(ply, m);
-                if (alpha >= beta) break;
+                if (alpha >= beta) {
+                    if (!inCheck) update_capture_stats(pos, m, 1);
+                    break;
+                }
             }
         }
     }
@@ -276,10 +347,15 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
     if (params_.nullMove && allowNull && !pvNode && !inCheck && !mateWindow && depth >= 3 &&
         staticEval >= beta && has_non_pawn_material(pos)) {
         const int reduction = 3 + depth / 5;
+        // A null move is not a move: clear the slot so the child does not read
+        // a stale previous move from a sibling branch or an earlier iteration.
+        const Move savedPrevious = moveStack_[ply];
+        moveStack_[ply] = MOVE_NONE;
         pos.make_null_move();
         const int value = -negamax(pos, depth - 1 - reduction, -beta, -beta + 1, ply + 1,
                                    false, extensions, false);
         pos.unmake_null_move();
+        moveStack_[ply] = savedPrevious;
         if (aborted_) return 0;
         if (value >= beta) return value >= MATE_BOUND ? beta : value;
     }
@@ -294,6 +370,10 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
     int best = -VALUE_INFINITE;
     Move bestMove = MOVE_NONE;
     int moveCount = 0;
+    // Quiet moves already searched at this node, for the history penalty when a
+    // later move cuts off: the earlier quiets failed to produce the cutoff.
+    Move triedQuiets[MaxPenalisedQuiets];
+    int triedCount = 0;
 
     for (int i = 0; i < moves.size(); ++i) {
         next_move(moves, i);
@@ -313,14 +393,27 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
         if (futilityCandidate || lmrCandidate) check = gives_check(pos, m);
         if (futilityCandidate && !check) continue;
 
+        // Read the history value before making the move: the table is indexed
+        // by the moving side, which `make_move` flips.
+        const int quietHistory = isQuiet ? history_[pos.side_to_move()][move_from(m)][move_to(m)]
+                                         : 0;
         pos.make_move(m);
+        moveStack_[ply] = m;
         int value;
         if (moveCount == 0) {
             value = -negamax(pos, depth - 1, -beta, -alpha, ply + 1, pvNode, extensions, true);
         } else {
             int reduction = 0;
-            if (lmrCandidate && !check)
+            if (lmrCandidate && !check) {
                 reduction = std::min(reduction_for(depth, moveCount), depth - 2);
+                if (params_.lmrHistory) {
+                    // Good quiet moves are less reduced; poor ones more. The
+                    // bound keeps the reduction inside [0, depth - 2] so the
+                    // re-search below always has something to verify.
+                    if (quietHistory > 800) reduction = std::max(0, reduction - 1);
+                    else if (quietHistory < 0) reduction = std::min(reduction + 1, depth - 2);
+                }
+            }
 
             value = -negamax(pos, depth - 1 - reduction, -alpha - 1, -alpha, ply + 1,
                              false, extensions, true);
@@ -344,10 +437,17 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
             }
         }
         if (alpha >= beta) {
-            if (isQuiet) update_quiet_stats(pos, m, depth, ply);
+            if (isQuiet) {
+                update_quiet_stats(pos, m, depth, ply, depth * depth);
+                if (params_.historyMaluses && triedCount > 0)
+                    penalise_quiets(pos, triedQuiets, triedCount, depth, ply);
+            } else {
+                update_capture_stats(pos, m, depth);
+            }
             if (isQuiet) moves[i].score = -VALUE_INFINITE; // never reorder below killers
             break;
         }
+        if (isQuiet && triedCount < MaxPenalisedQuiets) triedQuiets[triedCount++] = m;
     }
 
     const Bound stored = best >= beta ? Bound::Lower
@@ -357,22 +457,31 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
     return best;
 }
 
-int Search::search_root(Position& pos, int depth, int alpha, int beta) {
+int Search::search_root(Position& pos, int depth, int alpha, int beta, int pvIndex) {
     int best = -VALUE_INFINITE;
-    for (std::size_t i = 0; i < rootMoves_.size(); ++i) {
+    // The move that improved alpha in this pass, so the slot is reported with a
+    // move that actually produced its score and PV.
+    Move alphaMove = rootMoves_[std::size_t(pvIndex)].move;
+    int alphaValue = -VALUE_INFINITE;
+    for (std::size_t i = std::size_t(pvIndex); i < rootMoves_.size(); ++i) {
         // Selection sort over the root list so the previous best move is tried
-        // first on the next iteration.
+        // first on the next iteration and the highest-scoring move of this
+        // multi-PV slot heads the list.
         std::size_t pick = i;
         for (std::size_t j = i + 1; j < rootMoves_.size(); ++j)
             if (rootMoves_[j].score > rootMoves_[pick].score) pick = j;
         if (pick != i) std::swap(rootMoves_[i], rootMoves_[pick]);
 
         const Move m = rootMoves_[i].move;
+        moveStack_[0] = m;
         pos.make_move(m);
         int value;
-        if (i == 0) {
+        if (i == std::size_t(pvIndex)) {
             value = -negamax(pos, depth - 1, -beta, -alpha, 1, true, 0, true);
         } else {
+            // Only the move occupying this PV slot is searched with a full
+            // window from the start; the rest are ranked with a null window and
+            // re-searched only if they improve alpha.
             value = -negamax(pos, depth - 1, -alpha - 1, -alpha, 1, false, 0, true);
             if (!aborted_ && value > alpha && value < beta)
                 value = -negamax(pos, depth - 1, -beta, -alpha, 1, true, 0, true);
@@ -380,15 +489,44 @@ int Search::search_root(Position& pos, int depth, int alpha, int beta) {
         pos.unmake_move(m);
         if (aborted_) return 0;
 
+        rootMoves_[i].score = value;
         if (value > best) best = value;
         if (value > alpha) {
             alpha = value;
+            alphaMove = m;
+            alphaValue = value;
             update_pv(0, m);
         }
-        rootMoves_[i].score = value;
-        if (value >= beta) break;
+        if (alpha >= beta) break;
+    }
+    // Move the alpha-improving move into this slot so that the reported line
+    // (move, score, PV) is internally consistent even when a later move beat
+    // the one that started the pass.
+    if (alphaValue != -VALUE_INFINITE) {
+        for (std::size_t i = std::size_t(pvIndex); i < rootMoves_.size(); ++i) {
+            if (rootMoves_[i].move == alphaMove) {
+                std::swap(rootMoves_[i], rootMoves_[std::size_t(pvIndex)]);
+                rootMoves_[std::size_t(pvIndex)].score = alphaValue;
+                break;
+            }
+        }
     }
     return best;
+}
+
+void Search::build_lines(SearchResult& result, int requested) const {
+    result.lines.clear();
+    const int count = std::min<int>(std::max(1, requested), int(rootMoves_.size()));
+    for (int i = 0; i < count; ++i) {
+        PvLine line;
+        line.move = rootMoves_[std::size_t(i)].move;
+        line.score = rootMoves_[std::size_t(i)].score;
+        if (std::size_t(i) < pvLines_.size() && !pvLines_[std::size_t(i)].empty())
+            line.pv = pvLines_[std::size_t(i)];
+        else
+            line.pv = {line.move};
+        result.lines.push_back(std::move(line));
+    }
 }
 
 SearchResult Search::run(Position root, const SearchLimits& limits,
@@ -402,6 +540,12 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
     for (auto& row : killers_) std::fill(std::begin(row), std::end(row), MOVE_NONE);
     for (auto& color : history_)
         for (auto& row : color) std::fill(std::begin(row), std::end(row), 0);
+    for (auto& row : counterMoves_) std::fill(std::begin(row), std::end(row), MOVE_NONE);
+    std::fill_n(continuation_.get(), ContinuationSlots, 0);
+    for (auto& a : captureHistory_)
+        for (auto& b : a) std::fill(std::begin(b), std::end(b), 0);
+    std::fill(std::begin(moveStack_), std::end(moveStack_), MOVE_NONE);
+    pvLines_.clear();
     tt_.new_search();
     // The table context separates this search's root history from anything
     // stored by an earlier search, so a twofold cycle inside this search can
@@ -427,9 +571,22 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
 
     rootMoves_.clear();
     rootMoves_.reserve(std::size_t(legal.size()));
-    for (const ExtMove& em : legal) rootMoves_.push_back(RootMove{em.move, 0});
+    for (const ExtMove& em : legal) {
+        if (!limits.searchMoves.empty() &&
+            std::find(limits.searchMoves.begin(), limits.searchMoves.end(), em.move) ==
+                limits.searchMoves.end())
+            continue;
+        rootMoves_.push_back(RootMove{em.move, 0});
+    }
+    // A searchmoves list that contains no legal move would leave nothing to
+    // search. The UCI layer already validates the list against this position;
+    // this fallback keeps the invariant that a search always has a move to
+    // return instead of silently answering "0000".
+    if (rootMoves_.empty())
+        for (const ExtMove& em : legal) rootMoves_.push_back(RootMove{em.move, 0});
     result.bestMove = rootMoves_.front().move; // legal even if stopped at once
     result.pv = {result.bestMove};
+    result.lines = {PvLine{result.bestMove, 0, {result.bestMove}}};
 
     // A recognised draw needs no game tree; report depth 0 instead of
     // pretending to have completed arbitrarily deep iterations.
@@ -448,6 +605,8 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
         return result;
     }
 
+    const int multiPv = std::min<int>(std::max(1, limits.multiPv), int(rootMoves_.size()));
+    pvLines_.assign(std::size_t(multiPv), {});
     const int maxDepth = limits.depth > 0 ? std::min(limits.depth, MAX_PLY - 3) : MAX_PLY - 3;
     int previousScore = VALUE_ZERO;
     bool havePreviousScore = false;
@@ -458,42 +617,57 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
         int alpha = -VALUE_INFINITE;
         int beta = VALUE_INFINITE;
         int window = params_.aspirationInitial;
-        if (params_.aspiration && havePreviousScore && depth >= 4) {
+        if (params_.aspiration && havePreviousScore && depth >= 4 && multiPv == 1) {
             alpha = std::max(-VALUE_INFINITE, previousScore - window);
             beta = std::min(VALUE_INFINITE, previousScore + window);
         }
-        int value = 0;
-        while (true) {
-            value = search_root(root, depth, alpha, beta);
+        for (int pvIndex = 0; pvIndex < multiPv; ++pvIndex) {
+            // Every slot after the first is searched with a fresh full window:
+            // its score must be exact for the ranking to be honest, and an
+            // aspiration band tuned for the first line would bias it.
+            if (pvIndex > 0) { alpha = -VALUE_INFINITE; beta = VALUE_INFINITE; }
+            int passValue = -VALUE_INFINITE;
+            while (true) {
+                const int value = search_root(root, depth, alpha, beta, pvIndex);
+                passValue = value;
+                if (aborted_) break;
+                if (pvIndex > 0) break;
+                if (value <= alpha) {
+                    beta = alpha;
+                    alpha = std::max(-VALUE_INFINITE, value - window);
+                    window = std::min(window * 2, 1200);
+                    continue;
+                }
+                if (value >= beta) {
+                    beta = std::min(VALUE_INFINITE, value + window);
+                    window = std::min(window * 2, 1200);
+                    continue;
+                }
+                break;
+            }
             if (aborted_) break;
-            if (value <= alpha) {
-                beta = alpha;
-                alpha = std::max(-VALUE_INFINITE, value - window);
-                window = std::min(window * 2, 1200);
-                continue;
-            }
-            if (value >= beta) {
-                beta = std::min(VALUE_INFINITE, value + window);
-                window = std::min(window * 2, 1200);
-                continue;
-            }
-            break;
+            (void)passValue;
+            pvLines_[std::size_t(pvIndex)].clear();
+            const Move* line = pv_row(0);
+            for (int i = 0; i < pvLength_[0]; ++i)
+                pvLines_[std::size_t(pvIndex)].push_back(line[i]);
+            if (pvLines_[std::size_t(pvIndex)].empty())
+                pvLines_[std::size_t(pvIndex)].push_back(rootMoves_[std::size_t(pvIndex)].move);
         }
         if (aborted_) break;
 
-        previousScore = value;
+        previousScore = rootMoves_[0].score;
         havePreviousScore = true;
-        result.score = value;
+        result.score = rootMoves_[0].score;
         result.depth = depth;
         result.selectiveDepth = selDepth_;
         result.nodes = nodes_;
         result.timeUs = timer_.elapsed_us();
         result.timeMs = result.timeUs / 1000;
         result.hashfull = tt_.hashfull();
-        result.pv.clear();
-        for (int i = 0; i < pvLength_[0]; ++i) result.pv.push_back(pv_[0][i]);
-        if (!result.pv.empty()) result.bestMove = result.pv.front();
-        else result.pv.push_back(result.bestMove);
+        build_lines(result, multiPv);
+        result.bestMove = result.lines.front().move;
+        result.pv = result.lines.front().pv;
         if (onInfo) onInfo(result);
 
         stableIterations = (result.bestMove == previousBest) ? stableIterations + 1 : 0;

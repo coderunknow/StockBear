@@ -3,8 +3,10 @@
 import os
 import queue
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 
@@ -15,6 +17,21 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 def read_version():
     with open(os.path.join(ROOT, "VERSION"), encoding="utf-8") as handle:
         return handle.read().strip()
+def scored_line(lines):
+    """The deterministic part of the last scored info line: score and PV only.
+
+    Node count, NPS and time are machine-dependent, so comparing them would make
+    this test flaky for no benefit.
+    """
+    for line in reversed(lines):
+        if " score " in line and " pv " in line:
+            fields = line.split()
+            score = " ".join(fields[fields.index("score"):fields.index("score") + 3])
+            pv = " ".join(fields[fields.index("pv"):])
+            return score + " | " + pv
+    raise AssertionError(f"no scored line in {lines[-3:]}")
+
+
 MOVE = re.compile(r"^(?:[a-h][1-8][a-h][1-8][qrbn]?|0000)$")
 
 class Engine:
@@ -138,11 +155,15 @@ def main():
         e.send("go wtime -7 btime 60000")
         best, _ = e.best(3)
         assert best in start_legal, best
-        # Unknown tokens ("ponder", "searchmoves", GUI extensions) must be
-        # ignored without abandoning the search, as the UCI specification asks.
+        # Unknown tokens ("ponder", GUI extensions) must be ignored without
+        # abandoning the search, as the UCI specification asks. A searchmoves
+        # list that mixes one legal move with an illegal one keeps the legal
+        # move and reports the other, instead of failing the whole search.
         e.send("go depth 2 ponder searchmoves e2e4 e7e5")
-        best, _ = e.best(3)
-        assert best in start_legal, best
+        best, lines = e.best(3)
+        assert best == "e2e4", best
+        assert any(x.startswith("info string go: searchmoves ignores illegal move e7e5")
+                   for x in lines), lines
         e.send("go winc -1")
         _, invalid_clock = e.until(lambda x: x.startswith("info string go:"))
         assert not any(x.startswith("bestmove ") for x in invalid_clock), invalid_clock
@@ -203,6 +224,147 @@ def main():
     finally:
         e.close()
     print("PASS UCI handshake, options, positions, limits, cancellation, terminal and repeated searches")
+
+    # --- searchmoves and MultiPV, in a fresh engine --------------------------
+    e = Engine()
+    try:
+        e.send("uci")
+        _, hello = e.until(lambda x: x == "uciok")
+        assert any(x.startswith("option name MultiPV type spin default 1 min 1 max 8")
+                   for x in hello), hello
+        e.ready()
+        e.send("position startpos")
+
+        # A restriction to two quiet moves must pick one of them, at every kind
+        # of limit, and never a move outside the list.
+        for limits in ("depth 4", "nodes 3000", "movetime 60",
+                       "wtime 5000 btime 5000 winc 50 binc 50"):
+            e.send(f"go {limits} searchmoves e2e4 d2d4")
+            best, lines = e.best(10)
+            assert best in ("e2e4", "d2d4"), (limits, best, lines[-3:])
+
+        # A restriction to one bad move must still return that move: the GUI
+        # asked for a search over exactly this list.
+        e.send("position fen 7k/8/8/8/8/8/8/K5Q1 w - - 0 1")
+        e.send("go depth 4 searchmoves a1b1")
+        best, _ = e.best(10)
+        assert best == "a1b1", best
+
+        # An invalid FEN must be rejected and leave the previous position in
+        # place, rather than searching something the GUI did not ask for.
+        e.send("position fen 7k/8/8/8/8/8/8/K6Q w - - 0 1")
+        _, rejected = e.until(lambda x: x.startswith("info string position:"))
+        assert "side not to move is in check" in rejected[0] or "in check" in rejected[0], rejected
+        e.send("go depth 2")
+        best, _ = e.best(10)
+        assert best in legal_by_divide("7k/8/8/8/8/8/8/K5Q1 w - - 0 1"), best
+
+        # An entirely illegal list is reported and then ignored.
+        e.send("position startpos")
+        e.send("go depth 2 searchmoves e2e5 z9z9")
+        best, lines = e.best(10)
+        assert any(x.startswith("info string go: searchmoves ignores illegal move e2e5") for x in lines), lines
+        assert any(x.startswith("info string go: searchmoves has no legal move") for x in lines), lines
+        assert best in legal_by_divide("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"), best
+
+        # A searchmoves list followed by a real keyword must not swallow it.
+        e.send("go searchmoves e2e4 depth 3")
+        best, _ = e.best(10)
+        assert best == "e2e4", best
+
+        # MultiPV: three distinct moves with three distinct, ranked lines.
+        e.send("setoption name MultiPV value 3")
+        e.ready()
+        e.send("position startpos")
+        e.send("go depth 5")
+        best, lines = e.best(15)
+        info = [x for x in lines if x.startswith("info depth 5 ")]
+        tagged = [x for x in info if " multipv " in x]
+        assert len(tagged) == 3, info[-5:]
+        indexed = {}
+        for line in tagged:
+            fields = line.split()
+            index = int(fields[fields.index("multipv") + 1])
+            move = fields[fields.index("pv") + 1]
+            score_index = fields.index("score")
+            kind, value = fields[score_index + 1], int(fields[score_index + 2])
+            assert kind in ("cp", "mate"), line
+            assert index not in indexed, tagged
+            indexed[index] = (move, value if kind == "cp" else value * 30000)
+        assert sorted(indexed) == [1, 2, 3], indexed
+        moves = [indexed[i][0] for i in (1, 2, 3)]
+        assert len(set(moves)) == 3, moves
+        assert best == moves[0], (best, moves)
+        assert indexed[1][1] >= indexed[2][1] >= indexed[3][1], indexed
+
+        # Fewer legal moves than requested: report what exists, never invent a
+        # line or crash.
+        e.send("position fen 7k/8/8/8/8/8/6q1/K7 w - - 0 1")
+        legal = legal_by_divide("7k/8/8/8/8/8/6q1/K7 w - - 0 1")
+        e.send("go depth 4")
+        best, lines = e.best(15)
+        reported = [x for x in lines if " multipv " in x and x.startswith("info depth 4 ")]
+        assert 1 <= len(reported) <= min(3, len(legal)), (len(reported), legal)
+        assert best in legal, best
+
+        # Back to single PV: no multipv tag, one line per depth.
+        e.send("setoption name MultiPV value 1")
+        e.ready()
+        e.send("position startpos")
+        e.send("go depth 4")
+        _, lines = e.best(15)
+        assert not any(" multipv " in x for x in lines), lines
+    finally:
+        e.close()
+    print("PASS UCI searchmoves and MultiPV over depth, nodes, movetime and clocks")
+
+    # --- EvalParams: loading, paths with spaces, and reset ------------------
+    midgame = "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4"
+    baseline = {}
+    e = Engine()
+    try:
+        e.send("uci")
+        _, hello = e.until(lambda x: x == "uciok")
+        assert any(x.startswith("option name EvalParams type string") for x in hello), hello
+        e.ready()
+        e.send(f"position fen {midgame}")
+        e.send("go depth 5")
+        best, lines = e.best(10)
+        baseline["best"], baseline["score"] = best, scored_line(lines)
+
+        # A parameter file whose path contains spaces must load: the option is a
+        # `type string` path, and Windows user directories contain spaces.
+        directory = tempfile.mkdtemp(prefix="stockbear params ")
+        params = os.path.join(directory, "candidate set.txt")
+        with open(params, "w", encoding="utf-8") as handle:
+            handle.write("MaterialPawn 100 120\nMaterialQueen 1200 1300\n")
+        e.send(f"setoption name EvalParams value {params}")
+        _, loaded = e.until(lambda x: x.startswith("info string EvalParams"))
+        assert "loaded" in loaded[-1], loaded
+        e.ready()
+
+        # An unreadable file must be reported and must not change anything.
+        e.send("setoption name EvalParams value does/not/exist.txt")
+        _, failed = e.until(lambda x: x.startswith("info string setoption"))
+        assert "could not load" in failed[-1], failed
+
+        # Reset must actually restore the shipped evaluation, not just say so:
+        # after the reset the same position at the same depth must produce the
+        # same score line as a fresh engine did before any file was loaded.
+        e.send("setoption name EvalParams value <empty>")
+        _, reset = e.until(lambda x: x.startswith("info string EvalParams"))
+        assert "reset" in reset[-1], reset
+        e.ready()
+        e.send(f"position fen {midgame}")
+        e.send("go depth 5")
+        best, lines = e.best(10)
+        assert (best, scored_line(lines)) == (baseline["best"], baseline["score"]), \
+            (best, scored_line(lines), baseline)
+        shutil.rmtree(directory, ignore_errors=True)
+    finally:
+        e.close()
+    print("PASS UCI EvalParams loading, spaced paths, invalid file and reset")
+
 
 if __name__ == "__main__":
     main()

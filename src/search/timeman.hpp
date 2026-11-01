@@ -1,7 +1,9 @@
 #pragma once
+#include "chess/move.hpp"
 #include "utilities/types.hpp"
 #include <chrono>
 #include <cstdint>
+#include <vector>
 
 namespace stockbear {
 struct SearchLimits {
@@ -13,6 +15,11 @@ struct SearchLimits {
     std::int64_t whiteIncMs = 0, blackIncMs = 0;
     int movesToGo = 0;
     bool infinite = false;
+    // UCI `go searchmoves`: when non-empty, only these legal root moves are
+    // searched. Validated against the position by the UCI layer.
+    std::vector<Move> searchMoves;
+    // UCI MultiPV: number of principal variations to report (>= 1).
+    int multiPv = 1;
 };
 
 // Two budgets are derived from the clock:

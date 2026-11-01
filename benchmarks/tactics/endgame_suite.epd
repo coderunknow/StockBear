@@ -1,0 +1,28 @@
+# StockBear dev3 endgame conversion suite (EPD).
+# Source: constructed random placements (original data, Apache-2.0).
+# Every position is a theoretical win; the runner requires mate
+# inside the fifty-move rule, adjudicated by python-chess.
+8/2k5/8/8/8/8/3K2Q1/8 w - - id "kqk-01"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+6K1/8/8/8/8/1k6/3Q4/8 w - - id "kqk-02"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+6K1/1Q6/8/8/8/8/5k2/8 w - - id "kqk-03"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+8/8/1k6/7Q/8/7K/8/8 w - - id "kqk-04"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+8/8/8/8/6k1/4Q3/8/3K4 w - - id "kqk-05"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+2Q5/4k3/8/8/7K/8/8/8 w - - id "kqk-06"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+K7/8/2k5/8/8/4Q3/8/8 w - - id "kqk-07"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+8/1K6/5Q2/8/1k6/8/8/8 w - - id "kqk-08"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+8/3k4/8/8/8/7K/8/Q7 w - - id "kqk-09"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+2K3Q1/8/8/1k6/8/8/8/8 w - - id "kqk-10"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+4K3/8/5Q2/3k4/8/8/8/8 w - - id "kqk-11"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+6Q1/1k6/8/8/8/8/8/6K1 w - - id "kqk-12"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+4K3/2k5/8/3R4/8/8/8/8 w - - id "krk-13"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+8/4K3/8/3k4/8/8/8/2R5 w - - id "krk-14"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+8/8/6k1/8/8/5R2/8/4K3 w - - id "krk-15"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+8/8/8/8/8/4k3/8/3K3R w - - id "krk-16"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+8/8/8/4R3/8/3k4/K7/8 w - - id "krk-17"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+7K/4R3/2k5/8/8/8/8/8 w - - id "krk-18"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+8/8/K7/8/8/5k2/R7/8 w - - id "krk-19"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+8/8/1K6/7R/8/8/1k6/8 w - - id "krk-20"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+8/8/3R4/8/8/4k3/8/4K3 w - - id "krk-21"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+8/1R6/7K/8/8/8/2k5/8 w - - id "krk-22"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+1R6/8/8/8/8/K1k5/8/8 w - - id "krk-23"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";
+8/8/7K/8/5k2/8/8/7R w - - id "krk-24"; c0 "three-man endgame, theoretical win"; c1 "must mate inside 50 moves";

@@ -35,12 +35,20 @@ def parse_option_line(line):
     """Parse a UCI `option name ... type ...` line into (name, spec)."""
     rest = line[len("option name "):]
     name, _, tail = rest.partition(" type ")
-    spec = {"type": tail.split()[0].lower() if tail.split() else "unknown"}
+    kind = tail.split()[0].lower() if tail.split() else "unknown"
+    spec = {"type": kind}
     for key in ("default", "min", "max"):
         token = f" {key} "
-        if token in tail:
-            value = tail.split(token, 1)[1]
-            # default/min/max are single tokens; combo/string defaults may not be.
+        if token not in tail:
+            continue
+        value = tail.split(token, 1)[1]
+        if key == "default" and kind in ("string", "combo"):
+            # A string or combo default may contain spaces ("Normal play"), so it
+            # runs to the next UCI field or to the end of the line.
+            for stop in (" min ", " max ", " var "):
+                value = value.split(stop, 1)[0]
+            spec[key] = value.strip()
+        else:
             spec[key] = value.split()[0] if value.split() else ""
     if " var " in tail:
         # UCI combo values are free-form strings and may contain spaces, so keep
@@ -420,6 +428,13 @@ def main():
         engines.append(UciEngine(args.engine_b, args.hash, args.threads, args.b_option))
         a, b = engines
         config = {"engine_a": a.name, "engine_b": b.name,
+                  # The advertised defaults are recorded next to the values that
+                  # were actually sent. A feature ablation is only reproducible
+                  # if a reader can tell what each side was set to *and* what it
+                  # would have been left at, because a build's defaults change
+                  # between releases (the dev3 ordering switches flipped to off).
+                  "engine_a_defaults": {k: v.get("default") for k, v in a.option_specs.items()},
+                  "engine_b_defaults": {k: v.get("default") for k, v in b.option_specs.items()},
                   "engine_a_path": a.path, "engine_b_path": b.path,
                   "engine_a_options": a.effective, "engine_b_options": b.effective,
                   "base_ms": args.base_ms, "increment_ms": args.inc_ms,

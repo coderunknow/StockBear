@@ -2,7 +2,10 @@
 #include "chess/position.hpp"
 #include "search/timeman.hpp"
 #include "search/transposition_table.hpp"
+#include <array>
 #include <atomic>
+#include <cstddef>
+#include <memory>
 #include <cstdint>
 #include <functional>
 #include <vector>
@@ -15,6 +18,13 @@ namespace stockbear {
 // ordering and folds the sequence negamax-style.
 int static_exchange_evaluation(const Position& pos, Move move);
 
+// One principal variation of a search. `multiPv == 1` produces exactly one.
+struct PvLine {
+    Move move = MOVE_NONE;
+    int score = 0;
+    std::vector<Move> pv;
+};
+
 struct SearchResult {
     Move bestMove = MOVE_NONE;
     int score = 0;
@@ -25,13 +35,15 @@ struct SearchResult {
     std::int64_t timeUs = 0;
     int hashfull = 0;
     bool interrupted = false;
-    std::vector<Move> pv;
+    std::vector<Move> pv;           // best line (same as lines.front().pv)
+    std::vector<PvLine> lines;      // up to limits.multiPv entries, best first
 };
 using SearchInfo = std::function<void(const SearchResult&)>;
 
 // Selectable search features. The defaults are the shipped configuration; the
-// benchmark CLI can switch individual techniques off so that every addition can
-// be ablated on a fixed suite instead of being accepted on faith.
+// benchmark CLI and the UCI options can switch individual techniques off so
+// that every addition can be ablated on a fixed suite instead of being
+// accepted on faith.
 struct SearchParams {
     bool aspiration = true;
     int aspirationInitial = 16;
@@ -42,7 +54,19 @@ struct SearchParams {
     bool futility = true;
     bool seePruning = true;
     bool checkExtension = true;
-    bool counterMoves = true;   // reserved: counter-move ordering is not enabled
+    // dev3 ordering features. All default off: measured against the dev2 search
+    // they are neutral to slightly negative in playing strength (+1.3 Elo
+    // [-17.9, +20.5] with everything on, -16.2 [-33.0, +0.5] for the
+    // history-malus/LMR subset, 571-600 decided paired games each) and they cost
+    // about 2 % more nodes and 8 % more time at a fixed depth. They ship as
+    // switches so the measurements can be repeated, not as a claimed gain; the
+    // shipped search is therefore bit-identical to dev2's (bench signature
+    // e06c4352681ae8eb at depth 6).
+    bool counterMoves = false;         // reply table keyed by the previous move
+    bool continuationHistory = false;  // history keyed by (prev piece/square, move)
+    bool captureHistory = false;       // per-victim capture statistics
+    bool historyMaluses = false;       // penalise quiets that did not cut off
+    bool lmrHistory = false;           // history-dependent reduction adjustment
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control
@@ -66,13 +90,27 @@ private:
     int negamax(Position& pos, int depth, int alpha, int beta, int ply,
                 bool pvNode, int extensions, bool allowNull);
     int quiescence(Position& pos, int alpha, int beta, int ply);
-    int search_root(Position& pos, int depth, int alpha, int beta);
+    int search_root(Position& pos, int depth, int alpha, int beta, int pvIndex);
     void score_moves(const Position& pos, MoveList& moves, Move hashMove, int ply);
     int next_move(MoveList& moves, int index);
     void update_pv(int ply, Move move);
     bool quiet(const Position& pos, Move move) const;
     bool gives_check(Position& pos, Move move);
-    void update_quiet_stats(const Position& pos, Move move, int depth, int ply);
+    Move previous_move(int ply) const { return ply > 0 ? moveStack_[ply - 1] : MOVE_NONE; }
+    // Row `ply` of the triangular principal-variation buffer.
+    Move* pv_row(int ply) { return pv_.get() + std::size_t(ply) * MAX_PLY; }
+    const Move* pv_row(int ply) const { return pv_.get() + std::size_t(ply) * MAX_PLY; }
+    // Continuation history: how good `move` has been after a given previous
+    // move. Kept for one ply of context, which is the variant that pays for
+    // itself without a large table.
+    int& continuation(PieceType previousType, Square previousTo, PieceType type, Square to) {
+        return continuation_[(((std::size_t(previousType) * SQ_NB + std::size_t(previousTo)) *
+                              PieceTypeNB + std::size_t(type)) * SQ_NB) + std::size_t(to)];
+    }
+    void update_quiet_stats(const Position& pos, Move move, int depth, int ply, int bonus);
+    void update_capture_stats(const Position& pos, Move move, int depth);
+    void penalise_quiets(const Position& pos, const Move* moves, int count, int depth, int ply);
+    void build_lines(SearchResult& result, int requested) const;
 
     TranspositionTable& tt_;
     SearchParams params_;
@@ -83,14 +121,37 @@ private:
     std::uint64_t nodes_ = 0;
     int selDepth_ = 0;
     Key rootContextSalt_ = 0;
-    Move pv_[MAX_PLY][MAX_PLY] = {};
+    // The two largest tables are heap-allocated. Inline, they make a Search
+    // object about a megabyte, which overflows the 1 MiB default stack on
+    // Windows as soon as two searches exist at once; they are also far too big
+    // to copy around, and the search never copies them.
+    static constexpr std::size_t PvSlots = std::size_t(MAX_PLY) * MAX_PLY;
+    static constexpr std::size_t ContinuationSlots =
+        std::size_t(PieceTypeNB) * SQ_NB * PieceTypeNB * SQ_NB;
+    std::unique_ptr<Move[]> pv_{new Move[PvSlots]()};
+    std::unique_ptr<int[]> continuation_{new int[ContinuationSlots]()};
     int pvLength_[MAX_PLY] = {};
     Move killers_[MAX_PLY][2] = {};
     int history_[ColorNB][SQ_NB][SQ_NB] = {};
+    // Reply table: the move that most often refuted `previous`. Indexed by the
+    // previous move's piece and destination square.
+    Move counterMoves_[PieceNB][SQ_NB] = {};
+    int captureHistory_[PieceTypeNB][SQ_NB][PieceTypeNB] = {};
+    // The moves played along the current line, so ordering can see the previous
+    // move without threading an extra parameter through every call.
+    Move moveStack_[MAX_PLY + 2] = {};
+    std::vector<std::vector<Move>> pvLines_;
+
     struct RootMove {
         Move move = MOVE_NONE;
         int score = -VALUE_INFINITE;
     };
     std::vector<RootMove> rootMoves_;
 };
+
+// A Search instance sits on the caller's stack in the tests and in the CLI, and
+// two of them must fit inside the 1 MiB default thread stack that Windows uses
+// (Linux gives 8 MiB, which is why an inline 0.9 MB object went unnoticed until
+// a Windows CI run segfaulted). Keep this bound honest when adding tables.
+static_assert(sizeof(Search) <= 64 * 1024, "Search must stay small enough for a 1 MiB stack");
 }

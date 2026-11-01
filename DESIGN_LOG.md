@@ -97,3 +97,112 @@
   measurements). Node counts move slightly (106,558 → 108,910 at depth 6); the
   match result moves from +250 =103 −47 to +277 =82 −41, which is the same
   conclusion with a different magnitude.
+
+## 2026-11-01 — dev3: search switches, real MultiPV, and a tuning result that did not ship
+
+- **Search rewrite with per-feature switches.** All pruning and ordering
+  decisions moved into `SearchParams`, so a feature can be ablated by
+  `bench --param name=0` or by a UCI option. With every dev3 switch off the
+  bench signatures are exactly dev2's (`e06c4352681ae8eb` at depth 6,
+  `5bceff035f2a4ae4` at depth 7), which is the evidence that the rewrite is
+  behaviour-preserving for single-PV search rather than "close enough".
+- **Root search and MultiPV.** `search_root` now takes a PV slot index and
+  re-runs the root with the already reported moves excluded. Within a pass the
+  root list is selection-sorted, and the move that improved alpha is swapped into
+  the slot it is reported from; without that swap the reported move could be one
+  that did not produce the reported score, which is exactly the inconsistency that
+  made an earlier version of this rewrite disagree with dev2 in the bench.
+  MultiPV deliberately disables aspiration windows: a band tuned around the first
+  line would bias the exact scores the ranking depends on.
+- **Ordering features are neutral here, and are documented that way.** Counter
+  moves, continuation history, capture history, history maluses and a
+  history-adjusted LMR were implemented, unit-tested and matched. At depth 7 they
+  cost about 2 % more nodes (255,021 versus 250,053) and 8 % more time. Two
+  paired matches measured them: all five on scored +1.3 Elo [−17.9, +20.5] over
+  571 decided games against the rebuilt dev2 binary, and the
+  history-malus/LMR/continuation subset scored −16.2 Elo [−33.0, +0.5] over 600
+  decided games against the same binary with those switches off. Neither is an
+  improvement, so they default **off** and the shipped search is behaviourally
+  dev2's. They ship as switches rather than being deleted, because deleting them
+  would also delete the evidence and make a future re-measurement impossible.
+- **Evaluation parameters became data, then stayed the same.** The evaluation is
+  linear in a 32-entry parameter table, so `stockbear evaldata` can hand the
+  offline tuner an exact design matrix. Three candidate sets were fitted to 2,000
+  self-play games (75,416 positions, split by game) and measured with one binary
+  on both sides, so the search was identical and only the evaluation differed:
+  −119.1 [−140.8, −98.2], −51.3 [−72.1, −30.8] and +12.0 [−10.3, +34.4] Elo
+  against the shipped evaluation. The candidate with the best holdout loss was
+  the worst in play. The release keeps the dev2 values; `docs/TUNING.md` records
+  the pipeline, the dataset hashes, the three sets and the matches, and explains
+  what a future attempt should do differently (engine-independent labels, a
+  pruning scale separated from the evaluation scale, validation at a time control).
+- **A won endgame can still be shuffled into a draw.** At 400 k nodes the engine
+  converts 22 of 24 constructed KQK/KRK positions and mates with a proved mate in
+  every tactical position, but two conversions reached a repetition claim: the
+  winning side allowed the second repetition, which lets the defender claim the
+  third. The search scores a repetition as a draw only once it is claimable, and
+  from a distance the winning side has no way to see that the shuffle is losing.
+  This is a known limitation of a tablebase-free engine, recorded in the report
+  instead of being papered over; the fix is a fifty-move/progress term, which is
+  deliberately *not* in this release because it was not validated.
+
+- **Advertised defaults come from the configuration, not from a literal.** The
+  `uci` handshake used to print `default true` for every check option. Once a
+  default changed, that string was a lie that no test could catch, because it was
+  a constant next to a different constant. The handshake now formats the live
+  `SearchParams` value, so the advertisement cannot drift from the behaviour; the
+  integration test still only checks the shape of the line, because what matters
+  is that the engine does what it prints.
+- **A rejected `position` command leaves the previous position searchable.** An
+  invalid FEN (for example one where the side not to move is in check) is
+  reported and ignored rather than half-applied, so a GUI that sends a bad
+  position does not silently get a search of a board it did not ask for. Testing
+  this needed the *previous* position's legal move list to compare against, which
+  is also how the earlier `7k/8/8/8/8/8/8/K6Q w - - 0 1` FEN was found to be
+  illegal (the queen on h1 checks the king on h8 with White to move) instead of
+  an engine bug.
+
+- **A Windows-only segfault in the new tests was a stack-size bug, not a
+  MultiPV bug.** `Search` held its triangular PV buffer and continuation-history
+  table inline, which made one instance about 0.9 MB. Linux hands a thread 8 MiB
+  of stack, Windows 1 MiB, and the MultiPV equivalence test holds two searches at
+  once, so it died on Windows in both Debug and Release while passing under ASan
+  on Linux. The tables now live on the heap, a `Search` is 50 KB, and a
+  `static_assert` caps it at 64 KB. This is the kind of bug that only a
+  cross-platform CI run finds; it is recorded here because "it passes locally"
+  was true and misleading.
+- **The tuning pipeline found no improvement, in three different directions.**
+  Aggressive (A), moderate (B) and conservative (C) fits all failed their
+  matches, and a fourth fit bounded to a 20 % movement from the shipped values
+  changed nothing at all. The useful conclusion is not "tuning does not work" but
+  "this objective on this data cannot distinguish these sets", which is why the
+  release states the negative result and keeps the coefficients it inherited
+  rather than shipping a set on the strength of its holdout loss.
+
+- **Correction to the entry above about bench signatures.** "With every switch off
+  the bench signatures are exactly dev2's" is true, but it is a statement about
+  the twelve benchmark positions, not about the whole search. The review fix that
+  makes a null move clear the `moveStack_` slot (the child of a null move was
+  ordering its quiets against a stale previous move) leaves both signatures
+  unchanged and still changes play: the two three-man endgames that had been
+  shuffled into a claimable repetition (`kqk-12`, `krk-17`) now mate, and the
+  endgame suite went from 22/24 to 24/24 at the same node budget. A deterministic
+  fingerprint of a fixed suite is a regression guard, not a proof of behavioural
+  identity, and the release documents now say so.
+- **Matched configurations must be recorded, not reconstructed.** The first dev3
+  search matches recorded only the effective options that the harness had been
+  given, and the *defaults* those options were competing against changed during
+  the release. Both matches were therefore replayed with every switch set
+  explicitly on both sides, and the harness now writes each engine's advertised
+  defaults into the record's `configuration` line. A result whose configuration
+  cannot be read out of its own evidence file is not a result.
+
+- **The corrected oracle narrowed the tactics suite, and that is the point of
+  having one.** With mate distances counted per ply, the oracle no longer accepts
+  a mate in five for a position labelled "mate in three". Regenerating the suite
+  dropped one position (its own game move turned out to be a slower mate) and
+  shrank most accepted-move sets — `mate02-3ply` went from 31 accepted moves to 7.
+  The earlier 26/26 was measured against the looser sets, so the release reports
+  25/25 on the strict suite and says plainly that the two numbers are not
+  comparable. A suite is only as strong as the oracle that certifies it, and this
+  is what it looks like when the oracle gets stricter.
