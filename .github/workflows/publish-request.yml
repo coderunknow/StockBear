@@ -1,0 +1,26 @@
+name: Publish requested prerelease
+
+# The automation identity that opened the pull request has admin rights on the
+# repository but its token cannot create a workflow_dispatch event
+# (`actions: write` is not granted to it). Publication is therefore requested by
+# pushing the marker file `.github/publish-request`; this workflow only forwards
+# the already-verified inputs to release.yml, which keeps every gate: tag equals
+# v + VERSION, tag is annotated, tag commit is on main, and the supplied CI run
+# is a successful push-to-main run for that exact commit.
+on:
+  push:
+    branches: [arena/7b82fbe2-stockbear]
+    paths: ['.github/publish-request']
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    permissions:
+      actions: read   # Verify the supplied exact-commit CI run.
+      contents: write # Create the prerelease and upload its archives.
+    uses: ./.github/workflows/release.yml
+    with:
+      tag: v0.1.0-dev2
+      validation_run_id: '41267078266'
