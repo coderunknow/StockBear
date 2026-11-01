@@ -1,0 +1,304 @@
+{
+ "method": "Texel-style logistic loss, coordinate descent on integer parameters",
+ "k": 400.0,
+ "positions": {
+  "train": 60651,
+  "holdout": 14765,
+  "games_train": 1498,
+  "games_holdout": 374
+ },
+ "seed": 20261101,
+ "ridge": 0.1,
+ "max_delta_fraction": 0.2,
+ "preserve_sign": true,
+ "anchored": [
+  "MaterialBishop",
+  "MaterialKnight",
+  "MaterialPawn",
+  "MaterialQueen",
+  "MaterialRook"
+ ],
+ "holdout_fraction": 0.2,
+ "loss": {
+  "baseline_train": 0.5901611519408481,
+  "tuned_train": 0.5901611519408481,
+  "baseline_holdout": 0.5777319397712778,
+  "tuned_holdout": 0.5777319397712778
+ },
+ "score_rmse_cp": {
+  "baseline_train": 542.9228940900413,
+  "tuned_train": 542.9228940900413,
+  "baseline_holdout": 555.6821049690116,
+  "tuned_holdout": 555.6821049690116
+ },
+ "sweeps": [
+  {
+   "sweep": 0,
+   "step": 64,
+   "changes": 0,
+   "train_objective": 0.5901611519408481,
+   "train_loss": 0.5901611519408481
+  }
+ ],
+ "baseline": {
+  "MaterialPawn": [
+   100,
+   120
+  ],
+  "MaterialKnight": [
+   296,
+   287
+  ],
+  "MaterialBishop": [
+   323,
+   320
+  ],
+  "MaterialRook": [
+   500,
+   520
+  ],
+  "MaterialQueen": [
+   969,
+   938
+  ],
+  "PstPawnRank": [
+   5,
+   9
+  ],
+  "PstPawnFile": [
+   3,
+   2
+  ],
+  "PstKnightCenter": [
+   9,
+   6
+  ],
+  "PstBishopCenter": [
+   5,
+   4
+  ],
+  "PstRookRank": [
+   2,
+   0
+  ],
+  "PstRookFile": [
+   1,
+   0
+  ],
+  "PstRookCenter": [
+   0,
+   2
+  ],
+  "PstQueenCenter": [
+   2,
+   4
+  ],
+  "PstKingRank": [
+   -8,
+   0
+  ],
+  "PstKingFile": [
+   -5,
+   0
+  ],
+  "PstKingCenter": [
+   0,
+   10
+  ],
+  "BishopPair": [
+   28,
+   38
+  ],
+  "IsolatedPawn": [
+   -11,
+   -9
+  ],
+  "DoubledPawn": [
+   -8,
+   -12
+  ],
+  "PassedPawnAdvance": [
+   2,
+   5
+  ],
+  "MobilityKnight": [
+   4,
+   3
+  ],
+  "MobilityBishop": [
+   4,
+   4
+  ],
+  "MobilityRook": [
+   2,
+   3
+  ],
+  "MobilityQueen": [
+   1,
+   2
+  ],
+  "RookOpenFile": [
+   20,
+   12
+  ],
+  "RookSemiOpenFile": [
+   10,
+   6
+  ],
+  "PawnShield": [
+   8,
+   0
+  ],
+  "KingDangerPawn": [
+   2,
+   0
+  ],
+  "KingDangerKnight": [
+   3,
+   0
+  ],
+  "KingDangerBishop": [
+   3,
+   0
+  ],
+  "KingDangerRook": [
+   3,
+   0
+  ],
+  "KingDangerQueen": [
+   5,
+   0
+  ]
+ },
+ "tuned": {
+  "MaterialPawn": [
+   100,
+   120
+  ],
+  "MaterialKnight": [
+   296,
+   287
+  ],
+  "MaterialBishop": [
+   323,
+   320
+  ],
+  "MaterialRook": [
+   500,
+   520
+  ],
+  "MaterialQueen": [
+   969,
+   938
+  ],
+  "PstPawnRank": [
+   5,
+   9
+  ],
+  "PstPawnFile": [
+   3,
+   2
+  ],
+  "PstKnightCenter": [
+   9,
+   6
+  ],
+  "PstBishopCenter": [
+   5,
+   4
+  ],
+  "PstRookRank": [
+   2,
+   0
+  ],
+  "PstRookFile": [
+   1,
+   0
+  ],
+  "PstRookCenter": [
+   0,
+   2
+  ],
+  "PstQueenCenter": [
+   2,
+   4
+  ],
+  "PstKingRank": [
+   -8,
+   0
+  ],
+  "PstKingFile": [
+   -5,
+   0
+  ],
+  "PstKingCenter": [
+   0,
+   10
+  ],
+  "BishopPair": [
+   28,
+   38
+  ],
+  "IsolatedPawn": [
+   -11,
+   -9
+  ],
+  "DoubledPawn": [
+   -8,
+   -12
+  ],
+  "PassedPawnAdvance": [
+   2,
+   5
+  ],
+  "MobilityKnight": [
+   4,
+   3
+  ],
+  "MobilityBishop": [
+   4,
+   4
+  ],
+  "MobilityRook": [
+   2,
+   3
+  ],
+  "MobilityQueen": [
+   1,
+   2
+  ],
+  "RookOpenFile": [
+   20,
+   12
+  ],
+  "RookSemiOpenFile": [
+   10,
+   6
+  ],
+  "PawnShield": [
+   8,
+   0
+  ],
+  "KingDangerPawn": [
+   2,
+   0
+  ],
+  "KingDangerKnight": [
+   3,
+   0
+  ],
+  "KingDangerBishop": [
+   3,
+   0
+  ],
+  "KingDangerRook": [
+   3,
+   0
+  ],
+  "KingDangerQueen": [
+   5,
+   0
+  ]
+ },
+ "changed": {}
+}

@@ -111,6 +111,16 @@ Elo always means "engine A (the shipped evaluation) was stronger".
 | baseline vs candidate B | 590 | 0.5733, W/D/L 249/187/154 | **−51.3 [−72.1, −30.8]** | **−51.3 [−122.4, +15.7]** | no improvement; the worse reading is not confirmed |
 | baseline vs candidate C | 590 | 0.4828, W/D/L 202/176/212 | **+12.0 [−10.3, +34.4]** | **+12.0 [−61.4, +86.4]** | cannot distinguish |
 
+A fourth fit was run with the scale pinned and the search in mind: `--k 400`
+(the default, so the fitted scores stay calibrated against the pruning margins),
+`--ridge 0.10 --max-delta-fraction 0.20`, sign preservation, and the five material
+values anchored. It **changed no parameter at all** — the training and holdout
+losses are identical to the baseline to the last digit (`variantD.txt`,
+`variantD.json`). Under a 20 % movement bound the data does not contain enough
+signal to justify moving a single coefficient, which is the strongest available
+statement that the shipped set sits at an optimum of this objective, not that a
+better set is hidden nearby.
+
 Both intervals are reported because they answer different questions: the
 pentanomial one treats the 295 opening pairs as independent, the clustered one
 knows that each opening is replayed and is therefore much wider. Only candidate

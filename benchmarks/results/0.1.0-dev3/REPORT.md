@@ -94,6 +94,14 @@ differs (`--b-option EvalParams=…`).
 | B (`--ridge 0.10 --max-delta-fraction 0.20`) | 590 | 249/187/154 | **−51.3 [−72.1, −30.8]** | **−51.3 [−122.4, +15.7]** | no improvement |
 | C (`--ridge 0.04 --max-delta-fraction 0.30`) | 590 | 202/176/212 | **+12.0 [−10.3, +34.4]** | **+12.0 [−61.4, +86.4]** | indistinguishable |
 
+A fourth fit with the Texel scale pinned at K = 400 (so fitted scores stay
+calibrated against the search's pruning margins), ridge 0.10, a 20 % movement cap,
+sign preservation and anchored material values changed **no parameter at all**:
+its train and holdout losses are identical to the baseline's. It was therefore not
+matched — there is nothing to test — and it is the clearest statement of the
+result: under a conservative bound the data cannot justify moving a single
+coefficient of the shipped evaluation.
+
 The candidate with the best tuning-loss improvement (A) was the worst in play.
 Only A is separated from the baseline by both intervals; for B and C the claim is
 "no improvement was demonstrated", which is enough to reject them without
