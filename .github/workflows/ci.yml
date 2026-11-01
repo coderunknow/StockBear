@@ -42,19 +42,28 @@ jobs:
           echo "version $(cat VERSION)"
           echo "runner ${{ runner.os }} $(uname -a 2>/dev/null || true)"
           echo "cpu $(nproc 2>/dev/null || echo n/a) logical cores"
-          # Take the compiler identity from CMake, which is the compiler that
-          # actually built this binary; `c++ --version` is unreliable under the
-          # Visual Studio generator.
-          if [ ! -f build/CMakeCache.txt ]; then
-            echo "compiler unknown: build/CMakeCache.txt is missing" >&2
-            exit 1
+          # Record the compiler CMake actually used. `c++ --version` is not
+          # reliable (the Visual Studio generator does not put a `c++` on the
+          # path), and with that generator CMAKE_CXX_COMPILER is not necessarily
+          # written to the cache, so the compiler-check file is the primary
+          # source and the cache is only a fallback. CRs are stripped because
+          # the file has CRLF line endings on Windows.
+          cc_files=$(ls build/CMakeFiles/*/CMakeCXXCompiler.cmake 2>/dev/null || true)
+          if [ -n "$cc_files" ]; then
+            compiler=$(tr -d '\r' < "$cc_files" | sed -n 's/^set(CMAKE_CXX_COMPILER "\([^"]*\)")$/\1/p' | head -1 || true)
+            cc_id=$(tr -d '\r' < "$cc_files" | sed -n 's/^set(CMAKE_CXX_COMPILER_ID "\([^"]*\)")$/\1/p' | head -1 || true)
+            cc_version=$(tr -d '\r' < "$cc_files" | sed -n 's/^set(CMAKE_CXX_COMPILER_VERSION "\([^"]*\)")$/\1/p' | head -1 || true)
+          else
+            compiler=""; cc_id=""; cc_version=""
           fi
-          grep -E '^CMAKE_CXX_COMPILER:(FILEPATH|STRING)=' build/CMakeCache.txt \
-            | sed 's/^/compiler /'
-          grep -E '^CMAKE_GENERATOR:' build/CMakeCache.txt | sed 's/^/generator /'
-          # CMake writes the compiler id and version next to the compiler check.
-          cat build/CMakeFiles/*/CMakeCXXCompiler.cmake 2>/dev/null \
-            | grep -E '^set\(CMAKE_CXX_COMPILER_(ID|VERSION) ' || true
+          if [ -z "${compiler:-}" ] && [ -f build/CMakeCache.txt ]; then
+            compiler=$(tr -d '\r' < build/CMakeCache.txt | sed -n 's/^CMAKE_CXX_COMPILER:[A-Z]*=//p' | head -1 || true)
+          fi
+          generator=$(tr -d '\r' < build/CMakeCache.txt 2>/dev/null | sed -n 's/^CMAKE_GENERATOR:[A-Z]*=//p' | head -1 || true)
+          echo "compiler ${compiler:-unknown}"
+          echo "compiler_id ${cc_id:-unknown}"
+          echo "compiler_version ${cc_version:-unknown}"
+          echo "generator ${generator:-unknown}"
           cmake --version | head -1
       - name: Search determinism (same build, same input, same signature)
         shell: bash
