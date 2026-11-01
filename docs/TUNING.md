@@ -118,6 +118,22 @@ A is separated from the baseline by both. For B and C the honest statement is
 "no improvement was demonstrated", not "the candidate is worse", and no candidate
 was shipped in either case.
 
+### The check that the ablation really is an ablation
+
+Because the shipped set and the dev2 baseline are the same values in dev3, the
+control is worth measuring explicitly. Same binary on both sides, engine B given
+`--b-option EvalParams=benchmarks/params/dev2-baseline.txt` (the file that is
+byte-identical to the compiled table), 200 games, seed `20261108`:
+
+| decided | W/D/L | score | opening pairs | unadj. |
+| --- | --- | --- | --- | --- |
+| 200 | 70/60/70 | 0.5000 | 100 of 100 pairs split one win each | 0 |
+
+As expected for two identical evaluations, no pair separated: a zero-Elo result
+with no variance information, not a "proof of equality". If a future release
+changes the shipped set, this same command becomes a real match. Raw record:
+`benchmarks/results/0.1.0-dev3/match-dev2-shipped-regression.jsonl`.
+
 Pentanomial counts (0 / 0.5 / 1 / 1.5 / 2 pairs) are in
 `benchmarks/results/0.1.0-dev3/tuning/match-eval-{A,B,C}.jsonl`. Games that
 reached the ply cap are recorded as unadjudicated (9, 10 and 10 respectively) and
