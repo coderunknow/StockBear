@@ -296,3 +296,15 @@
 - Re-verified: CTest 9/9 in Release, Debug, ASan+UBSan and ThreadSanitizer;
   corpus 23/23; `test_statistics.py` 11/11; `test_tournament.py` 2/2;
   `recompute_summary.py` reproduces the recorded summary exactly.
+
+## 2026-11-01 — seventh review pass (CodeRabbit on fa83925)
+
+- CodeRabbit reviewed `fa83925` with one actionable comment (the remaining inline
+  notes repeat findings fixed in earlier rounds — the bot re-anchors old comments
+  to their original lines). The comment was a factual error in the report: the
+  rook-and-pawn row does not change the move (both builds play `b4c4`), only the
+  score (+38 versus +41). Corrected in `benchmarks/results/0.1.0-dev2/REPORT.md`.
+- No further substantive findings were raised. The engine, tests, scripts and
+  evidence are unchanged by this correction, so the recorded CI run for
+  `fa83925` (all nine jobs green) still applies to the code; only documentation
+  text moved.

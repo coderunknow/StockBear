@@ -77,8 +77,8 @@ Three positions changed their chosen move, and they are not all equivalent.
 
 * Starting position: `d2d4` and `b1c3` are equal-scoring alternatives at this
   depth (both 0 cp).
-* Rook and pawn ending: both builds play a rook move and the score differs only
-  slightly (`b4c4` +38 versus `b4f4` +41).
+* Rook and pawn ending: both builds choose the same move, `b4c4`, and the score
+  differs only slightly (+38 versus +41).
 * Stalemate avoidance (`8/1P6/8/8/8/8/8/5K1k w - - 0 1`): dev1 announces mate in
   3 at depth 6, dev2 plays `f1e2` with `+1033`. Re-searching that position at
   depth 12 shows both builds agree on `f1f2 h1h2 b7b8q h2h1 b8h8`, mate in 3, so
