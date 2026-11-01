@@ -55,25 +55,48 @@ declares a FIDE draw on its own.
 ## Search and evaluation
 
 One worker performs iterative deepening over negamax alpha-beta with principal
-variation search. dev2 adds, each behind a `SearchParams` switch that the UCI
-options `NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`,
-`SEEPruning` and `CheckExtension` expose (all default on, so a GUI that never
-sends them sees the released behaviour):
+variation search. dev3 keeps the dev2 feature set and adds, each behind a switch
+in `SearchParams` that a UCI option or `bench --param` exposes:
 
 * **aspiration windows** around the previous iteration's score, widening on a
-  fail-high/fail-low;
+  fail-high/fail-low (`Aspiration`);
 * **null-move pruning** with a material guard, a "not directly after a null
-  move" guard and mate-window suppression;
+  move" guard and mate-window suppression (`NullMove`);
 * **late move reductions** using an integer reduction schedule, with a full-depth
-  re-search when a reduced move beats alpha;
-* **reverse futility pruning** at shallow depth, suppressed inside mate windows;
-* **futility pruning** of late quiet moves;
-* **static exchange evaluation** (SEE) for capture ordering and pruning, and
-  **delta pruning** in quiescence;
+  re-search when a reduced move beats alpha (`LMR`), plus an optional extra
+  reduction when the quiet-move history score is high (`LMRHistory`);
+* **reverse futility pruning** at shallow depth, suppressed inside mate windows
+  (`ReverseFutility`) and **futility pruning** of late quiet moves (`Futility`);
+* **static exchange evaluation** (SEE) in integers for capture ordering and
+  pruning (`SEEPruning`), and **delta pruning** in quiescence;
+* **counter-move, continuation and capture history** ordering
+  (`CounterMoves`, `ContinuationHistory`, `CaptureHistory`) and **history
+  maluses** for moves that fail to cut off (`HistoryMaluses`);
 * **mate-distance pruning** and a three-extension cap on check extensions;
 * killer, history and hash-move ordering with a selection-sort move picker, so
   a cutoff never requires re-sorting the list;
 * a soft/hard time budget with an early stop when the best move has been stable.
+
+The dev3 ordering and history features cost nodes (depth 7: 250 053 without them,
+255 021 with all of them) and did not win a match: +1.3 Elo [−17.9, +20.5] with
+everything on over 571 decided games, and −16.2 [−33.0, +0.5] for the
+history-malus/LMR/continuation subset over 600 games. They therefore ship
+**disabled** by default, each behind its own switch, so the shipped search is
+bit-identical to dev2's and a future engine can re-measure them. See
+[benchmarks/results/0.1.0-dev3/REPORT.md](../benchmarks/results/0.1.0-dev3/REPORT.md).
+
+`search_root` sorts root moves best-first and re-searches with a null window for
+any move that is not in the leading slot; when such a move beats alpha it is
+swapped into the leading slot together with its score and variation. That makes
+the reported `(move, score, pv)` triple mutually consistent, which matters for
+`MultiPV`: every reported line is the result of a search in which the earlier
+lines' root moves were excluded, and the ranking of the reported scores matches
+the reported order.
+
+MultiPV is implemented by re-running the root with the already chosen root moves
+excluded (`search_root(position, depth, alpha, beta, pvIndex)`), up to the
+`MultiPV` option (1–8). A position with fewer legal moves than requested reports
+only the lines that exist; a terminal position reports `bestmove 0000`.
 
 Quiescence searches all evasions when in check and captures plus all promotion
 choices otherwise; stalemate is detected before a static score is returned.
@@ -90,15 +113,30 @@ to break cycles. That is a search heuristic, not a declaration that a twofold
 position is a FIDE draw. Terminal mate is checked before a move-count draw. An
 interrupted search retains the last completed iteration's best move or a legal
 root fallback. Depth/node/time bounds can be combined; node limits are hard caps.
-Time management reserves a communication allowance and uses soft and hard
-budgets; it does not predict opponent speed or network latency.
+A `go searchmoves` list restricts the root to the listed legal moves: illegal
+entries are reported and dropped, and a list with nothing legal in it is reported
+and then ignored in favour of a full search, because answering `bestmove 0000`
+in a legal position would be worse.
 
-Evaluation is independently written, handcrafted and non-neural. It combines
-material and formula-derived piece-square values with tapered
-middlegame/endgame weights, pawn isolation/doubling/passed-pawn features,
-bishop pair, mobility, rook files, pawn shelter and king-zone attacks. The
-numbers are heuristic, not trained or tuned weights. The evaluation is clamped
-below mate scores.
+### Evaluation parameters
+
+Every evaluation weight is an entry in one table
+(`src/evaluation/eval_params.{hpp,cpp}`): 32 parameters, each with a
+middlegame value, an endgame value and a legal range. The evaluation is linear
+in them, so `stockbear evaldata` can dump the exact per-parameter counts of a
+position and the offline tuner can score any candidate set without a search.
+The compiled table is the shipped set, checksum `da1921f604ae255e`, and it is
+byte-identical to the dev2 evaluation: three fitted candidates were produced, all
+three were matched against it, and none was stronger (see
+[TUNING.md](TUNING.md)), so dev3 keeps the evaluation it inherited. The same
+values are readable as data in `benchmarks/params/dev3-shipped.txt`, and a
+candidate set can be loaded at run time with
+`setoption name EvalParams value <path>` or `bench --params <path>` for a match,
+without rebuilding. `tests/unit/test_eval_baseline.cpp` pins the checksum and
+proves the loaded file equals the compiled table.
+
+Evaluation remains independently written and handcrafted — nothing is imported
+from another engine — and it is clamped below mate scores.
 
 ## Protocol and concurrency
 
@@ -111,10 +149,11 @@ responses. Unknown `go` tokens are ignored as the UCI specification requires;
 malformed values of supported parameters still reject the command. A
 ThreadSanitizer CI job exercises this hand-off.
 
-The engine advertises `Hash` plus the boolean ablation switches above and
+The engine advertises `Hash`, `MultiPV`, `EvalParams` and the boolean ablation
+switches above and
 deliberately does **not** advertise `Threads`: the search is single-threaded, and
 claiming a `Threads` option that does nothing would be worse than not offering
-one. Single-thread deterministic behaviour is a release requirement, and dev2
+one. Single-thread deterministic behaviour is a release requirement, and dev3
 adds no parallel search.
 
 ## Tooling
@@ -136,11 +175,18 @@ adds no parallel search.
   Student-t interval, normal-approximation SPRT).
 * `scripts/dead_position_reference.py` and `scripts/dead_position_corpus.py`
   provide the independent cross-check and the regression corpus.
+* `stockbear eval` / `stockbear evaldata` expose the evaluation as data
+  (`--params FILE`, `--dump-params`, `--check`), and `scripts/tune_eval.py` fits
+  the parameter table to recorded games. See [TUNING.md](TUNING.md).
+* `scripts/chess_oracle.py` proves forced mates with an independent search on
+  python-chess; `scripts/make_tactics_suite.py` certifies the EPD suites with it
+  and `scripts/run_suite.py` runs the engine over them at a fixed node budget.
 
 ## Deliberate limits
 
-- Standard chess only; no Chess960, pondering, `searchmoves`, MultiPV, opening
-  book or tablebases.
+- Standard chess only; no Chess960, pondering, opening book or tablebases.
+  `searchmoves` and MultiPV are supported and black-box tested; Chess960 and
+  pondering are neither implemented nor advertised.
 - No NNUE/transformer/policy network, training, MCTS or GPU inference.
 - Very long paths can reach the explicit `MAX_PLY` search horizon; the engine
   returns a heuristic score there.

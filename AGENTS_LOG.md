@@ -356,3 +356,34 @@
   rejected. Two identical runs of a 5,000-node match produce identical results.
 - The released `v0.1.0-dev2` artifacts are unaffected: the engine is unchanged,
   only the test harness and its documentation.
+
+## 2026-11-01 — dev3 session notes
+
+- Verified the `counterMoves` comment inconsistency by implementing the feature
+  rather than by editing the comment: counter-move, continuation and capture
+  history now exist, with a switch each, and the previously misleading comment is
+  gone with the code it described.
+- Chased a bench-signature mismatch between the rewritten search and dev2 with
+  every new switch off. The cause was the root reporting a score from a move that
+  merely raised alpha for a different slot; the fix swaps the alpha-improving move
+  into the reported slot. With the features off the signature is byte-identical to
+  dev2 again, so the mismatch was our bug, not an intended behaviour change.
+- The history value that drives the LMR adjustment must be sampled *before*
+  `make_move`: the table is indexed by the side to move, so reading it afterwards
+  looks up the opponent's entries and silently disables the feature. Caught while
+  reviewing, not by a test, and the comment now says why the order matters.
+- Tuning harness: the first fit produced wild values (pawns 50, an isolated-pawn
+  *bonus*); adding a ridge towards the shipped values, a movement cap and sign
+  preservation fixed the plausibility, and the match then showed that all three
+  candidates were equal or worse anyway. Loss on a holdout set did not predict
+  playing strength, in either direction.
+- Matches are reported from engine A's point of view. Reading a summary the wrong
+  way round briefly made the worst-tuned candidate look like the best one; every
+  Elo number in the release documents is written as "engine A score" so that this
+  cannot recur silently.
+- Stockfish 19 could not be obtained: release assets and the NNUE download
+  endpoint are unreachable from the sandbox, the `sf_19` source builds but its
+  default net is a Git LFS pointer, and 14 archived nets from the official
+  networks repository were tried and rejected as architecture-incompatible. The
+  attempts are recorded in the report; no substitute opponent was used and no
+  Stockfish claim was made.

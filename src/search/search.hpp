@@ -52,12 +52,19 @@ struct SearchParams {
     bool futility = true;
     bool seePruning = true;
     bool checkExtension = true;
-    // dev3 ordering features.
-    bool counterMoves = true;         // reply table keyed by the previous move
-    bool continuationHistory = true;  // history keyed by (prev piece/square, move)
-    bool captureHistory = true;       // per-victim capture statistics
-    bool historyMaluses = true;       // penalise quiets that did not cut off
-    bool lmrHistory = true;           // history-dependent reduction adjustment
+    // dev3 ordering features. All default off: measured against the dev2 search
+    // they are neutral to slightly negative in playing strength (+1.3 Elo
+    // [-17.9, +20.5] with everything on, -16.2 [-33.0, +0.5] for the
+    // history-malus/LMR subset, 571-600 decided paired games each) and they cost
+    // about 2 % more nodes and 8 % more time at a fixed depth. They ship as
+    // switches so the measurements can be repeated, not as a claimed gain; the
+    // shipped search is therefore bit-identical to dev2's (bench signature
+    // e06c4352681ae8eb at depth 6).
+    bool counterMoves = false;         // reply table keyed by the previous move
+    bool continuationHistory = false;  // history keyed by (prev piece/square, move)
+    bool captureHistory = false;       // per-victim capture statistics
+    bool historyMaluses = false;       // penalise quiets that did not cut off
+    bool lmrHistory = false;           // history-dependent reduction adjustment
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control

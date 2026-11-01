@@ -1,4 +1,4 @@
-# StockBear 0.1.0-dev2
+# StockBear 0.1.0-dev3
 
 StockBear is an **independently implemented**, single-threaded UCI chess engine
 written in C++17. This is an early development prerelease, not a stable or
@@ -6,13 +6,22 @@ top-strength engine. It implements its own board, legal move generation,
 evaluation, search, FIDE dead-position analysis and UCI protocol; it does not
 wrap or require another engine. There is no neural-network evaluation.
 
-Evidence and limitations are in the [dev2 benchmark report](benchmarks/results/0.1.0-dev2/REPORT.md),
-the [dead-position specification](docs/DEAD_POSITIONS.md) and the
-[release notes](RELEASE_NOTES.md). Summary: dev2 uses 15.5× fewer nodes (12.8×
-less time) than dev1 on the depth-6 suite and scored +235 Elo (95 % interval
-+193 to +285, opening-clustered) over 400 paired games; it scored 0.5/20 against
-Stockfish 11 (one draw, nineteen losses). No match against Stockfish 19 was
-possible in the build environment, and no superiority claim is made.
+Evidence and limitations are in the [dev3 evidence report](benchmarks/results/0.1.0-dev3/REPORT.md),
+the [dead-position specification](docs/DEAD_POSITIONS.md), the
+[tuning record](docs/TUNING.md) and the [release notes](RELEASE_NOTES.md).
+Summary: dev3 adds real MultiPV and `go searchmoves`, makes every evaluation
+weight a tunable parameter with an offline tuning pipeline, and adds EPD
+tactics/endgame suites certified by an independent mate oracle. Its search and
+evaluation are *unchanged from dev2*: three tuned evaluation candidates and two
+experimental search configurations were matched against the dev2 binary and none
+was stronger (+1.3 [−17.9, +20.5] and −16.2 [−33.0, +0.5] Elo for the search
+configurations; −119.1, −51.3 and +12.0 Elo for the evaluation candidates over
+571–600 decided games each). The shipped configuration is therefore
+behaviourally identical to dev2 in play — a 200-game regression match split every
+opening pair — and the release is a correctness, protocol and tooling release, not
+a strength claim. dev2's own result stands: +235 Elo over dev1 and 0.5/20 against
+Stockfish 11. No match against Stockfish 19 was possible in the build
+environment, and no superiority claim is made.
 
 ## Requirements
 
@@ -72,19 +81,29 @@ Wait for `bestmove` before sending the next position. `position fen <six FEN
 fields> [moves <uci moves>...]` is supported. `go depth N`, `go nodes N`,
 `go movetime N`, `go wtime N btime N winc N binc N movestogo N` and `go infinite`
 work; times are milliseconds. Negative remaining clocks are clamped to zero;
-other negative limits are rejected. Unknown `go` tokens (for example `ponder` or
-`searchmoves`) are ignored as the UCI specification requires. `stop` interrupts a
+other negative limits are rejected. Unknown `go` tokens (for example `ponder`)
+are ignored as the UCI specification requires. `stop` interrupts a
 search, `quit` stops and exits, and `isready` stays responsive during search. A
 terminal position returns `bestmove 0000`.
 
-Options: `Hash` (spin, 1–512 MiB), plus boolean search-feature switches
-`NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`, `SEEPruning` and
-`CheckExtension`. All default to the released behaviour; they exist so feature
-ablations can be measured by matches, and a GUI that never sends them is
-unaffected. There is no `Threads` option because the search is single-threaded.
-Ponder, MultiPV, Chess960, an opening book and tablebases are not implemented.
-Malformed commands are reported as `info string` messages and never replace a
-valid position.
+Options: `Hash` (spin, 1–512 MiB), `MultiPV` (spin, 1–8), `EvalParams` (string,
+a parameter file; empty restores the shipped set), plus boolean search-feature
+switches `NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`,
+`SEEPruning`, `CheckExtension`, `CounterMoves`, `ContinuationHistory`,
+`CaptureHistory`, `HistoryMaluses` and `LMRHistory`. The first seven default to
+the released behaviour; the five `dev3` ordering switches default to **off**
+because they measured neutral to slightly negative (see the evidence report) and
+cost about 8 % of the time at a fixed depth. Every switch exists so ablations can
+be measured by matches, and a GUI that never sends them is unaffected. There is
+no `Threads` option because the search is single-threaded. Ponder, Chess960, an
+opening book and tablebases are not implemented. Malformed commands are reported
+as `info string` messages and never replace a valid position.
+
+`go searchmoves <moves>` restricts the search to the listed legal root moves:
+illegal entries are reported and dropped, and a list with nothing legal in it is
+reported and ignored rather than answered with `bestmove 0000`. `MultiPV N`
+reports the best N root moves as ranked `multipv` lines with exact scores and a
+principal variation that starts with its own move.
 
 ### ScrispChess-Extended
 
@@ -137,6 +156,11 @@ repetition history.
 ./build/stockbear bench --depth 6 --hash 16
 ./build/stockbear bench --movetime 200
 ./build/stockbear bench --depth 7 --param nullMove=0
+./build/stockbear bench --depth 7 --params benchmarks/params/dev3-shipped.txt
+./build/stockbear eval --fen 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' --top 5
+python3 scripts/run_suite.py --engine ./build/stockbear \
+  --epd benchmarks/tactics/mate_suite.epd --mode tactics --nodes 60000 \
+  --json /tmp/tactics.json --raw /tmp/tactics.txt
 ./build/stockbear deadpos --fen '8/3k4/p1p2p1p/PpPp1PpP/1P1P2P1/4K3/8/8 w - - 6 49'
 python3 scripts/tournament.py --engine-a ./build/stockbear --engine-b /path/to/other \
   --games 400 --base-ms 80 --inc-ms 8 --pgn match.pgn --jsonl match.jsonl --csv match.csv
@@ -157,6 +181,8 @@ time forfeits and illegal moves as losses. See
 - [Dead positions (FIDE 5.2.2): specification, proof, limits](docs/DEAD_POSITIONS.md)
 - [Testing and independent validation](docs/TESTING.md)
 - [Benchmarking and match methodology](docs/BENCHMARKING.md)
+- [dev3 evidence report](benchmarks/results/0.1.0-dev3/REPORT.md)
+- [Evaluation tuning: pipeline, dataset and the negative result](docs/TUNING.md)
 - [dev2 evidence report](benchmarks/results/0.1.0-dev2/REPORT.md)
 - [Roadmap](docs/ROADMAP.md), [changelog](CHANGELOG.md), [release notes](RELEASE_NOTES.md)
 - [License](LICENSE) (Apache-2.0) and [third-party notices](THIRD_PARTY.md)

@@ -57,15 +57,45 @@ turning a pruning feature off can reduce node counts at a fixed depth for
 ordering reasons, which says nothing about strength. Strength claims come only
 from matches.
 
-The `NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`, `SEEPruning`
-and `CheckExtension` UCI options expose the same switches, so the tournament
-harness can measure a feature by strength:
+The `NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`, `SEEPruning`,
+`CheckExtension`, `CounterMoves`, `ContinuationHistory`, `CaptureHistory`,
+`HistoryMaluses` and `LMRHistory` UCI options expose the same switches, so the
+tournament harness can measure a feature by strength. The last five default to
+off because the dev3 matches found no benefit; they are kept switchable so the
+measurement can be repeated:
 
 ```sh
 python3 scripts/tournament.py --engine-a ./build-release/stockbear \
   --engine-b ./build-release/stockbear --a-option NullMove=false \
   --games 200 --base-ms 80 --inc-ms 8
 ```
+
+### Released signatures
+
+Record the `# signature` of the shipped build, because a changed signature means
+behaviour changed and needs an explanation. For `v0.1.0-dev3` (and, by
+construction, `v0.1.0-dev2`):
+
+| build | depth | signature |
+| --- | --- | --- |
+| shipped defaults | 6 | `e06c4352681ae8eb` |
+| shipped defaults | 7 | `5bceff035f2a4ae4` |
+| all five dev3 ordering switches on | 6 | `8d99b4e28a6231a0` |
+| all five dev3 ordering switches on | 7 | `f6103610012f7f9d` |
+| tuned evaluation variant A | 6 | `3df569cc3b5a5ff7` |
+
+The shipped rows are identical to the rebuilt `v0.1.0-dev2` binary, which is the
+intended outcome of shipping the dev2 search and evaluation with new switches
+turned off. Per-set node counts for the shipped build at depth 6/7:
+
+| suite | depth 6 nodes | depth 7 nodes |
+| --- | --- | --- |
+| total, 12 embedded positions | 108,910 | 250,053 |
+
+The all-on configuration costs about 8 % more time at equal depth (118,548 and
+255,021 nodes) without winning a match, which is why it is not the default. The
+full list of ablations and both feature matches is in
+`benchmarks/results/0.1.0-dev3/REPORT.md`.
 
 ### Fixed node budgets
 
@@ -147,6 +177,14 @@ number. The Elo transform itself assumes the model `score = 1/(1+10^(-Δ/400))`
 and is only descriptive.
 
 ## External opponent
+
+The tuning pipeline has its own record: `docs/TUNING.md` documents the dataset,
+the trainer command lines, the parameter sets and the match that rejected each
+candidate. A tuning-loss improvement is not a strength result; every candidate
+must be matched against the shipped binary, one binary on both sides differing
+only in the `EvalParams` file, and a candidate is shipped only on a match that
+is not negative. In dev3 none was, so `benchmarks/params/dev3-shipped.txt` is
+byte-identical to `benchmarks/params/dev2-baseline.txt`.
 
 Stockfish is used **only** as an external opponent; it never participates in
 StockBear's move selection and is not bundled. Pin both the version tag and the

@@ -105,17 +105,23 @@ clock artefacts), `--max-plies 200`, 30 openings, paired colour-reversed games,
 Hash 16 MB, 1 thread, `scripts/tournament.py` pentanomial statistics. Positive
 Elo always means "engine A (the shipped evaluation) was stronger".
 
-| match | decided games | engine A score | Elo for the candidate | verdict |
-| --- | --- | --- | --- | --- |
-| baseline (A side) vs candidate A | 591 | 0.6649, W/D/L 328/136/127 | **−119.1 [−140.8, −98.2]** | candidate much worse |
-| baseline (A side) vs candidate B | 590 | 0.5733, W/D/L 249/187/154 | **−51.3 [−72.1, −30.8]** | candidate worse |
-| baseline (A side) vs candidate C | 590 | 0.4828, W/D/L 202/176/212 | **+12.0 [−10.3, +34.4]** | cannot distinguish |
+| match | decided games | engine A score | candidate Elo, pentanomial | candidate Elo, opening-clustered | verdict |
+| --- | --- | --- | --- | --- | --- |
+| baseline vs candidate A | 591 | 0.6649, W/D/L 328/136/127 | **−119.1 [−140.8, −98.2]** | **−119.1 [−195.9, −52.1]** | worse, by both intervals |
+| baseline vs candidate B | 590 | 0.5733, W/D/L 249/187/154 | **−51.3 [−72.1, −30.8]** | **−51.3 [−122.4, +15.7]** | no improvement; the worse reading is not confirmed |
+| baseline vs candidate C | 590 | 0.4828, W/D/L 202/176/212 | **+12.0 [−10.3, +34.4]** | **+12.0 [−61.4, +86.4]** | cannot distinguish |
 
-Pentanomial counts (0 / 0.5 / 1 / 1.5 / 2 pairs) and the opening-clustered
-intervals are in `benchmarks/results/0.1.0-dev3/tuning/match{A,B,C}.jsonl`; the
-clustered intervals are much wider (30 openings cannot resolve 20 Elo, let alone
-50). Games that reached the ply cap are recorded as unadjudicated (9, 10 and 10
-respectively) and were never converted into draws.
+Both intervals are reported because they answer different questions: the
+pentanomial one treats the 295 opening pairs as independent, the clustered one
+knows that each opening is replayed and is therefore much wider. Only candidate
+A is separated from the baseline by both. For B and C the honest statement is
+"no improvement was demonstrated", not "the candidate is worse", and no candidate
+was shipped in either case.
+
+Pentanomial counts (0 / 0.5 / 1 / 1.5 / 2 pairs) are in
+`benchmarks/results/0.1.0-dev3/tuning/match-eval-{A,B,C}.jsonl`. Games that
+reached the ply cap are recorded as unadjudicated (9, 10 and 10 respectively) and
+were never converted into draws.
 
 Note the ordering: the set with the better holdout loss (A) is the one that lost
 by the largest margin, and the set with the worst holdout loss (C) is the only

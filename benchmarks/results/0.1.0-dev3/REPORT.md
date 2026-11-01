@@ -72,12 +72,13 @@ reported as unadjudicated and are never counted as draws.
 
 ### Search: dev3 experimental configurations against the rebuilt dev2 binary
 
-| configuration (engine A) | decided | W/D/L | A score | Elo (95 %) | pentanomial 0/0.5/1/1.5/2 | unadj. |
-| --- | --- | --- | --- | --- | --- | --- |
-| all five switches on | 571 | 205/152/214 | 0.5018 | **+1.3 [−17.9, +20.5]** | 10/68/126/48/19 | 29 |
-| historyMaluses + lmrHistory only | 600 | 195/182/223 | 0.4767 | **−16.2 [−33.0, +0.5]** | 19/29/166/77/9 | 0 |
+| configuration (engine A) | decided | W/D/L | A score | Elo, pentanomial | Elo, opening-clustered | pairs 0/0.5/1/1.5/2 | unadj. |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| all five switches on | 571 | 205/152/214 | 0.5018 | **+1.3 [−17.9, +20.5]** | **+1.3 [−62.9, +65.6]** | 10/68/126/48/19 | 29 |
+| historyMaluses/LMR/continuation subset | 600 | 195/182/223 | 0.4767 | **−16.2 [−33.0, +0.5]** | **−16.2 [−71.6, +38.3]** | 19/29/166/77/9 | 0 |
 
-Both results are inside the noise band; neither configuration is a strength
+Both results are inside the noise band by both intervals and neither shows an
+improvement; neither configuration is a strength
 improvement, and the all-on configuration costs 8 % more time at a fixed depth.
 The switches therefore default to **off**, and the shipped search is dev2's. Raw
 records: `match-dev2-search-allon.jsonl`, `match-dev2-search-subset.jsonl`.
@@ -87,13 +88,16 @@ records: `match-dev2-search-allon.jsonl`, `match-dev2-search-subset.jsonl`.
 One binary on both sides, so the search is identical and only the parameter file
 differs (`--b-option EvalParams=…`).
 
-| candidate | decided | engine A (shipped) W/D/L | Elo for the candidate | verdict |
-| --- | --- | --- | --- | --- |
-| A (`--ridge 0.02 --max-delta-fraction 0.35 --no-preserve-sign`) | 591 | 328/136/127 | **−119.1 [−140.8, −98.2]** | much worse |
-| B (`--ridge 0.10 --max-delta-fraction 0.20`) | 590 | 249/187/154 | **−51.3 [−72.1, −30.8]** | worse |
-| C (`--ridge 0.04 --max-delta-fraction 0.30`) | 590 | 202/176/212 | **+12.0 [−10.3, +34.4]** | indistinguishable |
+| candidate | decided | engine A (shipped) W/D/L | candidate Elo, pentanomial | candidate Elo, opening-clustered | verdict |
+| --- | --- | --- | --- | --- | --- |
+| A (`--ridge 0.02 --max-delta-fraction 0.35 --no-preserve-sign`) | 591 | 328/136/127 | **−119.1 [−140.8, −98.2]** | **−119.1 [−195.9, −52.1]** | worse by both intervals |
+| B (`--ridge 0.10 --max-delta-fraction 0.20`) | 590 | 249/187/154 | **−51.3 [−72.1, −30.8]** | **−51.3 [−122.4, +15.7]** | no improvement |
+| C (`--ridge 0.04 --max-delta-fraction 0.30`) | 590 | 202/176/212 | **+12.0 [−10.3, +34.4]** | **+12.0 [−61.4, +86.4]** | indistinguishable |
 
 The candidate with the best tuning-loss improvement (A) was the worst in play.
+Only A is separated from the baseline by both intervals; for B and C the claim is
+"no improvement was demonstrated", which is enough to reject them without
+overstating the measurement.
 Details, dataset hashes and the reproduction commands: [../../docs/TUNING.md](../../docs/TUNING.md).
 
 ### Regression check: the shipped configuration against dev2

@@ -40,16 +40,58 @@
    tag, default-branch ancestry and a successful exact-commit CI run before
    publishing checksummed archives.
 
-## Next (v0.1.0-dev3 candidates)
+## v0.1.0-dev3 priorities — status
 
-- Run per-feature strength ablations with the new UCI switches on larger
-  samples; the current node-count ablations are ambiguous for null-move and
-  check extensions and are documented as such.
-- Evaluation tuning with a recorded tuning procedure (nothing is tuned yet).
+1. **A real evaluation-parameter layer and an offline tuning pipeline.** Done in
+   form, negative in result. Every evaluation weight is now a named parameter
+   (`src/evaluation/eval_params.{hpp,cpp}`, `benchmarks/params/*.txt`,
+   `stockbear bench --params FILE`, UCI `EvalParams`), the training data is a
+   generated self-play corpus with a separate holdout split and recorded
+   checksums, and `scripts/tune_eval.py` fits it reproducibly. Three tuned
+   parameter sets were produced and all three were matched against the shipped
+   evaluation: −119.1 [−140.8, −98.2], −51.3 [−72.2, −30.8] and +12.0
+   [−10.3, +34.4] Elo over 590–591 decided games. None was shipped; the release
+   keeps the dev2 coefficients. Record: [TUNING.md](TUNING.md).
+2. **Search-feature work with independent switches and ablations.** Done in form,
+   negative in result. Counter-move history, continuation history, capture
+   history, history maluses and a history-aware LMR adjustment were implemented,
+   unit-tested and measured: all five on scored +1.3 [−17.9, +20.5] Elo against
+   the dev2 binary over 571 decided games, and the history-malus/LMR/continuation
+   subset scored −16.2 [−33.0, +0.5] against the same binary with them off over
+   600 games. All five default to **off**, which makes the shipped search
+   behaviourally identical to dev2 (`bench` signatures match exactly).
+3. **Tactics and endgame suites.** Done: `benchmarks/tactics/` holds a 26-position
+   mate suite (sourced from StockBear self-play games, every position re-proved
+   by an independent python-chess oracle that lists all mating moves) and a
+   24-position three-man endgame suite. Fixed-node runs, raw output retained:
+   26/26 mates at 60 k nodes; 22/24 endgames converted at 400 k nodes.
+4. **UCI completeness.** Done: `go searchmoves` parses, validates, restricts the
+   root, reports illegal and all-illegal lists and never swallows the following
+   keyword; real `MultiPV 1–8` reports ranked distinct root moves with exact
+   scores and consistent principal variations. Both are exercised black-box over
+   depth, nodes, movetime and clock limits by `uci_integration`.
+5. **Strength measurement discipline.** Done: every claim above is a paired
+   colour-reversed match with a recorded seed, pentanomial and
+   opening-clustered intervals, unadjudicated games excluded from the score and
+   the exact commands retained in `benchmarks/results/0.1.0-dev3/`.
+
+The honest summary of dev3 is that it improved the *capability* of the codebase
+(parameterised evaluation, switchable search, testable protocol, reproducible
+suites) and did **not** improve playing strength. The measurements that say so
+are retained rather than dropped.
+
+## Next (v0.1.0-dev4 candidates)
+
+- Convert the endgame suite failures (`kqk-12`, `krk-17`) into a repetition-aware
+  eval or a claim-aware root policy; both currently draw games that are won.
+- Re-run the tuning pipeline on a much larger corpus from a stronger baseline.
+  The dev3 analyser's data was produced by a 6,000-node search, and the fitted
+  parameters' disagreement with play suggests the labels, not the optimiser, are
+  the limit; a deeper label set is the next experiment.
 - A larger external match against a current Stockfish build in an environment
   that can fetch its NNUE networks; the dev2 external check used Stockfish 11
-  for that reason.
-- Optional opening-book support and MultiPV for analysis GUIs.
+  and the dev3 attempts are recorded as blocked.
+- Optional opening-book support.
 - Investigate bounded parallel search (Lazy SMP) only with ThreadSanitizer
   evidence and a measured strength/time benefit at the same node budget.
 
