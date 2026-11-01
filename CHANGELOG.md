@@ -1,5 +1,79 @@
 # Changelog
 
+## 0.1.0-dev2 — 2026-10-31
+
+Second development prerelease. Playing-strength and search changes were chosen by
+ablation and validated by a paired match; the dead-position requirement is now
+met by a general decision procedure.
+
+- **FIDE Article 5.2.2 dead positions (new).** `src/chess/dead_position.{hpp,cpp}`
+  implements a general decision procedure: an impossible-material proof stage, a
+  cooperating helpmate witness search, and a bounded exhaustive enumeration of the
+  complete reachable state component identified by 128-bit state fingerprints.
+  `Dead` is returned only after a complete enumeration, `Alive` only with a
+  checkmate witness, and every other outcome is `Unknown`. New CLI
+  `stockbear deadpos --fen FEN [--states N] [--depth N]`, new
+  `DrawStatus::AutomaticDeadPosition`, exhaustive two- and three-piece
+  state-space tests, a 23-case corpus and an independent python-chess reference.
+  `states` counts distinct reachable states and `expanded` counts applied moves
+  (the budget applies to the latter). Two documented exceptions: a terminal
+  position (checkmate/stalemate) is reported as `alive` with a `terminal:` reason
+  and no witness, and the impossible-material class is `dead` by static proof
+  without enumeration. Specification and limits: `docs/DEAD_POSITIONS.md`.
+- **Search strength and speed.** Aspiration windows, null-move pruning with guards,
+  late move reductions with integer scheduling, reverse futility, futility
+  pruning, static exchange evaluation for ordering and pruning, delta pruning in
+  quiescence, mate-distance pruning, a selection-sort move picker, improved
+  history/killer updates and a soft/hard time budget with an early-stability stop.
+  `static_exchange_evaluation()` is a public, unit-tested function.
+  UCI options `NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`,
+  `SEEPruning`, `CheckExtension` expose every switch (all default to the released
+  behaviour). Measured with both builds run alternately in one idle session:
+  depth-6 suite 1,683,192 → 108,910 nodes and 622 → 49 ms (15.5× fewer nodes,
+  12.8× faster); depth-7 33.1× fewer nodes and 23.1× faster; 400 paired games vs
+  dev1 scored +277 =82 −41 (Elo +235.4; paired pentanomial 95 % interval +202.8
+  to +272.2, opening-clustered interval +193.4 to +284.5; the LLR computed on the
+  finished sample crosses the +5 Elo upper bound).
+- **Transposition table.** Bucketed entries with a depth/generation replacement
+  policy, mate-score conversion at store/probe, and context separation retained.
+- **Time management.** Documented soft/hard budget contract, `movestogo` handling,
+  a 30-move default, a 1 ms floor and usage-based stopping, covered by new
+  contract tests.
+- **Static exchange value of a king.** `SeeValue[King]` was 0, so SEE treated an
+  illegal king recapture as available: `4k3/3p4/8/8/8/8/3R4/3R2K1 w - - 0 1`,
+  `d2d7` returned −400 instead of +100 because the king appeared to win the rook
+  back while the second rook still x-rayed the square. The king now has a huge
+  value (so it is ordered last and its "capture" is never profitable), covered by
+  a known-value test. This changes search behaviour, so every dev2 measurement in
+  this release was taken after the fix.
+- **Time safety.** The hard-timer polling interval in `Search::visit` is back to
+  64 nodes (dev1's value): 1024 allowed a `go movetime` search to overrun its hard
+  budget by up to a thousand nodes and risk a clock forfeit.
+- **Bug fixes.** Static exchange evaluation dropped the final recapture in its
+  negamax fold, so a knight taking a defended pawn scored +100 instead of −220 and
+  losing captures were ordered and pruned as if they were wins; fixed, unit-tested
+  against hand-computed values, and every measurement in this release was taken
+  after the fix. `unmake_null_move()` decremented the fullmove counter that
+  `make_null_move()` never incremented, drifting the FEN after every null move;
+  fixed and covered by null-move round-trip tests. `go` commands with unknown
+  tokens are now ignored (as UCI requires) instead of being refused.
+  `format_report()` no longer crashes when the SPRT cannot decide, and the match
+  summary now reports the game count.
+- **Benchmark and measurement tooling.** `bench --movetime`, `bench --param
+  feature=0|1` ablations and a deterministic `# signature` fingerprint (depth and
+  node modes only; time-limited runs report it as unavailable);
+  `scripts/match_stats.py` (Wilson, pentanomial over opening pairs,
+  normal-approximation SPRT) with known-value unit tests; `tournament.py` gains
+  `--csv`, `--seed`, `--sprt-elo` and `--a-option`/`--b-option`; the opening suite
+  grew to 31 verified openings.
+- **CI.** Adds a ThreadSanitizer job, a search-determinism check, recorded build
+  provenance, dead-position corpus/reference/exhaustive steps and statistics
+  tests. All actions remain SHA-pinned.
+
+See [release notes](RELEASE_NOTES.md) and
+[the dev2 evidence report](benchmarks/results/0.1.0-dev2/REPORT.md). This
+prerelease makes no strength-parity claim; against Stockfish 11 it scored 0.5/20.
+
 ## 0.1.0-dev1 — 2026-10-30
 
 First independent development prerelease.

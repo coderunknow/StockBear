@@ -1,25 +1,96 @@
-# StockBear v0.1.0-dev1 — development prerelease
+# StockBear v0.1.0-dev2 — development prerelease
 
-StockBear is a new independent C++17 UCI engine. Its board, legal move generation, state management, alpha-beta search, evaluation and UCI controller are implemented here; it neither embeds nor calls another engine to select moves. This is an early development release, not a stable or leading-strength engine.
+StockBear is an independent C++17 UCI chess engine. Its board, legal move
+generation, state management, alpha-beta search, evaluation, dead-position
+analysis and UCI controller are implemented in this repository; it neither
+embeds nor calls another engine to select moves. This is an early development
+release, not a stable or leading-strength engine.
 
-## Included
+## What is new in dev2
 
-- Standard chess legal moves, FEN and reversible state, castling, en passant, all promotions, checks, mate/stalemate, repetition and move-count draw detection.
-- Iterative deepening, negamax alpha-beta/PVS, quiescence, a bounded transposition table and Zobrist keys, capture ordering, killer/history heuristics, limited check extensions and single-threaded time/cancellation handling.
-- Handcrafted tapered material/positional evaluation; **no neural network**.
-- UCI `uci`, `isready`, `ucinewgame`, `position`, `go` with depth/nodes/movetime/clocks/increments/movestogo/infinite, `stop`, `quit`, `debug`, and the `Hash` option. Unsupported UCI extensions are listed in the README.
-- Perft/divide, deterministic fixed-depth/node benchmark suites, an optional paired UCI match/PGN harness, and CTest plus independent validation tools.
+- **A general FIDE Article 5.2.2 dead-position decision procedure.** The
+  detector proves `Alive` with a checkmate witness or `Dead` by exhaustively
+  enumerating the complete reachable state component, and says `Unknown`
+  otherwise. It finds dead positions that no material rule can see (14 blocked
+  pawns: 768 distinct states; locked pawn chains with bishops: 152,352 distinct
+  states reached by 1,268,497 move applications) and
+  refuses to call provably alive positions dead (`KNN` v `K`, `KB` v `KN`,
+  `KN` v `KN`). New CLI: `stockbear deadpos --fen FEN`. Details, correctness
+  argument and limits: [docs/DEAD_POSITIONS.md](docs/DEAD_POSITIONS.md).
+- **A substantially faster and stronger search**: aspiration windows, null-move
+  pruning, late move reductions, reverse futility and futility pruning, static
+  exchange evaluation, delta pruning in quiescence, mate-distance pruning, a
+  better move picker and a real soft/hard time budget.
+- **Measurable evidence**: the depth-6 benchmark suite went from 1,683,192 to
+  108,910 nodes (622 ms → 49 ms, measured alternately in one idle session), the
+  depth-7 suite from 8,276,659 to 250,053 nodes, and 400 paired games against dev1
+  scored +277 =82 −41, i.e. **Elo +235.4 with a 95 % interval of +193.4 to
+  +284.5** (opening-clustered over the 31 distinct openings; the plain pentanomial
+  interval over the 200 opening pairs, which treats them as independent, is the
+  narrower +202.8 to +272.2).
+- **Honest tournament statistics**: Wilson intervals, a pentanomial model over
+  opening pairs, an approximate SPRT, seeded opening shuffling, 31 verified
+  openings, and a harness that records time forfeits and capped games instead of
+  inventing draws.
+- **Safer draw and protocol behaviour**: dead-position adjudication is separate
+  from the search's cheap material heuristic, the null-move counter drift is
+  fixed, and unknown `go` tokens are ignored as UCI requires instead of
+  refusing the search.
+- **Ablation switches**: `bench --param feature=0|1` and the matching UCI check
+  options make every search feature measurable by nodes *and* by match.
 
 ## Evidence
 
-Nine perft positions passed their independently regenerated expected totals, including Kiwipete depth 4 = 4,085,603. A separate seed-20261030 differential run matched python-chess on 2,000 legal positions and eight curated cases at depth two. Local Debug/Release CTest and Linux ASan+UBSan runs exercised the code; check CI for results on the exact release commit and for Windows validation.
+Raw data, commands and interpretation:
+[benchmarks/results/0.1.0-dev2/REPORT.md](benchmarks/results/0.1.0-dev2/REPORT.md)
+— benchmark CSV for two depths, the feature-ablation CSV, 400-game PGN/JSONL/CSV
+against dev1, a 20-game match against Stockfish 11, and the dead-position corpus
+and its independent reference comparison.
 
-On a two-vCPU Xeon 2.60 GHz Linux guest with GCC 12.2 `-O3`, one thread and 16 MiB requested hash, the start-position depth-5 search used 17,075 nodes and 7,764 µs (about 2.20 million nodes/s); the full raw data, hardware, flags and methodology are in [the benchmark report](benchmarks/results/0.1.0-dev1/REPORT.md). An exploratory eight-game, paired-opening match at 1.0 s + 0.02 s against external Stockfish 11 ended 0 wins, 0 draws, 8 losses. The very small sample is not a precise Elo estimate. There was no Stockfish 19 match or superiority claim.
+Verification: CTest entries `unit`, `position_extra` (null-move integrity),
+`regression`, `perft_quick`, `perft_full`, `stress`, `deadpos` (including the
+exhaustive two- and three-piece state-space sweeps), `uci_integration` and
+`uci_fuzz`; Linux GCC Debug/Release,
+ASan+UBSan and ThreadSanitizer runs; Clang Release and minimum-CMake-3.16 CI
+jobs; Windows Debug/Release CI; and python-chess differential and reference
+checks. Check the CI runs for the exact release commit — this document does not
+substitute for them.
+
+## Strength statement
+
+Against dev1 the improvement is supported (400 paired games, +277 =82 −41, +235.4
+Elo). Against a mature engine the gap remains very large: dev2 scored **0.5/20**
+against Stockfish 11 at 100 ms + 10 ms (one draw, nineteen losses), with no
+forfeits. The latest stable Stockfish (19) could **not** be built in the release
+environment because its NNUE network files are not reachable there, so no
+Stockfish 19 match was played and no claim about Stockfish 19 is made. No
+superiority or parity claim is made against any engine.
+
+## Compatibility
+
+Standard UCI: `uci`, `isready`, `ucinewgame`, `position`, `go`
+(depth/nodes/movetime/clocks/increments/movestogo/infinite), `stop`, `quit`,
+`debug`, and `info` lines with depth, seldepth, score, nodes, nps, hashfull, time
+and pv. Options: `Hash` (1–512 MiB) plus the boolean ablation switches. There is
+no `Threads` option: the search is single-threaded and advertising a thread
+option that does nothing would be misleading. A terminal position returns
+`bestmove 0000`. See the README for the ScrispChess-Extended Custom UCI Engine
+Manager instructions.
 
 ## Platforms and limitations
 
-Linux x64 and Windows 10 x64 are the intended targets; the CI matrix builds and tests Windows and Linux Debug/Release and makes Release artifacts available when its jobs pass. The executable uses no Python or external chess engine at runtime. It does not require AVX-512 or a GPU.
+Linux x64 and Windows x64 are the release targets; CI builds and tests Linux and
+Windows Debug/Release and produces the Release archives. No AVX2/AVX-512, GPU or
+external engine is required at run time.
 
-The dead-position detector recognizes common material cases, not all blocked FIDE dead positions. FEN cannot encode pre-FEN repetition history; GUIs/referees must adjudicate draw claims. Search is single-threaded and uses baseline time/evaluation heuristics; no Chess960, pondering, `searchmoves`, MultiPV, tablebases, opening book, neural network or training system is provided. Future work is described in [the roadmap](docs/ROADMAP.md).
+The dead-position analysis is exact but exponential in the worst case; positions
+whose reachable component exceeds the configured budget return `unknown` rather
+than a guess. With the default budget of 3,000,000 expanded positions a run needs
+roughly 90 MiB and 1.5 s in the measured environment; memory grows with the
+number of distinct states, so `--states` raises both the time and the memory. FEN cannot
+encode earlier repetition history, so a GUI/referee must still adjudicate claims.
+No Chess960, pondering, MultiPV, tablebases, opening book, neural evaluation or
+training system is provided.
 
-Apache-2.0; optional validation and opponent licenses are recorded in [THIRD_PARTY.md](THIRD_PARTY.md).
+Apache-2.0. Optional validation and opponent software is recorded in
+[THIRD_PARTY.md](THIRD_PARTY.md).

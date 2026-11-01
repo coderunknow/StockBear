@@ -27,5 +27,9 @@ private:
     std::atomic<bool> stop_{false};
     std::thread worker_;
     bool debug_ = false;
+    // Search-feature switches. They exist so ablations can be measured by
+    // matches, not only by node counts, and every one defaults to the value
+    // used by the engine (true) or by the released build.
+    SearchParams params_{};
 };
 }

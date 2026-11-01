@@ -1,6 +1,11 @@
 # Benchmarking methodology
 
-The executable embeds its position suites so measurements do not depend on a checkout. `benchmarks/positions/*.inc` are the source of those suites. Run an optimized Release build on an otherwise idle machine, record the CPU, OS, compiler/flags, version, hash, thread count and exact suite. Do not compare measurements from materially different machines, clocks or builds as if conditions were identical.
+The executable embeds its position suites, so measurements do not depend on a
+checkout. `benchmarks/positions/*.inc` are the source of those suites. Run an
+optimized Release build on an otherwise idle machine and record the CPU, OS,
+compiler/flags, version, hash, thread count and exact suite. Do not compare
+measurements from materially different machines, clocks or builds as if
+conditions were identical.
 
 ## Perft
 
@@ -11,30 +16,133 @@ The executable embeds its position suites so measurements do not depend on a che
 python3 scripts/reference_perft.py  # optional python-chess reference
 ```
 
-The CSV includes the FEN, depth, expected and actual leaf count, elapsed microseconds, NPS and pass/fail; mismatch returns nonzero. At depth one it counts the generated legal moves without making each leaf move, a common bulk-counting optimization. Perft NPS therefore measures a different operation from search NPS. Tiny elapsed times are noisy. Expected totals in the versioned suite were regenerated independently with python-chess 1.11.2.
+At depth one the suite counts generated legal moves without making each leaf
+move (bulk counting), so perft NPS measures a different operation from search
+NPS. Tiny elapsed times are noisy. Expected totals were regenerated
+independently with python-chess 1.11.2.
 
-## Search
+## Search benchmarks and ablations
 
 ```sh
-./build-release/stockbear bench --depth 5 --hash 16
+./build-release/stockbear bench --depth 6 --hash 16
 ./build-release/stockbear bench --nodes 100000 --hash 16
+./build-release/stockbear bench --movetime 200 --hash 16
+./build-release/stockbear bench --depth 7 --param nullMove=0
 ```
 
-Each position gets a freshly cleared table. The CSV identifies the position/FEN, best move, completed depth, cp or mate score, PV, total nodes, elapsed microseconds, NPS and sampled hash fullness (per mille). For a node-limited run, the node total includes a possibly interrupted iteration; the score and PV are from the **last completed** iteration. A detected terminal/drawn root can stop before the node budget with depth zero. With fixed depth/nodes and a fixed build the move/score/node/PV fields are deterministic; wall time and NPS are not. The `hash_requested_mb` is an allocation ceiling, and actual allocated bytes are printed. Scores and tactical accuracy are not Elo measurements.
+The CSV on stdout identifies each position's FEN, best move, completed depth,
+cp/mate score, nodes, elapsed microseconds, NPS, hash fullness and PV. Every run
+also prints a header line with the version, mode, requested/allocated hash and
+the active `SearchParams`, plus a final `# signature <hex>` line: a
+deterministic FNV-1a fingerprint of the name, best move, depth, score, node
+count and PV of every position — in `--depth` and `--nodes` mode. Both fields are
+reproducible there; `--movetime` (and any other time-limited run) depends on the
+machine, so those runs print `# signature unavailable (movetime mode is not
+deterministic)` instead of a fingerprint that would change between runs of one
+build. Two builds or two parameter settings that
+differ anywhere in those fields have different signatures, so behaviour
+regressions can be caught without comparing timings. CI runs the same command
+twice and compares a *narrowed* projection of the output, not the whole text: the
+CSV contains wall-clock microseconds, NPS and `hashfull`, which legitimately vary
+between runs on the same binary. The check requires both runs to agree on the
+`# StockBear` header line, the `# signature` line and the deterministic columns
+(name, best move, depth, score, nodes, PV) of every row, and ignores the timing
+columns.
+
+For fixed depth/nodes the move, score, node and PV fields are deterministic;
+wall time, NPS and `hashfull` are not. Node counts are the primary optimisation
+metric because they are machine-independent. A feature ablation is reported as
+nodes *and* time, and any ablation that changes the tree shape is read with care:
+turning a pruning feature off can reduce node counts at a fixed depth for
+ordering reasons, which says nothing about strength. Strength claims come only
+from matches.
+
+The `NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`, `SEEPruning`
+and `CheckExtension` UCI options expose the same switches, so the tournament
+harness can measure a feature by strength:
+
+```sh
+python3 scripts/tournament.py --engine-a ./build-release/stockbear \
+  --engine-b ./build-release/stockbear --a-option NullMove=false \
+  --games 200 --base-ms 80 --inc-ms 8
+```
 
 ## Matches
 
-The optional harness uses its own UCI subprocess controller and python-chess for independent legal move checking, draw adjudication and PGN. No opponent is bundled. Supply both engine paths:
+The harness uses its own UCI subprocess controller and python-chess for
+independent legal-move checking, draw adjudication and PGN. No opponent is
+bundled. Supply both engine paths:
 
 ```sh
 python3 -m pip install chess==1.11.2
 python3 scripts/tournament.py --engine-a ./build-release/stockbear \
-  --engine-b /path/to/other-uci-engine --games 8 --base-ms 1000 --inc-ms 20 \
-  --threads 1 --hash 16 --pgn match.pgn --jsonl match.jsonl
+  --engine-b /path/to/other-uci-engine --games 400 --base-ms 80 --inc-ms 8 \
+  --hash 16 --pgn match.pgn --jsonl match.jsonl --csv match.csv --seed 20261031
 ```
 
-Games run sequentially on the same host with the same requested clocks, increment, hash budget and thread count. Each deterministic opening is played twice with colors swapped; opening moves are preplayed without clock charge. Engine options that are absent or cannot be verified are recorded as such. The controller measures wall time including protocol overhead and declares a time or illegal-move forfeit where appropriate. It automatically claims available draws; hitting `--max-plies` without an outcome is recorded as `*`/unadjudicated, not fabricated as a draw. PGN, per-game JSONL, settings and W/D/L are written explicitly.
+Rules that the harness enforces so a result cannot be inflated:
 
-The reported Elo transform and Wilson interval over fractional scores are only a rough descriptive approximation: they ignore the dependence within opening pairs, draw-rate modeling and other experimental variation. Very small matches, especially zero/all wins, have very wide or infinite bounds and cannot establish a precise Elo or superiority. Record engine versions, CPU, build flags and actual option differences, and use substantially larger independent samples for strength claims.
+* every opening from `benchmarks/positions/openings.txt` is played twice with
+  colours reversed, at identical clocks, increment, hash and thread settings;
+* opening moves are preplayed without clock charge, and the opening order is
+  shuffled with a recorded seed;
+* wall time includes protocol overhead, and a clock overrun or an illegal move
+  terminates the game as a **loss for the offender**. The recorded termination
+  strings are `TIME_FORFEIT (<engine>, <n>ms move)` for a clock overrun and
+  `ENGINE_FAILURE (<engine>: illegal move <uci>)` (or another engine error) for an
+  illegal move, crash or protocol failure — there is no bare `ILLEGAL_MOVE` value,
+  so filter by prefix;
+* claimable draws are claimed by the controller exactly as the rules allow;
+  fivefold/75-move/insufficient-material/dead-position endings are recorded with
+  their rule;
+* a game that reaches `--max-plies` **without an outcome is recorded as `*`
+  (`UNADJUDICATED_MAX_PLIES`) and excluded from the score** — never converted
+  into a draw;
+* engine options that are absent or unverifiable are recorded as such.
 
-See [the recorded v0.1.0-dev1 baseline](../benchmarks/results/0.1.0-dev1/REPORT.md) for raw CSV, PGN and JSONL. Optional Stockfish use is as an opponent only; no external engine participates in StockBear's move selection.
+Uncertainty is reported by `scripts/match_stats.py`:
+
+* a naive Wilson interval over all games (ignores the dependence between the two
+  games of an opening pair) — kept only as a reference;
+* a **pentanomial** estimate that treats each opening pair as one observation
+  with score in `{0, 0.5, 1, 1.5, 2}`, reporting the pair-score mean, its
+  standard error and a 95 % normal interval on the implied Elo, plus the counts
+  of the five pair outcomes;
+* an **opening-clustered** interval around the same pentanomial mean: the suite
+  replays each opening several times, so even pairs are not independent. The CR1
+  variance is computed from per-opening cluster totals with a Student-t critical
+  value on G-1 degrees of freedom. This is the interval quoted in the release;
+  when the record has fewer than two distinct openings, no clustered interval is
+  reported;
+* a normal-approximation **SPRT** log-likelihood ratio against `H0: 0 Elo` and
+  `H1: +5 Elo` with α = β = 0.05 (bounds ±2.94), which is a stopping aid and is
+  labelled as an approximation, not a proof. `tournament.py` plays the requested
+  number of games and evaluates the LLR afterwards, so a crossed bound is
+  reported as a crossing on the finished sample, not as an early stop.
+
+A recorded match does not have to be replayed when the estimators change:
+`scripts/recompute_summary.py` rewrites only the trailing summary line from the
+unchanged per-game records and marks the result as recomputed.
+
+Elo is always quoted with an interval and a sample size. A point estimate alone
+is not evidence, and a small match with an all-wins or all-losses record has an
+infinite or extremely wide bound; the report prints that interval rather than a
+number. The Elo transform itself assumes the model `score = 1/(1+10^(-Δ/400))`
+and is only descriptive.
+
+## External opponent
+
+Stockfish is used **only** as an external opponent; it never participates in
+StockBear's move selection and is not bundled. Pin both the version tag and the
+SHA-256 of the exact source archive you built, record the build command and the
+resulting binary checksum, and report the match with the same paired-opening,
+colour-reversed, identical-time-control protocol. A loss is reported as a loss.
+The dev2 report records what could and could not be obtained in the build
+environment and does not claim results it did not run.
+
+## Recorded results
+
+Each development release keeps its raw evidence under
+`benchmarks/results/<version>/`: benchmark CSV, ablation CSV, per-game JSONL,
+CSV, PGN, the full console report and a `REPORT.md` that states the environment,
+the exact commands and the interpretation, including experiments that failed.

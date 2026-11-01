@@ -34,6 +34,74 @@ jobs:
         run: cmake --build build --config ${{ matrix.config }} --parallel 2
       - name: Unit, regression, full perft, stress, and UCI integration tests
         run: cmake -E chdir build ctest -C ${{ matrix.config }} --output-on-failure
+      - name: Record build provenance
+        shell: bash
+        run: |
+          set -eu
+          echo "commit $(git rev-parse HEAD)"
+          echo "version $(cat VERSION)"
+          echo "runner ${{ runner.os }} $(uname -a 2>/dev/null || true)"
+          echo "cpu $(nproc 2>/dev/null || echo n/a) logical cores"
+          # Record the compiler CMake actually used. `c++ --version` is not
+          # reliable (the Visual Studio generator does not put a `c++` on the
+          # path), and with that generator CMAKE_CXX_COMPILER is not necessarily
+          # written to the cache, so the compiler-check file is the primary
+          # source and the cache is only a fallback. CRs are stripped because
+          # the file has CRLF line endings on Windows.
+          cc_files=$(ls build/CMakeFiles/*/CMakeCXXCompiler.cmake 2>/dev/null || true)
+          if [ -n "$cc_files" ]; then
+            compiler=$(tr -d '\r' < "$cc_files" | sed -n 's/^set(CMAKE_CXX_COMPILER "\([^"]*\)")$/\1/p' | head -1 || true)
+            cc_id=$(tr -d '\r' < "$cc_files" | sed -n 's/^set(CMAKE_CXX_COMPILER_ID "\([^"]*\)")$/\1/p' | head -1 || true)
+            cc_version=$(tr -d '\r' < "$cc_files" | sed -n 's/^set(CMAKE_CXX_COMPILER_VERSION "\([^"]*\)")$/\1/p' | head -1 || true)
+          else
+            compiler=""; cc_id=""; cc_version=""
+          fi
+          if [ -z "${compiler:-}" ] && [ -f build/CMakeCache.txt ]; then
+            compiler=$(tr -d '\r' < build/CMakeCache.txt | sed -n 's/^CMAKE_CXX_COMPILER:[A-Z]*=//p' | head -1 || true)
+          fi
+          generator=$(tr -d '\r' < build/CMakeCache.txt 2>/dev/null | sed -n 's/^CMAKE_GENERATOR:[A-Z]*=//p' | head -1 || true)
+          echo "compiler ${compiler:-unknown}"
+          echo "compiler_id ${cc_id:-unknown}"
+          echo "compiler_version ${cc_version:-unknown}"
+          echo "generator ${generator:-unknown}"
+          cmake --version | head -1
+      - name: Search determinism (same build, same input, same signature)
+        shell: bash
+        run: |
+          set -eu
+          # Multi-config generators (Visual Studio) put the binary under
+          # build/<Config>/, so the configuration must come from the matrix.
+          exe=build/stockbear
+          if [ ! -f "$exe" ]; then
+            exe="build/${{ matrix.config }}/stockbear.exe"
+          fi
+          if [ ! -f "$exe" ]; then
+            echo "engine binary not found for ${{ matrix.config }}" >&2
+            ls -R build | head -40 >&2
+            exit 1
+          fi
+          "$exe" bench --depth 6 --hash 16 > bench-a.txt
+          "$exe" bench --depth 6 --hash 16 > bench-b.txt
+          # The signature absorbs the name, best move, depth, score, node count
+          # and PV of every position. Wall time, NPS and hashfull are excluded on
+          # purpose: they vary between runs on the same build.
+          sig_a=$(grep -m1 '^# signature ' bench-a.txt)
+          sig_b=$(grep -m1 '^# signature ' bench-b.txt)
+          head_a=$(grep -m1 '^# StockBear ' bench-a.txt)
+          head_b=$(grep -m1 '^# StockBear ' bench-b.txt)
+          [ -n "$sig_a" ]
+          [ "$sig_a" = "$sig_b" ]
+          [ -n "$head_a" ]
+          [ "$head_b" = "$head_a" ] || { echo 'header (version/mode/hash/params) differs'; exit 1; }
+          echo "$head_a"
+          echo "$sig_a"
+          # The deterministic CSV columns must also match row for row.
+          strip() {
+            awk -F',' 'NR > 1 && $1 !~ /^#/ { printf "%s|%s|%s|%s|%s|%s|%s\n", $1, $2, $3, $4, $5, $6, $10 }' "$1"
+          }
+          strip bench-a.txt > bench-a.det
+          strip bench-b.txt > bench-b.det
+          diff bench-a.det bench-b.det
       - name: Package Linux binary
         if: runner.os == 'Linux' && matrix.config == 'Release'
         shell: bash
@@ -85,7 +153,7 @@ jobs:
         run: cmake -E chdir build ctest --output-on-failure
 
   independent-reference:
-    name: Independent move generation and tournament harness
+    name: Independent reference, statistics and dead positions
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -104,8 +172,44 @@ jobs:
         run: python scripts/reference_perft.py
       - name: Compare seeded legal positions and divides
         run: python scripts/differential.py ./build/stockbear --samples 2000 --seed 20261030
-      - name: Verify tournament harness and PGN
+      - name: Verify tournament harness, PGN and CSV
         run: python tests/integration/test_tournament.py ./build/stockbear
+      - name: Verify match statistics against known values
+        run: python tests/integration/test_statistics.py
+      - name: Dead-position corpus (expected verdicts, witnesses, timings)
+        run: python scripts/dead_position_corpus.py ./build/stockbear --markdown deadpos-corpus.md
+      - name: Dead-position independent reference comparison
+        run: python scripts/dead_position_reference.py ./build/stockbear --full
+      - name: Dead-position exhaustive reduced state spaces
+        run: ./build/stockbear_tests deadpos
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: dead-position-evidence
+          path: deadpos-corpus.md
+          if-no-files-found: error
+
+  thread-sanitizer:
+    name: Linux ThreadSanitizer
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      # The engine searches on a worker thread and reports through the UCI
+      # thread; ThreadSanitizer validates the stop flag, the shared transposition
+      # table and the position hand-off between them.
+      - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DSTOCKBEAR_SANITIZE=thread -DSTOCKBEAR_BUILD_TESTS=ON -DSTOCKBEAR_REQUIRE_PYTHON_TESTS=ON
+      - run: cmake --build build --parallel 2
+      - name: Run tests under ThreadSanitizer
+        env:
+          TSAN_OPTIONS: halt_on_error=1:second_deadlock_stack=1
+        # The full perft/stress suites are pure single-threaded work and would
+        # only make this job slow; the threaded code paths live in the UCI
+        # controller and the unit tests.
+        run: cmake -E chdir build ctest -R 'unit|regression|uci_integration' --output-on-failure
 
   clang:
     name: Linux Clang Release

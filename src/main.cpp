@@ -23,11 +23,17 @@ int main(int argc, char** argv) {
                       << "  stockbear --version               Print version\n"
                       << "  stockbear perft DEPTH [--fen FEN] [--divide]\n"
                       << "  stockbear bench --perft           Run the verified perft suite\n"
-                      << "  stockbear bench [--depth N | --nodes N] [--hash MB]\n";
+                      << "  stockbear bench [--depth N | --nodes N | --movetime MS] [--hash MB]\n"
+                      << "                  [--param FEATURE=0|1]  CSV + deterministic signature\n"
+                      << "  stockbear deadpos --fen FEN [--states N] [--depth N] [--no-exhaustive]\n"
+                      << "                                    FIDE 5.2.2 dead-position analysis\n"
+                      << "  bench features: aspiration nullMove lmr reverseFutility futility\n"
+                      << "                  seePruning checkExtension\n";
             return 0;
         }
         if (command == "perft") return stockbear::perft_cli(argc - 2, argv + 2);
         if (command == "bench") return stockbear::benchmark_cli(argc - 2, argv + 2);
+        if (command == "deadpos") return stockbear::deadpos_cli(argc - 2, argv + 2);
         std::cerr << "Unknown command: " << command << ". Use --help.\n";
         return 2;
     } catch (const std::exception& e) {

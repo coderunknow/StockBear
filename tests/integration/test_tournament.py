@@ -35,3 +35,20 @@ with tempfile.TemporaryDirectory() as tmp:
             assert game.headers["Result"] == "*"
         assert chess.pgn.read_game(stream) is None
 print("PASS tournament paired openings, legal PGN and unadjudicated results")
+
+# An ablation flag that the engine would reject must fail before any game is
+# played: recording it as effective would report an experiment that never ran.
+with tempfile.TemporaryDirectory() as tmp:
+    cmd = [sys.executable, str(root/"scripts/tournament.py"), "--engine-a", engine,
+           "--engine-b", engine, "--games", "2", "--base-ms", "100", "--inc-ms", "0",
+           "--hash", "1", "--a-option", "NullMove=flase",
+           "--pgn", str(Path(tmp)/"m.pgn"), "--jsonl", str(Path(tmp)/"m.jsonl")]
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+    assert result.returncode != 0, result.stdout
+    assert "expects true or false" in result.stderr, result.stderr
+    # A non-finite SPRT hypothesis is rejected during argument parsing.
+    cmd = [sys.executable, str(root/"scripts/tournament.py"), "--engine-a", engine,
+           "--engine-b", engine, "--sprt-elo", "nan"]
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+    assert result.returncode != 0 and "finite positive Elo" in result.stderr, result.stderr
+print("PASS tournament rejects invalid option values and SPRT hypotheses")

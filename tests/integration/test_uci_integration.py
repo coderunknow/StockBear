@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Black-box UCI protocol tests, stdlib only, portable to Windows and Linux."""
+import os
 import queue
 import re
 import subprocess
@@ -8,6 +9,12 @@ import threading
 import time
 
 EXE = sys.argv[1]
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+def read_version():
+    with open(os.path.join(ROOT, "VERSION"), encoding="utf-8") as handle:
+        return handle.read().strip()
 MOVE = re.compile(r"^(?:[a-h][1-8][a-h][1-8][qrbn]?|0000)$")
 
 class Engine:
@@ -82,9 +89,10 @@ def legal_by_divide(fen):
 def main():
     e = Engine()
     try:
+        version = read_version()
         e.send("uci")
         _, hello = e.until(lambda x: x == "uciok")
-        assert any(x.startswith("id name StockBear 0.1.0-dev1") for x in hello), hello
+        assert any(x.startswith(f"id name StockBear {version}") for x in hello), hello
         assert any(x.startswith("option name Hash type spin") for x in hello), hello
         assert not any("Threads" in x for x in hello), hello
         e.ready()
@@ -106,6 +114,11 @@ def main():
         assert best in legal, (best, legal)
         assert any(re.match(r"^info depth 3\b.*\bscore (cp|mate) -?\d+\b.*\bnodes \d+\b.*\bpv ", x)
                    for x in lines), lines
+        # Every info line must be complete enough for a GUI: depth, score, node
+        # count, hash fullness and a principal variation.
+        assert any(re.match(r"^info depth \d+ seldepth \d+ score (cp|mate) -?\d+ nodes \d+ "
+                            r"nps \d+ hashfull \d+ time \d+ pv [a-h][1-8][a-h][1-8]", x)
+                   for x in lines), lines
 
         e.send("position startpos")
         start_legal = legal_by_divide("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
@@ -123,6 +136,11 @@ def main():
         assert best in start_legal, best
         # Some GUIs send an already-expired negative remaining time.
         e.send("go wtime -7 btime 60000")
+        best, _ = e.best(3)
+        assert best in start_legal, best
+        # Unknown tokens ("ponder", "searchmoves", GUI extensions) must be
+        # ignored without abandoning the search, as the UCI specification asks.
+        e.send("go depth 2 ponder searchmoves e2e4 e7e5")
         best, _ = e.best(3)
         assert best in start_legal, best
         e.send("go winc -1")

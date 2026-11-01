@@ -1,0 +1,9 @@
+config,nodes,time_us,signature
+baseline,250053,110047,5bceff035f2a4ae4
+aspiration=0,367761,164453,3c18011ef06ed16c
+nullMove=0,227376,108085,8709493fb370ebcc
+lmr=0,463963,215180,e75fc23609899ce1
+reverseFutility=0,352246,194688,407aaa48b99eba34
+futility=0,326199,149675,da6f376a7704de87
+seePruning=0,650548,248612,a0ea0d32b426a8f1
+checkExtension=0,217620,101392,cac9faedd0b1cdc1

@@ -1,0 +1,21 @@
+game,opening,white,black,result,score_a,termination,plies,remaining_white_ms,remaining_black_ms
+1,Queen's gambit accepted,StockBear 0.1.0-dev2,Stockfish 11 64 BMI2,1/2-1/2,0.5,THREEFOLD_REPETITION,107,91.67,51.98
+2,Queen's gambit accepted,Stockfish 11 64 BMI2,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,57,80.38,76.5
+3,Queen's gambit,StockBear 0.1.0-dev2,Stockfish 11 64 BMI2,0-1,0,CHECKMATE,64,99.01,86.07
+4,Queen's gambit,Stockfish 11 64 BMI2,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,57,105.76,87.05
+5,Borg,StockBear 0.1.0-dev2,Stockfish 11 64 BMI2,0-1,0,CHECKMATE,68,91.95,103.43
+6,Borg,Stockfish 11 64 BMI2,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,87,84.4,70.8
+7,Start position,StockBear 0.1.0-dev2,Stockfish 11 64 BMI2,0-1,0,CHECKMATE,52,66.14,82.76
+8,Start position,Stockfish 11 64 BMI2,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,107,88.98,52.25
+9,Semi-Slav,StockBear 0.1.0-dev2,Stockfish 11 64 BMI2,0-1,0,CHECKMATE,112,69.1,77.51
+10,Semi-Slav,Stockfish 11 64 BMI2,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,57,109.35,69.3
+11,French Winawer,StockBear 0.1.0-dev2,Stockfish 11 64 BMI2,0-1,0,CHECKMATE,128,63.55,80.34
+12,French Winawer,Stockfish 11 64 BMI2,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,57,87.91,98.33
+13,Dutch,StockBear 0.1.0-dev2,Stockfish 11 64 BMI2,0-1,0,CHECKMATE,104,78.69,111.17
+14,Dutch,Stockfish 11 64 BMI2,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,115,87.46,97.53
+15,Benoni,StockBear 0.1.0-dev2,Stockfish 11 64 BMI2,0-1,0,CHECKMATE,60,57.58,101.8
+16,Benoni,Stockfish 11 64 BMI2,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,53,105.4,72.29
+17,English symmetric,StockBear 0.1.0-dev2,Stockfish 11 64 BMI2,0-1,0,CHECKMATE,88,75.2,83.31
+18,English symmetric,Stockfish 11 64 BMI2,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,109,70.85,104.34
+19,Bird,StockBear 0.1.0-dev2,Stockfish 11 64 BMI2,0-1,0,CHECKMATE,96,71.0,88.91
+20,Bird,Stockfish 11 64 BMI2,StockBear 0.1.0-dev2,1-0,0,CHECKMATE,69,93.42,102.93
