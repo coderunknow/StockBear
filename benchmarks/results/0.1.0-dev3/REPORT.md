@@ -295,15 +295,35 @@ binary hash `e96cb712…`. The endgame suite's 22/24 in that record was a genuin
 bug, not a flaky result, which is the clearest argument for keeping raw records
 with the engine identity inside them.
 
-No human review is claimed. Kilo Code and Qodo were out of credits and ChatGPT
-Codex was over its review quota for this repository during the session; those
-services did not review this change.
+A second pass reviewed `a6a32f1` and raised seven findings, all minor-except-one
+and none of them new defects:
+
+* three (the `EvalParams` reset, the null-move ordering slot, `bench --params ""`)
+  pointed at hunks that were already fixed in `e063209`–`a4c27a7`; the reviewer was
+  reading an older patch region. Verified against the code rather than accepted on
+  its word;
+* three (the paired-score label, the per-match pair counts, multiword option
+  defaults in `tournament.py`) were fixed in `a6a32f1`, the very commit under
+  review;
+* one was real and still stood: the tuning page said "all three candidates" and
+  listed three report files while the table below it and the directory on disk have
+  four. Fixed after the review, along with the manifest keys written by the suite
+  generator, which disagreed with the committed manifest.
+
+Both passes reviewed real commits and both findings lists were checked against the
+code before being believed. No human review is claimed. Kilo Code and Qodo
+were out of credits and ChatGPT Codex was over its review quota for this
+repository during the session, so those services did not review this change;
+CodeRabbit's first attempt on the final commit was rate limited and the review was
+requested again later, and only the completed run is counted.
 
 ## Known limitations
 
-* **Endgame conversion is depth-limited.** Two of 24 three-man endgames reach a
-  repetition claim at 400 k nodes. A tablebase or a fifty-move/progress term
-  would fix it; neither is in this release because neither was validated here.
+* **Endgame conversion is node-budget sensitive.** With the null-move ordering
+  fix in place all 24 three-man endgames convert at 400 k nodes, but the margin is
+  the budget, not a fortress: at 200 k two of them still fail and at 20 k ten do.
+  A tablebase or a fifty-move/progress term would remove the sensitivity; neither
+  is in this release because neither was validated here.
 * **No Stockfish 19 measurement.** See above.
 * **The evaluation did not improve.** The tuning pipeline works and is
   reproducible, but its candidates lost their matches; see

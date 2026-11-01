@@ -76,9 +76,10 @@ forced lines.
 
 ## Candidate sets
 
-All three candidates come from the same dataset, seed and split (80 % / 20 % by
-game: 1 498 / 374 games, 60 651 / 14 765 positions). Files:
-`benchmarks/results/0.1.0-dev3/tuning/variant{A,B,C}.txt`.
+All four candidate sets come from the same dataset, seed and split (80 % / 20 %
+by game: 1 498 / 374 games, 60 651 / 14 765 positions); D only differs in pinning
+`K` and anchoring the material terms instead of fitting them. Files:
+`benchmarks/results/0.1.0-dev3/tuning/variant{A,B,C,D}.txt`.
 
 | set | flags | changed | holdout loss (baseline → tuned) | ship? |
 | --- | --- | --- | --- | --- |
