@@ -1,0 +1,47 @@
+name: Diagnose the Windows test failure
+
+# One-shot investigation: the Windows jobs failed in the ctest step and the job
+# logs are not reachable from the development sandbox, so the failing output is
+# posted to the pull request instead. Removed before merge.
+
+on:
+  push:
+    branches: [arena/21f80a33-stockbear]
+    paths: ['.github/diag-windows']
+
+permissions:
+  contents: read
+
+jobs:
+  repeat:
+    strategy:
+      fail-fast: false
+      matrix:
+        config: [Release, Debug]
+    runs-on: windows-2022
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Configure
+        run: cmake -S . -B build -DSTOCKBEAR_BUILD_TESTS=ON
+      - name: Build
+        run: cmake --build build --config ${{ matrix.config }} --parallel 2
+      - name: Capture the failing tests
+        shell: bash
+        run: |
+          set -u
+          cmake -E chdir build ctest -C ${{ matrix.config }} --output-on-failure > /tmp/ctest.log 2>&1 || true
+          {
+            echo '### Windows ${{ matrix.config }} ctest output'
+            echo '```'
+            tail -c 40000 /tmp/ctest.log
+            echo '```'
+          } > /tmp/report.md
+          cat /tmp/report.md
+          gh pr comment 5 --repo "$GITHUB_REPOSITORY" --body-file /tmp/report.md
+        env:
+          GH_TOKEN: ${{ github.token }}
