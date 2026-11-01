@@ -43,8 +43,10 @@ and the negative result are documented instead of shipping an unvalidated set.
   and measured against the shipped evaluation (590–591 decided games each, paired
   colour-reversed, fixed node budget): −119.1 Elo (worse by both the pentanomial
   and the opening-clustered interval), −51.3 and +12.0 Elo (neither shown to be
-  worse, neither an improvement). None justified a change, so dev3 ships the dev2
-  values. Full record: [docs/TUNING.md](docs/TUNING.md).
+  worse, neither an improvement). A fourth, conservative fit (Texel scale pinned,
+  ridge 0.10, 20 % movement cap, anchored material) changed no parameter at all.
+  None justified a change, so dev3 ships the dev2 values. Full record:
+  [docs/TUNING.md](docs/TUNING.md).
 - **Tactics and endgame regression suites.** `benchmarks/tactics/mate_suite.epd`
   (26 forced mates, certified by an independent mate proof on python-chess with
   *all* mating moves accepted) and `benchmarks/tactics/endgame_suite.epd`

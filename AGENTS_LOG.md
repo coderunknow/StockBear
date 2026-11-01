@@ -387,3 +387,11 @@
   networks repository were tried and rejected as architecture-incompatible. The
   attempts are recorded in the report; no substitute opponent was used and no
   Stockfish claim was made.
+
+- Added a Windows diagnostic workflow (push-triggered, posts the ctest output as
+  a PR comment) after the job logs proved unreachable from the sandbox; found the
+  crash in `unit/multiPv_matches_single_pv_best_move` after making the test runner
+  print a flushed RUN line before each test. Removed the workflow once fixed.
+- The `Search` object was ~0.9 MB because two large tables were inline; that is
+  fine on Linux (8 MiB stack) and fatal on Windows (1 MiB). Fixed by heap
+  allocation plus a `static_assert`; bench signatures unchanged.

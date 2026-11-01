@@ -161,3 +161,20 @@
   is also how the earlier `7k/8/8/8/8/8/8/K6Q w - - 0 1` FEN was found to be
   illegal (the queen on h1 checks the king on h8 with White to move) instead of
   an engine bug.
+
+- **A Windows-only segfault in the new tests was a stack-size bug, not a
+  MultiPV bug.** `Search` held its triangular PV buffer and continuation-history
+  table inline, which made one instance about 0.9 MB. Linux hands a thread 8 MiB
+  of stack, Windows 1 MiB, and the MultiPV equivalence test holds two searches at
+  once, so it died on Windows in both Debug and Release while passing under ASan
+  on Linux. The tables now live on the heap, a `Search` is 50 KB, and a
+  `static_assert` caps it at 64 KB. This is the kind of bug that only a
+  cross-platform CI run finds; it is recorded here because "it passes locally"
+  was true and misleading.
+- **The tuning pipeline found no improvement, in three different directions.**
+  Aggressive (A), moderate (B) and conservative (C) fits all failed their
+  matches, and a fourth fit bounded to a 20 % movement from the shipped values
+  changed nothing at all. The useful conclusion is not "tuning does not work" but
+  "this objective on this data cannot distinguish these sets", which is why the
+  release states the negative result and keeps the coefficients it inherited
+  rather than shipping a set on the strength of its holdout loss.

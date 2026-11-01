@@ -29,8 +29,9 @@ release, not a stable or leading-strength engine.
   three candidates it produced were matched against the shipped evaluation and
   **none of them improved on it** (−119.1 Elo, confirmed worse by both reported
   intervals; −51.3 and +12.0 Elo, not shown to be worse but not improvements
-  either; 590–591 decided games each). The shipped release therefore keeps the
-  dev2 coefficients. Record and
+  either; 590–591 decided games each), and a fourth, more conservative fit
+  changed no parameter at all. The shipped release therefore keeps the dev2
+  coefficients. Record and
   reproduction commands: [docs/TUNING.md](docs/TUNING.md).
 - **Five new search-ordering features, implemented, tested and left off.**
   Counter-move history, continuation history, capture history, history maluses and
