@@ -1,5 +1,7 @@
 #include "uci/uci.hpp"
 #include "chess/fen.hpp"
+#include "evaluation/evaluation.hpp"
+#include "evaluation/eval_params.hpp"
 #include <algorithm>
 #include <charconv>
 #include <cctype>
@@ -21,21 +23,36 @@ bool number(const std::string& text, std::uint64_t& result, std::uint64_t maximu
     const auto parsed = std::from_chars(text.data(), text.data() + text.size(), result);
     return parsed.ec == std::errc() && parsed.ptr == text.data() + text.size() && result <= maximum;
 }
+// Keywords that end a `searchmoves` list inside `go`.
+bool is_go_keyword(const std::string& token) {
+    static const char* keys[] = {"searchmoves", "ponder", "wtime", "btime", "winc", "binc",
+                                 "movestogo", "depth", "nodes", "mate", "movetime",
+                                 "infinite"};
+    for (const char* key : keys)
+        if (token == key) return true;
+    return false;
+}
 std::string score_text(int score) {
     if (is_mate_value(score)) return "mate " + std::to_string(mate_value_to_moves(score));
     return "cp " + std::to_string(score);
 }
-std::string info_text(const SearchResult& r) {
+std::string info_text(const SearchResult& r, int multipv, int index) {
     const std::uint64_t us = static_cast<std::uint64_t>(std::max<std::int64_t>(1, r.timeUs));
     const std::uint64_t nps = r.nodes > std::numeric_limits<std::uint64_t>::max() / 1000000
         ? std::numeric_limits<std::uint64_t>::max() : r.nodes * 1000000 / us;
+    const PvLine* line = index < int(r.lines.size()) ? &r.lines[std::size_t(index)] : nullptr;
+    const int score = line != nullptr ? line->score : r.score;
+    const std::vector<Move>& pv = line != nullptr ? line->pv : r.pv;
     std::ostringstream out;
-    out << "info depth " << r.depth << " seldepth " << r.selectiveDepth
-        << " score " << score_text(r.score) << " nodes " << r.nodes
+    out << "info depth " << r.depth << " seldepth " << r.selectiveDepth;
+    // The multipv index is only meaningful (and only expected by GUIs) when
+    // more than one line is being reported.
+    if (multipv > 1) out << " multipv " << (index + 1);
+    out << " score " << score_text(score) << " nodes " << r.nodes
         << " nps " << nps << " hashfull " << r.hashfull << " time " << r.timeMs;
-    if (!r.pv.empty()) {
+    if (!pv.empty()) {
         out << " pv";
-        for (Move m : r.pv) out << ' ' << move_to_uci(m);
+        for (Move m : pv) out << ' ' << move_to_uci(m);
     }
     return out.str();
 }
@@ -100,6 +117,36 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     }
     std::string extra;
     const std::string key = lower(name);
+    if (key == "multipv") {
+        std::uint64_t count = 0;
+        if ((in >> extra) || !number(value, count, 64) || count < 1 || count > 8) {
+            emit("info string setoption: MultiPV must be 1..8"); return;
+        }
+        multiPv_ = int(count);
+        return;
+    }
+    if (key == "evalparams") {
+        // Load an evaluation parameter file. The shipped defaults are the tuned
+        // set, so this exists to reproduce the dev2 baseline and to run tuning
+        // ablations without rebuilding: every measurement is then made with an
+        // identical search, which isolates the evaluation change.
+        if ((in >> extra)) { emit("info string setoption: unexpected value for EvalParams"); return; }
+        std::string applyError;
+        if (value.empty() || lower(value) == "<empty>") {
+            init_evaluation();
+            table_.clear();
+            emit("info string EvalParams reset: shipped set");
+            return;
+        }
+        EvalParams loaded = default_eval_params();
+        if (!load_eval_params_file(value, &loaded, &applyError) || !apply_eval_params(loaded, &applyError)) {
+            emit("info string setoption: EvalParams could not load " + value + ": " + applyError);
+            return;
+        }
+        table_.clear();
+        emit("info string EvalParams loaded: " + value);
+        return;
+    }
     if (key == "hash") {
         std::uint64_t mb = 0;
         if ((in >> extra) || !number(value, mb, 512) || mb < 1) {
@@ -114,6 +161,11 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     // unaffected; matches can compare "all on" against a single feature off.
     bool* flag = nullptr;
     if (key == "nullmove") flag = &params_.nullMove;
+    else if (key == "countermoves") flag = &params_.counterMoves;
+    else if (key == "continuationhistory") flag = &params_.continuationHistory;
+    else if (key == "capturehistory") flag = &params_.captureHistory;
+    else if (key == "historymaluses") flag = &params_.historyMaluses;
+    else if (key == "lmrhistory") flag = &params_.lmrHistory;
     else if (key == "lmr") flag = &params_.lmr;
     else if (key == "aspiration") flag = &params_.aspiration;
     else if (key == "futility") flag = &params_.futility;
@@ -144,6 +196,33 @@ void UciEngine::handle_go(const std::string& arguments) {
     bool finite = false;
     while (in >> key) {
         if (key == "infinite") { limits.infinite = true; continue; }
+        if (key == "searchmoves") {
+            // Everything up to the next known keyword is a move list. Only
+            // moves legal in the current position are accepted; a list with no
+            // legal move is reported and then ignored, which is the only
+            // alternative to answering "bestmove 0000" for a legal position.
+            MoveList legalMoves;
+            generate_moves(position_, legalMoves);
+            std::vector<Move> wanted;
+            while (in.peek() != std::char_traits<char>::eof()) {
+                std::streampos here = in.tellg();
+                std::string token;
+                if (!(in >> token)) break;
+                if (is_go_keyword(token)) { in.seekg(here); break; }
+                const Move move = move_from_uci(position_, token);
+                if (!is_ok(move) || !legalMoves.contains(move)) {
+                    emit("info string go: searchmoves ignores illegal move " + token);
+                    continue;
+                }
+                wanted.push_back(move);
+            }
+            if (wanted.empty()) {
+                emit("info string go: searchmoves has no legal move; searching all moves");
+            } else {
+                limits.searchMoves = std::move(wanted);
+            }
+            continue;
+        }
         if (!(key == "depth" || key == "nodes" || key == "movetime" ||
               key == "wtime" || key == "btime" || key == "winc" || key == "binc" || key == "movestogo")) {
             // The UCI specification tells engines to ignore parameters they do
@@ -191,17 +270,22 @@ void UciEngine::handle_go(const std::string& arguments) {
     if (!finite || (!applicableTime && limits.moveTimeMs < 0 && !limits.hasNodes && limits.depth == 0))
         limits.infinite = true;
 
+    limits.multiPv = multiPv_;
     Position root = position_;
     MoveList legal;
     generate_moves(root, legal);
     const Move fallback = legal.empty() ? MOVE_NONE : legal[0].move;
+    const int multipv = multiPv_;
     stop_.store(false, std::memory_order_relaxed);
     try {
-        worker_ = std::thread([this, root = std::move(root), limits, fallback]() mutable {
+        worker_ = std::thread([this, root = std::move(root), limits, fallback, multipv]() mutable {
             try {
                 auto search = std::make_unique<Search>(table_, params_);
                 const SearchResult result = search->run(std::move(root), limits, stop_,
-                    [this](const SearchResult& r) { emit(info_text(r)); });
+                    [this, multipv](const SearchResult& r) {
+                        const int lines = multipv > 1 ? int(r.lines.size()) : 1;
+                        for (int i = 0; i < lines; ++i) emit(info_text(r, multipv, i));
+                    });
                 emit("bestmove " + (is_ok(result.bestMove) ? move_to_uci(result.bestMove) : "0000"));
             } catch (const std::exception& e) {
                 emit(std::string("info string search error: ") + e.what());
@@ -233,6 +317,13 @@ void UciEngine::loop() {
             emit("option name ReverseFutility type check default true");
             emit("option name SEEPruning type check default true");
             emit("option name CheckExtension type check default true");
+            emit("option name CounterMoves type check default true");
+            emit("option name ContinuationHistory type check default true");
+            emit("option name CaptureHistory type check default true");
+            emit("option name HistoryMaluses type check default true");
+            emit("option name LMRHistory type check default true");
+            emit("option name MultiPV type spin default 1 min 1 max 8");
+            emit("option name EvalParams type string default <empty>");
             emit("uciok");
         } else if (command == "isready") emit("readyok");
         else if (command == "position") handle_position(arguments);

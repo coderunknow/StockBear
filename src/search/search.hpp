@@ -2,6 +2,7 @@
 #include "chess/position.hpp"
 #include "search/timeman.hpp"
 #include "search/transposition_table.hpp"
+#include <array>
 #include <atomic>
 #include <cstdint>
 #include <functional>
@@ -15,6 +16,13 @@ namespace stockbear {
 // ordering and folds the sequence negamax-style.
 int static_exchange_evaluation(const Position& pos, Move move);
 
+// One principal variation of a search. `multiPv == 1` produces exactly one.
+struct PvLine {
+    Move move = MOVE_NONE;
+    int score = 0;
+    std::vector<Move> pv;
+};
+
 struct SearchResult {
     Move bestMove = MOVE_NONE;
     int score = 0;
@@ -25,13 +33,15 @@ struct SearchResult {
     std::int64_t timeUs = 0;
     int hashfull = 0;
     bool interrupted = false;
-    std::vector<Move> pv;
+    std::vector<Move> pv;           // best line (same as lines.front().pv)
+    std::vector<PvLine> lines;      // up to limits.multiPv entries, best first
 };
 using SearchInfo = std::function<void(const SearchResult&)>;
 
 // Selectable search features. The defaults are the shipped configuration; the
-// benchmark CLI can switch individual techniques off so that every addition can
-// be ablated on a fixed suite instead of being accepted on faith.
+// benchmark CLI and the UCI options can switch individual techniques off so
+// that every addition can be ablated on a fixed suite instead of being
+// accepted on faith.
 struct SearchParams {
     bool aspiration = true;
     int aspirationInitial = 16;
@@ -42,7 +52,12 @@ struct SearchParams {
     bool futility = true;
     bool seePruning = true;
     bool checkExtension = true;
-    bool counterMoves = true;   // reserved: counter-move ordering is not enabled
+    // dev3 ordering features.
+    bool counterMoves = true;         // reply table keyed by the previous move
+    bool continuationHistory = true;  // history keyed by (prev piece/square, move)
+    bool captureHistory = true;       // per-victim capture statistics
+    bool historyMaluses = true;       // penalise quiets that did not cut off
+    bool lmrHistory = true;           // history-dependent reduction adjustment
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control
@@ -66,13 +81,17 @@ private:
     int negamax(Position& pos, int depth, int alpha, int beta, int ply,
                 bool pvNode, int extensions, bool allowNull);
     int quiescence(Position& pos, int alpha, int beta, int ply);
-    int search_root(Position& pos, int depth, int alpha, int beta);
+    int search_root(Position& pos, int depth, int alpha, int beta, int pvIndex);
     void score_moves(const Position& pos, MoveList& moves, Move hashMove, int ply);
     int next_move(MoveList& moves, int index);
     void update_pv(int ply, Move move);
     bool quiet(const Position& pos, Move move) const;
     bool gives_check(Position& pos, Move move);
-    void update_quiet_stats(const Position& pos, Move move, int depth, int ply);
+    Move previous_move(int ply) const { return ply > 0 ? moveStack_[ply - 1] : MOVE_NONE; }
+    void update_quiet_stats(const Position& pos, Move move, int depth, int ply, int bonus);
+    void update_capture_stats(const Position& pos, Move move, int depth);
+    void penalise_quiets(const Position& pos, const Move* moves, int count, int depth, int ply);
+    void build_lines(SearchResult& result, int requested) const;
 
     TranspositionTable& tt_;
     SearchParams params_;
@@ -87,6 +106,19 @@ private:
     int pvLength_[MAX_PLY] = {};
     Move killers_[MAX_PLY][2] = {};
     int history_[ColorNB][SQ_NB][SQ_NB] = {};
+    // Reply table: the move that most often refuted `previous`. Indexed by the
+    // previous move's piece and destination square.
+    Move counterMoves_[PieceNB][SQ_NB] = {};
+    // Continuation history: how good `move` has been after a given previous
+    // move. Kept for one ply of context, which is the variant that pays for
+    // itself without a large table.
+    int continuation_[PieceTypeNB][SQ_NB][PieceTypeNB][SQ_NB] = {};
+    int captureHistory_[PieceTypeNB][SQ_NB][PieceTypeNB] = {};
+    // The moves played along the current line, so ordering can see the previous
+    // move without threading an extra parameter through every call.
+    Move moveStack_[MAX_PLY + 2] = {};
+    std::vector<std::vector<Move>> pvLines_;
+
     struct RootMove {
         Move move = MOVE_NONE;
         int score = -VALUE_INFINITE;

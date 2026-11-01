@@ -28,11 +28,14 @@ int main(int argc, char** argv) {
                       << "  stockbear deadpos --fen FEN [--states N] [--depth N] [--no-exhaustive]\n"
                       << "                                    FIDE 5.2.2 dead-position analysis\n"
                       << "  stockbear eval --fen FEN [--params FILE] [--top N]\n"
-                      << "                                    Evaluation score and contributions\n"
+                      << "  stockbear eval --dump-params [--params FILE]\n"
+                      << "                                    Evaluation score, contributions, parameter table\n"
                       << "  stockbear evaldata --input FILE [--output FILE] [--params FILE] [--check]\n"
                       << "                                    Tuner feature matrix / consistency check\n"
                       << "  bench features: aspiration nullMove lmr reverseFutility futility\n"
-                      << "                  seePruning checkExtension\n";
+                      << "                  seePruning checkExtension counterMoves\n"
+                      << "                  continuationHistory captureHistory\n"
+                      << "                  historyMaluses lmrHistory\n";
             return 0;
         }
         if (command == "perft") return stockbear::perft_cli(argc - 2, argv + 2);

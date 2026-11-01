@@ -151,6 +151,11 @@ bool apply_param(SearchParams& params, const std::string& key, const std::string
     else if (key == "futility") params.futility = on;
     else if (key == "seePruning") params.seePruning = on;
     else if (key == "checkExtension") params.checkExtension = on;
+    else if (key == "counterMoves") params.counterMoves = on;
+    else if (key == "continuationHistory") params.continuationHistory = on;
+    else if (key == "captureHistory") params.captureHistory = on;
+    else if (key == "historyMaluses") params.historyMaluses = on;
+    else if (key == "lmrHistory") params.lmrHistory = on;
     else return false;
     return true;
 }
@@ -163,7 +168,12 @@ std::string params_text(const SearchParams& params) {
         << ",reverseFutility=" << int(params.reverseFutility)
         << ",futility=" << int(params.futility)
         << ",seePruning=" << int(params.seePruning)
-        << ",checkExtension=" << int(params.checkExtension);
+        << ",checkExtension=" << int(params.checkExtension)
+        << ",counterMoves=" << int(params.counterMoves)
+        << ",continuationHistory=" << int(params.continuationHistory)
+        << ",captureHistory=" << int(params.captureHistory)
+        << ",historyMaluses=" << int(params.historyMaluses)
+        << ",lmrHistory=" << int(params.lmrHistory);
     return out.str();
 }
 }
