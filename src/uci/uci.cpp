@@ -126,10 +126,11 @@ void UciEngine::handle_setoption(const std::string& arguments) {
         return;
     }
     if (key == "evalparams") {
-        // Load an evaluation parameter file. The shipped defaults are the tuned
-        // set, so this exists to reproduce the dev2 baseline and to run tuning
-        // ablations without rebuilding: every measurement is then made with an
-        // identical search, which isolates the evaluation change.
+        // Load an evaluation parameter file. This is what made the dev3 tuning
+        // matches possible: both sides run the same binary, so only the
+        // evaluation differs and the change is isolated. It also lets a user
+        // reproduce the dev2 baseline (benchmarks/params/dev2-baseline.txt) or a
+        // recorded candidate without rebuilding.
         if ((in >> extra)) { emit("info string setoption: unexpected value for EvalParams"); return; }
         std::string applyError;
         if (value.empty() || lower(value) == "<empty>") {
