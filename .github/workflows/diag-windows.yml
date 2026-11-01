@@ -35,10 +35,15 @@ jobs:
         run: |
           set -u
           cmake -E chdir build ctest -C ${{ matrix.config }} --output-on-failure > /tmp/ctest.log 2>&1 || true
+          "$PWD/build/${{ matrix.config }}/stockbear_tests.exe" unit > /tmp/unit.log 2>&1 || echo "EXIT $?" >> /tmp/unit.log
           {
+            echo '### Windows ${{ matrix.config }} unit output'
+            echo '```'
+            tail -c 30000 /tmp/unit.log
+            echo '```'
             echo '### Windows ${{ matrix.config }} ctest output'
             echo '```'
-            tail -c 40000 /tmp/ctest.log
+            tail -c 20000 /tmp/ctest.log
             echo '```'
           } > /tmp/report.md
           cat /tmp/report.md
