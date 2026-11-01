@@ -57,7 +57,7 @@ int eval_cli(int argc, char** argv) {
     std::string fen;
     std::size_t top = 12;
     EvalParams params = default_eval_params();
-    bool applyLater = false;
+    bool applyLater = false, dumpParams = false;
     for (int i = 0; i < argc; ++i) {
         const std::string arg = argv[i];
         if (arg == "--fen" && i + 1 < argc) fen = argv[++i];
@@ -66,6 +66,8 @@ int eval_cli(int argc, char** argv) {
             // because Position keeps material/piece-square accumulators.
             if (!parse_params(argc, argv, &i, &params)) return 2;
             applyLater = true;
+        } else if (arg == "--dump-params") {
+            dumpParams = true;
         } else if (arg == "--top" && i + 1 < argc) {
             top = std::size_t(std::max(0, std::atoi(argv[++i])));
         } else {
@@ -73,11 +75,34 @@ int eval_cli(int argc, char** argv) {
             return 2;
         }
     }
+    if (dumpParams) {
+        // The tuner reads the names and legal ranges from here, so the table in
+        // eval_params.cpp stays the single source of truth. The shipped set is
+        // installed first, then an explicit --params file replaces it.
+        std::string dumpError;
+        init_evaluation();
+        if (applyLater && !apply_eval_params(params, &dumpError)) {
+            std::cerr << "Invalid parameter set: " << dumpError << '\n';
+            return 2;
+        }
+        const EvalParams& active = active_eval_params();
+        for (int i = 0; i < EvalParamNB; ++i) {
+            const auto& def = eval_param_table()[std::size_t(i)];
+            std::cout << def.name << ' ' << active.mg[std::size_t(i)] << ' '
+                      << active.eg[std::size_t(i)] << ' ' << def.min << ' ' << def.max << '\n';
+        }
+        return 0;
+    }
     if (fen.empty()) {
-        std::cerr << "Usage: stockbear eval --fen FEN [--params FILE] [--top N]\n";
+        std::cerr << "Usage: stockbear eval --fen FEN [--params FILE] [--top N]\n"
+                  << "       stockbear eval --dump-params [--params FILE]\n";
         return 2;
     }
     std::string error;
+    // Install the shipped set first (idempotent); an explicit --params file then
+    // replaces it. Without this, --dump-params would print zeros because no
+    // Position has been created yet.
+    init_evaluation();
     if (applyLater && !apply_eval_params(params, &error)) {
         std::cerr << "Invalid parameter set: " << error << '\n';
         return 2;
@@ -142,6 +167,7 @@ int evaldata_cli(int argc, char** argv) {
         return 2;
     }
     std::string error;
+    init_evaluation();
     if (applyLater && !apply_eval_params(params, &error)) {
         std::cerr << "Invalid parameter set: " << error << '\n';
         return 2;

@@ -120,6 +120,8 @@ if(STOCKBEAR_BUILD_TESTS)
     )
     target_link_libraries(stockbear_tests PRIVATE stockbear_core)
     target_include_directories(stockbear_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tests)
+    target_compile_definitions(stockbear_tests PRIVATE
+        STOCKBEAR_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
     add_test(NAME unit        COMMAND stockbear_tests unit)
     # The runner filters by group name, so every group needs its own entry;

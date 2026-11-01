@@ -1,4 +1,5 @@
 #include "utilities/bench.hpp"
+#include "evaluation/eval_params.hpp"
 #include "utilities/bench_positions.hpp"
 #include "chess/dead_position.hpp"
 #include "chess/fen.hpp"
@@ -184,6 +185,7 @@ int benchmark_cli(int argc, char** argv) {
     std::size_t hash = 16;
     SearchParams params;
     std::vector<std::pair<std::string, std::string>> overrides;
+    std::string evalParamsPath;
     bool perft = false, gotDepth = false, gotNodes = false, gotMoveTime = false;
     for (int i = 0; i < argc; ++i) {
         const std::string arg = argv[i];
@@ -196,6 +198,12 @@ int benchmark_cli(int argc, char** argv) {
                 return 2;
             }
             overrides.emplace_back(text.substr(0, eq), text.substr(eq + 1));
+            continue;
+        }
+        if (arg == "--params" && i + 1 < argc) {
+            // Same parameter file format as `eval`/`evaldata`: bench a candidate
+            // evaluation without rebuilding the engine.
+            evalParamsPath = argv[++i];
             continue;
         }
         if ((arg == "--depth" || arg == "--nodes" || arg == "--hash" || arg == "--movetime") && i + 1 < argc) {
@@ -222,6 +230,17 @@ int benchmark_cli(int argc, char** argv) {
         std::cerr << "Choose one of --depth, --nodes, --movetime or --perft\n"; return 2;
     }
     if (perft) return perft_suite();
+
+    if (!evalParamsPath.empty()) {
+        // Install the candidate evaluation before any Position exists.
+        EvalParams loaded = default_eval_params();
+        std::string evalError;
+        if (!load_eval_params_file(evalParamsPath, &loaded, &evalError) ||
+            !apply_eval_params(loaded, &evalError)) {
+            std::cerr << "Invalid parameter file " << evalParamsPath << ": " << evalError << '\n';
+            return 2;
+        }
+    }
 
     TranspositionTable table(hash);
     std::cout << "# StockBear " << kEngineVersion << "; threads=1; hash_requested_mb=" << hash

@@ -134,8 +134,14 @@ std::uint64_t next_random() {
 } // namespace
 
 TEST(unit, evaluation_reproduces_dev2_baseline) {
-    // The default parameter set must evaluate exactly as dev2 did, on the
-    // benchmark positions and on positions reached by random legal play.
+    // The shipped parameter set must evaluate exactly as dev2 did, on the
+    // benchmark positions and on positions reached by random legal play. dev3
+    // ships the dev2 values on purpose: three tuned candidate sets were measured
+    // by matches and none was stronger (docs/TUNING.md), so the release keeps the
+    // evaluation it inherited and records the negative result instead of shipping
+    // an unvalidated set.
+    CHECK(eval_params_checksum(default_eval_params()) == 0xda1921f604ae255eULL);
+    CHECK(active_eval_params() == default_eval_params());
     std::vector<Position> positions;
     for (const auto& c : SearchCases) positions.push_back(test::position(c.fen));
     for (const auto& c : PerftCases) positions.push_back(test::position(c.fen));
@@ -159,6 +165,43 @@ TEST(unit, evaluation_reproduces_dev2_baseline) {
         ++checked;
     }
     CHECK(checked > 200);
+}
+
+TEST(unit, evaluation_parameters_are_validated_and_sane) {
+    // A mistyped or hostile parameter file must be rejected without changing the
+    // active set, and the shipped set must keep the material ordering that makes
+    // the evaluation readable.
+    const EvalParams shipped = default_eval_params();
+    for (int i = 0; i < EvalParamNB; ++i) {
+        const auto& def = eval_param_table()[std::size_t(i)];
+        CHECK(def.mg >= def.min && def.mg <= def.max);
+        CHECK(def.eg >= def.min && def.eg <= def.max);
+        CHECK(shipped.mg[std::size_t(i)] == def.mg && shipped.eg[std::size_t(i)] == def.eg);
+    }
+    CHECK(shipped.mg[MatPawn] > 0);
+    CHECK(shipped.mg[MatKnight] > shipped.mg[MatPawn]);
+    CHECK(shipped.mg[MatBishop] > shipped.mg[MatPawn]);
+    CHECK(shipped.mg[MatRook] > shipped.mg[MatBishop]);
+    CHECK(shipped.mg[MatQueen] > shipped.mg[MatRook]);
+
+    EvalParams bad = shipped;
+    bad.mg[MatPawn] = eval_param_table()[std::size_t(MatPawn)].max + 1;
+    std::string error;
+    CHECK(!apply_eval_params(bad, &error));
+    CHECK(!error.empty());
+    CHECK(active_eval_params() == shipped);
+}
+
+TEST(unit, evaluation_parameter_file_matches_shipped_table) {
+    // benchmarks/params/dev3-shipped.txt documents the released evaluation. It
+    // must stay byte-equivalent in meaning to the compiled table, otherwise a
+    // reader would reproduce a different engine than the release.
+    EvalParams loaded = default_eval_params();
+    std::string error;
+    const std::string path = std::string(STOCKBEAR_SOURCE_DIR) + "/benchmarks/params/dev3-shipped.txt";
+    CHECK(load_eval_params_file(path, &loaded, &error));
+    CHECK(error.empty());
+    CHECK(loaded == default_eval_params());
 }
 
 TEST(unit, evaluation_breakdown_matches_evaluate) {
