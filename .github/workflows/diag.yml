@@ -1,0 +1,27 @@
+name: Windows diagnostic
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  diag:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build --config Release --parallel 2
+      - name: Run tests and capture
+        shell: pwsh
+        run: |
+          cmake -E chdir build ctest -C Release --output-on-failure 2>&1 | Out-File -Encoding utf8 ctest.log
+          exit 0
+      - name: Post to pull request
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tail -c 60000 ctest.log > comment.md
+          gh pr comment 5 --body-file comment.md
