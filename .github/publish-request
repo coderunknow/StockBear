@@ -1,1 +1,3 @@
-request publication of v0.1.0-dev2 (verified CI run 41267078266)
+RELEASE_TAG=v0.1.0-dev3
+VALIDATION_RUN_ID=41303842721
+TAGGED_COMMIT=32e7d9d1bde0bf65e2b500b653ff18be8c771c35
