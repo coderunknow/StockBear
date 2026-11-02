@@ -434,3 +434,13 @@
   labelled "no regression, no gain" and the report says so in its first paragraph
   and its verdict section. The tag and GitHub prerelease are created only after
   the merge commit and a green CI run for that commit.
+
+## 2026-11-02 — dev5 first research iteration
+
+Working branch arena/4dcf45ca-stockbear, based on 9ee2140; dev4 immutable tag
+9b5778c9 extracted inside ignored build-dev4/source without switching branches.
+No paid compute. See docs/DEV5_PLAN.md and DEV5_EVALUATION_DIAGNOSIS.md.
+Default and experimental evaluation builds pass 11/11 CTest entries; optional
+NumPy batch-feature differential has two passing tests. Screening evidence and
+negative NNUE reproduction are preserved under benchmarks/results/0.1.0-dev5.
+This is incomplete research, not a completed strength/release milestone.

@@ -10,6 +10,7 @@ For example:
 """
 import argparse
 import csv
+import hashlib
 import json
 import math
 import os
@@ -29,6 +30,15 @@ try:
     import chess.pgn
 except ImportError:
     sys.exit("Install the optional tournament dependency: pip install chess==1.11.2")
+
+
+def file_sha256(path):
+    """Identify measured bytes, not just an executable's self-reported name."""
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for block in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
 
 
 def parse_option_line(line):
@@ -451,6 +461,17 @@ def main():
                   "engine_a_defaults": {k: v.get("default") for k, v in a.option_specs.items()},
                   "engine_b_defaults": {k: v.get("default") for k, v in b.option_specs.items()},
                   "engine_a_path": a.path, "engine_b_path": b.path,
+                  "engine_a_sha256": file_sha256(a.path),
+                  "engine_b_sha256": file_sha256(b.path),
+                  "opening_sha256": file_sha256(args.openings),
+                  "engine_a_input_files": {
+                      key: {"path": value, "sha256": file_sha256(value)}
+                      for key, value in a.effective.items()
+                      if key in ("nnuefile", "evalparams") and os.path.isfile(value)},
+                  "engine_b_input_files": {
+                      key: {"path": value, "sha256": file_sha256(value)}
+                      for key, value in b.effective.items()
+                      if key in ("nnuefile", "evalparams") and os.path.isfile(value)},
                   "engine_a_options": a.effective, "engine_b_options": b.effective,
                   "base_ms": args.base_ms, "increment_ms": args.inc_ms,
                   "nodes_per_move": args.nodes, "nodes_jitter": args.nodes_jitter,

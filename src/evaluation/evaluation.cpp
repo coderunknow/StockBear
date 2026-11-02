@@ -77,12 +77,28 @@ int taper(int mg, int eg, int phase) {
 
 struct Score { int mg = 0; int eg = 0; };
 
+// Dev5 isolated experiment: activity on an enemy-pawn-controlled square is
+// often illusory. This mask is deliberately geometric, not a legality test.
+Bitboard mobility_area(const Position& p, Color us) {
+    Bitboard area = ~p.pieces(us);
+#ifdef STOCKBEAR_SAFE_MOBILITY
+    Bitboard attacked = 0;
+    for (Bitboard pawns = p.pieces(~us, Pawn); pawns;) {
+        const Square s = pop_lsb(pawns);
+        attacked |= attacks_bb(Pawn, ~us, s, p.pieces());
+    }
+    area &= ~attacked;
+#endif
+    return area;
+}
+
 // The live evaluation of one side. Mirrors `accumulate_breakdown` below
 // term for term; `eval_breakdown_matches_evaluate` in the unit tests is what
 // keeps the two from drifting apart.
 Score features(const Position& p, Color us, const EvalParams& par) {
     const Color them = ~us;
-    const Bitboard ours = p.pieces(us), pawns = p.pieces(us, Pawn);
+    const Bitboard pawns = p.pieces(us, Pawn);
+    const Bitboard mobilityArea = mobility_area(p, us);
     const Bitboard enemyPawns = p.pieces(them, Pawn);
     Score out;
     const auto mgp = [&](EvalParamId id) { return par.mg[std::size_t(id)]; };
@@ -124,7 +140,7 @@ Score features(const Position& p, Color us, const EvalParams& par) {
         b = p.pieces(us, pt);
         while (b) {
             Square s = pop_lsb(b);
-            const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & ~ours);
+            const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & mobilityArea);
             EvalParamId id = MobilityKnight;
             if (pt == Bishop) id = MobilityBishop;
             else if (pt == Rook) id = MobilityRook;
@@ -219,7 +235,8 @@ void add_pst_counts(EvalBreakdown& bd, PieceType pt, int idx, int sign) {
 void accumulate_breakdown(const Position& p, Color us, EvalBreakdown& bd) {
     const Color them = ~us;
     const int sign = us == White ? 1 : -1;
-    const Bitboard ours = p.pieces(us), pawns = p.pieces(us, Pawn);
+    const Bitboard pawns = p.pieces(us, Pawn);
+    const Bitboard mobilityArea = mobility_area(p, us);
     const Bitboard enemyPawns = p.pieces(them, Pawn);
     const auto mg = [&](EvalParamId id) -> int& { return bd.mg[std::size_t(id)]; };
     const auto eg = [&](EvalParamId id) -> int& { return bd.eg[std::size_t(id)]; };
@@ -255,7 +272,7 @@ void accumulate_breakdown(const Position& p, Color us, EvalBreakdown& bd) {
         else if (pt == Queen) id = MobilityQueen;
         for (Bitboard bb = p.pieces(us, pt); bb;) {
             const Square s = pop_lsb(bb);
-            const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & ~ours);
+            const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & mobilityArea);
             mg(id) += sign * mobility;
             eg(id) += sign * mobility;
             if (pt == Rook) {

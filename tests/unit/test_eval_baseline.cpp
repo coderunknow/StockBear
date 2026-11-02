@@ -70,7 +70,17 @@ Dev2Score dev2_features(const Position& p, Color us) {
         b = p.pieces(us, pt);
         while (b) {
             const Square s = pop_lsb(b);
-            const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & ~ours);
+            Bitboard available = ~ours;
+#ifdef STOCKBEAR_SAFE_MOBILITY
+            // The research build intentionally changes this one feature. Use
+            // the pawn attack table directly as an independent oracle; normal
+            // builds still check the published dev2 evaluator unchanged.
+            for (Bitboard enemies = enemyPawns; enemies;) {
+                const Square pawn = pop_lsb(enemies);
+                available &= ~PawnAttacksBB[them][pawn];
+            }
+#endif
+            const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & available);
             out.mg += mobility * mgWeight[pt];
             out.eg += mobility * egWeight[pt];
             if (pt == Rook) {
