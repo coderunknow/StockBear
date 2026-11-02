@@ -19,3 +19,24 @@
   W+D+L accounting with forfeit/crash/timeout counts reported separately.
 - Candidate: to be named in a follow-up commit BEFORE the confirmation run,
   with binary SHA-256, source SHA, and the exact build command.
+
+## Candidate pre-registration (commit BEFORE the confirmation run)
+
+- Champion: `build-dev6/stockbear`, SHA-256
+  `15f1daa086fa7226181260ac795ad7ad58de58d254c3043d656b2d0e1534aa09`,
+  built from this branch by:
+  `cmake -S . -B build-dev6 -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1" && cmake --build build-dev6 -j 2`
+  (bench 243f9a1c1ba5b36f, depth-16 nodes 19229509 = bit-exact vs dev4, CTest 11/11).
+  Source changes vs dev4: SB_* compile-time knobs (default-identical),
+  SB_SEE_CACHE (bit-exact SEE reuse), evaluate_lite hook (default off),
+  MADV_HUGEPAGE hint on the TT (allocation hint only), -mpopcnt/-mbmi2/-mlzcnt.
+- Runtime options for engine A: `EvalParams=research-data/params_abc.txt`
+  (SHA-256 below) and `TTEval=true`.
+- Params file: `research-data/params_abc.txt` (outcome Texel tune on
+  corpusA+corpusB+corpusC = 1,099,486 positions, K=600, val 0.5051, test 0.4752).
+- Confirmation: 4400 games (2200 paired openings) on
+  `openings_dev6_confirmation.txt` (SHA-256 99682ada...), seed **2026110207**,
+  40+4 ms, hash 16, threads 1, max-plies 240, run ALONE. Null: same binary both
+  sides, 1100 games, seed 2026110208, run first.
+- Gate: opening-clustered 95% CI lower bound strictly > +50 Elo vs dev4.
+8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be  research-data/params_abc.txt

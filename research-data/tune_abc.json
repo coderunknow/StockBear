@@ -1,0 +1,195 @@
+{
+  "target": "outcome",
+  "blend": 0.5,
+  "restarts": 4,
+  "epochs": 60,
+  "batch": 8192,
+  "lr": 0.03,
+  "seed": 20261380,
+  "cp_clip": 900.0,
+  "positions": 1099486,
+  "search_labelled": 0,
+  "outcome_labelled": 1099486,
+  "split": {
+    "train": 959569,
+    "val": 83920,
+    "test": 55997
+  },
+  "best": {
+    "restart": 1,
+    "k": 600.0,
+    "val": 0.5051075808352156,
+    "val_corr": NaN,
+    "test": 0.4752436342597697,
+    "test_corr": NaN,
+    "scale": 1.0563946216157856
+  },
+  "params": {
+    "MaterialPawn": [
+      100,
+      123
+    ],
+    "MaterialKnight": [
+      314,
+      303
+    ],
+    "MaterialBishop": [
+      335,
+      336
+    ],
+    "MaterialRook": [
+      523,
+      552
+    ],
+    "MaterialQueen": [
+      1031,
+      1000
+    ],
+    "PstPawnRank": [
+      2,
+      5
+    ],
+    "PstPawnFile": [
+      1,
+      0
+    ],
+    "PstKnightCenter": [
+      10,
+      6
+    ],
+    "PstBishopCenter": [
+      5,
+      4
+    ],
+    "PstRookRank": [
+      3,
+      0
+    ],
+    "PstRookFile": [
+      2,
+      0
+    ],
+    "PstRookCenter": [
+      0,
+      3
+    ],
+    "PstQueenCenter": [
+      3,
+      5
+    ],
+    "PstKingRank": [
+      -8,
+      0
+    ],
+    "PstKingFile": [
+      -7,
+      0
+    ],
+    "PstKingCenter": [
+      0,
+      10
+    ],
+    "BishopPair": [
+      29,
+      40
+    ],
+    "IsolatedPawn": [
+      -12,
+      -9
+    ],
+    "DoubledPawn": [
+      -9,
+      -13
+    ],
+    "PassedPawnAdvance": [
+      1,
+      6
+    ],
+    "MobilityKnight": [
+      5,
+      3
+    ],
+    "MobilityBishop": [
+      7,
+      4
+    ],
+    "MobilityRook": [
+      3,
+      5
+    ],
+    "MobilityQueen": [
+      3,
+      4
+    ],
+    "RookOpenFile": [
+      22,
+      13
+    ],
+    "RookSemiOpenFile": [
+      12,
+      7
+    ],
+    "PawnShield": [
+      9,
+      0
+    ],
+    "KingDangerPawn": [
+      2,
+      0
+    ],
+    "KingDangerKnight": [
+      3,
+      0
+    ],
+    "KingDangerBishop": [
+      3,
+      0
+    ],
+    "KingDangerRook": [
+      4,
+      0
+    ],
+    "KingDangerQueen": [
+      7,
+      0
+    ]
+  },
+  "all_restarts": [
+    {
+      "restart": 0,
+      "k": 600.0,
+      "val": 0.5051771135582513,
+      "val_corr": NaN,
+      "test": 0.47685331189581204,
+      "test_corr": NaN,
+      "scale": 1.1176939156195818
+    },
+    {
+      "restart": 1,
+      "k": 600.0,
+      "val": 0.5051075808352156,
+      "val_corr": NaN,
+      "test": 0.4752436342597697,
+      "test_corr": NaN,
+      "scale": 1.0563946216157856
+    },
+    {
+      "restart": 2,
+      "k": 600.0,
+      "val": 0.5056414793079633,
+      "val_corr": NaN,
+      "test": 0.47470158127538103,
+      "test_corr": NaN,
+      "scale": 1.024638309748057
+    },
+    {
+      "restart": 3,
+      "k": 600.0,
+      "val": 0.5067349225548891,
+      "val_corr": NaN,
+      "test": 0.47503400603116974,
+      "test_corr": NaN,
+      "scale": 1.006814278995957
+    }
+  ]
+}

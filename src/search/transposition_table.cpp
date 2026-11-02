@@ -1,4 +1,8 @@
 #include "search/transposition_table.hpp"
+#ifdef __linux__
+#include <cstdint>
+#include <sys/mman.h>
+#endif
 #include "utilities/types.hpp"
 #include <algorithm>
 #include <stdexcept>
@@ -24,6 +28,21 @@ void TranspositionTable::resize(std::size_t megabytes) {
     std::vector<Bucket> replacement(std::max<std::size_t>(1, wanted));
     buckets_.swap(replacement);
     generation_ = 1;
+#if defined(__linux__) && defined(MADV_HUGEPAGE)
+    // Ask for transparent huge pages on the aligned 2 MiB subrange of the
+    // table: random TT probes otherwise thrash the TLB with 4 KiB pages.
+    // Purely an allocation hint; the table contents and behaviour are
+    // unchanged (bench signature stays bit-identical).
+    if (buckets_.size() * sizeof(Bucket) >= 2 * 1024 * 1024) {
+        const std::uintptr_t base = reinterpret_cast<std::uintptr_t>(buckets_.data());
+        const std::size_t bytes = buckets_.size() * sizeof(Bucket);
+        const std::uintptr_t aligned =
+            (base + 2 * 1024 * 1024 - 1) & ~static_cast<std::uintptr_t>(2 * 1024 * 1024 - 1);
+        const std::size_t offset = static_cast<std::size_t>(aligned - base);
+        if (offset < bytes)
+            (void)madvise(reinterpret_cast<void*>(aligned), bytes - offset, MADV_HUGEPAGE);
+    }
+#endif
 }
 
 void TranspositionTable::clear() {
@@ -44,16 +63,11 @@ const TranspositionTable::Bucket& TranspositionTable::bucket_for(Key key, Key co
     return buckets_[std::size_t(index_of(key, context, extensions)) % buckets_.size()];
 }
 
-static std::uint16_t clamp_rule50(std::uint64_t rule50) {
-    return static_cast<std::uint16_t>(rule50 > 0xFFFF ? 0xFFFF : rule50);
-}
-
 const TTEntry* TranspositionTable::probe(Key key, std::uint64_t rule50, Key context,
                                          int extensions) const {
-    const std::uint16_t r50 = clamp_rule50(rule50);
     const Bucket& bucket = bucket_for(key, context, extensions);
     for (const TTEntry& entry : bucket.entry)
-        if (entry.bound != Bound::None && entry.key == key && entry.rule50 == r50 &&
+        if (entry.bound != Bound::None && entry.key == key && entry.rule50 == rule50 &&
             entry.historyContext == context && entry.extensions == extensions)
             return &entry;
     return nullptr;
@@ -73,14 +87,13 @@ int TranspositionTable::value_to_table(int value, int ply) {
 
 void TranspositionTable::store(Key key, std::uint64_t rule50, Key context, int extensions,
                                Move move, int value, int depth, Bound bound, int ply, int eval) {
-    const std::uint16_t r50 = clamp_rule50(rule50);
     Bucket& bucket = bucket_for(key, context, extensions);
     TTEntry* replace = nullptr;
     // Prefer an exact match (more information about this very position), then
     // an empty or stale slot, then the shallowest entry of the oldest
     // generation.
     for (TTEntry& entry : bucket.entry) {
-        if (entry.bound != Bound::None && entry.key == key && entry.rule50 == r50 &&
+        if (entry.bound != Bound::None && entry.key == key && entry.rule50 == rule50 &&
             entry.historyContext == context && entry.extensions == extensions) {
             replace = &entry;
             break;
@@ -98,7 +111,7 @@ void TranspositionTable::store(Key key, std::uint64_t rule50, Key context, int e
         move = replace->move; // never lose a usable hash move
 
     replace->key = key;
-    replace->rule50 = r50;
+    replace->rule50 = rule50;
     replace->historyContext = context;
     replace->extensions = static_cast<std::uint8_t>(extensions);
     replace->move = move;
@@ -109,7 +122,7 @@ void TranspositionTable::store(Key key, std::uint64_t rule50, Key context, int e
     // this slot, so an eval-less store cannot erase a usable one.
     if (eval != VALUE_NONE)
         replace->eval = static_cast<std::int16_t>(std::max(-VALUE_KNOWN_WIN, std::min(VALUE_KNOWN_WIN, eval)));
-    else if (!(replace->key == key && replace->rule50 == r50 &&
+    else if (!(replace->key == key && replace->rule50 == rule50 &&
                replace->historyContext == context && replace->extensions == extensions))
         replace->eval = static_cast<std::int16_t>(VALUE_NONE);
     replace->generation = generation_;

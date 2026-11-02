@@ -79,3 +79,44 @@ manifests/hashes get committed).
 - Remaining NPS plan (bit-exact only): incremental eval (target eval 27%->~8%
   of node time, must keep bench 243f9a1c1ba5b36f and ctest 11/11), make/unmake
   micro-opts. Gate math: need point >= ~+58 at 4400 g for LCB95>+50.
+
+## MAJOR NPS FINDING: popcount is a libgcc CALL in release builds
+
+`src/chess/bitboard.hpp` uses `__builtin_popcountll` but the Release build is
+plain `-O3` (no `-mpopcnt`), so every popcount compiles to `call
+__popcountdi2` (57 call sites in the dev4 binary, objdump-verified). popcount
+is used in mobility, king-danger, pawn structure, movegen... Candidate fix:
+build with `-mpopcnt -mbmi2 -mlzcnt` (ubiquitous since 2013; sandbox Xeon has
+them). Semantics unchanged -> bench must stay 243f9a1c1ba5b36f. To be measured
+(after the in-flight option screens finish, to keep them clean):
+vbuild-popcnt, nps.sh depth 16/20 vs dev4.
+
+## dev6 segment 3 (2026-11-02): popcnt + outcome-v2 params
+
+- Option-flip screens at clean 40+4 480 g (all vs dev4, alone): NullMove=false
+  -28.4 [-52.0,-5.1]; LMR=false -68.9 [-92.1,-46.4]; Aspiration=false
+  -83.4 [-107.6,-59.9]; CheckExtension=false -31.5 [-55.2,-8.1];
+  IIR=false 0.0 [-23.3,+23.3]; SEEPruning=false -71.8 [-97.1,-47.2].
+  => every pruning/extension switch is load-bearing at 40+4; "disable work
+  for NPS" is DEAD. Only bit-exact speedups count.
+- **popcnt build** (`-mpopcnt -mbmi2 -mlzcnt`; release was plain -O3 so every
+  popcount was a `call __popcountdi2`, 57 call sites): vbuild-nps1 =
+  popcnt+seec, bench 243f9a1c1ba5b36f, depth-16 nodes identical 19229509,
+  ctest 11/11, nps +12-20% (2.24-2.46M vs 1.94-2.15M).
+  Clean 40+4 screen (seed 20261300): **+3.6 [-19.6,+26.9]** — small NPS gains
+  move Elo only weakly at 40+4.
+- THP madvise on TT (vbuild-thp): bench/nodes identical, nps neutral -> dropped.
+- PGO: neutral -> dropped. TT 32B packing: changes bucket count -> node counts
+  change at depth 16 -> reverted to keep candidate bit-exact.
+- qlite (skip mobility+king-danger in qsearch stand-pat): nps +23% but
+  **-32.1 [-55.8,-8.6]** -> eval quality in qsearch is critical; dead.
+- Outcome retunes on the 885k corpus: v2 (K=600) ... v6 (K=600-700), all
+  val ~0.503-0.505 test ~0.470-0.472, mutually similar.
+  **nps1 + params_outcome_v2, clean 40+4 480 g seed 20261311:
+  +48.5 [+24.0,+73.5] clustered** (478 g) — the big dev6 result so far.
+  (v2 alone was -26.1 at n3000: fixed-node screens misleading again.)
+- In flight: nps1+outv2+TTEval (seed 20261321), nps1+outv3 (seed 20261322).
+- Pre-registered confirmation suite ready: openings_dev6_confirmation.txt
+  sha256 99682ada... seed 2026110206, 2200 pairs, committed in f443472 BEFORE
+  any dev6 candidate ran on it. Plan: champion commit (binary sha) then
+  4400 g alone, gate LCB95 > +50.
