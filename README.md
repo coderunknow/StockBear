@@ -1,32 +1,77 @@
-# StockBear 0.1.0-dev4
+# StockBear
 
-StockBear is an **independently implemented**, single-threaded UCI chess engine
-written in C++17. This is an early development prerelease, not a stable or
-top-strength engine. It implements its own board, legal move generation,
-evaluation, search, FIDE dead-position analysis and UCI protocol; it does not
-wrap or require another engine.
+**An independent C++17 UCI chess engine for reproducible search and evaluation research.**
 
-Evidence and limitations are in the [dev4 evidence report](benchmarks/results/0.1.0-dev4/REPORT.md),
-the [dead-position specification](docs/DEAD_POSITIONS.md), the
-[tuning record](docs/TUNING.md) and the [release notes](RELEASE_NOTES.md).
+[![CI](https://github.com/coderunknow/StockBear/actions/workflows/ci.yml/badge.svg)](https://github.com/coderunknow/StockBear/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/coderunknow/StockBear?include_prereleases&sort=semver)](https://github.com/coderunknow/StockBear/releases)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
-**What dev4 is, stated plainly.** dev4 builds a complete neural evaluation of its
-own — features, incrementally maintained accumulator, quantised file format,
-scalar and AVX2 kernels, self-play generator, trainer, quantiser and an
-independent verifier — and then measures it: at 2,500 nodes per move it **loses
-708 Elo (95 % CI [−1011, −405])** to the classical evaluation of the same binary.
-The five search refinements added in the same release are all neutral or negative
-at both a fixed node budget and a fixed time control. **All of it ships disabled;
-the default configuration plays exactly as dev3 did**, with identical depth-6 and
-depth-7 benchmark signatures (`e06c4352681ae8eb`, `5bceff035f2a4ae4`). The release
-therefore claims **no measurable strength gain** — its value is verified
-infrastructure, a measurement method that can resolve small effects (the previous
-release's fixed-node matches could not: every colour-reversed pair scored
-identically, leaving the statistics with zero variance), and a documented set of
-negative results. The classical evaluation and the dev3 search remain the default.
-dev3's own baseline numbers still apply: it played as dev2 did, which was +235 Elo
-over dev1 and 0.5/20 against Stockfish 11; no match against Stockfish 19 was
-possible in the build environment, and no superiority claim is made.
+StockBear is a **standalone, single-threaded chess engine** with its own board
+representation, legal move generator, alpha-beta search, evaluation, UCI
+controller and FIDE dead-position analysis. It does not wrap, embed or require
+another chess engine. It runs on Linux and Windows, supports portable x86-64
+builds, and connects to any GUI that speaks UCI.
+
+## Why StockBear?
+
+- **A real engine, not a demo:** legal moves, castling, en passant, promotion,
+  repetition, draw claims, MultiPV and standard UCI time controls.
+- **Research you can reproduce:** deterministic benchmarks, seeded tournaments,
+  raw match records, confidence intervals and benchmark signatures committed
+  alongside the code.
+- **NNUE experimentation end to end:** feature extraction, incremental
+  accumulators, quantised network files, scalar and AVX2 inference, self-play,
+  training, conversion and an independent verifier.
+- **Unusually careful draw handling:** a general FIDE Article 5.2.2
+  dead-position procedure with witnesses, exhaustive validation and explicit
+  `unknown` results when a proof budget is exhausted.
+- **Honest engineering:** features that do not improve play stay disabled, and
+  negative results remain documented instead of being presented as strength
+  claims.
+
+> **Status:** StockBear is an early development prerelease and is not a
+> top-strength or stable engine. The default configuration prioritises
+> correctness, inspectability and measurable experiments over an inflated Elo
+> claim.
+
+## Quick start
+
+```sh
+git clone https://github.com/coderunknow/StockBear.git
+cd StockBear
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --parallel 2
+cmake -E chdir build ctest --output-on-failure
+./build/stockbear --version
+```
+
+Launching `stockbear` without arguments starts UCI mode. Add the executable to
+your chess GUI as a UCI engine, or try a direct analysis:
+
+```text
+uci
+isready
+position startpos moves e2e4 e7e5
+go depth 8
+```
+
+See [Build and test](#build-and-test) for Windows, and
+[Connect a GUI / use UCI](#connect-a-gui--use-uci) for options and integration.
+
+## What dev4 demonstrates
+
+The current release is valuable as a **measurement case study**, not as a
+claim of playing strength. It builds a complete neural evaluation of its own,
+then measures it against the classical evaluation in the same binary. At 2,500
+nodes per move, the network loses 708 Elo (95% CI `[-1011, -405]`), so NNUE and
+the new search refinements ship disabled. The default configuration preserves
+the dev3 behaviour and its depth-6/depth-7 benchmark signatures
+(`e06c4352681ae8eb`, `5bceff035f2a4ae4`).
+
+That result is intentional project evidence: the pipeline is verified, the
+measurement method can resolve small effects, and the repository preserves the
+raw data and negative result. Start with the [dev4 evidence report](benchmarks/results/0.1.0-dev4/REPORT.md),
+[research notes](docs/DEV4_RESEARCH.md) or [release notes](RELEASE_NOTES.md).
 
 ## Requirements
 
