@@ -30,6 +30,10 @@ private:
     // Number of principal variations to report (UCI MultiPV). 1 is the
     // default single-PV behaviour.
     int multiPv_ = 1;
+    // The neural evaluation is installed before the first position is parsed so
+    // that every accumulator is built for the network that will be used.
+    bool useNnue_ = false;
+    std::string nnueSource_ = "none";
     // Search-feature switches. They exist so ablations can be measured by
     // matches, not only by node counts, and every one defaults to the value
     // used by the engine (true) or by the released build.

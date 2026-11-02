@@ -15,6 +15,7 @@ struct TTEntry {
     Key historyContext = 0;
     Move move = MOVE_NONE;
     std::int16_t value = 0;   // mate values normalized to the stored position
+    std::int16_t eval = 0;    // static evaluation, when the search stored one
     std::int16_t depth = -1;
     Bound bound = Bound::None;
     std::uint8_t extensions = 0;
@@ -35,7 +36,8 @@ public:
     void new_search();
     const TTEntry* probe(Key key, std::uint64_t rule50, Key context, int extensions) const;
     void store(Key key, std::uint64_t rule50, Key context, int extensions,
-               Move move, int value, int depth, Bound bound, int ply);
+               Move move, int value, int depth, Bound bound, int ply,
+               int eval = VALUE_NONE);
     int hashfull() const; // per mille over the whole table
     std::size_t allocated_bytes() const { return buckets_.size() * sizeof(Bucket); }
     static int value_from_table(int value, int ply);

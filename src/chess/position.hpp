@@ -17,6 +17,7 @@
 #include "chess/bitboard.hpp"
 #include "chess/move.hpp"
 #include "chess/zobrist.hpp"
+#include "evaluation/nnue.hpp"
 #include "utilities/types.hpp"
 
 #include <cstdint>
@@ -213,6 +214,19 @@ public:
     // Number of stored plies of history (states), including the current one.
     size_t history_size() const { return history_.size(); }
 
+    // --- Neural evaluation accumulator ----------------------------------------
+    // One accumulation per stored ply, mirroring `history_`. It is maintained
+    // incrementally in make/unmake exactly where the classical material tables
+    // are updated, and only when a network is installed; with no network the
+    // vector stays empty and the classical evaluation is unaffected.
+    const nnue::Accumulator* nnue_accumulator() const {
+        return nnueStack_.empty() ? nullptr : &nnueStack_.back();
+    }
+    // Rebuilds the whole stack for the current position. Called after FEN
+    // loading and whenever the active network changes at run time, because an
+    // accumulator built for a different network is meaningless.
+    void refresh_nnue_accumulator();
+
 private:
     friend bool parse_fen(const std::string& fen, Position& pos, std::string* error);
     friend void generate_moves(const Position& pos, MoveList& ml, GenType type);
@@ -235,6 +249,7 @@ private:
     Color sideToMove_ = White;
     std::uint64_t fullmoveNumber_ = 1;
     std::vector<StateInfo> history_;
+    std::vector<nnue::Accumulator> nnueStack_;
 };
 
 // Resolves a UCI move string (e.g. "e2e4", "e7e8q") against the position's

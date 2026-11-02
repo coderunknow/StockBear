@@ -359,6 +359,23 @@ void Position::make_move_impl(Move m, bool trackRepetition) {
     StateInfo& newSt = history_.back();
     const StateInfo& oldSt = history_[history_.size() - 2];
 
+    // Neural accumulator: mirror the classical updates one for one. A network
+    // with more than one king bucket makes every feature depend on the
+    // perspective's king square, so those networks are rebuilt at the end of
+    // this function instead of updated incrementally.
+    const nnue::Network* const net = nnue::active_network();
+    const bool nnueActive = net != nullptr;
+    bool nnueIncremental = nnueActive && net->kingBuckets == 1;
+    if (nnueActive) {
+        if (nnueStack_.size() == history_.size() - 1)
+            nnueStack_.push_back(nnueStack_.back());
+        else {
+            nnueStack_.assign(history_.size(), nnue::Accumulator{});
+            nnue::refresh(*this, nnueStack_.back());
+        }
+    }
+    nnue::Accumulator* nAcc = nnueActive ? &nnueStack_.back() : nullptr;
+
     const Color us = sideToMove_;
     const Color them = ~us;
 
@@ -390,6 +407,7 @@ void Position::make_move_impl(Move m, bool trackRepetition) {
         newSt.rule50 = 0;
         newSt.key ^= Zobrist::psq[captured][capSq];
         acc_sub(newSt, captured, capSq);
+        if (nnueIncremental) nnue::subtract_piece(*nAcc, *this, captured, capSq);
         remove_piece(capSq);
     }
 
@@ -397,6 +415,10 @@ void Position::make_move_impl(Move m, bool trackRepetition) {
     newSt.key ^= Zobrist::psq[pc][from] ^ Zobrist::psq[pc][to];
     acc_sub(newSt, pc, from);
     acc_add(newSt, pc, to);
+    if (nnueIncremental) {
+        nnue::subtract_piece(*nAcc, *this, pc, from);
+        nnue::add_piece(*nAcc, *this, pc, to);
+    }
     move_piece(from, to);
 
     // 5) Promotions: swap the arrived pawn for the promotion piece.
@@ -406,6 +428,10 @@ void Position::make_move_impl(Move m, bool trackRepetition) {
         newSt.key ^= Zobrist::psq[pc][to] ^ Zobrist::psq[promo][to];
         acc_sub(newSt, pc, to);
         acc_add(newSt, promo, to);
+        if (nnueIncremental) {
+            nnue::subtract_piece(*nAcc, *this, pc, to);
+            nnue::add_piece(*nAcc, *this, promo, to);
+        }
         remove_piece(to);
         put_piece(promo, to);
     }
@@ -429,6 +455,10 @@ void Position::make_move_impl(Move m, bool trackRepetition) {
         newSt.key ^= Zobrist::psq[rook][rfrom] ^ Zobrist::psq[rook][rto];
         acc_sub(newSt, rook, rfrom);
         acc_add(newSt, rook, rto);
+        if (nnueIncremental) {
+            nnue::subtract_piece(*nAcc, *this, rook, rfrom);
+            nnue::add_piece(*nAcc, *this, rook, rto);
+        }
         move_piece(rfrom, rto);
     }
 
@@ -446,6 +476,10 @@ void Position::make_move_impl(Move m, bool trackRepetition) {
 
     // 9) Check/pin info for the new side to move.
     set_check_info();
+
+    // King-bucketed networks cannot be updated incrementally; rebuild both
+    // perspectives now that the board is final.
+    if (nnueActive && !nnueIncremental) nnue::refresh(*this, *nAcc);
 
     if (!trackRepetition) return;
     // Only scan the stored, reversible history; a FEN can have a large clock
@@ -474,6 +508,8 @@ void Position::make_null_move() {
     sideToMove_ = ~sideToMove_;
     newSt.key ^= Zobrist::side;
     newSt.historyContext = Zobrist::context_seed(newSt.key);
+    // The placement does not change, so both perspectives are unaffected.
+    if (nnue::active_network() != nullptr) nnueStack_.push_back(nnueStack_.back());
     set_check_info();
 }
 
@@ -484,12 +520,14 @@ void Position::unmake_null_move() {
     // which null-move pruning performs many times per search.
     sideToMove_ = ~sideToMove_;
     history_.pop_back();
+    if (!nnueStack_.empty()) nnueStack_.pop_back();
 }
 
 void Position::unmake_move(Move m) {
     // The captured piece belongs to the state being removed, not its parent.
     const Piece captured = Piece(st().capturedPiece);
     history_.pop_back(); // restores key, accumulators, checkers, pins, clocks
+    if (!nnueStack_.empty()) nnueStack_.pop_back();
 
     const Color us = ~sideToMove_;
     sideToMove_ = us;
@@ -730,6 +768,12 @@ std::uint64_t Position::perft(int depth) {
 // ---------------------------------------------------------------------------
 // Debug verification (used by stress tests)
 // ---------------------------------------------------------------------------
+void Position::refresh_nnue_accumulator() {
+    nnueStack_.assign(history_.size(), nnue::Accumulator{});
+    if (nnue::active_network() != nullptr && !nnueStack_.empty())
+        nnue::refresh(*this, nnueStack_.back());
+}
+
 bool Position::verify_state(std::string* error) const {
     auto fail = [&](const char* msg) {
         if (error) *error = msg;
@@ -782,6 +826,19 @@ bool Position::verify_state(std::string* error) const {
         return fail("mg accumulator mismatch");
     if (eg[White] != st().accEg[White] || eg[Black] != st().accEg[Black])
         return fail("eg accumulator mismatch");
+
+    // Neural accumulator: the incrementally maintained values must equal a
+    // from-scratch build. This is the check that catches a missed make/unmake
+    // delta (a promotion, a castling rook, an en-passant victim).
+    if (nnue::active_network() != nullptr) {
+        if (nnueStack_.size() != history_.size()) return fail("nnue accumulator stack size");
+        nnue::Accumulator fresh;
+        nnue::refresh(*this, fresh);
+        for (int p = 0; p < ColorNB; ++p)
+            for (int i = 0; i < nnue::active_network()->l1; ++i)
+                if (fresh.v[p][i] != nnueStack_.back().v[p][i])
+                    return fail("nnue accumulator mismatch");
+    }
 
     // Checkers / pinned recomputation.
     if (compute_checkers() != st().checkers) return fail("checkers mismatch");

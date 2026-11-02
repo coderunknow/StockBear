@@ -9,6 +9,7 @@
 // agree on every recorded position.
 #include "evaluation/evaluation.hpp"
 #include "chess/position.hpp"
+#include "evaluation/nnue.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <mutex>
@@ -323,6 +324,14 @@ int eval_from_breakdown(const EvalBreakdown& bd, const EvalParams& params) {
 }
 
 int evaluate(const Position& p) {
+    // A loaded neural network replaces the classical terms completely; the
+    // classical evaluation stays available as the portable fallback and as the
+    // control arm of every experiment that measured the network.
+    if (nnue::active_network() != nullptr) {
+        if (const nnue::Accumulator* acc = p.nnue_accumulator())
+            return nnue::evaluate(p, *acc);
+        return nnue::evaluate_from_scratch(p);
+    }
     const EvalParams& par = active_eval_params();
     const Score w = features(p, White, par), b = features(p, Black, par);
     const int mg = p.acc_mg(White) - p.acc_mg(Black) + w.mg - b.mg;

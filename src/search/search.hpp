@@ -67,6 +67,18 @@ struct SearchParams {
     bool captureHistory = false;       // per-victim capture statistics
     bool historyMaluses = false;       // penalise quiets that did not cut off
     bool lmrHistory = false;           // history-dependent reduction adjustment
+
+    // --- dev4 search features -------------------------------------------------
+    // Each is separately switchable so it can be ablated by a match instead of
+    // being accepted because it "should" help. Defaults are set to the
+    // configuration that the recorded dev4 experiments measured as strongest;
+    // see benchmarks/results/0.1.0-dev4/experiments/.
+    bool modernLmr = false;         // logarithmic reduction table + rich adjustment
+    bool moveCountPruning = false;  // skip late quiet moves at low depth
+    bool iir = false;               // reduce one ply when there is no hash move
+    bool improving = false;         // static-eval trend feeds pruning margins
+    bool ttEval = false;            // reuse the static evaluation stored in the TT
+    bool razoring = false;          // drop into quiescence near the alpha bound
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control
@@ -128,6 +140,10 @@ private:
     static constexpr std::size_t PvSlots = std::size_t(MAX_PLY) * MAX_PLY;
     static constexpr std::size_t ContinuationSlots =
         std::size_t(PieceTypeNB) * SQ_NB * PieceTypeNB * SQ_NB;
+    // Static evaluation of the position at each ply of the current line, so the
+    // "improving" heuristic can compare against two plies ago without threading
+    // another parameter through every call.
+    int evalStack_[MAX_PLY + 2] = {};
     std::unique_ptr<Move[]> pv_{new Move[PvSlots]()};
     std::unique_ptr<int[]> continuation_{new int[ContinuationSlots]()};
     int pvLength_[MAX_PLY] = {};

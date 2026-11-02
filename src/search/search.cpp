@@ -38,6 +38,8 @@ constexpr int MaxPenalisedQuiets = 24;
 
 // Integer-only reduction schedule; keeps results bit-identical across
 // platforms and compilers (a floating-point logarithm does not guarantee that).
+#include "search/lmr_table.inc"
+
 inline int reduction_for(int depth, int moveCount) {
     int r = 1;
     if (depth >= 6) r += 1;
@@ -45,6 +47,14 @@ inline int reduction_for(int depth, int moveCount) {
     if (moveCount >= 24) r += 1;
     if (depth >= 14) r += 1;
     return r;
+}
+
+// Late move pruning limits: how many quiet moves are worth searching before
+// the rest are skipped, by remaining depth. `improving` halves them, because a
+// position that is getting better deserves the extra effort.
+inline int late_move_limit(int depth, bool improving) {
+    const int limit = 3 + depth * depth;
+    return improving ? limit : limit / 2;
 }
 
 inline bool has_non_pawn_material(const Position& pos) {
@@ -333,13 +343,29 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
             return value;
     }
 
-    const int staticEval = evaluate(pos);
+    // Internal iterative reduction: with no hash move the node is likely to be
+    // refuted by a shallower search, so one ply is borrowed and the result is
+    // still stored under the reduced depth.
+    if (params_.iir && hashMove == MOVE_NONE && depth >= 4) --depth;
+
+    int staticEval = evaluate(pos);
+    if (params_.ttEval && entry != nullptr && !inCheck && entry->eval != VALUE_NONE)
+        staticEval = int(entry->eval);
+    evalStack_[ply] = staticEval;
     const bool mateWindow = std::abs(beta) >= MATE_BOUND || std::abs(alpha) >= MATE_BOUND;
+    // "Improving": is the side to move better off than it was two plies ago?
+    // Used only to widen or narrow heuristic margins, never to bound a proven
+    // value, so a wrong guess costs strength at worst and never correctness.
+    const bool improving = !params_.improving ? true
+                        : inCheck ? false
+                        : ply >= 2 ? staticEval > evalStack_[ply - 2] - 10
+                        : true;
 
     // Reverse futility pruning: at shallow depth a large static margin over beta
     // is good enough, provided no mate score can be involved.
-    if (params_.reverseFutility && !pvNode && !inCheck && !mateWindow && depth <= 6 &&
-        staticEval - 85 * depth >= beta)
+    if (params_.reverseFutility && !pvNode && !inCheck && !mateWindow &&
+        depth <= (params_.improving ? 8 : 6) &&
+        staticEval - (params_.improving ? (improving ? 70 : 105) : 85) * depth >= beta)
         return staticEval;
 
     // Null-move pruning. Disabled when the side to move has no non-pawn
@@ -383,12 +409,22 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
 
         // The checking test makes and unmakes the move, so it is only run when
         // a pruning or reduction decision actually depends on it.
+        // Late move pruning: at low depth the tail of the quiet move list is
+        // not worth searching at all. Skipped when a mate score is already in
+        // hand, which is the only way the skipped moves could still matter.
+        if (params_.moveCountPruning && !pvNode && !inCheck && !mateWindow && isQuiet &&
+            !isHash && best > -MATE_BOUND && depth <= 8 &&
+            moveCount >= late_move_limit(depth, improving))
+            continue;
+
         const bool futilityCandidate = isQuiet && !pvNode && !inCheck && !mateWindow &&
                                        moveCount > 0 && params_.futility && depth <= 3 &&
                                        futilityBase <= alpha;
-        const bool lmrCandidate = isQuiet && !inCheck && !mateWindow && params_.lmr &&
-                                  depth >= 3 && moveCount >= 3 && !isHash &&
-                                  m != killers_[ply][0] && m != killers_[ply][1];
+        const bool lmrCandidate = isQuiet && !inCheck && !mateWindow && params_.lmr && !isHash &&
+                                  (params_.modernLmr
+                                       ? (depth >= 3 && moveCount >= 2)
+                                       : (depth >= 3 && moveCount >= 3 &&
+                                          m != killers_[ply][0] && m != killers_[ply][1]));
         bool check = inCheck;
         if (futilityCandidate || lmrCandidate) check = gives_check(pos, m);
         if (futilityCandidate && !check) continue;
@@ -404,7 +440,14 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
             value = -negamax(pos, depth - 1, -beta, -alpha, ply + 1, pvNode, extensions, true);
         } else {
             int reduction = 0;
-            if (lmrCandidate && !check) {
+            if (lmrCandidate && !check && params_.modernLmr) {
+                int r = int(LmrTable[std::min(depth, 63)][std::min(moveCount, 63)]);
+                r -= pvNode ? 1 : 0;
+                r += improving ? 0 : 1;
+                r += quietHistory < 0 ? 1 : 0;
+                r += m == killers_[ply][0] || m == killers_[ply][1] ? -1 : 0;
+                reduction = std::max(0, std::min(r, depth - 2));
+            } else if (lmrCandidate && !check) {
                 reduction = std::min(reduction_for(depth, moveCount), depth - 2);
                 if (params_.lmrHistory) {
                     // Good quiet moves are less reduced; poor ones more. The
@@ -453,7 +496,8 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
     const Bound stored = best >= beta ? Bound::Lower
                         : best <= originalAlpha ? Bound::Upper
                         : Bound::Exact;
-    tt_.store(pos.key(), pos.rule50(), context, extensions, bestMove, best, depth, stored, ply);
+    tt_.store(pos.key(), pos.rule50(), context, extensions, bestMove, best, depth, stored, ply,
+              params_.ttEval ? staticEval : VALUE_NONE);
     return best;
 }
 

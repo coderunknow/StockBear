@@ -1,5 +1,7 @@
 #include "utilities/bench.hpp"
 #include "evaluation/eval_params.hpp"
+#include "evaluation/nnue.hpp"
+#include "evaluation/nnue_forward.hpp"
 #include "utilities/bench_positions.hpp"
 #include "chess/dead_position.hpp"
 #include "chess/fen.hpp"
@@ -157,6 +159,11 @@ bool apply_param(SearchParams& params, const std::string& key, const std::string
     else if (key == "captureHistory") params.captureHistory = on;
     else if (key == "historyMaluses") params.historyMaluses = on;
     else if (key == "lmrHistory") params.lmrHistory = on;
+    else if (key == "modernLmr") params.modernLmr = on;
+    else if (key == "moveCountPruning") params.moveCountPruning = on;
+    else if (key == "iir") params.iir = on;
+    else if (key == "improving") params.improving = on;
+    else if (key == "ttEval") params.ttEval = on;
     else return false;
     return true;
 }
@@ -174,7 +181,12 @@ std::string params_text(const SearchParams& params) {
         << ",continuationHistory=" << int(params.continuationHistory)
         << ",captureHistory=" << int(params.captureHistory)
         << ",historyMaluses=" << int(params.historyMaluses)
-        << ",lmrHistory=" << int(params.lmrHistory);
+        << ",lmrHistory=" << int(params.lmrHistory)
+        << ",modernLmr=" << int(params.modernLmr)
+        << ",moveCountPruning=" << int(params.moveCountPruning)
+        << ",iir=" << int(params.iir)
+        << ",improving=" << int(params.improving)
+        << ",ttEval=" << int(params.ttEval);
     return out.str();
 }
 }
@@ -187,9 +199,17 @@ int benchmark_cli(int argc, char** argv) {
     std::vector<std::pair<std::string, std::string>> overrides;
     std::string evalParamsPath;
     bool perft = false, gotDepth = false, gotNodes = false, gotMoveTime = false;
+    bool noNnue = false;
+    std::string nnuePath;
     for (int i = 0; i < argc; ++i) {
         const std::string arg = argv[i];
         if (arg == "--perft") { perft = true; continue; }
+        if (arg == "--no-nnue") { noNnue = true; continue; }
+        if (arg == "--network") {
+            if (i + 1 >= argc) { std::cerr << "--network needs a path\n"; return 2; }
+            nnuePath = argv[++i];
+            continue;
+        }
         if (arg == "--param" && i + 1 < argc) {
             const std::string text = argv[++i];
             const std::size_t eq = text.find('=');
@@ -247,8 +267,25 @@ int benchmark_cli(int argc, char** argv) {
         }
     }
 
+    // Use the compiled-in network when the build has one, so a `bench` run
+    // measures the configuration the released binary actually plays with.
+    if (!noNnue && nnue::embedded_network_available()) {
+        std::string netError;
+        if (!nnue::install_embedded_network(&netError))
+            std::cerr << "network not installed: " << netError << '\n';
+    }
+    if (!nnuePath.empty()) {
+        std::string netError;
+        const nnue::Network net = nnue::parse_network_file(nnuePath, &netError);
+        if (net.l1 == 0) { std::cerr << "cannot load network " << nnuePath << ": " << netError << '\n'; return 2; }
+        if (!nnue::install_network(net, &netError)) {
+            std::cerr << "invalid network " << nnuePath << ": " << netError << '\n'; return 2;
+        }
+    }
     TranspositionTable table(hash);
-    std::cout << "# StockBear " << kEngineVersion << "; threads=1; hash_requested_mb=" << hash
+    std::cout << "# StockBear " << kEngineVersion << "; threads=1; network=" << nnue::network_identity()
+              << "; kernel=" << nnue::forward_kernel_name()
+              << "; hash_requested_mb=" << hash
               << "; hash_allocated_bytes=" << table.allocated_bytes() << "; mode="
               << (gotNodes ? "nodes" : gotMoveTime ? "movetime" : "depth") << ';'
               << (gotNodes ? limits.nodes : gotMoveTime ? std::uint64_t(limits.moveTimeMs) : std::uint64_t(limits.depth))
