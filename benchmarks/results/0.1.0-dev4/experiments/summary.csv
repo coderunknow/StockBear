@@ -1,0 +1,15 @@
+experiment,games,condition,score,wins,draws,losses,elo,elo_lo,elo_hi
+dev3-vs-dev4-nodes3000,400,nodes 3000 jitter 0.12,0.4823,135,114,149,-12.3,-34.2,9.5
+dev3-vs-dev4-time40_4,240,40+4 ms,0.5417,87,86,67,29.0,1.5,56.9
+flag-IIR-nodes3000,400,nodes 3000 jitter 0.12,0.4785,134,113,151,-14.9,-37.3,7.4
+flag-IIR-time40_4,160,40+4 ms,0.5095,56,51,52,6.6,-32.2,45.5
+flag-Improving-nodes3000,400,nodes 3000 jitter 0.12,0.4621,130,108,160,-26.4,-49.3,-3.7
+flag-Improving-time40_4,160,40+4 ms,0.4813,52,50,58,-13.0,-44.6,18.3
+flag-ModernLMR-nodes3000,400,nodes 3000 jitter 0.12,0.4587,130,107,163,-28.7,-52.0,-5.7
+flag-ModernLMR-time40_4,160,40+4 ms,0.4557,44,56,59,-30.9,-69.0,6.5
+flag-MoveCountPruning-nodes3000,400,nodes 3000 jitter 0.12,0.4437,115,125,160,-39.3,-67.9,-11.1
+flag-MoveCountPruning-time40_4,160,40+4 ms,0.3544,34,45,80,-104.2,-154.6,-57.7
+nnue-selfplay-control-nodes2500,40,nodes 2500 jitter 0.15,0.5875,14,19,7,61.4,-27.8,159.8
+nnue-vs-classical-nodes2500,60,nodes 2500 jitter 0.15,0.0167,0,2,58,-708.3,,-550.5
+null-control-nodes3000,400,nodes 3000 jitter 0.12,0.4823,135,114,149,-12.3,-34.2,9.5
+null-control-time40_4,160,40+4 ms,0.4562,48,50,62,-30.5,-65.9,4.3
