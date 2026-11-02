@@ -32,7 +32,7 @@ negative results themselves. Details in §6–§9 and §20.
 > PR #6), tagged `v0.1.0-dev4`, with CI run `41392388489` green for that exact
 > commit. The published assets, their SHA-256 digests, and the verification that
 > was run against the downloadable archives after publication are recorded in
-> [`RELEASE_ASSETS.md`](RELEASE_ASSETS.md) — including what was *not* verified.
+> [`RELEASE_ASSETS.md`](https://github.com/coderunknow/StockBear/blob/main/benchmarks/results/0.1.0-dev4/RELEASE_ASSETS.md) — including what was *not* verified.
 
 ## 2. Scope and acceptance gates
 
