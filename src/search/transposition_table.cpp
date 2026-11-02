@@ -44,11 +44,16 @@ const TranspositionTable::Bucket& TranspositionTable::bucket_for(Key key, Key co
     return buckets_[std::size_t(index_of(key, context, extensions)) % buckets_.size()];
 }
 
+static std::uint16_t clamp_rule50(std::uint64_t rule50) {
+    return static_cast<std::uint16_t>(rule50 > 0xFFFF ? 0xFFFF : rule50);
+}
+
 const TTEntry* TranspositionTable::probe(Key key, std::uint64_t rule50, Key context,
                                          int extensions) const {
+    const std::uint16_t r50 = clamp_rule50(rule50);
     const Bucket& bucket = bucket_for(key, context, extensions);
     for (const TTEntry& entry : bucket.entry)
-        if (entry.bound != Bound::None && entry.key == key && entry.rule50 == rule50 &&
+        if (entry.bound != Bound::None && entry.key == key && entry.rule50 == r50 &&
             entry.historyContext == context && entry.extensions == extensions)
             return &entry;
     return nullptr;
@@ -68,13 +73,14 @@ int TranspositionTable::value_to_table(int value, int ply) {
 
 void TranspositionTable::store(Key key, std::uint64_t rule50, Key context, int extensions,
                                Move move, int value, int depth, Bound bound, int ply, int eval) {
+    const std::uint16_t r50 = clamp_rule50(rule50);
     Bucket& bucket = bucket_for(key, context, extensions);
     TTEntry* replace = nullptr;
     // Prefer an exact match (more information about this very position), then
     // an empty or stale slot, then the shallowest entry of the oldest
     // generation.
     for (TTEntry& entry : bucket.entry) {
-        if (entry.bound != Bound::None && entry.key == key && entry.rule50 == rule50 &&
+        if (entry.bound != Bound::None && entry.key == key && entry.rule50 == r50 &&
             entry.historyContext == context && entry.extensions == extensions) {
             replace = &entry;
             break;
@@ -92,7 +98,7 @@ void TranspositionTable::store(Key key, std::uint64_t rule50, Key context, int e
         move = replace->move; // never lose a usable hash move
 
     replace->key = key;
-    replace->rule50 = rule50;
+    replace->rule50 = r50;
     replace->historyContext = context;
     replace->extensions = static_cast<std::uint8_t>(extensions);
     replace->move = move;
@@ -103,7 +109,7 @@ void TranspositionTable::store(Key key, std::uint64_t rule50, Key context, int e
     // this slot, so an eval-less store cannot erase a usable one.
     if (eval != VALUE_NONE)
         replace->eval = static_cast<std::int16_t>(std::max(-VALUE_KNOWN_WIN, std::min(VALUE_KNOWN_WIN, eval)));
-    else if (!(replace->key == key && replace->rule50 == rule50 &&
+    else if (!(replace->key == key && replace->rule50 == r50 &&
                replace->historyContext == context && replace->extensions == extensions))
         replace->eval = static_cast<std::int16_t>(VALUE_NONE);
     replace->generation = generation_;

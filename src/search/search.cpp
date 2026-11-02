@@ -40,8 +40,48 @@ constexpr int MaxPenalisedQuiets = 24;
 // platforms and compilers (a floating-point logarithm does not guarantee that).
 #include "search/lmr_table.inc"
 
+// dev6 experiment knobs: compile-time overridable so parameter variants can be
+// screened without editing source back and forth. Every default below is the
+// value dev4 shipped, so a default build stays bit-identical (bench signature
+// 243f9a1c1ba5b36f at depth 4).
+#ifndef SB_NULLMOVE_R
+#define SB_NULLMOVE_R 3          // null-move base reduction
+#endif
+#ifndef SB_FUTILITY_MARGIN
+#define SB_FUTILITY_MARGIN 110   // futility margin per remaining depth
+#endif
+#ifndef SB_REV_FUTILITY_MARGIN
+#define SB_REV_FUTILITY_MARGIN 85 // reverse-futility margin per remaining depth
+#endif
+#ifndef SB_LMR_BASE
+#define SB_LMR_BASE 1            // base LMR reduction
+#endif
+#ifndef SB_DELTA_MARGIN
+#define SB_DELTA_MARGIN 200      // qsearch delta-pruning safety margin
+#endif
+#ifndef SB_EARLY_STABLE
+#define SB_EARLY_STABLE 6        // stable iterations before the early soft stop
+#endif
+#ifndef SB_EARLY_PERMILLE
+#define SB_EARLY_PERMILLE 550    // soft-budget fraction for the stable early stop
+#endif
+#ifndef SB_CLOCK_PERMILLE
+#define SB_CLOCK_PERMILLE 700    // soft-budget fraction for the clock early stop
+#endif
+#ifndef SB_QEVAL_LITE
+#define SB_QEVAL_LITE 0          // 1: qsearch stand-pat uses evaluate_lite()
+#endif
+#ifndef SB_SEE_CACHE
+#define SB_SEE_CACHE 0           // 1: reuse score_moves' SEE result in the qsearch loop
+#endif
+#if SB_QEVAL_LITE
+#define QSEARCH_EVAL(pos) evaluate_lite(pos)
+#else
+#define QSEARCH_EVAL(pos) evaluate(pos)
+#endif
+
 inline int reduction_for(int depth, int moveCount) {
-    int r = 1;
+    int r = SB_LMR_BASE;
     if (depth >= 6) r += 1;
     if (moveCount >= 8) r += 1;
     if (moveCount >= 24) r += 1;
@@ -164,6 +204,9 @@ void Search::score_moves(const Position& pos, MoveList& moves, Move hashMove, in
             // verdict; a capture of a piece at least as valuable as the
             // capturing one is winning anyway.
             const int seeScore = (params_.seePruning && gain < attackerValue) ? see(pos, m) : gain;
+#if SB_SEE_CACHE
+            moves[i].seeScore = seeScore;
+#endif
             // Winning and equal captures first, losing captures after quiets.
             score = 2000000 + (seeScore >= 0 ? 1000000 : 0) + 32 * gain + seeScore;
             if (move_type(m) == PromotionMove)
@@ -263,7 +306,7 @@ void Search::penalise_quiets(const Position& pos, const Move* moves, int count, 
 int Search::quiescence(Position& pos, int alpha, int beta, int ply) {
     if (!visit(ply)) return 0;
     pvLength_[ply] = 0;
-    if (ply >= MAX_PLY - 2) return evaluate(pos);
+    if (ply >= MAX_PLY - 2) return QSEARCH_EVAL(pos);
     if (pos.is_search_draw(ply)) return VALUE_DRAW;
 
     const bool inCheck = pos.in_check();
@@ -274,12 +317,12 @@ int Search::quiescence(Position& pos, int alpha, int beta, int ply) {
         if (moves.empty()) return -VALUE_MATE + ply;
         best = -VALUE_INFINITE;
     } else {
-        best = evaluate(pos);
+        best = QSEARCH_EVAL(pos);
         if (best >= beta) return best;
         alpha = std::max(alpha, best);
         // Delta pruning: if no single capture can lift the score to alpha, the
         // static evaluation is already the best this node can offer.
-        if (best + SeeValue[Queen] + 200 <= alpha) return best;
+        if (best + SeeValue[Queen] + SB_DELTA_MARGIN <= alpha) return best;
         generate_moves(pos, moves, GenType::QSearch);
         if (moves.empty()) {
             // No capture and no promotion: only stalemate can change the score.
@@ -292,7 +335,11 @@ int Search::quiescence(Position& pos, int alpha, int beta, int ply) {
     for (int i = 0; i < moves.size(); ++i) {
         next_move(moves, i);
         const Move m = moves[i].move;
+#if SB_SEE_CACHE
+        if (!inCheck && params_.seePruning && moves[i].seeScore < 0) continue;
+#else
         if (!inCheck && params_.seePruning && see(pos, m) < 0) continue;
+#endif
         pos.make_move(m);
         moveStack_[ply] = m;
         const int value = -quiescence(pos, -beta, -alpha, ply + 1);
@@ -365,14 +412,14 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
     // is good enough, provided no mate score can be involved.
     if (params_.reverseFutility && !pvNode && !inCheck && !mateWindow &&
         depth <= (params_.improving ? 8 : 6) &&
-        staticEval - (params_.improving ? (improving ? 70 : 105) : 85) * depth >= beta)
+        staticEval - (params_.improving ? (improving ? 70 : 105) : SB_REV_FUTILITY_MARGIN) * depth >= beta)
         return staticEval;
 
     // Null-move pruning. Disabled when the side to move has no non-pawn
     // material (zugzwang risk) and directly after another null move.
     if (params_.nullMove && allowNull && !pvNode && !inCheck && !mateWindow && depth >= 3 &&
         staticEval >= beta && has_non_pawn_material(pos)) {
-        const int reduction = 3 + depth / 5;
+        const int reduction = SB_NULLMOVE_R + depth / 5;
         // A null move is not a move: clear the slot so the child does not read
         // a stale previous move from a sibling branch or an earlier iteration.
         const Move savedPrevious = moveStack_[ply];
@@ -391,7 +438,7 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
     if (moves.empty()) return inCheck ? -VALUE_MATE + ply : VALUE_DRAW;
 
     score_moves(pos, moves, hashMove, ply);
-    const int futilityBase = staticEval + 110 * depth;
+    const int futilityBase = staticEval + SB_FUTILITY_MARGIN * depth;
     const int originalAlpha = alpha;
     int best = -VALUE_INFINITE;
     Move bestMove = MOVE_NONE;
@@ -725,8 +772,8 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
         // until the soft budget is exhausted (the hard budget still guards the
         // clock), trading later-move time for more nodes now.
         if (!params_.fullSoftBudget) {
-            if (stableIterations >= 6 && timer_.soft_usage_permille() > 550) break;
-            if (timer_.has_clock() && timer_.soft_usage_permille() > 700) break;
+            if (stableIterations >= SB_EARLY_STABLE && timer_.soft_usage_permille() > SB_EARLY_PERMILLE) break;
+            if (timer_.has_clock() && timer_.soft_usage_permille() > SB_CLOCK_PERMILLE) break;
         }
         if (stop.load(std::memory_order_relaxed)) { aborted_ = true; break; }
     }

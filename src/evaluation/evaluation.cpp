@@ -95,7 +95,7 @@ Bitboard mobility_area(const Position& p, Color us) {
 // The live evaluation of one side. Mirrors `accumulate_breakdown` below
 // term for term; `eval_breakdown_matches_evaluate` in the unit tests is what
 // keeps the two from drifting apart.
-Score features(const Position& p, Color us, const EvalParams& par) {
+Score features(const Position& p, Color us, const EvalParams& par, bool lite = false) {
     const Color them = ~us;
     const Bitboard pawns = p.pieces(us, Pawn);
     const Bitboard mobilityArea = mobility_area(p, us);
@@ -137,9 +137,11 @@ Score features(const Position& p, Color us, const EvalParams& par) {
 
     // Count geometrically available squares as a cheap activity proxy.
     for (PieceType pt : {Knight, Bishop, Rook, Queen}) {
+        if (lite && pt != Rook) continue; // lite: rook loop kept only for open-file terms
         b = p.pieces(us, pt);
         while (b) {
             Square s = pop_lsb(b);
+            if (!lite) {
             const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & mobilityArea);
             EvalParamId id = MobilityKnight;
             if (pt == Bishop) id = MobilityBishop;
@@ -147,6 +149,7 @@ Score features(const Position& p, Color us, const EvalParams& par) {
             else if (pt == Queen) id = MobilityQueen;
             out.mg += mobility * mgp(id);
             out.eg += mobility * egp(id);
+            }
             if (pt == Rook) {
                 const Bitboard file = FileBB[file_of(s)];
                 if (!(pawns & file)) {
@@ -168,18 +171,20 @@ Score features(const Position& p, Color us, const EvalParams& par) {
         const Bitboard shieldFiles = FileBB[file_of(k)] | AdjacentFilesBB[file_of(k)];
         out.mg += mgp(PawnShield) * popcount(pawns & shieldFiles & RankBB[frontRank]);
     }
-    const Bitboard zone = KingZoneBB[us][k];
-    for (PieceType pt : {Pawn, Knight, Bishop, Rook, Queen}) {
-        EvalParamId id = KingDangerPawn;
-        if (pt == Knight) id = KingDangerKnight;
-        else if (pt == Bishop) id = KingDangerBishop;
-        else if (pt == Rook) id = KingDangerRook;
-        else if (pt == Queen) id = KingDangerQueen;
-        b = p.pieces(them, pt);
-        while (b) {
-            Square s = pop_lsb(b);
-            const int hits = popcount(attacks_bb(pt, them, s, p.pieces()) & zone);
-            out.mg -= hits * mgp(id);
+    if (!lite) {
+        const Bitboard zone = KingZoneBB[us][k];
+        for (PieceType pt : {Pawn, Knight, Bishop, Rook, Queen}) {
+            EvalParamId id = KingDangerPawn;
+            if (pt == Knight) id = KingDangerKnight;
+            else if (pt == Bishop) id = KingDangerBishop;
+            else if (pt == Rook) id = KingDangerRook;
+            else if (pt == Queen) id = KingDangerQueen;
+            b = p.pieces(them, pt);
+            while (b) {
+                Square s = pop_lsb(b);
+                const int hits = popcount(attacks_bb(pt, them, s, p.pieces()) & zone);
+                out.mg -= hits * mgp(id);
+            }
         }
     }
     return out;
@@ -351,6 +356,16 @@ int evaluate(const Position& p) {
     }
     const EvalParams& par = active_eval_params();
     const Score w = features(p, White, par), b = features(p, Black, par);
+    const int mg = p.acc_mg(White) - p.acc_mg(Black) + w.mg - b.mg;
+    const int eg = p.acc_eg(White) - p.acc_eg(Black) + w.eg - b.eg;
+    const int score = taper(mg, eg, phase_of(p));
+    return p.side_to_move() == White ? score : -score;
+}
+
+int evaluate_lite(const Position& p) {
+    if (nnue::active_network() != nullptr) return evaluate(p);
+    const EvalParams& par = active_eval_params();
+    const Score w = features(p, White, par, true), b = features(p, Black, par, true);
     const int mg = p.acc_mg(White) - p.acc_mg(Black) + w.mg - b.mg;
     const int eg = p.acc_eg(White) - p.acc_eg(Black) + w.eg - b.eg;
     const int score = taper(mg, eg, phase_of(p));

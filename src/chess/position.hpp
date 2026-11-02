@@ -54,6 +54,9 @@ enum class GenType {
 struct ExtMove {
     Move move = MOVE_NONE;
     int  score = 0;
+    // Search-only scratch: score_moves() stores the SEE result here so the
+    // qsearch loop does not recompute it (SB_SEE_CACHE). Unused elsewhere.
+    int  seeScore = 0;
 };
 
 class MoveList {

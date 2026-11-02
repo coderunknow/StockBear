@@ -10,9 +10,13 @@ enum class Bound : std::uint8_t { None, Exact, Lower, Upper };
 // One table slot. The engine is single-threaded, so no atomic access is needed;
 // the UCI controller joins the search worker before any resize or clear.
 struct TTEntry {
+    // Packed to 32 bytes so a two-entry bucket occupies exactly one 64-byte
+    // cache line (was 40 bytes / 80-byte bucket). rule50 is clamped to 16 bits:
+    // it counts halfmoves since the last pawn move or capture and cannot
+    // exceed the game length in any real search (max-plies 240).
     Key key = 0;
-    std::uint64_t rule50 = 0;
     Key historyContext = 0;
+    std::uint16_t rule50 = 0;
     Move move = MOVE_NONE;
     std::int16_t value = 0;   // mate values normalized to the stored position
     std::int16_t eval = 0;    // static evaluation, when the search stored one
@@ -21,6 +25,7 @@ struct TTEntry {
     std::uint8_t extensions = 0;
     std::uint8_t generation = 0;
 };
+static_assert(sizeof(TTEntry) == 32, "TTEntry must fit one cache line per bucket");
 
 // Two-way bucketed transposition table.
 //
