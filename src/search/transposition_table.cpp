@@ -67,7 +67,7 @@ int TranspositionTable::value_to_table(int value, int ply) {
 }
 
 void TranspositionTable::store(Key key, std::uint64_t rule50, Key context, int extensions,
-                               Move move, int value, int depth, Bound bound, int ply) {
+                               Move move, int value, int depth, Bound bound, int ply, int eval) {
     Bucket& bucket = bucket_for(key, context, extensions);
     TTEntry* replace = nullptr;
     // Prefer an exact match (more information about this very position), then
@@ -99,6 +99,13 @@ void TranspositionTable::store(Key key, std::uint64_t rule50, Key context, int e
     replace->value = static_cast<std::int16_t>(value_to_table(value, ply));
     replace->depth = static_cast<std::int16_t>(std::min(depth, 1000));
     replace->bound = bound;
+    // A bound-only store keeps any static evaluation that is already known for
+    // this slot, so an eval-less store cannot erase a usable one.
+    if (eval != VALUE_NONE)
+        replace->eval = static_cast<std::int16_t>(std::max(-VALUE_KNOWN_WIN, std::min(VALUE_KNOWN_WIN, eval)));
+    else if (!(replace->key == key && replace->rule50 == rule50 &&
+               replace->historyContext == context && replace->extensions == extensions))
+        replace->eval = static_cast<std::int16_t>(VALUE_NONE);
     replace->generation = generation_;
 }
 

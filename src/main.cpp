@@ -1,5 +1,7 @@
 #include "uci/uci.hpp"
 #include "utilities/bench.hpp"
+#include "utilities/nnuecli.hpp"
+#include "utilities/selfplay.hpp"
 #include "utilities/types.hpp"
 #include <exception>
 #include <iostream>
@@ -32,10 +34,16 @@ int main(int argc, char** argv) {
                       << "                                    Evaluation score, contributions, parameter table\n"
                       << "  stockbear evaldata --input FILE [--output FILE] [--params FILE] [--check]\n"
                       << "                                    Tuner feature matrix / consistency check\n"
+                      << "  stockbear nnue [--net FILE] [--info] [--features|--eval] [--input FILE]\n"
+                      << "                                    Neural network identity, features, quantised eval\n"
+                      << "  stockbear selfplay --games N --out FILE [--nodes N] [--seed N]\n"
+                      << "                     [--maxplies N] [--hash MB]\n"
+                      << "                                    Deterministic self-play corpus generation\n"
                       << "  bench features: aspiration nullMove lmr reverseFutility futility\n"
                       << "                  seePruning checkExtension counterMoves\n"
                       << "                  continuationHistory captureHistory\n"
-                      << "                  historyMaluses lmrHistory\n";
+                      << "                  historyMaluses lmrHistory modernLmr\n"
+                      << "                  moveCountPruning iir improving ttEval\n";
             return 0;
         }
         if (command == "perft") return stockbear::perft_cli(argc - 2, argv + 2);
@@ -43,6 +51,8 @@ int main(int argc, char** argv) {
         if (command == "deadpos") return stockbear::deadpos_cli(argc - 2, argv + 2);
         if (command == "eval") return stockbear::eval_cli(argc - 2, argv + 2);
         if (command == "evaldata") return stockbear::evaldata_cli(argc - 2, argv + 2);
+        if (command == "nnue") return stockbear::nnue_cli(argc - 2, argv + 2);
+        if (command == "selfplay") return stockbear::selfplay_cli(argc - 2, argv + 2);
         std::cerr << "Unknown command: " << command << ". Use --help.\n";
         return 2;
     } catch (const std::exception& e) {

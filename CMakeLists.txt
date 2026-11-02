@@ -66,12 +66,17 @@ set(STOCKBEAR_CORE_SOURCES
     src/chess/zobrist.cpp
     src/evaluation/eval_params.cpp
     src/evaluation/evaluation.cpp
+    src/evaluation/nnue.cpp
+    src/evaluation/nnue_forward.cpp
+    src/evaluation/nnue_net_data.cpp
     src/search/search.cpp
     src/search/timeman.cpp
     src/search/transposition_table.cpp
     src/uci/uci.cpp
     src/utilities/bench.cpp
     src/utilities/evaldata.cpp
+    src/utilities/nnuecli.cpp
+    src/utilities/selfplay.cpp
 )
 
 add_library(stockbear_core STATIC ${STOCKBEAR_CORE_SOURCES})
@@ -82,6 +87,29 @@ target_compile_definitions(stockbear_core PUBLIC
     STOCKBEAR_VERSION_MINOR=${PROJECT_VERSION_MINOR}
     STOCKBEAR_VERSION_PATCH=${PROJECT_VERSION_PATCH})
 target_link_libraries(stockbear_core PUBLIC Threads::Threads)
+
+# --- Optional AVX2 neural-network kernel -------------------------------------
+# The engine must run on machines without AVX2, so the vectorised forward pass
+# lives in its own translation unit that is compiled with AVX2 enabled and is
+# entered only after a run-time CPUID check. When the compiler does not support
+# the flag, the portable scalar kernel is used and STOCKBEAR_HAVE_AVX2 is not
+# defined, so there is exactly one definition of the entry points either way.
+include(CheckCXXCompilerFlag)
+if(MSVC)
+    set(STOCKBEAR_SIMD_FLAG "/arch:AVX2")
+else()
+    set(STOCKBEAR_SIMD_FLAG "-mavx2")
+endif()
+check_cxx_compiler_flag("${STOCKBEAR_SIMD_FLAG}" STOCKBEAR_HAS_SIMD_FLAG)
+if(STOCKBEAR_HAS_SIMD_FLAG AND CMAKE_SYSTEM_PROCESSOR MATCHES "^(x86_64|AMD64|amd64|i.86)$")
+    target_sources(stockbear_core PRIVATE src/evaluation/nnue_forward_avx2.cpp)
+    set_source_files_properties(src/evaluation/nnue_forward_avx2.cpp PROPERTIES
+        COMPILE_OPTIONS "${STOCKBEAR_SIMD_FLAG}")
+    target_compile_definitions(stockbear_core PUBLIC STOCKBEAR_HAVE_AVX2=1)
+    message(STATUS "StockBear: AVX2 neural kernel enabled (${STOCKBEAR_SIMD_FLAG}), run-time detected")
+else()
+    message(STATUS "StockBear: AVX2 neural kernel unavailable, scalar kernel only")
+endif()
 
 # --- Engine executable -------------------------------------------------------
 add_executable(stockbear src/main.cpp)
@@ -108,6 +136,7 @@ if(STOCKBEAR_BUILD_TESTS)
         tests/unit/test_eval_baseline.cpp
         tests/unit/test_fen.cpp
         tests/unit/test_move.cpp
+        tests/unit/test_nnue.cpp
         tests/unit/test_position.cpp
         tests/unit/test_position_extra.cpp
         tests/unit/test_search.cpp
@@ -124,6 +153,9 @@ if(STOCKBEAR_BUILD_TESTS)
         STOCKBEAR_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
     add_test(NAME unit        COMMAND stockbear_tests unit)
+    # The neural-evaluation group has its own entry: it installs and clears the
+    # process-wide network, so it is kept separate from the rest of `unit`.
+    add_test(NAME nnue        COMMAND stockbear_tests nnue)
     # The runner filters by group name, so every group needs its own entry;
     # without this the position_extra group would never run under CTest.
     add_test(NAME position_extra COMMAND stockbear_tests position_extra)
@@ -153,7 +185,15 @@ if(STOCKBEAR_BUILD_TESTS)
                  COMMAND ${Python3_EXECUTABLE}
                          ${CMAKE_CURRENT_SOURCE_DIR}/tests/integration/test_uci_fuzz.py
                          $<TARGET_FILE:stockbear>)
-        set_tests_properties(uci_integration uci_fuzz PROPERTIES ENVIRONMENT "PYTHONUNBUFFERED=1" TIMEOUT 30)
+        # The engine's feature function against an independent re-implementation;
+        # a mismatch here means the training pipeline and the engine disagree
+        # about what a network input is, which is invisible without this test.
+        add_test(NAME nnue_features
+                 COMMAND ${Python3_EXECUTABLE}
+                         ${CMAKE_CURRENT_SOURCE_DIR}/tests/integration/test_nnue_features.py
+                         $<TARGET_FILE:stockbear>)
+        set_tests_properties(uci_integration uci_fuzz nnue_features PROPERTIES
+            ENVIRONMENT "PYTHONUNBUFFERED=1" TIMEOUT 30)
     else()
         message(WARNING "Python3 not found - UCI integration test will not be registered")
     endif()

@@ -2,6 +2,7 @@
 #include "chess/fen.hpp"
 #include "evaluation/evaluation.hpp"
 #include "evaluation/eval_params.hpp"
+#include "evaluation/nnue.hpp"
 #include <algorithm>
 #include <charconv>
 #include <cctype>
@@ -59,6 +60,16 @@ std::string info_text(const SearchResult& r, int multipv, int index) {
 }
 
 UciEngine::UciEngine(std::istream& input, std::ostream& output) : input_(input), output_(output) {
+    // Install the compiled-in network before any position exists. A build with
+    // no embedded network keeps the classical evaluation and says so in the
+    // `uci` handshake instead of advertising a feature it does not have.
+    if (nnue::embedded_network_available()) {
+        std::string netError;
+        if (nnue::install_embedded_network(&netError)) {
+            useNnue_ = true;
+            nnueSource_ = "embedded";
+        }
+    }
     std::string error;
     if (!position_.set(START_FEN, &error)) throw std::runtime_error("start position: " + error);
 }
@@ -117,6 +128,76 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     }
     std::string extra;
     const std::string key = lower(name);
+    if (key == "nnue" || key == "nnuefile") {
+        if (key == "nnue") {
+            const std::string lowered = lower(value);
+            if (lowered != "true" && lowered != "false") {
+                emit("info string setoption: NNUE expects true or false");
+                return;
+            }
+            if (lowered == "true") {
+                std::string loadError;
+                // A file loaded with NnueFile wins: the user asked for that
+                // network explicitly and switching the feature on must not
+                // silently replace it with the compiled-in one.
+                if (nnue::active_network() == nullptr) {
+                    if (!nnue::embedded_network_available()) {
+                        emit("info string setoption: NNUE is unavailable: this build embeds no "
+                             "network and no NnueFile has been loaded");
+                        return;
+                    }
+                    if (!nnue::install_embedded_network(&loadError)) {
+                        emit("info string setoption: NNUE could not be installed: " + loadError);
+                        return;
+                    }
+                    nnueSource_ = "embedded";
+                }
+                useNnue_ = true;
+            } else {
+                nnue::clear_network();
+                useNnue_ = false;
+                nnueSource_ = "none";
+            }
+        } else {
+            // An empty value restores the compiled-in network.
+            if (value.empty() || value == "<empty>") {
+                std::string loadError;
+                if (!nnue::install_embedded_network(&loadError)) {
+                    emit("info string setoption: " + loadError);
+                    return;
+                }
+                useNnue_ = true;
+                nnueSource_ = "embedded";
+            } else {
+                // A string value may contain spaces; everything after `value`
+                // belongs to the path, which `handle_setoption` has already
+                // reassembled into `value` only for the first token, so the rest
+                // is taken from the raw argument text.
+                std::string path = value;
+                std::string rest;
+                std::getline(in, rest);
+                while (!rest.empty() && rest.front() == ' ') rest.erase(rest.begin());
+                if (!rest.empty()) path += " " + rest;
+                std::string loadError;
+                const nnue::Network net = nnue::parse_network_file(path, &loadError);
+                if (net.l1 == 0) {
+                    emit("info string setoption: NnueFile could not load " + path + ": " + loadError);
+                    return;
+                }
+                if (!nnue::install_network(net, &loadError)) {
+                    emit("info string setoption: NnueFile is invalid: " + loadError);
+                    return;
+                }
+                useNnue_ = true;
+                nnueSource_ = path;
+            }
+        }
+        // Every stored accumulator belongs to the previous network.
+        position_.refresh_nnue_accumulator();
+        emit("info string neural evaluation: " + std::string(useNnue_ ? nnue::network_identity() : "off") +
+             " (" + nnueSource_ + ")");
+        return;
+    }
     if (key == "evalparams") {
         // A `type string` option is a path, and a path may contain spaces. The
         // parser above stopped at the first token, so take the rest of the line.
@@ -190,6 +271,11 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     else if (key == "reversefutility") flag = &params_.reverseFutility;
     else if (key == "seepruning") flag = &params_.seePruning;
     else if (key == "checkextension") flag = &params_.checkExtension;
+    else if (key == "modernlmr") flag = &params_.modernLmr;
+    else if (key == "movecountpruning") flag = &params_.moveCountPruning;
+    else if (key == "iir") flag = &params_.iir;
+    else if (key == "improving") flag = &params_.improving;
+    else if (key == "tteval") flag = &params_.ttEval;
     if (flag == nullptr) {
         emit("info string setoption: unknown option " + name); return;
     }
@@ -347,8 +433,15 @@ void UciEngine::loop() {
             emit(std::string("option name CaptureHistory type check default ") + check(params_.captureHistory));
             emit(std::string("option name HistoryMaluses type check default ") + check(params_.historyMaluses));
             emit(std::string("option name LMRHistory type check default ") + check(params_.lmrHistory));
+            emit(std::string("option name ModernLMR type check default ") + check(params_.modernLmr));
+            emit(std::string("option name MoveCountPruning type check default ") + check(params_.moveCountPruning));
+            emit(std::string("option name IIR type check default ") + check(params_.iir));
+            emit(std::string("option name Improving type check default ") + check(params_.improving));
+            emit(std::string("option name TTEval type check default ") + check(params_.ttEval));
             emit("option name MultiPV type spin default 1 min 1 max 8");
             emit("option name EvalParams type string default <empty>");
+            emit(std::string("option name NNUE type check default ") + check(useNnue_));
+            emit("option name NnueFile type string default <empty>");
             emit("uciok");
         } else if (command == "isready") emit("readyok");
         else if (command == "position") handle_position(arguments);

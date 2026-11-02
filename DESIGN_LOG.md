@@ -206,3 +206,56 @@
   25/25 on the strict suite and says plainly that the two numbers are not
   comparable. A suite is only as strong as the oracle that certifies it, and this
   is what it looks like when the oracle gets stricter.
+
+## 2026-11-02 — dev4: neural evaluation, measured and not shipped
+
+- **A learned evaluation was built to be measured, not to be assumed.** Every
+  piece — feature function, incremental accumulator, quantised format, scalar and
+  AVX2 kernels, self-play generator, trainer, quantiser, verifier — is original
+  code in this repository; no third-party weights, data or engine code. The
+  release still ships the classical evaluation, because the network **lost 708
+  Elo** (95 % CI [−1011, −405]) against it at 2,500 nodes per move. Shipping it
+  would have been a strength regression dressed as a feature.
+- **The input ordering is part of the network's contract, and getting it wrong is
+  silent.** With the two perspectives ordered by *colour* instead of
+  *side-to-move-first*, the same board maps to the same input with opposite
+  targets. The best fit is the constant 0.5, which is exactly what every
+  configuration converged to, at every learning rate, while passing every
+  structural test. Measured: correlation of colour-ordered material with the
+  side-to-move result −0.0003, of side-to-move material with the same target
+  +0.572. The ordering is now documented in `nnue_forward.hpp` and pinned by a
+  unit test that constructs the expected forward value both ways.
+- **Truncating shifts bias the evaluation downward.** `x >> shift` rounds towards
+  −∞; summed over a 128-wide layer this shrank the score by ~4 % relative to the
+  float network. Both kernels and the reference now round. Separately, calibrating
+  the activation range to the maximum leaves the typical activation using ~7 of
+  128 integer levels; a 99.9th-percentile range took the integer-vs-float error
+  from 16.2 to 11.7 cp rms by letting outliers saturate instead.
+- **Fixed-node matches carry no information unless the node budget is jittered.**
+  Play at a fixed node budget is deterministic, so both games of a colour-reversed
+  pair are identical and every pair scores 1.0: the pentanomial has zero variance
+  and the harness correctly refuses to report an interval. A 60-game control match
+  of one binary against itself returned `[0, 0, 30, 0, 0]`. The fix is a seeded
+  per-move node jitter (±12 % for experiments) plus a 240-opening random suite, so
+  the pair scores spread and the clustered interval has 120 clusters.
+- **A single fixed-time match can produce a confident false positive.** Two builds
+  that play *bit-identically* at a fixed node budget (same signatures, same node
+  counts, same per-game records) produced +29.0 [+1.5, +56.9] for one of them at
+  40 ms + 4 ms, while the same binary against itself measured −30.5 in that
+  control. The scheduler, not the engine, produced the effect. Fixed-time numbers
+  in this release are therefore labelled inconclusive unless they are far larger
+  than ~65 Elo or also appear at fixed nodes.
+- **Every new search feature measured neutral or negative**, and each was measured
+  against the same binary with a null control: ModernLMR −29/−31, MoveCountPruning
+  −39/−104, IIR −15/+7, Improving −26/−13, TTEval a verified no-op. dev3's search
+  is at a local optimum for its evaluation; the next gain has to come from the
+  evaluation, not from more pruning heuristics on top.
+- **Rejected on verifiability, not on merit:** SMP (one physical core here — a
+  `Threads` option could not be validated, so it is not advertised at all),
+  tablebases and an opening book (data/provenance burden, and a book hides search
+  weakness), singular extensions and ProbCut (no compute left to validate a
+  high-regression-risk change honestly).
+- **Counts must come from the tree, not from memory.** The dev3 notes said the
+  `unit` group had 37 tests; `git grep "TEST(unit," 32e7d9d -- tests` gives 39.
+  `docs/TESTING.md` now states the count as a property of the tree, and the dev4
+  report records the recount rather than silently editing history.

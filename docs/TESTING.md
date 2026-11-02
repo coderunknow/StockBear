@@ -27,9 +27,16 @@ Windows with the multi-configuration Visual Studio generator uses
 | `regression` | capture/unmake, en-passant hashing, FEN symbols, king-capture API guard, retained TT context |
 | `perft_quick`, `perft_full` | legal move generation against independently regenerated perft totals |
 | `stress` | deterministic random games with FEN/key/state verification after every move |
+| `nnue` | neural evaluation: feature layout and mirror symmetry, feature indices against an independent walk, incremental accumulator versus a from-scratch rebuild across captures/castling/promotion/en passant/null move, side-to-move-first perspective ordering, scalar versus AVX2 kernel, serialisation round trip and every rejection path, and the classical fallback when no network is active |
 | `deadpos` | FIDE Article 5.2.2: dead and alive classes, witness replay, closure property, terminal exclusion, budget-exhaustion safety, and exhaustive two-king and three-piece state-space sweeps (slower, labelled `slow`) |
 | `uci_integration` | black-box protocol: handshake, options, `position`/`go` variants, clocks, `stop` during `infinite`, terminal positions, repeated searches, clean exit; `go searchmoves` over depth/nodes/movetime/clocks, illegal and empty move lists, a list followed by a real keyword; `MultiPV` 1–8 with distinct ranked lines, fewer legal moves than requested, and a return to single-PV output |
 | `uci_fuzz` | 300 seeded malformed/cancellation cases, including `go` commands that must be rejected versus unknown tokens that must be ignored |
+| `nnue_features` | the engine's C++ feature function against an independent Python implementation over a set of positions, so a change to either side of the training/engine boundary fails CI |
+
+The `unit` group has **39** tests. That count is a property of the tree
+(`git grep -c "TEST(unit," tests/`), not of a document: the dev3 notes said 37
+and were wrong, and this table therefore describes what each entry covers rather
+than quoting a number for it.
 
 The `deadpos` entry runs the same tests as the CI step
 `./build/stockbear_tests deadpos`; the exhaustive sweeps are why the whole suite

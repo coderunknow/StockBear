@@ -293,7 +293,7 @@ def statistics(results):
             "ci_method": "Wilson on fractional game scores; approximation ignores pair dependence"}
 
 
-def play_game(a, b, index, opening, base_ms, inc_ms, max_plies, nodes=0):
+def play_game(a, b, index, opening, base_ms, inc_ms, max_plies, nodes=0, nodes_jitter=0.0):
     opening_name, opening_moves = opening
     white, black = (a, b) if index % 2 == 0 else (b, a)
     board = chess.Board()
@@ -310,6 +310,14 @@ def play_game(a, b, index, opening, base_ms, inc_ms, max_plies, nodes=0):
         node = node.add_variation(move)
     moves = opening_moves.copy()
     clocks = {chess.WHITE: float(base_ms), chess.BLACK: float(base_ms)}
+    # Fixed-node play is bit-for-bit deterministic, so a paired colour-reversed
+    # match produces *identical* results in both games of every pair and the
+    # pentanomial has zero variance: the harness then reports no interval and the
+    # match carries no information. Jittering the per-move node budget by a small
+    # fraction restores genuine variance while keeping the two engines on the same
+    # budget distribution. The jitter stream is seeded from the game index, so a
+    # match is still reproducible from --seed.
+    node_rng = random.Random(0x5EED0000 + index) if (nodes and nodes_jitter) else None
     for engine in (a, b):
         engine.new_game()
     termination = None
@@ -326,7 +334,11 @@ def play_game(a, b, index, opening, base_ms, inc_ms, max_plies, nodes=0):
         error = None
         text = None
         try:
-            text = engine.bestmove(moves, clocks, inc_ms, color, nodes)
+            move_nodes = nodes
+            if node_rng is not None:
+                move_nodes = max(1, int(round(nodes * node_rng.uniform(1.0 - nodes_jitter,
+                                                                    1.0 + nodes_jitter))))
+            text = engine.bestmove(moves, clocks, inc_ms, color, move_nodes)
         except (RuntimeError, TimeoutError, OSError) as exc:
             error = exc
         elapsed = (time.monotonic_ns() - start) / 1_000_000
@@ -387,6 +399,9 @@ def main():
     parser.add_argument("--hash", type=int, default=16, help="requested MB for each engine")
     parser.add_argument("--threads", type=int, default=1)
     parser.add_argument("--max-plies", type=int, default=300)
+    parser.add_argument("--nodes-jitter", type=float, default=0.0, metavar="F",
+                        help="randomise the per-move node budget by +/-F (0..0.9); "
+                             "needed for non-degenerate paired statistics at fixed nodes")
     parser.add_argument("--nodes", type=int, default=0, metavar="N",
                         help="search N nodes per move instead of using the clock "
                              "(deterministic; no time forfeits)")
@@ -404,7 +419,7 @@ def main():
     args = parser.parse_args()
     if args.games < 2 or args.games % 2:
         parser.error("--games must be positive and even")
-    if args.base_ms < 1 or args.inc_ms < 0 or not 1 <= args.hash <= 512 or args.threads < 1 or args.max_plies < 1 or args.nodes < 0:
+    if args.base_ms < 1 or args.inc_ms < 0 or not 1 <= args.hash <= 512 or args.threads < 1 or args.max_plies < 1 or args.nodes < 0 or not 0.0 <= args.nodes_jitter <= 0.9:
         parser.error("invalid clock, hash, thread or ply limit")
     # The PGN, JSONL and CSV outputs are opened in write mode; if two options
     # name the same file the later open truncates the earlier one and the
@@ -438,7 +453,7 @@ def main():
                   "engine_a_path": a.path, "engine_b_path": b.path,
                   "engine_a_options": a.effective, "engine_b_options": b.effective,
                   "base_ms": args.base_ms, "increment_ms": args.inc_ms,
-                  "nodes_per_move": args.nodes,
+                  "nodes_per_move": args.nodes, "nodes_jitter": args.nodes_jitter,
                   "hash_requested_mb_each": args.hash, "threads_requested_each": args.threads,
                   "host": platform.platform(), "machine": platform.machine(),
                   "python_chess": chess.__version__, "opening_file": args.openings,
@@ -462,7 +477,7 @@ def main():
             for i in range(args.games):
                 game, record = play_game(a, b, i, openings[(i//2) % len(openings)],
                                          args.base_ms, args.inc_ms, args.max_plies,
-                                         args.nodes)
+                                         args.nodes, args.nodes_jitter)
                 if i:
                     print(file=pgn)  # one separator between games, none after the last
                 print(game, file=pgn, flush=True)
@@ -503,7 +518,7 @@ def main():
             summary["unadjudicated"] = args.games - len(scores)
             summary["config"] = {"engine_a": a.name, "engine_b": b.name,
                                  "base_ms": args.base_ms, "increment_ms": args.inc_ms,
-                                 "nodes_per_move": args.nodes,
+                                 "nodes_per_move": args.nodes, "nodes_jitter": args.nodes_jitter,
                                  "hash_mb_each": args.hash, "threads_each": args.threads,
                                  "openings": args.openings, "seed": args.seed,
                                  "max_plies": args.max_plies}
