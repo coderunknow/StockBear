@@ -26,6 +26,14 @@ negative results themselves. Details in §6–§9 and §20.
 | Embedded neural network | **none** (`network=none` in the bench header) |
 | Search features enabled by default | exactly dev3's set; the five dev4 switches are off |
 
+> **Post-publication record.** This report was written before the release
+> existed, so its §1 rows describe the *intended* identity. The publication
+> actually happened on `9b5778c97ba3d3141ea61fbf3398b7fc231bbf64` (merge commit of
+> PR #6), tagged `v0.1.0-dev4`, with CI run `41392388489` green for that exact
+> commit. The published assets, their SHA-256 digests, and the verification that
+> was run against the downloadable archives after publication are recorded in
+> [`RELEASE_ASSETS.md`](https://github.com/coderunknow/StockBear/blob/main/benchmarks/results/0.1.0-dev4/RELEASE_ASSETS.md) — including what was *not* verified.
+
 ## 2. Scope and acceptance gates
 
 Scope: make dev4 measurably stronger than dev3 under equal thinking time, without

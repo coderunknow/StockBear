@@ -1,1 +1,6 @@
-request publication of v0.1.0-dev2 (verified CI run 41267078266)
+# Marker file: push a change to this file to request publication.
+# The publish-request workflow forwards the tag and the exact-commit CI run
+# below to release.yml, which re-verifies every gate before publishing.
+tag=v0.1.0-dev4
+ci_run=41392388489
+commit=9b5778c97ba3d3141ea61fbf3398b7fc231bbf64
