@@ -276,6 +276,7 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     else if (key == "iir") flag = &params_.iir;
     else if (key == "improving") flag = &params_.improving;
     else if (key == "tteval") flag = &params_.ttEval;
+    else if (key == "fullsoftbudget") flag = &params_.fullSoftBudget;
     if (flag == nullptr) {
         emit("info string setoption: unknown option " + name); return;
     }
@@ -438,6 +439,7 @@ void UciEngine::loop() {
             emit(std::string("option name IIR type check default ") + check(params_.iir));
             emit(std::string("option name Improving type check default ") + check(params_.improving));
             emit(std::string("option name TTEval type check default ") + check(params_.ttEval));
+            emit(std::string("option name FullSoftBudget type check default ") + check(params_.fullSoftBudget));
             emit("option name MultiPV type spin default 1 min 1 max 8");
             emit("option name EvalParams type string default <empty>");
             emit(std::string("option name NNUE type check default ") + check(useNnue_));

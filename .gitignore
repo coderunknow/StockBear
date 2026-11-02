@@ -36,3 +36,11 @@ Thumbs.db
 
 # External test engines (never committed; opponents only, see benchmarks/README.md)
 external/
+
+# dev5 local research data: self-play corpora, teacher labels, trained nets.
+# Regeneration commands and SHA-256 provenance are recorded in docs/ and
+# benchmarks/results/0.1.0-dev5/; the multi-hundred-MB raw corpora stay local.
+data/
+
+# dev5 NNUE training workspaces (large local artifacts; reports/hashes in docs)
+nnue-work/

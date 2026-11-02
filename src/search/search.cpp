@@ -720,9 +720,14 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
         if (limits.infinite) continue;
         if (timer_.soft_expired()) break;
         // A stable best move plus a well-used soft budget is a good moment to
-        // stop; otherwise the next iteration is still affordable.
-        if (stableIterations >= 6 && timer_.soft_usage_permille() > 550) break;
-        if (timer_.has_clock() && timer_.soft_usage_permille() > 700) break;
+        // stop; otherwise the next iteration is still affordable. dev5's
+        // FullSoftBudget candidate skips both early stops and always searches
+        // until the soft budget is exhausted (the hard budget still guards the
+        // clock), trading later-move time for more nodes now.
+        if (!params_.fullSoftBudget) {
+            if (stableIterations >= 6 && timer_.soft_usage_permille() > 550) break;
+            if (timer_.has_clock() && timer_.soft_usage_permille() > 700) break;
+        }
         if (stop.load(std::memory_order_relaxed)) { aborted_ = true; break; }
     }
 
