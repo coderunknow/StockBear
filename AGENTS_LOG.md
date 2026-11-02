@@ -402,3 +402,35 @@
 - The `unit` runner now prints a flushed `RUN` line per test: a segfaulting test
   otherwise leaves no record of which one died, and the Windows CI log was not
   reachable from this sandbox.
+
+## 2026-11-02 — dev4 session record
+
+- **Environment rebuilt twice.** The sandbox snapshot does not persist build
+  directories, `/tmp`, or corpora above the snapshot size cap, so `build-dev4`,
+  the self-play corpora and the training work directory disappeared between
+  turns and had to be rebuilt (cmake/python-chess/numpy reinstalled, corpora
+  regenerated, network retrained). Every command needed to rebuild them is
+  recorded in `benchmarks/training/README.md`; the committed `.nnue` file and its
+  measurements survived because they live in the repository.
+- **Accumulator audit.** A temporary instrumentation in `evaluation.cpp`
+  rebuilt the NNUE accumulator from scratch on every evaluation and compared it
+  with the incremental one over a full depth-6 and depth-7 bench: no mismatch.
+  The instrumentation was then removed (it is not part of the shipped code and
+  must not be re-added — `verify_state()` covers the invariant in tests).
+- **`NNUE true` semantics fixed.** It used to fail when a network had been loaded
+  with `NnueFile` and the build embeds none; it now keeps the loaded network
+  instead of rejecting or replacing it. Found by running a match with
+  `--a-option NnueFile=...`, where the harness refused the rejected option.
+- **Match bookkeeping.** Fixed-node matches are bit-identical between the two
+  games of a pair unless the node budget is jittered; the harness gained
+  `--nodes-jitter` and a 240-opening suite. `scripts/experiment_table.py` rebuilds
+  `experiments/summary.csv` from the raw JSONL, so the table cannot drift from the
+  records.
+- **Suites re-measured on the final binary** rather than inherited from dev3:
+  tactics 25/25 at 60,000 nodes; endgames 24/24 at 400,000 nodes and 16/24 at
+  20,000 nodes. The 20,000-node figure is specific to this build and is not
+  comparable to dev3's pre-review measurement.
+- **Release gate outcome:** no measurable strength change, so the release is
+  labelled "no regression, no gain" and the report says so in its first paragraph
+  and its verdict section. The tag and GitHub prerelease are created only after
+  the merge commit and a green CI run for that commit.

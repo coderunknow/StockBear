@@ -1,27 +1,32 @@
-# StockBear 0.1.0-dev3
+# StockBear 0.1.0-dev4
 
 StockBear is an **independently implemented**, single-threaded UCI chess engine
 written in C++17. This is an early development prerelease, not a stable or
 top-strength engine. It implements its own board, legal move generation,
 evaluation, search, FIDE dead-position analysis and UCI protocol; it does not
-wrap or require another engine. There is no neural-network evaluation.
+wrap or require another engine.
 
-Evidence and limitations are in the [dev3 evidence report](benchmarks/results/0.1.0-dev3/REPORT.md),
+Evidence and limitations are in the [dev4 evidence report](benchmarks/results/0.1.0-dev4/REPORT.md),
 the [dead-position specification](docs/DEAD_POSITIONS.md), the
 [tuning record](docs/TUNING.md) and the [release notes](RELEASE_NOTES.md).
-Summary: dev3 adds real MultiPV and `go searchmoves`, makes every evaluation
-weight a tunable parameter with an offline tuning pipeline, and adds EPD
-tactics/endgame suites certified by an independent mate oracle. Its evaluation is
-*unchanged from dev2*, and its search is the dev2 feature set with the five new
-ordering switches off. Three tuned evaluation candidates and two experimental
-search configurations were matched against the dev2 binary and none was stronger
-(+1.3 [−17.9, +20.5] and −16.2 [−33.0, +0.5] Elo for the search configurations;
-−132.5, 0.0 and −9.2 Elo for the evaluation candidates; 571–600 decided games
-each). The shipped configuration plays as dev2 did — a 200-game regression match
-scored 0.5000 with every opening pair level — so the release is a correctness,
-protocol and tooling release, not a strength claim. dev2's own result stands:
-+235 Elo over dev1 and 0.5/20 against Stockfish 11. No match against Stockfish 19
-was possible in the build environment, and no superiority claim is made.
+
+**What dev4 is, stated plainly.** dev4 builds a complete neural evaluation of its
+own — features, incrementally maintained accumulator, quantised file format,
+scalar and AVX2 kernels, self-play generator, trainer, quantiser and an
+independent verifier — and then measures it: at 2,500 nodes per move it **loses
+708 Elo (95 % CI [−1011, −405])** to the classical evaluation of the same binary.
+The five search refinements added in the same release are all neutral or negative
+at both a fixed node budget and a fixed time control. **All of it ships disabled;
+the default configuration plays exactly as dev3 did**, with identical depth-6 and
+depth-7 benchmark signatures (`e06c4352681ae8eb`, `5bceff035f2a4ae4`). The release
+therefore claims **no measurable strength gain** — its value is verified
+infrastructure, a measurement method that can resolve small effects (the previous
+release's fixed-node matches could not: every colour-reversed pair scored
+identically, leaving the statistics with zero variance), and a documented set of
+negative results. The classical evaluation and the dev3 search remain the default.
+dev3's own baseline numbers still apply: it played as dev2 did, which was +235 Elo
+over dev1 and 0.5/20 against Stockfish 11; no match against Stockfish 19 was
+possible in the build environment, and no superiority claim is made.
 
 ## Requirements
 
@@ -87,16 +92,27 @@ search, `quit` stops and exits, and `isready` stays responsive during search. A
 terminal position returns `bestmove 0000`.
 
 Options: `Hash` (spin, 1–512 MiB), `MultiPV` (spin, 1–8), `EvalParams` (string,
-a parameter file; empty restores the shipped set), plus boolean search-feature
-switches `NullMove`, `LMR`, `Aspiration`, `Futility`, `ReverseFutility`,
-`SEEPruning`, `CheckExtension`, `CounterMoves`, `ContinuationHistory`,
-`CaptureHistory`, `HistoryMaluses` and `LMRHistory`. The first seven default to
-the released behaviour; the five `dev3` ordering switches default to **off**
-because they measured neutral to slightly negative (see the evidence report) and
-cost about 8 % of the time at a fixed depth. Every switch exists so ablations can
-be measured by matches, and a GUI that never sends them is unaffected. There is
-no `Threads` option because the search is single-threaded. Ponder, Chess960, an
-opening book and tablebases are not implemented. Malformed commands are reported
+a parameter file; empty restores the shipped set), `NNUE` (check) and `NnueFile`
+(string, a network file), plus boolean search-feature switches `NullMove`, `LMR`,
+`Aspiration`, `Futility`, `ReverseFutility`, `SEEPruning`, `CheckExtension`,
+`CounterMoves`, `ContinuationHistory`, `CaptureHistory`, `HistoryMaluses`,
+`LMRHistory`, `ModernLMR`, `MoveCountPruning`, `IIR`, `Improving` and `TTEval`.
+The first seven default to the released behaviour; the five `dev3` ordering
+switches and the five `dev4` switches default to **off** because they measured
+neutral to negative (see the evidence report). Every switch exists so ablations
+can be measured by matches, and a GUI that never sends them is unaffected.
+
+`NNUE` defaults to **false** and the release binary embeds no network, so
+`setoption name NNUE value true` reports that no network is available;
+`setoption name NnueFile value <path>` loads one from disk and switches to it,
+and an empty path restores the compiled-in network (none in this build). The
+dev4 network used in the experiments is in
+[`benchmarks/training/`](benchmarks/training/README.md) and can be loaded the same
+way; it is **not** recommended for play, because it measured 708 Elo weaker than
+the classical evaluation.
+
+There is no `Threads` option because the search is single-threaded. Ponder,
+Chess960, an opening book and tablebases are not implemented. Malformed commands are reported
 as `info string` messages and never replace a valid position.
 
 `go searchmoves <moves>` restricts the search to the listed legal root moves:
@@ -157,6 +173,9 @@ repetition history.
 ./build/stockbear bench --movetime 200
 ./build/stockbear bench --depth 7 --param nullMove=0
 ./build/stockbear bench --depth 7 --params benchmarks/params/dev3-shipped.txt
+./build/stockbear bench --depth 7 --no-nnue          # compare without the network
+./build/stockbear bench --depth 7 --network net.nnue # compare with a network
+./build/stockbear bench --depth 7 --param iir=1      # in-binary ablation
 ./build/stockbear eval --fen 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' --top 5
 python3 scripts/run_suite.py --engine ./build/stockbear \
   --epd benchmarks/tactics/mate_suite.epd --mode tactics --nodes 60000 \
@@ -181,6 +200,11 @@ time forfeits and illegal moves as losses. See
 - [Dead positions (FIDE 5.2.2): specification, proof, limits](docs/DEAD_POSITIONS.md)
 - [Testing and independent validation](docs/TESTING.md)
 - [Benchmarking and match methodology](docs/BENCHMARKING.md)
+- [dev4 evidence report](benchmarks/results/0.1.0-dev4/REPORT.md)
+- dev4 research, architecture, training, benchmarks and limitations:
+  [research](docs/DEV4_RESEARCH.md), [architecture](docs/DEV4_ARCHITECTURE.md),
+  [training](docs/DEV4_TRAINING.md), [benchmarks](docs/DEV4_BENCHMARKS.md),
+  [limitations](docs/DEV4_LIMITATIONS.md)
 - [dev3 evidence report](benchmarks/results/0.1.0-dev3/REPORT.md)
 - [Evaluation tuning: pipeline, dataset and the negative result](docs/TUNING.md)
 - [dev2 evidence report](benchmarks/results/0.1.0-dev2/REPORT.md)
