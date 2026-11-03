@@ -1,3 +1,17 @@
+> **SUPERSEDING STATUS NOTICE (append-only).** This report describes the
+> historical cycle that ended at pushed commit `797f5cbed45433622a54044163d91c73dbd22b75`
+> (gate FAIL, no PR/tag/release). Its overall verdict remains valid for that
+> cycle. Two statements are now **superseded**: (1) "external rating ladder NOT
+> COMPLETED" — the ladder was subsequently executed (see
+> `docs/DEV6_EXTERNAL_LADDER.md` §0 and `docs/DEV6_EXTERNAL_LADDER_REPORT.md`);
+> (2) "M0 measurement foundation not established" — see
+> `docs/DEV6_EXP0030_BUILD_INTEGRITY.md`. Subsequent local experiments
+> exp-0031..exp-0035 and the CURRENT overall status are in
+> **`docs/DEV6_STATUS_REPORT.md`**, which is authoritative. No dev6 gate is
+> met and no release action has been taken.
+>
+> ---
+>
 # StockBear v0.1.0-dev6 — Final research report
 
 **Verdict: the mandatory strength gate is NOT MET.** The candidate is a measured
