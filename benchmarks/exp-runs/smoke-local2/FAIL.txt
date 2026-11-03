@@ -1,2 +1,0 @@
-FATAL: tournament match exited 1 (see match.stdout.log)
-WARN: could not push results for smoke-local2
