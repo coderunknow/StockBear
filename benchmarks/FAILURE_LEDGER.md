@@ -790,3 +790,119 @@ pruning/ordering, best-of-N param selection, fixed-node-only conclusions).
 - **Continue / abandon / revisit:** CONTINUE to exp-0031 (M0.2 external ladder).
   Do NOT repeat the +33 control on mismatched toolchains. Next gate prerequisite
   satisfied: Track A is a valid controlled source-level comparison environment.
+
+## exp-0031 — external ladder pilot (M0.2 anchor selection)
+
+- **ID / class:** exp-0031, MEASUREMENT / anchor-selection pilot (not a strength
+  gate test). Prereg `docs/DEV6_PREREG_EXP0031.md` §2, committed BEFORE results
+  (`5415c87`).
+- **Hypothesis:** a fixed-node, strength-limited multi-level opponent pool can
+  produce >= 2 non-saturated ("informative", score in `[0.20,0.80]`) anchors
+  bracketing the exact released dev5 without any external binary/network CDN.
+- **Identities:** subject = immutable official dev5
+  `391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918`,
+  `EvalParams=research-data/params_abc.txt`, `TTEval=true`. Anchors = pinned
+  `benchmarks/binaries/external/` SF8/SF9/SF10/SF11 (source/binary SHA-256 in
+  `benchmarks/dev6-baseline/external_opponents.json`) and dev4
+  `1c5b61a7…`; SF11 `Skill Level 0/4/8/12/16/20`.
+- **Build/runtime env:** GCC 12.2.0, no `-march=native`, `-mpopcnt -mbmi2
+  -mlzcnt -DSB_SEE_CACHE=1 -flto=4`; SF built `make -j2 build
+  ARCH=x86-64-modern COMP=gcc`. Fixed-node `go nodes 6000` +/-15 %, hash 16,
+  threads 1, max 240 plies, paired colour-reversed fresh openings; 40 games per
+  anchor, 10 disjoint 20-opening slices. 4-game config smoke DISCARDED.
+- **Commands / raw:** `scripts/dev6_ladder_pilot.py`, `scripts/tournament.py`,
+  `scripts/match_stats.py`; `benchmarks/exp-runs/exp0031-pilot-*/`,
+  `benchmarks/exp-runs/exp0031-smoke/` (DISCARDED),
+  `benchmarks/dev6-baseline/ladder_pilot.json`.
+- **Results:** SF11-L0 0.950, L4 0.762, L8 0.400, L12 0.275, L16 0.237, L20
+  0.125, SF8 0.062, SF9 0.025, SF10 0.125, dev4 0.600. **5 informative
+  anchors** (SF11-L4/L8/L12/L16, dev4), **0** time forfeits / illegal / UCI
+  failures. Decision (frozen rule, >=2 informative): **PROCEED**.
+- **Outcome / classification:** SUCCESS (pilot objective). Deviations disclosed
+  in prereg §6.1 (match seeds `2026110710..0719` vs frozen
+  `2026110701..0710`; clerical only).
+- **Lessons / non-repeatable:** strength-limited SF11 skill levels DO bracket
+  dev5 at fixed nodes; full-strength SF8/9/10 saturate. Do not retry blocked
+  release-CDN downloads; codeload source builds work. Never present SF11
+  `UCI_Elo` as a certified external rating.
+- **Next:** exp-0032 decisive ladder.
+
+## exp-0032 — decisive external rating ladder + BTD fit (M0.2)
+
+- **ID / class:** exp-0032, MEASUREMENT / rating estimation. Prereg
+  `docs/DEV6_PREREG_EXP0031.md` §3 + §6.2 (deviation disclosed).
+- **Hypothesis:** a connected bipartite ladder with a draw-aware BTD model yields
+  a reproducible pool-specific internal rating with honest uncertainty,
+  saturation handling and model diagnostics, with dev5 AND dev6 in one pool.
+- **Design / control:** 8 anchors (SF11-L4/L8/L12/L16/L20 + SF8/SF9/SF10) x
+  5 subjects (dev4, dev5_official, dev5_rebuilt, dev6_champion,
+  dev6_failed) x 80 games = **3,200 games**, 40 fresh disjoint 40-opening
+  slices, fixed-node 6000 +/-15 %, hash 16, threads 1, max 240 plies.
+  `scripts/dev6_ladder.py`, `scripts/fit_ladder.py`.
+- **Raw:** `benchmarks/exp-runs/exp0032-ladder-*/` (PGN/JSONL/CSV/cell.json),
+  `benchmarks/dev6-baseline/ladder_cells.json`, `ladder_results.json`,
+  `docs/DEV6_EXTERNAL_LADDER_REPORT.md`.
+- **Results:** 3,186 adjudicated games, 14 `UNADJUDICATED_MAX_PLIES`, **0**
+  TIME_FORFEIT / illegal / crash / UCI failures, 1,600 clusters. BTD MLE
+  `nu=0.190`, NLL 2101.9, per-cell residual RMSE 0.0328, 1,000 cluster
+  bootstrap replicates. Internal ratings (mean 0, 95% CI): sf8 +485.8
+  [+407.6,+602.0], sf10 +330.8 [+270.1,+413.0], sf11-L20 +312.3
+  [+245.9,+387.4], sf9 +301.9 [+243.6,+371.8], sf11-L16 -4.3 [-41.7,+33.5],
+  sf11-L12 -9.8 [-52.1,+31.1], sf11-L8 -59.0 [-94.5,-24.9],
+  dev6_champion -169.0 [-210.6,-134.1], dev5_rebuilt -173.9 [-214.7,-136.3],
+  dev6_failed -184.7 [-227.5,-149.7], dev4 -197.9 [-238.4,-162.3],
+  dev5_official **-205.0 [-246.8,-165.7]**, sf11-L4 -427.4 [-479.7,-388.1].
+  Saturated cells (sf8, sf10) retained.
+- **Calibration:** **NOT DEFENSIBLY CALIBRATED.** Rough affine context from
+  SF11's own `UCI_Elo` (slope 1.62, intercept 2449.8, anchor residual SD
+  **199 Elo**) gives dev5 ~2118 "context Elo"; systematic error unknown and
+  likely large. NO absolute Elo, NO CCRL equivalence, NO gap-to-3000 claim.
+- **Outcome / classification:** PARTIAL SUCCESS — ladder implemented and fitted
+  with qualified results, but the **disjoint-slice confound** makes the ordering
+  of the five StockBear subjects unreliable (`dev5_official` rated ~31 internal
+  Elo BELOW bench-identical `dev5_rebuilt`, contradicting exp-0030). Leave-one-
+  anchor-out subject ordering is unstable. SF11 skill anchors are non-monotonic
+  (L12~L16, big L16->L20 jump); SF11 `Skill::pick_best` is time-seeded and not
+  bitwise reproducible.
+- **Root cause:** assigning a DIFFERENT opening slice to each cell mixes slice
+  difficulty with engine strength in cross-cell comparisons. Recording this, not
+  smoothing it.
+- **Lessons / non-repeatable:** never allocate disjoint slices across cells whose
+  ratings will be compared; use a shared paired opening set. Fixed-node !=
+  fixed-time. Do not claim subject-level ordering from a star ladder with
+  per-cell slices.
+- **Next:** exp-0032b paired shared-opening sensitivity (registered addendum),
+  then update ladder docs; exp-0033 strength direction.
+
+## exp-0032b — paired shared-opening sensitivity (confound check)
+
+- **ID / class:** exp-0032b, registered ADDENDUM (prediction frozen BEFORE its
+  results in `scripts/dev6_ladder_paired.py` docstring), MEASUREMENT diagnostic.
+- **Hypothesis:** the star ladder's ~31 internal-Elo official/rebuilt gap is an
+  opening-slice artifact, so the three champion binaries must be statistically
+  indistinguishable on a SHARED opening set; `dev6_failed` should remain
+  measurably weaker than `dev6_champion`.
+- **Design / control:** 5 subjects full round-robin (10 pairings x 200 games =
+  2,000 games), ONE shared 100-opening suite (SHA `e281ae5e0ab5bd30…`), identical
+  opening order via seed `2026111100`, colour-reversed, fixed-node 6000 +/-15 %,
+  hash 16, threads 1, max 240 plies. `scripts/dev6_ladder_paired.py`.
+- **Raw:** `benchmarks/exp-runs/exp0032b-paired-*/`,
+  `benchmarks/dev6-baseline/ladder_paired.json`.
+- **Results:** paired BTD (`nu=0.472`) internal Elo: dev5_official +24.6,
+  dev5_rebuilt +12.3, dev6_champion 0.0, dev4 -16.9, dev6_failed -20.0. Every
+  head-to-head 95% CI includes zero: official/rebuilt +20.9 [-13.6,+55.8],
+  official/champion +20.9 [-13.6,+55.8], champion/failed +29.6 [-9.7,+69.7],
+  failed/dev4 +20.9 [-17.9,+60.2], official/dev4 +12.2 [-22.7,+47.2].
+  **0** time forfeits.
+- **Outcome / classification:** Prediction 1 CONFIRMED (three champion binaries
+  indistinguishable; paired fit REVERSES the star ordering -> star-ladder
+  subject ordering unreliable). Prediction 2 NOT CONFIRMED (champion/failed
+  point estimate right direction but 200 games underpowered for ~20 Elo; no
+  strength conclusion). Fixed-node/fixed-time non-interchangeability confirmed:
+  official/dev4 `+12.2 [-22.7,+47.2]` here vs historical fixed-time exp-0024
+  `+64.7 [+57.5,+72.0]`.
+- **Lessons:** M0.2 ladder is implemented with a defensible QUALIFIED result,
+  but only the anchor separation / coverage is reliable; subject-level ratings
+  must come from the paired design WITH its CIs. 200 games/pairing cannot
+  resolve ~20 Elo effects: future paired screens need >= ~1,000 games/pairing.
+- **Next:** exp-0033 isolated strength direction; no gate weakened.

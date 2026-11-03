@@ -22,8 +22,7 @@ absolute rating in any specified external pool (see
 - dev6 cycle result: see `docs/DEV6_CONFIRMATION.md` / `benchmarks/FAILURE_LEDGER.md`.
   The +75 gate was the acceptance criterion for this cycle; it is reported
   honestly whether met or not.
-- Absolute external rating: **NOT MEASURED** (blocker documented). Gap to 3,000:
-  **UNKNOWN**.
+- Absolute external rating: **STILL NOT DEFENSIBLY CALIBRATED** (ladder executed but fixed-node/pool-specific; SF11 `UCI_Elo` contextual anchor has ~199 Elo residual SD). Gap to 3,000: **UNKNOWN, NOT ASSERTED**.
 
 ## Weakness inventory (from the Failure Ledger and this cycle's evidence)
 

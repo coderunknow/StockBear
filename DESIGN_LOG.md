@@ -340,3 +340,29 @@ binary-level NPS equivalence before any fixed-time comparison; do not treat a
 different-image rebuild as a neutral candidate. Direction ABANDONED per the
 Failure Ledger; next work must start from M0 (measured external rating) then a
 materially different, correctness-verified evaluator. See docs/DEV6_REPORT.md.
+
+## M0 measurement foundation + first post-M0 isolated direction (superseding status note)
+
+The six-feature direction remains ABANDONED (documented above). Subsequent work:
+
+1. **Toolchain control (exp-0030).** Rebuilt dev5 and candidate in ONE pinned
+   GCC 12.2.0 / `-flto=4` environment, kept the official artifact immutable.
+   Bit-exact fixed-node behaviour and NPS within 3 % prove Track A is valid;
+   the +33 Elo control was an ubuntu-22.04-vs-24.04 build-image artifact. Any
+   future fixed-time comparison must use identical toolchains AND isolated
+   runners (local 2-vCPU clock noise: 5 forfeits in 400 games).
+2. **External ladder (exp-0031/0032).** Built SF8-SF11 + Weiss 2.0 from official
+   source archives (no blocked CDN, no NNUE weights), SHA-pinned everything,
+   used fixed-node `go nodes 6000` to remove clock noise, and fitted a
+   draw-aware BTD model. Design lesson learned the hard way: assigning a
+   **different opening slice to each cell** confounds all cross-cell ratings.
+   exp-0032b (one shared opening set for all subjects) reversed the star
+   ladder's subject ordering — so the star ladder's subject ordering must NOT
+   be used. Next ladder MUST use a shared paired opening set and >= ~1,000
+   games/pairing. Rating is pool-specific INTERNAL; never equate fixed-node
+   with fixed-time Elo (dev5 vs dev4: +12.2 fixed-node vs +64.7 fixed-time).
+3. **exp-0033 razoring.** `SearchParams::razoring` was declared but
+   unimplemented/unexposed — a genuinely unmeasured direction, not a repeat.
+   Implemented as a default-off UCI switch on ONE binary so the ablation has
+   zero toolchain confound. Prereg `docs/DEV6_PREREG_EXP0033.md`. Efficiency
+   result is mixed and reported honestly. No gate weakened.

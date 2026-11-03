@@ -95,3 +95,50 @@ Observed draw rate 0.107; fit NLL 2101.9; per-cell residual RMSE 0.033; converge
 **The numeric gap to 3,000 Elo is NOT defensible from this pool and is NOT asserted.** 3,000 Elo remains a long-term strategic target. Published CCRL ratings and SF11 UCI_Elo are contextual anchors only.
 
 Raw: `benchmarks/exp-runs/exp0032-ladder-*/` (PGN/JSONL/CSV/cell.json), `benchmarks/dev6-baseline/ladder_cells.json`, machine-readable `benchmarks/dev6-baseline/ladder_results.json`. Opponent identities: `docs/DEV6_EXTERNAL_OPPONENTS.md`.
+
+
+## exp-0032b — PAIRED shared-opening sensitivity (confound check)
+
+Registered addendum to exp-0032, prediction frozen before results in the
+`scripts/dev6_ladder_paired.py` docstring. exp-0032 used 40 **disjoint**
+40-opening slices, so cross-subject comparisons mix engine strength with slice
+difficulty; its fitted `dev5_official` (-205.0) vs `dev5_rebuilt` (-173.9) gap
+contradicts exp-0030's bench-identical binaries. exp-0032b removes the confound:
+all 5 subjects play a full round-robin on **one shared 100-opening suite**
+(SHA `e281ae5e0ab5bd30...`), identical opening ORDER (seed `2026111100`),
+colour-reversed, 200 games per pairing, fixed-node 6000 +/- 15 %.
+
+| subject | paired BTD internal Elo |
+|---|---|
+| dev5_official | +24.6 |
+| dev5_rebuilt | +12.3 |
+| dev6_champion | 0.0 |
+| dev4 | -16.9 |
+| dev6_failed | -20.0 |
+
+`nu = 0.472` (higher draw rate than the star pool's 0.190). 2,000 games,
+**0** time forfeits. Every head-to-head two-sided 95% opening-clustered CI
+includes zero: `dev5_official` vs `dev5_rebuilt` `+20.9 [-13.6,+55.8]`,
+`dev5_official` vs `dev6_champion` `+20.9 [-13.6,+55.8]`,
+`dev5_official` vs `dev6_failed` `+29.6 [-9.7,+69.7]`,
+`dev5_official` vs `dev4` `+12.2 [-22.7,+47.2]`,
+`dev5_rebuilt` vs `dev6_failed` `+29.6 [-9.7,+69.7]`,
+`dev6_champion` vs `dev6_failed` `+29.6 [-9.7,+69.7]`,
+`dev6_failed` vs `dev4` `+20.9 [-17.9,+60.2]`.
+
+**Conclusion (honest):** the three champion binaries are statistically
+indistinguishable, so the star ladder's ~31 internal-Elo official/rebuilt gap
+WAS a slice artifact; the paired fit even reverses the subject ordering.
+**The star ladder's ordering of the five StockBear subjects is not reliable.**
+Only its anchor separation, pooled rating coverage and residual diagnostics are
+usable. The second prediction (that `dev6_failed` would remain *measurably*
+weaker) was NOT confirmed: the point estimate is in the right direction but
+200 games cannot resolve a ~20 Elo effect. No strength conclusion is drawn.
+
+Additional non-interchangeability evidence: on this fixed-node paired suite
+`dev5_official` vs `dev4` is only `+12.2 [-22.7,+47.2]`, while the historical
+fixed-time exp-0024 measured `+64.7 [+57.5,+72.0]` on a different suite. A
+fixed-node ladder rating is NOT a fixed-time Elo.
+
+Raw: `benchmarks/exp-runs/exp0032b-paired-*/`,
+`benchmarks/dev6-baseline/ladder_paired.json`.

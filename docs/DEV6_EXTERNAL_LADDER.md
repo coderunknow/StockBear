@@ -1,6 +1,153 @@
+# v0.1.0-dev6 — External rating ladder (EXECUTED results + preserved historical design)
+
+## §0. Status: LADDER EXECUTED — pool-specific INTERNAL rating, NOT absolute Elo
+
+**Superseding notice.** Everything below `--- Appendix A ---` is the ORIGINAL
+design dossier from the earlier cycle, preserved verbatim. Its "NOT COMPLETED /
+BLOCKED" status and its 40+4 ms / NNUE-download plan are **superseded** by the
+executed ladder described here. Historical text is not silently rewritten.
+
+The external ladder is now **implemented and measured** (M0.2):
+
+| item | result |
+|---|---|
+| exp-0031 pilot | 10 anchors × 40 games = 400 games, **5 informative anchors** (scores in `[0.20,0.80]`), **0** time forfeits → PROCEED |
+| exp-0032 decisive | connected bipartite star: **8 anchors × 5 subjects × 80 games = 3,200 games**; 3,186 adjudicated, 14 `UNADJUDICATED_MAX_PLIES`, **0** time forfeits / illegal moves / UCI failures |
+| exp-0032b sensitivity | paired **shared-opening** round-robin (5 subjects, 10 pairings × 200 games) to remove the disjoint-slice confound |
+| model | draw-aware **Bradley-Terry-Davidson** MLE, `nu = 0.190`, 1,000 opening-cluster bootstrap replicates, 1,600 clusters, per-cell residual RMSE `0.0328`, NLL `2101.9` |
+| control | **fixed node** `go nodes 6000` +/-15 %, hash 16 MB, 1 thread, max 240 plies, paired colour-reversed fresh disjoint openings |
+
+Fixed-node is deliberate: exp-0030 E4 measured `-22.6 [-47.4,+2.0]` with 5
+TIME_FORFEIT events on this shared 2-vCPU sandbox, so local fixed-time matches
+are clock-noise-confounded. **This ladder's rating is therefore a fixed-node,
+pool-specific INTERNAL rating and is NOT a 40+4 ms Elo, NOT CCRL/CEGT/FIDE
+comparable, and NOT an absolute rating.**
+
+### Pinned opponent pool (all built from official source archives)
+
+`SF8`, `SF9`, `SF10`, `SF11` (tags `sf_8`..`sf_11`), `Weiss 2.0` (tag `v2.0`).
+Exact tag commits, source/binary SHA-256, build commands, UCI option sets and
+licence notices: `benchmarks/dev6-baseline/external_opponents.json`,
+`docs/DEV6_EXTERNAL_OPPONENTS.md`, `THIRD_PARTY.md`. **Stockfish is an opponent
+and benchmark only, never a source-code base.** Weiss 2.0 lacks `go nodes` and
+is pinned for future fixed-depth/time diagnostics but **excluded** from the
+fixed-node ladder; Weiss master failed to build (C++ enum in a C11 header); BBC
+was excluded (no `go nodes`). SF8/9/10 and SF11 `Skill Level 0..20` provide the
+strength span; SF11-L20/SF8/SF9/SF10 are deliberately saturated strong anchors
+and are retained, never hidden.
+
+### exp-0031 pilot (anchor selection, frozen in `docs/DEV6_PREREG_EXP0031.md`)
+
+dev5 official vs each anchor, 40 games each, `--nodes 6000`: SF11-L0 `0.950`,
+L4 `0.762`, L8 `0.400`, L12 `0.275`, L16 `0.237`, L20 `0.125`, SF8 `0.062`,
+SF9 `0.025`, SF10 `0.125`, dev4 `0.600`. Informative: **SF11-L4/L8/L12/L16 and
+dev4**. 4-game config smoke test was DISCARDED per prereg.
+
+### exp-0032 fitted internal ratings (mean 0; two-sided 95% cluster-bootstrap CI)
+
+| engine | internal Elo | 95% CI | games |
+|---|---|---|---|
+| sf8 | +485.8 | [+407.6, +602.0] | 400 |
+| sf10 | +330.8 | [+270.1, +413.0] | 399 |
+| sf11-L20 | +312.3 | [+245.9, +387.4] | 399 |
+| sf9 | +301.9 | [+243.6, +371.8] | 399 |
+| sf11-L16 | -4.3 | [-41.7, +33.5] | 396 |
+| sf11-L12 | -9.8 | [-52.1, +31.1] | 397 |
+| sf11-L8 | -59.0 | [-94.5, -24.9] | 397 |
+| dev6_champion | -169.0 | [-210.6, -134.1] | 635 |
+| dev5_rebuilt | -173.9 | [-214.7, -136.3] | 637 |
+| dev6_failed | -184.7 | [-227.5, -149.7] | 636 |
+| dev4 | -197.9 | [-238.4, -162.3] | 638 |
+| **dev5_official** | **-205.0** | **[-246.8, -165.7]** | 640 |
+| sf11-L4 | -427.4 | [-479.7, -388.1] | 399 |
+
+Full per-pairing scores/residuals, leave-one-anchor-out sensitivity and raw paths:
+`docs/DEV6_EXTERNAL_LADDER_REPORT.md`,
+`benchmarks/dev6-baseline/ladder_results.json`,
+`benchmarks/dev6-baseline/ladder_cells.json`,
+`benchmarks/exp-runs/exp0032-ladder-*/`.
+
+### Honest limitations (NOT hidden)
+
+* **Disjoint-slice confound:** each of the 40 exp-0032 cells used a different
+  40-opening slice, so cross-subject comparisons mix strength with slice
+  difficulty. The fitted `dev5_official` vs `dev5_rebuilt` gap (~31 internal
+  Elo) contradicts exp-0030's bench-identical binaries. exp-0032b (paired,
+  shared openings) is the registered sensitivity check; its result is recorded
+  in §0b below. Leave-one-anchor-out subject ordering is **unstable** — a
+  direct consequence of this noise — and is reported, not smoothed over.
+* **SF11 skill anchors are non-monotonic** in this fixed-node pool (L12 ~ L16,
+  large L16 -> L20 jump). SF11's `Skill::pick_best` uses a time-seeded PRNG, so
+  individual games are not bitwise reproducible; the skill limiter also
+  interacts with a node cap. These are retained as measured, not "corrected".
+* **Saturated cells** (`sf8`, `sf10` for several subjects) give wide rating CIs
+  and are reported. **Generalisation limits:** fixed-node != fixed-time;
+  `dev4` is only +12.2 [-22.7, +47.2] vs dev5 in exp-0032b, while the historical
+  fixed-time exp-0024 measured +64.7 [+57.5, +72.0] on a different suite — a
+  concrete demonstration that the two controls are not interchangeable.
+* **Calibration: NOT DEFENSIBLY CALIBRATED.** A rough affine context from SF11's
+  own `UCI_Elo` self-rating (slope 1.62, intercept 2449.8, anchor residual SD
+  **199 Elo**) puts dev5 at ~2118 "context Elo". SF11 `UCI_Elo` is an
+  approximate self-rating for a different time control (60+0.6) and full-strength
+  SF; systematic error is unknown and likely large. **No absolute Elo, no CCRL
+  equivalence, and NO numeric gap-to-3000 claim is made.** 3,000 Elo remains a
+  long-term strategic target only.
+* The ladder **does not satisfy any dev6 strength gate**. `docs/DEV6_PREREG.md`
+  §8 is unchanged. No PR/merge/tag/release follows from ladder completion.
+
+### §0b. exp-0032b paired shared-opening sensitivity
+
+Registered as an addendum **before results** (prediction frozen in the
+`scripts/dev6_ladder_paired.py` docstring): if the star-ladder official/rebuilt
+gap is a slice artifact, the three champion binaries must be statistically
+indistinguishable on shared openings; `dev6_failed` should remain measurably
+weaker than `dev6_champion`.
+
+**Result (10 pairings x 200 games = 2,000 games, single shared 100-opening
+suite, identical opening order and seed, colour-reversed, 0 time forfeits):**
+
+| paired BTD internal Elo | value |
+|---|---|
+| dev5_official | +24.6 |
+| dev5_rebuilt | +12.3 |
+| dev6_champion | 0.0 |
+| dev4 | -16.9 |
+| dev6_failed | -20.0 |
+
+Every head-to-head 95% CI includes zero: `dev5_official` vs `dev5_rebuilt`
+`+20.9 [-13.6,+55.8]`; `dev5_official` vs `dev6_champion` `+20.9
+[-13.6,+55.8]`; `dev6_champion` vs `dev6_failed` `+29.6 [-9.7,+69.7]`;
+`dev6_failed` vs `dev4` `+20.9 [-17.9,+60.2]`; `dev5_official` vs `dev4`
+`+12.2 [-22.7,+47.2]`.
+
+* **Prediction 1 CONFIRMED:** the three champion binaries are statistically
+  indistinguishable on shared openings; the star ladder's ~31 internal-Elo
+  `dev5_official`/`dev5_rebuilt` gap was an opening-slice artifact. The paired
+  fit even **reverses** the subject ordering (`dev5_official` is highest here,
+  lowest in the star ladder). Conclusion: **the star ladder's ordering of the
+  five StockBear subjects is not reliable; only its anchor separation and the
+  pooled anchor rating coverage are usable.** This is reported, not hidden.
+* **Prediction 2 NOT CONFIRMED:** `dev6_champion` vs `dev6_failed` is `+29.6
+  [-9.7,+69.7]` — right direction (consistent with the recorded -17 Elo
+  regression) but **not significant** at 200 games. The paired suite is
+  underpowered for a ~20 Elo effect; no strength conclusion is drawn from it.
+* `nu` differs (`0.472` paired vs `0.190` star) because the paired pool is
+  similar-strength StockBear builds with a much higher draw rate; this is a
+  pool property, not a contradiction.
+* Consequence for M0.2: the ladder **is** implemented with a defensible,
+  qualified result, but subject-level ratings must be taken from the paired
+  design with its CIs, and the fixed-node/fixed-time non-interchangeability is
+  explicit. No dev6 gate is affected.
+
+Raw: `benchmarks/exp-runs/exp0032b-paired-*/`,
+`benchmarks/dev6-baseline/ladder_paired.json`,
+`docs/DEV6_EXTERNAL_LADDER_REPORT.md` §"Paired sensitivity".
+
+--- Appendix A — original cycle design dossier (preserved verbatim, SUPERSEDED) ---
+
 # v0.1.0-dev6 — External rating ladder: methodology, opponent dossier, and status
 
-## Status: NOT COMPLETED (PARTIAL / BLOCKED)
+## Historical status (SUPERSEDED by §0 below): NOT COMPLETED (PARTIAL / BLOCKED)
 
 **An external multi-engine rating ladder was not executed in this cycle.** This
 is one of the mandatory acceptance gates (Gate 5); because it is unmet, and the

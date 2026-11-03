@@ -89,6 +89,10 @@ struct SearchParams {
     // Use the whole soft time slice instead of stopping at 55-70% of it.
     // dev4 left the early stops in; dev5 measures them at a fixed time control.
     bool fullSoftBudget = false;
+    // --- dev6 exp-0034 (default off; isolated same-binary ablation) ---------
+    // Skip losing captures in the main search at shallow depth using the SEE
+    // already computed by score_moves(). See docs/DEV6_PREREG_EXP0034.md.
+    bool badCapturePruning = false;
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control

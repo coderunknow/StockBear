@@ -284,3 +284,33 @@ UNKNOWN and not claimed. CI and the 17-job lane both SUCCESS on source head
 `28a5c71…`. Therefore: **no strength claim, no PR, no merge, no tag, no
 release, no dev7.** Full: `docs/DEV6_REPORT.md`,
 `docs/DEV6_CONFIRMATION_REPORT.md`, `benchmarks/FAILURE_LEDGER.md`.
+
+## Unreleased — M0 measurement foundation (append-only superseding notice)
+
+The historical verdict above (`797f5cbed…`, gate FAIL, no PR/tag/release)
+remains valid for that cycle. This entry records **subsequent local work on
+`arena/3e6dd5b6-stockbear`**, which does NOT change the gate verdict.
+
+- **M0.1 PASS (exp-0030):** reproducible Track A/B build environment. A1/A2/B
+  bench signatures identical (`243f9a1c1ba5b36f`, `a14ab62224f837e5`,
+  `e45fa2ec2287eb41`), 12/12 fixed-node CSV rows byte-identical A1 vs A2,
+  NPS ratio A2/A1 `0.9765` inside frozen `[0.97,1.03]`. Local fixed-time control
+  `-22.6 [-47.4,+2.0]` with 5 TIME_FORFEIT events: decisive fixed-time matches
+  require isolated runners. The historical +33 Elo control is classified
+  **INVALID MEASUREMENT (toolchain-induced)** for that control only.
+- **M0.2 EXECUTED (exp-0031/0032/0032b):** 5 opponents built from official
+  source archives and SHA-pinned; pilot found 5 informative anchors; decisive
+  3,200-game connected bipartite ladder; draw-aware BTD MLE with 1,000
+  opening-cluster bootstrap replicates, residual/LOO diagnostics; paired
+  shared-opening sensitivity exposed a disjoint-slice confound (star-ladder
+  subject ordering UNRELIABLE). Rating is **pool-specific INTERNAL, fixed-node**,
+  NOT absolute Elo; calibration **NOT DEFENSIBLY CALIBRATED**; gap to 3,000
+  **NOT ASSERTED**. Docs: `docs/DEV6_EXTERNAL_LADDER.md` §0,
+  `docs/DEV6_EXTERNAL_LADDER_REPORT.md`, `docs/DEV6_EXTERNAL_OPPONENTS.md`.
+- **exp-0033 (in progress at time of writing):** isolated, preregistered
+  switchable razoring ablation; default-off build bit-identical; local
+  Release 11/11, ASan+UBSan 11/11, python-chess oracle 600/43,200/0, 3x
+  deterministic bench. Outcome appended separately.
+- **No dev6 gate is met. No strength claim. No PR/merge/tag/release/dev7.**
+  All commits local; **no remote writes** since the ASK directive. Final-source
+  CI cannot be tied to a pushed SHA without explicit authorization.

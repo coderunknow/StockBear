@@ -1,0 +1,258 @@
+{
+  "experiment": "exp-0032b",
+  "purpose": "paired shared-opening sensitivity to exp-0032",
+  "prereg_addendum": "docs/DEV6_PREREG_EXP0031.md",
+  "suite": "benchmarks/positions/openings_exp0032b_paired.txt",
+  "suite_sha256": "e281ae5e0ab5bd30ad36a597eb967376c1d7190552ed25f2e820b0f689429cf8",
+  "seed": 2026111100,
+  "games_per_pairing": 200,
+  "nodes": 6000,
+  "nodes_jitter": 0.15,
+  "pairings": [
+    {
+      "a": "dev5_official",
+      "b": "dev5_rebuilt",
+      "dir": "benchmarks/exp-runs/exp0032b-paired-dev5_official-dev5_rebuilt",
+      "games": 200,
+      "unadjudicated": 0,
+      "wins": 71,
+      "draws": 70,
+      "losses": 59,
+      "score_a": 0.53,
+      "elo_a_minus_b": 20.87120466602866,
+      "elo_ci95": [
+        -13.601743422682175,
+        55.76095026255858
+      ],
+      "clusters": 100,
+      "terminations": {
+        "THREEFOLD_REPETITION": 61,
+        "CHECKMATE": 130,
+        "INSUFFICIENT_MATERIAL": 8,
+        "FIFTY_MOVES": 1
+      },
+      "time_forfeit": 0
+    },
+    {
+      "a": "dev5_official",
+      "b": "dev6_champion",
+      "dir": "benchmarks/exp-runs/exp0032b-paired-dev5_official-dev6_champion",
+      "games": 200,
+      "unadjudicated": 0,
+      "wins": 71,
+      "draws": 70,
+      "losses": 59,
+      "score_a": 0.53,
+      "elo_a_minus_b": 20.87120466602866,
+      "elo_ci95": [
+        -13.601743422682175,
+        55.76095026255858
+      ],
+      "clusters": 100,
+      "terminations": {
+        "THREEFOLD_REPETITION": 61,
+        "CHECKMATE": 130,
+        "INSUFFICIENT_MATERIAL": 8,
+        "FIFTY_MOVES": 1
+      },
+      "time_forfeit": 0
+    },
+    {
+      "a": "dev5_official",
+      "b": "dev6_failed",
+      "dir": "benchmarks/exp-runs/exp0032b-paired-dev5_official-dev6_failed",
+      "games": 200,
+      "unadjudicated": 0,
+      "wins": 79,
+      "draws": 59,
+      "losses": 62,
+      "score_a": 0.5425,
+      "elo_a_minus_b": 29.60345764724001,
+      "elo_ci95": [
+        -9.736471308763782,
+        69.71894052671072
+      ],
+      "clusters": 100,
+      "terminations": {
+        "THREEFOLD_REPETITION": 55,
+        "CHECKMATE": 141,
+        "INSUFFICIENT_MATERIAL": 3,
+        "FIFTY_MOVES": 1
+      },
+      "time_forfeit": 0
+    },
+    {
+      "a": "dev5_official",
+      "b": "dev4",
+      "dir": "benchmarks/exp-runs/exp0032b-paired-dev5_official-dev4",
+      "games": 200,
+      "unadjudicated": 0,
+      "wins": 72,
+      "draws": 63,
+      "losses": 65,
+      "score_a": 0.5175,
+      "elo_a_minus_b": 12.165214579657565,
+      "elo_ci95": [
+        -22.651765422432067,
+        47.22899000446813
+      ],
+      "clusters": 100,
+      "terminations": {
+        "CHECKMATE": 137,
+        "THREEFOLD_REPETITION": 59,
+        "INSUFFICIENT_MATERIAL": 4
+      },
+      "time_forfeit": 0
+    },
+    {
+      "a": "dev5_rebuilt",
+      "b": "dev6_champion",
+      "dir": "benchmarks/exp-runs/exp0032b-paired-dev5_rebuilt-dev6_champion",
+      "games": 200,
+      "unadjudicated": 0,
+      "wins": 71,
+      "draws": 70,
+      "losses": 59,
+      "score_a": 0.53,
+      "elo_a_minus_b": 20.87120466602866,
+      "elo_ci95": [
+        -13.601743422682175,
+        55.76095026255858
+      ],
+      "clusters": 100,
+      "terminations": {
+        "THREEFOLD_REPETITION": 61,
+        "CHECKMATE": 130,
+        "INSUFFICIENT_MATERIAL": 8,
+        "FIFTY_MOVES": 1
+      },
+      "time_forfeit": 0
+    },
+    {
+      "a": "dev5_rebuilt",
+      "b": "dev6_failed",
+      "dir": "benchmarks/exp-runs/exp0032b-paired-dev5_rebuilt-dev6_failed",
+      "games": 200,
+      "unadjudicated": 0,
+      "wins": 79,
+      "draws": 59,
+      "losses": 62,
+      "score_a": 0.5425,
+      "elo_a_minus_b": 29.60345764724001,
+      "elo_ci95": [
+        -9.736471308763782,
+        69.71894052671072
+      ],
+      "clusters": 100,
+      "terminations": {
+        "THREEFOLD_REPETITION": 55,
+        "CHECKMATE": 141,
+        "INSUFFICIENT_MATERIAL": 3,
+        "FIFTY_MOVES": 1
+      },
+      "time_forfeit": 0
+    },
+    {
+      "a": "dev5_rebuilt",
+      "b": "dev4",
+      "dir": "benchmarks/exp-runs/exp0032b-paired-dev5_rebuilt-dev4",
+      "games": 200,
+      "unadjudicated": 0,
+      "wins": 72,
+      "draws": 63,
+      "losses": 65,
+      "score_a": 0.5175,
+      "elo_a_minus_b": 12.165214579657565,
+      "elo_ci95": [
+        -22.651765422432067,
+        47.22899000446813
+      ],
+      "clusters": 100,
+      "terminations": {
+        "CHECKMATE": 137,
+        "THREEFOLD_REPETITION": 59,
+        "INSUFFICIENT_MATERIAL": 4
+      },
+      "time_forfeit": 0
+    },
+    {
+      "a": "dev6_champion",
+      "b": "dev6_failed",
+      "dir": "benchmarks/exp-runs/exp0032b-paired-dev6_champion-dev6_failed",
+      "games": 200,
+      "unadjudicated": 0,
+      "wins": 79,
+      "draws": 59,
+      "losses": 62,
+      "score_a": 0.5425,
+      "elo_a_minus_b": 29.60345764724001,
+      "elo_ci95": [
+        -9.736471308763782,
+        69.71894052671072
+      ],
+      "clusters": 100,
+      "terminations": {
+        "THREEFOLD_REPETITION": 55,
+        "CHECKMATE": 141,
+        "INSUFFICIENT_MATERIAL": 3,
+        "FIFTY_MOVES": 1
+      },
+      "time_forfeit": 0
+    },
+    {
+      "a": "dev6_champion",
+      "b": "dev4",
+      "dir": "benchmarks/exp-runs/exp0032b-paired-dev6_champion-dev4",
+      "games": 200,
+      "unadjudicated": 0,
+      "wins": 72,
+      "draws": 63,
+      "losses": 65,
+      "score_a": 0.5175,
+      "elo_a_minus_b": 12.165214579657565,
+      "elo_ci95": [
+        -22.651765422432067,
+        47.22899000446813
+      ],
+      "clusters": 100,
+      "terminations": {
+        "CHECKMATE": 137,
+        "THREEFOLD_REPETITION": 59,
+        "INSUFFICIENT_MATERIAL": 4
+      },
+      "time_forfeit": 0
+    },
+    {
+      "a": "dev6_failed",
+      "b": "dev4",
+      "dir": "benchmarks/exp-runs/exp0032b-paired-dev6_failed-dev4",
+      "games": 200,
+      "unadjudicated": 0,
+      "wins": 74,
+      "draws": 64,
+      "losses": 62,
+      "score_a": 0.53,
+      "elo_a_minus_b": 20.87120466602866,
+      "elo_ci95": [
+        -17.887738493960384,
+        60.15829396593845
+      ],
+      "clusters": 100,
+      "terminations": {
+        "CHECKMATE": 136,
+        "THREEFOLD_REPETITION": 61,
+        "INSUFFICIENT_MATERIAL": 2,
+        "FIFTY_MOVES": 1
+      },
+      "time_forfeit": 0
+    }
+  ],
+  "paired_btd_nu": 0.47199189125381724,
+  "paired_btd_internal_elo": {
+    "dev4": -16.905859465849073,
+    "dev5_official": 24.598798114006875,
+    "dev5_rebuilt": 12.290874372963017,
+    "dev6_champion": -0.0011166268361937545,
+    "dev6_failed": -19.98269639428463
+  }
+}

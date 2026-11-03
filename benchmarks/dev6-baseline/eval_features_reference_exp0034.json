@@ -1,0 +1,19 @@
+{
+  "engine": "build-exp0034/stockbear",
+  "params": "research-data/params_dev6_a.txt",
+  "corpus": "benchmarks/positions/dev6_eval_features.epd",
+  "corpus_sha256": "172d36c03978c260135c8d2a5ee5c4e8486dc29a2ab10406588d7f0832fe54ae",
+  "positions": 600,
+  "feature_checks": 43200,
+  "positions_with_nonzero_count": {
+    "RookOn7th": 6,
+    "KnightOutpost": 51,
+    "BackwardPawn": 146,
+    "PawnChain": 374,
+    "ConnectedPassed": 20,
+    "RookBehindPassed": 27
+  },
+  "mismatches": 0,
+  "mismatch_examples": [],
+  "verdict": "PASS"
+}

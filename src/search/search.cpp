@@ -40,6 +40,8 @@ constexpr int MaxPenalisedQuiets = 24;
 // docs/DEV6_PREREG_EXP0033.md before any measurement, so it cannot be
 // optimised on the test openings.
 constexpr int RazorMargin[4] = {0, 125, 175, 300};
+// exp-0034: frozen SEE margin for bad-capture pruning (NOT tuned).
+constexpr int BadCaptureMargin = 100;
 
 // Integer-only reduction schedule; keeps results bit-identical across
 // platforms and compilers (a floating-point logarithm does not guarantee that).
@@ -470,6 +472,20 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
         const Move m = moves[i].move;
         const bool isQuiet = quiet(pos, m);
         const bool isHash = (m == hashMove);
+
+        // exp-0034: skip clearly losing captures in the main search at
+        // shallow depth. SEE was computed by score_moves(); the fallback
+        // keeps correctness in builds without SB_SEE_CACHE. Guarded away
+        // from PV nodes, mate windows, checks and the hash move.
+        if (params_.badCapturePruning && !isQuiet && !isHash && !pvNode &&
+            !inCheck && !mateWindow && depth <= 3) {
+#if SB_SEE_CACHE
+            const int capSee = moves[i].seeScore;
+#else
+            const int capSee = see(pos, m);
+#endif
+            if (capSee < -BadCaptureMargin) continue;
+        }
 
         // The checking test makes and unmakes the move, so it is only run when
         // a pruning or reduction decision actually depends on it.

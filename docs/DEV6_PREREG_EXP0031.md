@@ -108,3 +108,38 @@ manifest per cell), `benchmarks/dev6-baseline/external_opponents.json`,
 `benchmarks/dev6-baseline/ladder_results.json`, `scripts/fit_ladder.py`,
 `docs/DEV6_EXTERNAL_LADDER_REPORT.md`. Append-only Failure Ledger entries
 exp-0031 / exp-0032 with classifications and next actions.
+
+## §6. Transparency corrections (recorded AFTER execution, append-only)
+
+These are **disclosures of implementation deviations**, not post-hoc changes to
+any acceptance criterion, tolerance, informative band, sample-size floor,
+statistic or decision rule. All frozen criteria above are unchanged. Recorded so
+the deviation is visible rather than silently absorbed.
+
+1. **exp-0031 pilot match seeds.** §2 froze `2026110701..0710`. The executed
+   driver `scripts/dev6_ladder_pilot.py` used `2026110710..0719` (ten distinct
+   seeds, one per anchor); the opening-suite generation seed was `2026110701`.
+   This is a clerical seed offset only: identical 10-anchor design, 40 games per
+   anchor, identical informative band `[0.20,0.80]` and identical PROCEED rule.
+   No result-dependent seed was chosen.
+2. **exp-0032 role assignment.** §3 listed SF8/SF9/SF10 as *subjects* and
+   "informative SF11 skill levels (>=2) plus one deliberately saturated strong
+   anchor". The executed driver `scripts/dev6_ladder.py` used
+   **8 anchors** (SF11-L4/L8/L12/L16/L20 + SF8/SF9/SF10) and **5 subjects**
+   (dev4, dev5_official, dev5_rebuilt, dev6_champion, dev6_failed). Every
+   subject still played every anchor on a fresh disjoint slice at 80 games per
+   cell (3,200 games >= the >=1,600 target); the graph is still connected
+   bipartite; dev5 and dev6 are both in the pool; saturated anchors are retained.
+   The change gives the three SF versions a full anchor schedule (more games per
+   pairing) instead of a sparse subject schedule, and adds two extra SF11 levels
+   for coverage. It does NOT relax any gate.
+3. **exp-0032b paired sensitivity** was registered as an addendum AFTER
+   exp-0032 results but BEFORE its own results, with its prediction frozen in
+   the `scripts/dev6_ladder_paired.py` docstring. It is an additional diagnostic
+   of a discovered confound, not a redefinition of exp-0032's outcome.
+4. **BTD scale.** `scripts/fit_ladder.py` uses `s_i = exp(r_i)`, mean-zero
+   constraint, `Elo_i = (400/ln 10) * r_i`, and the draw parameterisation
+   `P(win)=e^{d/2}/Z, P(draw)=2nu/Z, P(loss)=e^{-d/2}/Z` with
+   `Z=e^{d/2}+e^{-d/2}+2nu`, `d=r_i-r_j`. 1,000 opening-cluster bootstrap
+   replicates, leave-one-anchor-out sensitivity, residual RMSE. Ratings are
+   pool-specific INTERNAL; no absolute Elo is claimed.

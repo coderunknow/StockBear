@@ -492,3 +492,18 @@ requested (no eligible PR); documented manual audit performed instead.
 no approval sought** because the mandatory gate is unmet. Deliverables committed
 to branch `arena/3e6dd5b6-stockbear`; start was from verified starting SHA
 `6e7c2e0…`, branch name fixed by the toolchain.
+
+## Continuation after the historical gate FAIL (local work only)
+
+Branch `arena/3e6dd5b6-stockbear`, all work committed locally. No `git push`,
+no PR/merge/tag/release/dev7, no remote writes since the ASK directive.
+Completed: M0.1 (exp-0030 reproducible Track A/B), M0.2 (exp-0031 pilot,
+exp-0032 3,200-game BTD ladder, exp-0032b paired sensitivity), local
+CI-equivalents (Release 11/11, ASan+UBSan 11/11, oracle 600/43,200/0,
+3x bench determinism), `THIRD_PARTY.md` GPL notices, ladder docs and
+append-only Failure Ledger entries. exp-0033 razoring screen is the first
+post-M0 strength direction. **Acceptance gates remain UNMET**: no candidate
+passes Gate 1 (>= +75 with LCB > +50 on both datasets); Gate 4 cannot be
+completed without final-source CI on an isolated runner. Terminal state is
+therefore NOT reached; mission remains ACTIVE. Authorization status: ASK —
+explicit approval required before any push / PR / merge / tag / release.

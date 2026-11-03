@@ -66,3 +66,35 @@ the generated magic constants in this repository were written for this project,
 not copied from another engine. The C++ compiler/runtime and OS libraries are
 supplied by the build/target environment; GitHub Actions and Python are
 build/test infrastructure, not engine runtime components.
+
+## Pinned external ladder opponents (exp-0031 / exp-0032, v0.1.0-dev6 M0.2)
+
+The following third-party engines were built **from official source archives on
+`codeload.github.com`** and pinned as immutable binaries under
+`benchmarks/binaries/external/` solely as **match opponents / measurement
+anchors**. They are never linked into StockBear, never used for move selection,
+and no source, network file or weight from them is incorporated into the
+StockBear codebase. All are GPL-3.0. No NNUE network files are required by any
+of these classical-evaluation builds. Exact tag commits, source/binary SHA-256s,
+build commands, UCI option sets and rating qualifications are in
+`benchmarks/dev6-baseline/external_opponents.json` and
+`docs/DEV6_EXTERNAL_OPPONENTS.md`; full GPL-3.0 notices apply to redistribution
+of these binaries.
+
+| Opponent | Exact source tag / commit | License | Use |
+|---|---|---|---|
+| Stockfish 8 | `sf_8` / `369eff437cc081eb4b8ab5f519cf3f86b79e87d0` | GPL-3.0 | fixed-node ladder anchor only |
+| Stockfish 9 | `sf_9` / `378c8bdbb8f930472fc4316aa6c417802294bbad` | GPL-3.0 | fixed-node ladder anchor only |
+| Stockfish 10 | `sf_10` / `b4c239b625285307c5871f1104dc3fb80aa6d5d2` | GPL-3.0 | fixed-node ladder anchor only |
+| Stockfish 11 | `sf_11` / `c3483fa9a7d7c0ffa9fcc32b467ca844cfb63790` | GPL-3.0 | fixed-node ladder anchor; `Skill Level 0..20` strength limiter |
+| Weiss 2.0 | `v2.0` / `0db49c7270f5c6286a983390a5ea2780e1e0c9f4` | GPL-3.0 | pinned for future fixed-depth/time diagnostics; **excluded** from the fixed-node ladder (no `go nodes`) |
+
+Built with GCC 12.2.0, `make -j2 build ARCH=x86-64-modern COMP=gcc` (Stockfish)
+and `make -j2 basic CFLAGS="-std=gnu11 -O3 -flto=auto -mpopcnt -mbmi2 -DNDEBUG" CC=gcc`
+(Weiss 2.0); no `-march=native`. Weiss **master** was tried and rejected (C++
+enum-with-underlying-type syntax in a C11 header); BBC master was excluded
+(no `go nodes`, no Makefile). Stockfish 11's `UCI_Elo`/`Skill Level` are the
+engine's own approximate strength limiters, **not** certified CCRL/CEGT/FIDE
+ratings; no absolute Elo is claimed from this pool. Source projects:
+[Stockfish](https://github.com/official-stockfish/Stockfish),
+[Weiss](https://github.com/TerjeKir/weiss).
