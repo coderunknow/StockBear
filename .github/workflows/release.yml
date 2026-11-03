@@ -63,10 +63,17 @@ jobs:
           git merge-base --is-ancestor HEAD refs/remotes/origin/main
       - name: Configure Linux
         if: runner.os == 'Linux'
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DSTOCKBEAR_BUILD_TESTS=ON -DSTOCKBEAR_REQUIRE_PYTHON_TESTS=ON
+        # Portable release flags = champion recipe WITHOUT -march=native
+        # (requires x86-64-v3: POPCNT/BMI2/LZCNT); the exact configuration
+        # gated by exp-0024 (docs/EXP0024_PREREG.md). Bench signature stays
+        # 243f9a1c1ba5b36f. Do NOT add -march=native here: the artifact must
+        # run on arbitrary x86-64-v3 CPUs, not just the build runner's.
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DSTOCKBEAR_BUILD_TESTS=ON -DSTOCKBEAR_REQUIRE_PYTHON_TESTS=ON -DCMAKE_CXX_FLAGS="-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4"
       - name: Configure Windows x64
         if: runner.os == 'Windows'
-        run: cmake -S . -B build -A x64 -DSTOCKBEAR_BUILD_TESTS=ON -DSTOCKBEAR_REQUIRE_PYTHON_TESTS=ON
+        # MSVC equivalent of the portable champion config: /arch:AVX2 covers
+        # POPCNT/BMI2/LZCNT (x86-64-v3); same SB_SEE_CACHE=1 define.
+        run: cmake -S . -B build -A x64 -DSTOCKBEAR_BUILD_TESTS=ON -DSTOCKBEAR_REQUIRE_PYTHON_TESTS=ON -DCMAKE_CXX_FLAGS="/arch:AVX2 -DSB_SEE_CACHE=1"
       - run: cmake --build build --config Release --parallel 2
       - name: Test the binary to be packaged
         run: cmake -E chdir build ctest -C Release --output-on-failure
@@ -77,7 +84,7 @@ jobs:
           set -eu
           version=$(tr -d '\r\n' < VERSION)
           mkdir package
-          cp build/stockbear LICENSE README.md package/
+          cp build/stockbear LICENSE README.md research-data/params_abc.txt package/
           tar -czf "stockbear-${version}-linux-x64.tar.gz" -C package .
       - name: Package Windows
         if: runner.os == 'Windows'
@@ -85,7 +92,7 @@ jobs:
         run: |
           $version = (Get-Content VERSION -Raw).Trim()
           New-Item -ItemType Directory -Force package | Out-Null
-          Copy-Item build/Release/stockbear.exe, LICENSE, README.md package/
+          Copy-Item build/Release/stockbear.exe, LICENSE, README.md, research-data/params_abc.txt package/
           Compress-Archive -Path package/* -DestinationPath "stockbear-$version-windows-x64.zip"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: runner.os == 'Linux'

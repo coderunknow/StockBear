@@ -7,7 +7,7 @@ name: Verify published prerelease assets
 
 on:
   push:
-    branches: [arena/75415e79-stockbear]
+    branches: [arena/75415e79-stockbear, arena/daa69a3b-stockbear]
     paths: ['.github/verify-release', '.github/verify-signature']
 
 permissions:
@@ -21,7 +21,7 @@ jobs:
       pull-requests: write # Post the evidence to the pull request.
     env:
       GH_TOKEN: ${{ github.token }}
-      TAG: v0.1.0-dev4
+      TAG: v0.1.0-dev5
     steps:
       - name: Download and check the assets
         shell: bash
@@ -41,16 +41,19 @@ jobs:
             gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets \
               --jq '.assets[] | "\(.name)  \(.size) bytes  \(.digest // "no digest")"'
             echo
-            echo '$ tar tzf stockbear-0.1.0-dev4-linux-x64.tar.gz'
-            tar tzf stockbear-0.1.0-dev4-linux-x64.tar.gz
+            echo '$ tar tzf stockbear-0.1.0-dev5-linux-x64.tar.gz'
+            tar tzf stockbear-0.1.0-dev5-linux-x64.tar.gz
             echo
-            echo '$ python3 -c "zipfile namelist" stockbear-0.1.0-dev4-windows-x64.zip'
+            echo '$ python3 -c "zipfile namelist" stockbear-0.1.0-dev5-windows-x64.zip'
             python3 -c 'import zipfile,sys; [print(n) for n in zipfile.ZipFile(sys.argv[1]).namelist()]' \
-              stockbear-0.1.0-dev4-windows-x64.zip
+              stockbear-0.1.0-dev5-windows-x64.zip
             echo
             echo '$ tar xzf linux archive; ./stockbear uci | head -12'
-            mkdir -p x && tar xzf stockbear-0.1.0-dev4-linux-x64.tar.gz -C x
-            printf 'uci\nquit\n' | ./x/stockbear | head -12
+            mkdir -p x && tar xzf stockbear-0.1.0-dev5-linux-x64.tar.gz -C x
+            printf 'uci\nquit\n' | ./x/stockbear | tee /tmp/uci.txt | head -12
+            grep -q 'id name StockBear 0.1.0-dev5' /tmp/uci.txt
+            ./x/stockbear bench | grep -q '# signature 243f9a1c1ba5b36f'
+            ./x/stockbear bench --depth 16 | grep -q '# signature a14ab62224f837e5'
             echo
             echo '$ ./stockbear bench --depth 6 | head -3'
             ./x/stockbear bench --depth 6 | head -3
@@ -63,4 +66,4 @@ jobs:
             echo '```'
           } > /tmp/evidence.md 2>&1 || true
           cat /tmp/evidence.md
-          gh pr comment 6 --repo "$GITHUB_REPOSITORY" --body-file /tmp/evidence.md
+          gh pr comment 10 --repo "$GITHUB_REPOSITORY" --body-file /tmp/evidence.md
