@@ -1,0 +1,309 @@
+{
+  "experiment": "exp-0031",
+  "prereg": "docs/DEV6_PREREG_EXP0031.md",
+  "control": {
+    "nodes": 6000,
+    "nodes_jitter": 0.15,
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "games_per_anchor": 40
+  },
+  "subject": "exact released dev5 391cb50e... at params_abc + TTEval",
+  "pilot_suite_sha256": "18d5e25a9300b76e646a43ce422aa3df0cbe778b3f24da0a12464a0c1d72cab9",
+  "informative_band": [
+    0.2,
+    0.8
+  ],
+  "results": [
+    {
+      "id": "sf11-L0",
+      "label": "SF11 skill 0",
+      "engine_b": "/home/user/StockBear/benchmarks/binaries/external/stockfish-sf11",
+      "b_options": [
+        "Skill Level=0"
+      ],
+      "opening_slice": "benchmarks/positions/openings_exp0031_pilot_s01.txt",
+      "seed": 2026110710,
+      "games": 40,
+      "wins": 37,
+      "draws": 2,
+      "losses": 1,
+      "score": 0.95,
+      "elo": 511.50144038113143,
+      "ci95": [
+        361.0629372913693,
+        null
+      ],
+      "clusters": 20,
+      "terminations": {
+        "CHECKMATE": 38,
+        "THREEFOLD_REPETITION": 2
+      },
+      "unadjudicated": 0,
+      "time_forfeit": 0,
+      "informative": false
+    },
+    {
+      "id": "sf11-L4",
+      "label": "SF11 skill 4",
+      "engine_b": "/home/user/StockBear/benchmarks/binaries/external/stockfish-sf11",
+      "b_options": [
+        "Skill Level=4"
+      ],
+      "opening_slice": "benchmarks/positions/openings_exp0031_pilot_s02.txt",
+      "seed": 2026110711,
+      "games": 40,
+      "wins": 28,
+      "draws": 5,
+      "losses": 7,
+      "score": 0.7625,
+      "elo": 202.63049362317517,
+      "ci95": [
+        87.37204097217786,
+        385.2912111195391
+      ],
+      "clusters": 20,
+      "terminations": {
+        "CHECKMATE": 35,
+        "THREEFOLD_REPETITION": 5
+      },
+      "unadjudicated": 0,
+      "time_forfeit": 0,
+      "informative": true
+    },
+    {
+      "id": "sf11-L8",
+      "label": "SF11 skill 8",
+      "engine_b": "/home/user/StockBear/benchmarks/binaries/external/stockfish-sf11",
+      "b_options": [
+        "Skill Level=8"
+      ],
+      "opening_slice": "benchmarks/positions/openings_exp0031_pilot_s03.txt",
+      "seed": 2026110712,
+      "games": 40,
+      "wins": 11,
+      "draws": 10,
+      "losses": 19,
+      "score": 0.4,
+      "elo": -70.43650362227247,
+      "ci95": [
+        -143.92170731713045,
+        -2.756315606404719
+      ],
+      "clusters": 20,
+      "terminations": {
+        "CHECKMATE": 30,
+        "THREEFOLD_REPETITION": 10
+      },
+      "unadjudicated": 0,
+      "time_forfeit": 0,
+      "informative": true
+    },
+    {
+      "id": "sf11-L12",
+      "label": "SF11 skill 12",
+      "engine_b": "/home/user/StockBear/benchmarks/binaries/external/stockfish-sf11",
+      "b_options": [
+        "Skill Level=12"
+      ],
+      "opening_slice": "benchmarks/positions/openings_exp0031_pilot_s04.txt",
+      "seed": 2026110713,
+      "games": 40,
+      "wins": 9,
+      "draws": 4,
+      "losses": 27,
+      "score": 0.275,
+      "elo": -168.4021250962924,
+      "ci95": [
+        -293.86843200636,
+        -74.47044424370027
+      ],
+      "clusters": 20,
+      "terminations": {
+        "CHECKMATE": 36,
+        "THREEFOLD_REPETITION": 4
+      },
+      "unadjudicated": 0,
+      "time_forfeit": 0,
+      "informative": true
+    },
+    {
+      "id": "sf11-L16",
+      "label": "SF11 skill 16",
+      "engine_b": "/home/user/StockBear/benchmarks/binaries/external/stockfish-sf11",
+      "b_options": [
+        "Skill Level=16"
+      ],
+      "opening_slice": "benchmarks/positions/openings_exp0031_pilot_s05.txt",
+      "seed": 2026110714,
+      "games": 40,
+      "wins": 7,
+      "draws": 5,
+      "losses": 28,
+      "score": 0.2375,
+      "elo": -202.63049362317523,
+      "ci95": [
+        -345.0508378293689,
+        -104.22725012745744
+      ],
+      "clusters": 20,
+      "terminations": {
+        "CHECKMATE": 35,
+        "THREEFOLD_REPETITION": 5
+      },
+      "unadjudicated": 0,
+      "time_forfeit": 0,
+      "informative": true
+    },
+    {
+      "id": "sf11-L20",
+      "label": "SF11 full strength",
+      "engine_b": "/home/user/StockBear/benchmarks/binaries/external/stockfish-sf11",
+      "b_options": [
+        "Skill Level=20"
+      ],
+      "opening_slice": "benchmarks/positions/openings_exp0031_pilot_s06.txt",
+      "seed": 2026110715,
+      "games": 40,
+      "wins": 3,
+      "draws": 4,
+      "losses": 33,
+      "score": 0.125,
+      "elo": -338.03921600570277,
+      "ci95": [
+        -614.8093155816956,
+        -218.07121909700595
+      ],
+      "clusters": 20,
+      "terminations": {
+        "CHECKMATE": 36,
+        "THREEFOLD_REPETITION": 4
+      },
+      "unadjudicated": 0,
+      "time_forfeit": 0,
+      "informative": false
+    },
+    {
+      "id": "sf8",
+      "label": "SF8 full",
+      "engine_b": "/home/user/StockBear/benchmarks/binaries/external/stockfish-sf8",
+      "b_options": [],
+      "opening_slice": "benchmarks/positions/openings_exp0031_pilot_s07.txt",
+      "seed": 2026110716,
+      "games": 40,
+      "wins": 2,
+      "draws": 1,
+      "losses": 37,
+      "score": 0.0625,
+      "elo": -470.43650362227254,
+      "ci95": [
+        null,
+        -319.3851277838912
+      ],
+      "clusters": 20,
+      "terminations": {
+        "CHECKMATE": 39,
+        "INSUFFICIENT_MATERIAL": 1
+      },
+      "unadjudicated": 0,
+      "time_forfeit": 0,
+      "informative": false
+    },
+    {
+      "id": "sf9",
+      "label": "SF9 full",
+      "engine_b": "/home/user/StockBear/benchmarks/binaries/external/stockfish-sf9",
+      "b_options": [],
+      "opening_slice": "benchmarks/positions/openings_exp0031_pilot_s08.txt",
+      "seed": 2026110717,
+      "games": 40,
+      "wins": 0,
+      "draws": 2,
+      "losses": 38,
+      "score": 0.025,
+      "elo": -636.4258428105996,
+      "ci95": [
+        null,
+        -474.8962904918307
+      ],
+      "clusters": 20,
+      "terminations": {
+        "CHECKMATE": 38,
+        "THREEFOLD_REPETITION": 1,
+        "INSUFFICIENT_MATERIAL": 1
+      },
+      "unadjudicated": 0,
+      "time_forfeit": 0,
+      "informative": false
+    },
+    {
+      "id": "sf10",
+      "label": "SF10 full",
+      "engine_b": "/home/user/StockBear/benchmarks/binaries/external/stockfish-sf10",
+      "b_options": [],
+      "opening_slice": "benchmarks/positions/openings_exp0031_pilot_s09.txt",
+      "seed": 2026110718,
+      "games": 40,
+      "wins": 4,
+      "draws": 2,
+      "losses": 34,
+      "score": 0.125,
+      "elo": -338.03921600570277,
+      "ci95": [
+        -614.8093155816956,
+        -218.07121909700595
+      ],
+      "clusters": 20,
+      "terminations": {
+        "CHECKMATE": 38,
+        "THREEFOLD_REPETITION": 1,
+        "FIFTY_MOVES": 1
+      },
+      "unadjudicated": 0,
+      "time_forfeit": 0,
+      "informative": false
+    },
+    {
+      "id": "dev4",
+      "label": "dev4 internal",
+      "engine_b": "/home/user/StockBear/benchmarks/binaries/stockbear-dev4-1c5b61a7",
+      "b_options": [],
+      "opening_slice": "benchmarks/positions/openings_exp0031_pilot_s10.txt",
+      "seed": 2026110719,
+      "games": 40,
+      "wins": 17,
+      "draws": 14,
+      "losses": 9,
+      "score": 0.6,
+      "elo": 70.43650362227247,
+      "ci95": [
+        -2.267984763832217,
+        149.89913123149844
+      ],
+      "clusters": 20,
+      "terminations": {
+        "CHECKMATE": 26,
+        "THREEFOLD_REPETITION": 14
+      },
+      "unadjudicated": 0,
+      "time_forfeit": 0,
+      "informative": true
+    }
+  ],
+  "informative_anchors": [
+    "sf11-L4",
+    "sf11-L8",
+    "sf11-L12",
+    "sf11-L16",
+    "dev4"
+  ],
+  "saturated_anchors": [
+    "sf11-L0",
+    "sf11-L20",
+    "sf8",
+    "sf9",
+    "sf10"
+  ],
+  "decision": "PROCEED"
+}

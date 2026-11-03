@@ -1,0 +1,519 @@
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "1"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0122 (g1h3 c7c5 c2c4 g8h6)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. Nh3 c5 2. c4 Nh6 3. Nf4 Na6 4. d4 Nc7 5. dxc5 e5 6. Nd3 e4 7. Nf4 Bxc5 8. Nc3 Qf6 9. Qc2 Bxf2+ 10. Kxf2 e3+ 11. Kxe3 Ng4+ 12. Kf3 d5 13. Nxd5 Nxd5 14. cxd5 O-O 15. Be3 Re8 16. Bd2 Bf5 17. Qc3 Qh4 18. Nh3 Nxh2+ 19. Rxh2 Bg4+ 20. Kf4 Bxe2+ 21. Kf5 Qg4# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "2"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0122 (g1h3 c7c5 c2c4 g8h6)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. Nh3 c5 2. c4 Nh6 3. Nf4 Na6 4. d4 Nc7 5. e3 g5 6. Nd3 Ne6 7. d5 Ng7 8. h4 gxh4 9. e4 Ng8 10. Bg5 d6 11. Rxh4 Bd7 12. Nc3 Nf6 13. f3 Ngh5 14. Be3 Qb6 15. Bf2 e5 16. Qd2 Rg8 17. g4 Nf4 18. Nxf4 exf4 19. O-O-O Rg6 20. Qxf4 Be7 21. Kb1 Qb4 22. e5 Nxg4 23. Rxg4 Bxg4 24. fxg4 dxe5 25. Qxe5 Rxg4 26. d6 O-O-O 27. dxe7 Rdg8 28. e8=Q+ Rxe8 29. Qxe8+ Kc7 30. Qd8+ Kc6 31. Rd6# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "3"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0134 (g1h3 b7b6 e2e4 d7d5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. Nh3 b6 2. e4 d5 3. a3 Ba6 4. d3 d4 5. c4 e5 6. Bg5 f6 7. Bd2 Ne7 8. Be2 Nbc6 9. O-O Bc8 10. Bg4 Bxg4 11. Qxg4 h5 12. Qe6 Qd7 13. Qxd7+ Kxd7 14. f4 a5 15. f5 h4 16. Nf2 Kc8 17. a4 Kb7 18. Na3 Nc8 19. Nc2 Bc5 20. Ng4 h3 21. gxh3 Rxh3 22. Ne1 Rh4 23. Nf2 Nd6 24. Nf3 Rh5 25. Kh1 Rah8 26. Rg1 Rg8 27. Ng4 Rh3 28. Rg3 Rxg3 29. hxg3 Rh8+ 30. Kg2 Bb4 31. Rh1 Rxh1 32. Kxh1 Bxd2 33. Nxd2 Nb4 34. Nf2 Kc6 35. Kg2 Nb7 36. Nb3 Na6 37. Nd2 Nbc5 38. Kf3 Nxa4 39. Nd1 Nb4 40. Ke2 Nc5 41. Nf2 Nb7 42. Nb3 Nd6 43. Ng4 a4 44. Nd2 Kc5 45. Nf2 c6 46. Ng4 b5 47. cxb5 cxb5 48. Nf3 Nc6 49. Kd2 b4 50. Kc2 b3+ 51. Kd1 Kb4 52. Nd2 a3 53. bxa3+ Kxa3 54. Nb1+ Ka2 55. Nd2 b2 56. Ke2 Nb5 57. Kf2 Nb4 58. Kf3 Nxd3 59. Kg2 Nc5 60. Kf3 Nb3 61. Nb1 Kxb1 62. Nxe5 fxe5 63. Kg4 Kc2 64. f6 gxf6 65. Kf5 d3 66. g4 d2 67. Kxf6 d1=Q 68. Kxe5 Qxg4 69. Kd5 b1=Q 70. Kc6 Qh1 71. Kb7 Qgxe4+ 72. Ka6 Qb7# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "4"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0134 (g1h3 b7b6 e2e4 d7d5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. Nh3 b6 2. e4 d5 3. a3 Ba6 4. d3 d4 5. c3 e5 6. f4 Nc6 7. Qa4 Bb7 8. fxe5 Qd7 9. Be2 dxc3 10. Nxc3 Nxe5 11. Qxd7+ Nxd7 12. Bf4 Bd6 13. Nb5 Bxf4 14. Nxf4 Kd8 15. Rc1 Nc5 16. b4 g5 17. bxc5 gxf4 18. O-O bxc5 19. Rxc5 a6 20. Nd4 Nf6 21. Rf5 Nxe4 22. dxe4 Bxe4 23. Rxf7 Rg8 24. Ne6+ Ke8 25. R1xf4 Rxg2+ 26. Kf1 Ra7 27. Bh5 Rg6 28. Bxg6 Bxg6 29. Rg7 Bf7 30. Rfxf7 h5 31. Rf8# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "5"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0125 (b1c3 h7h6 d2d3 f7f5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. Nc3 h6 2. d3 f5 3. Nh3 b5 4. a4 e5 5. axb5 Bb4 6. e4 Nf6 7. exf5 d5 8. Qf3 c6 9. bxc6 Nxc6 10. Be3 Qc7 11. g4 Kd8 12. Rg1 Nd4 13. Bxd4 exd4 14. Ra4 Bxc3+ 15. bxc3 Qxc3+ 16. Kd1 Rb8 17. Kc1 Ne4 18. dxe4 Qxf3 19. Rxd4 Qc3 20. Rxd5+ Bd7 21. Bd3 Kc7 22. e5 a5 23. e6 Bc6 24. Rd7+ Bxd7 25. exd7 a4 26. Rd1 Rb4 27. f4 a3 28. d8=B+ Rxd8 29. g5 a2 30. f6 a1=Q# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "6"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0125 (b1c3 h7h6 d2d3 f7f5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. Nc3 h6 2. d3 f5 3. Nh3 b5 4. a4 e5 5. axb5 a5 6. e3 Nf6 7. d4 exd4 8. Qxd4 Bd6 9. Bd3 Bb7 10. O-O g6 11. Nf4 Kf7 12. f3 Kg7 13. e4 fxe4 14. Nxe4 Bxf4 15. Bxf4 d6 16. b6 cxb6 17. Nxf6 Qxf6 18. Qxb6 Ba6 19. Bd2 Nd7 20. Qc7 Qd4+ 21. Rf2 Ra7 22. Bc3 Rxc7 23. Bxd4+ Ne5 24. Bxa6 Ra8 25. Bd3 Kh7 26. Be4 Nc6 27. Rd2 Ra6 28. Bf2 Ne5 29. b4 Nc4 30. Rd5 a4 31. b5 Ra8 32. b6 Re7 33. Rb5 Rxe4 34. fxe4 Nxb6 35. Bxb6 g5 36. Rd5 a3 37. Ba5 Re8 38. Rxa3 Rxe4 39. Rxd6 Rc4 40. Bd2 Rc7 41. Rh3 Kg8 42. Rhxh6 Kg7 43. Rc6 Rxc6 44. Rxc6 g4 45. Rc4 g3 46. hxg3 Kf6 47. Kf2 Ke5 48. Ke3 Ke6 49. Ke4 Ke7 50. Ke5 Ke8 51. Ke6 Kf8 52. Rg4 Ke8 53. Rg8# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "7"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0138 (e2e4 g7g5 g2g4 h7h6)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e4 g5 2. g4 h6 3. Be2 d5 4. h4 b6 5. hxg5 Bg7 6. Nc3 d4 7. Nd5 hxg5 8. Bb5+ c6 9. Rxh8 Bxh8 10. Bc4 Qd6 11. Nh3 Nh6 12. Nxe7 Qxe7 13. d3 Bxg4 14. Bxg5 Qe5 15. Bf4 Qh5 16. f3 Bxf3 17. Qd2 Qxh3 18. Qh2 Qxh2 19. Bxh2 Ng4 20. Bd6 Bf6 21. Kd2 Bg5+ 22. Ke1 Nd7 23. a4 Ne3 24. Bb3 Nc5 25. Kf2 Nxb3 26. Rg1 Bg4 27. cxb3 O-O-O 28. Bh2 Rh8 29. Be5 Rh3 30. Ke1 Nc2+ 31. Kf1 Rf3+ 32. Ke2 Rf4+ 33. Rxg4 Rxg4 34. Kf3 Rg1 35. Bd6 Rd1 36. Kg4 Bc1 37. b4 Rxd3 38. b5 cxb5 39. axb5 Ne3+ 40. Kh4 Rb3 41. Bg3 d3 42. Kh3 d2 43. Bb8 Kxb8 44. Kh4 d1=Q 45. Kg3 Qg4+ 46. Kf2 Rxb2+ 47. Ke1 Re2# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "8"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0138 (e2e4 g7g5 g2g4 h7h6)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e4 g5 2. g4 h6 3. Be2 d5 4. h4 b6 5. exd5 Qxd5 6. Bf3 Qe6+ 7. Ne2 Nc6 8. Nc3 Qf6 9. Rh3 gxh4 10. Nb5 Kd8 11. d4 a6 12. Nbc3 h5 13. g5 Qd6 14. Bf4 Qg6 15. Rxh4 Bf5 16. Rc1 Bg7 17. Ng3 Bg4 18. Be3 Qd6 19. Nxh5 Rxh5 20. Rxh5 Bxh5 21. Bxh5 f5 22. Qf3 e6 23. Bf7 Nge7 24. Ne2 Rb8 25. Rd1 Nb4 26. Nf4 Nxc2+ 27. Kf1 Kd7 28. Bxe6+ Kd8 29. Bb3 Nxe3+ 30. fxe3 Ke8 31. Qh5+ Kd7 32. Qf7 Qc6 33. Nd5 Qb5+ 34. Kg1 Bf8 35. Rc1 c5 36. dxc5 bxc5 37. Rd1 Kc6 38. Qe6+ Kb7 39. Nxe7 Bxe7 40. Rd7+ Qxd7 41. Qxd7+ Kb6 42. Qe6+ Ka5 43. Qxe7 Kb4 44. Qd6 Rb7 45. Qxa6 c4 46. Qxb7+ Kc5 47. Qc7+ Kd5 48. Bxc4+ Ke4 49. Qf4# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "9"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0140 (e2e4 f7f5 c2c4 g8f6)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e4 f5 2. c4 Nf6 3. Bd3 c6 4. Qb3 Nh5 5. exf5 e5 6. Nf3 Bc5 7. Nxe5 Nf4 8. Be4 d6 9. Nd3 Nxd3+ 10. Qxd3 O-O 11. Nc3 Qg5 12. f6 Qxf6 13. Bxh7+ Kh8 14. Ne4 Bxf2+ 15. Kf1 Qd4 16. Qxd4 Bxd4+ 17. Ke2 Kxh7 18. Nxd6 Na6 19. Nxc8 Raxc8 20. h4 Rf2+ 21. Kd3 Rd8 22. Kc2 Rxg2 23. Re1 Bf6 24. a4 Nb4+ 25. Kb1 Nd3 26. Rd1 Rg4 27. h5 Rxc4 28. Rf1 Rd5 29. a5 Rdc5 30. Ra3 Rxc1+ 31. Rxc1 Rxc1+ 32. Ka2 Nxb2 33. a6 Nc4 34. Rd3 Ra1+ 35. Kb3 Ra3+ 36. Kb4 Rxd3 37. Kxc4 Rd4+ 38. Kc3 b5 39. d3 Kh6 40. Kd2 Ra4 41. Ke1 b4 42. Kd2 b3 43. Kd1 b2 44. Kc2 Kxh5 45. d4 Bxd4 46. Kd2 b1=Q 47. Ke2 Kg4 48. Kd2 Ra2# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "10"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0140 (e2e4 f7f5 c2c4 g8f6)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e4 f5 2. c4 Nf6 3. Bd3 c6 4. Qb3 Nh5 5. Bc2 f4 6. d4 e6 7. e5 Qg5 8. Qh3 g6 9. g4 Bb4+ 10. Bd2 Bxd2+ 11. Nxd2 Ng7 12. Ngf3 Qe7 13. Bxg6+ Kd8 14. O-O Qb4 15. Qh6 Ne8 16. Bf7 Qxb2 17. Qh4+ Kc7 18. Qe7 Ng7 19. Rfb1 Qc3 20. Qf6 h5 21. g5 Rh7 22. Bg6 Nf5 23. Bxf5 exf5 24. Qd6+ Kd8 25. Qf8+ Kc7 26. g6 Rg7 27. Qxg7 b5 28. Qf8 bxc4 29. Qd6+ Kd8 30. g7 Qc1+ 31. Rxc1 Ke8 32. g8=Q# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "11"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0131 (c2c4 c7c6 b1a3 g8f6)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. c4 c6 2. Na3 Nf6 3. e3 g6 4. f3 e5 5. Bd3 d5 6. Ne2 Be6 7. Qb3 Nbd7 8. Qxb7 Nc5 9. Qxc6+ Bd7 10. Qxd7+ Qxd7 11. Bc2 Na6 12. cxd5 Nb4 13. e4 Rc8 14. Bb3 Nd3+ 15. Kf1 Bxa3 16. bxa3 Qd6 17. Ba4+ Ke7 18. Nc3 Qc5 19. Ke2 Nf4+ 20. Kd1 Qf2 21. Rb1 Rxc3 22. Rb7+ Kf8 23. Rb8+ Kg7 24. Bb5 Qxg2 25. Rf1 Rxb8 26. Ba6 Rxf3 27. Re1 Rh3 28. d3 Rxh2 29. Re3 Qc2+ 30. Ke1 Qxc1# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "12"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "0-1"]
+[Opening "EXP0031P 0131 (c2c4 c7c6 b1a3 g8f6)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. c4 c6 2. Na3 Nf6 3. e3 g6 4. f3 e5 5. d4 Na6 6. c5 exd4 7. exd4 d6 8. Bxa6 Qa5+ 9. Kf2 Qxa6 10. Bg5 Nd5 11. Nc4 Qxc4 12. b3 Qa6 13. cxd6 Bxd6 14. Qe2+ Qxe2+ 15. Nxe2 h6 16. Bd2 Bf5 17. Nc3 Nxc3 18. Bxc3 Kd7 19. h3 Rae8 20. d5 Bc5+ 21. Kg3 Rhg8 22. dxc6+ Kxc6 23. Rac1 Re2 24. Bd4 Bc2 25. Bxc5 Kxc5 26. Rhd1 Kc6 27. Rd4 Rc8 28. Ra4 a6 29. Re4 Rd2 30. Rh4 h5 31. Rc4+ Kd7 32. Rb4 b5 33. a4 Rc5 34. h4 Re5 35. axb5 axb5 36. Kf4 f6 37. g4 hxg4 38. Kxg4 Ke7 39. Kg3 Kf7 40. Ra1 Bf5 41. Ra7+ Ke8 42. Ra6 Ke7 43. Rb6 Bd7 44. Rf4 Bf5 45. Rb4 Bd7 46. Rf4 Re6 47. Rxe6+ Bxe6 48. Re4 Rd3 49. b4 Rd1 50. Kf2 Rd8 51. Ke3 Kf7 52. Rd4 Bd5 53. Rd1 Ke6 54. Rg1 Kf5 55. Rc1 Bc4 56. Rc3 Rh8 57. Kd4 Rxh4+ 58. Kc5 Rh8 59. Ra3 Rd8 60. Kc6 Rd2 61. Kc5 Kf4 62. Ra6 Rd5+ 63. Kc6 Kxf3 64. Kc7 Rf5 65. Ra3+ Ke4 66. Rg3 g5 67. Kd6 Kf4 68. Rc3 g4 69. Ke7 g3 70. Rc2 Bd5 71. Rc1 g2 72. Kf8 Rg5 73. Rg1 f5 74. Ke7 Rh5 75. Kd6 Rh1 76. Rxg2 Bxg2 77. Kc5 Bf1 78. Kb6 Ke5 79. Kc7 Rh4 80. Kb6 f4 81. Kc6 f3 82. Kb6 f2 83. Ka6 Bd3 84. Kb6 f1=Q 85. Ka6 Rh6+ 86. Kb7 Qf7+ 87. Kc8 Rh8# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "13"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0124 (d2d4 e7e6 h2h3 e6e5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. d4 e6 2. h3 e5 3. Rh2 Qf6 4. f3 d5 5. Be3 Bd6 6. Nc3 exd4 7. Nxd5 Bg3+ 8. Bf2 Qe5 9. e4 dxe3 10. Bb5+ c6 11. Bxg3 Qxg3+ 12. Ke2 cxb5 13. Rh1 Qf2+ 14. Kd3 Bf5+ 15. Kc3 Na6 16. Rc1 Rc8+ 17. Kb3 Ne7 18. Nxe7 Be6+ 19. Nd5 Rc5 20. c4 bxc4+ 21. Kc3 Rxd5 22. Qxd5 Bxd5 23. Rd1 Be6 24. g4 Nc7 25. b3 Qxa2 26. bxc4 Qxc4+ 27. Kb2 Qb3+ 28. Kc1 Qc3+ 29. Kb1 Nb5 30. Rd8+ Kxd8 31. Ne2 Na3# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "14"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0124 (d2d4 e7e6 h2h3 e6e5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. d4 e6 2. h3 e5 3. Rh2 Qf6 4. f3 d5 5. g4 exd4 6. h4 Bd6 7. Rh3 Nc6 8. c3 Nh6 9. g5 Qg6 10. h5 Qf5 11. gxh6 Rg8 12. Qd2 gxh6 13. Rh1 Bg3+ 14. Kd1 Bf2 15. Nh3 Be3 16. Qd3 Qxd3+ 17. exd3 Bf5 18. Nf4 O-O-O 19. Bxe3 dxe3 20. d4 Rd6 21. Ke2 Re8 22. Bh3 Bxh3 23. Rxh3 Na5 24. Na3 Rb6 25. b3 Rd6 26. Nc2 Rg8 27. Nxe3 Rg5 28. Nd3 Re6 29. Kf2 Nc6 30. f4 Rg8 31. Nxd5 Rd6 32. Ne3 Re6 33. d5 Rd6 34. b4 Ne7 35. c4 b5 36. cxb5 Nxd5 37. Re1 Nxe3 38. Rexe3 a6 39. Re7 axb5 40. Rxf7 Rgd8 41. Ne5 Rd2+ 42. Kf3 Rxa2 43. Kg4 Rh8 44. Rc3 Ra7 45. Nc6 Ra2 46. Nd4 Rg8+ 47. Kf5 Kb8 48. Rcxc7 Ka8 49. Nc6 Rg5+ 50. Kf6 Rg6+ 51. hxg6 hxg6 52. Rf8# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "15"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0128 (e2e3 b7b5 f1c4 c7c6)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e3 b5 2. Bc4 c6 3. b4 Na6 4. f3 e6 5. Bb3 Nxb4 6. Bb2 a5 7. Ne2 a4 8. a3 axb3 9. axb4 Ra2 10. Qc1 Qh4+ 11. g3 Qxb4 12. Nbc3 Rxa1 13. Bxa1 Nf6 14. Nf4 Qc4 15. d3 Qb4 16. cxb3 h5 17. Qc2 h4 18. O-O hxg3 19. hxg3 e5 20. Ncd5 Nxd5 21. Nxd5 Qd6 22. Nb6 Qh6 23. Qg2 Qxe3+ 24. Qf2 Qh6 25. Qg2 Bc5+ 26. d4 Bxb6 27. Re1 Kf8 28. Bc3 d6 29. f4 exd4 30. Bd2 d3+ 31. Be3 d2 32. Rd1 Bxe3+ 33. Kf1 Bh3 34. Ke2 Bxg2 35. Kxe3 Qe6+ 36. Kxd2 Bf3 37. Rb1 Rh2+ 38. Kc3 Qe4 39. Ra1 b4# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "16"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0128 (e2e3 b7b5 f1c4 c7c6)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e3 b5 2. Bc4 c6 3. b4 Na6 4. f3 e6 5. Bf1 Bd6 6. g3 Nxb4 7. Bb2 Nf6 8. e4 Qb6 9. a3 Bc5 10. d4 Bxd4 11. Bxd4 Qxd4 12. Qxd4 Nxc2+ 13. Kf2 Nxd4 14. Nd2 d5 15. Ne2 e5 16. Nxd4 exd4 17. Bd3 dxe4 18. Nxe4 Ke7 19. Rhe1 Be6 20. Rac1 Bd5 21. Nc3+ Kd6 22. Ne2 c5 23. Bxb5 Rab8 24. a4 g5 25. Red1 g4 26. f4 Ne4+ 27. Kg1 Ke6 28. f5+ Kxf5 29. Nf4 Be6 30. Bd3 c4 31. Nxe6 fxe6 32. Rxc4 Rhd8 33. Re1 Rd7 34. Rxe4 Rb3 35. Bc2 Rbb7 36. Rexd4+ Ke5 37. Rxg4 Rd2 38. Rc6 Rb2 39. Re4+ Kd5 40. Rec4 Ke5 41. R4c5+ Kf6 42. Rc3 h5 43. h3 Ke5 44. Rc8 Rb4 45. Re3+ Kf6 46. Rc6 Kf7 47. Bb3 Kg7 48. Rc7+ Kf8 49. Rxa7 Rdd4 50. a5 Re4 51. Rf3+ Ke8 52. Bc2 e5 53. Bxe4 Rxe4 54. Rf5 Re3 55. Rxh5 Rxg3+ 56. Kf2 Rg8 57. Rxe5+ Kf8 58. Rc5 Rg2+ 59. Kxg2 Ke8 60. Rc8# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "17"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0132 (b2b4 c7c6 b1c3 e7e5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. b4 c6 2. Nc3 e5 3. a4 b5 4. Nd5 bxa4 5. Nc3 Nf6 6. Rxa4 d5 7. e3 Bd6 8. Nf3 O-O 9. d4 e4 10. Ne5 Nfd7 11. Qh5 Nb6 12. Ra3 f6 13. Ng4 Bxb4 14. Rb3 a5 15. Be2 Qd6 16. Bd2 a4 17. Nxe4 Bxd2+ 18. Kxd2 Qc7 19. Rxb6 Qxb6 20. Nc3 Ba6 21. Bf3 Bc4 22. Rb1 Qa7 23. Be2 Bxe2 24. Kxe2 Qa5 25. Kd2 Na6 26. Rb7 Nc7 27. Rb1 Rac8 28. Qf5 Nb5 29. Rxb5 cxb5 30. Qd3 a3 31. f4 a2 32. Ke2 Rxc3 33. Qf5 a1=Q 34. Qxd5+ Kh8 35. Kf3 f5 36. Nf2 Qf1 37. Kg3 Rxe3+ 38. Qf3 Qxf2+ 39. Kh3 Rxf3+ 40. g3 Rxf4 41. gxf4 Qc3# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "18"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0132 (b2b4 c7c6 b1c3 e7e5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. b4 c6 2. Nc3 e5 3. a4 b5 4. Nd5 bxa4 5. Ne3 a5 6. Rxa4 Bxb4 7. Nf3 d6 8. c3 Bc5 9. d4 exd4 10. cxd4 Bb4+ 11. Bd2 c5 12. dxc5 dxc5 13. Nc4 Nc6 14. Bxb4 Qxd1+ 15. Kxd1 cxb4 16. Nb6 Be6 17. Nxa8 Bb3+ 18. Kd2 Bxa4 19. e3 b3 20. Nb6 Nf6 21. Nxa4 Ne4+ 22. Ke1 O-O 23. Bd3 Re8 24. Ke2 g5 25. Rc1 Nb4 26. Bxe4 Rxe4 27. Rc8+ Kg7 28. Rc5 Rg4 29. Rxa5 Rxg2 30. Rxg5+ Rxg5 31. Nxg5 Nd5 32. Ne4 Nf6 33. Nd2 Nd5 34. Nxb3 Kf6 35. Kf3 Ke5 36. Nac5 f5 37. Nd4 Kf6 38. h4 h6 39. Nd7+ Kg6 40. Ne5+ Kf6 41. Nc4 h5 42. Ne2 Kg6 43. Nf4+ Nxf4 44. Kxf4 Kf6 45. Nd6 Ke7 46. Nxf5+ Kf6 47. Ng3 Kg6 48. Ke5 Kg7 49. Ke6 Kf8 50. f4 Kg7 51. Ke7 Kg6 52. f5+ Kh6 53. f6 Kh7 54. f7 Kg6 55. f8=Q Kh7 56. Nf5 Kg6 57. Qf7# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "19"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0137 (d2d4 h7h6 b1a3 f7f5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. d4 h6 2. Na3 f5 3. Bxh6 c6 4. f3 Qb6 5. Bc1 e5 6. e3 d5 7. dxe5 Bc5 8. Qd3 Be6 9. Nh3 Nd7 10. Qc3 Bb4 11. Nf4 Bxc3+ 12. bxc3 Kf7 13. Nxe6 Kxe6 14. Rb1 Qa5 15. Kd2 Nc5 16. Rb4 Kxe5 17. Bd3 Nf6 18. h4 g5 19. f4+ gxf4 20. exf4+ Ke6 21. Ke3 Rag8 22. Kf3 Nce4 23. Rxb7 Rg3+ 24. Ke2 Rxg2+ 25. Kf1 Qc5 26. Re7+ Kxe7 27. Be3 Qxe3 28. Kxg2 Qf2+ 29. Kh3 Rxh4# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "20"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0137 (d2d4 h7h6 b1a3 f7f5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. d4 h6 2. Na3 f5 3. Bxh6 c6 4. f3 Qb6 5. Bc1 Nf6 6. e4 fxe4 7. fxe4 Nxe4 8. Nc4 Qc7 9. Qg4 d5 10. Qg6+ Kd8 11. Nf3 e6 12. Nfe5 Rh4 13. Nf7+ Ke7 14. Nce5 Qa5+ 15. c3 Nf6 16. Ng5 Kd6 17. Qf7 Be7 18. Ng6 Qd8 19. Nxh4 Ng4 20. Nf5+ exf5 21. Bf4+ Kd7 22. Qxf5+ Ke8 23. Qg6+ Kd7 24. Qe6+ Ke8 25. Qf7+ Kd7 26. Bd3 Nh6 27. Qe6+ Ke8 28. Bg6+ Nf7 29. Bxf7+ Kf8 30. Nh7# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "21"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "1-0"]
+[Opening "EXP0031P 0139 (e2e3 h7h6 b1c3 h6h5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e3 h6 2. Nc3 h5 3. f4 d6 4. Qxh5 d5 5. Qxh8 Nf6 6. Nf3 a6 7. Bd3 c5 8. Ne5 Nc6 9. Nxc6 bxc6 10. b3 Be6 11. f5 Bd7 12. Qh4 Qc7 13. O-O e5 14. fxe6 Bxe6 15. Ba3 Qa5 16. Bb2 c4 17. bxc4 dxc4 18. Be2 Rb8 19. Rab1 Rb6 20. Bxc4 Rb4 21. Rf4 g5 22. Qh8 gxf4 23. Bxe6 Qg5 24. h4 Qg6 25. Ba3 Rxb1+ 26. Nxb1 Qh6 27. Qxf8+ Qxf8 28. Bxf8 Kxf8 29. Bc4 fxe3 30. dxe3 a5 31. Kf2 Ng4+ 32. Ke2 Kg7 33. Nd2 Ne5 34. h5 Kh6 35. g4 a4 36. e4 Nxg4 37. Bxf7 Kg5 38. Be8 c5 39. Nf3+ Kf4 40. Bxa4 Kxe4 41. Bc6+ Kf4 42. a4 Nf6 43. h6 Kf5 44. Nd2 Ke5 45. a5 c4 46. a6 c3 47. a7 cxd2 48. a8=Q Ke6 49. Kxd2 Kf5 50. h7 Nxh7 51. Be4+ Ke6 52. Qd5+ Ke7 53. Qe5+ Kd7 54. Bxh7 Kc6 55. Be4+ Kd7 56. c4 Kd8 57. c5 Kd7 58. c6+ Kd8 59. Qd6+ Ke8 60. Bg6# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "22"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0139 (e2e3 h7h6 b1c3 h6h5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e3 h6 2. Nc3 h5 3. f4 d6 4. Qxh5 d5 5. Qxh8 Nf6 6. Nf3 Nc6 7. Bb5 Qd6 8. Bxc6+ bxc6 9. O-O Rb8 10. b3 Qc5 11. Bb2 Ba6 12. Na4 Qxc2 13. Bxf6 exf6 14. Rfc1 Qd3 15. Nc5 Qe2 16. Nd4 Qxd2 17. Nxa6 Qxe3+ 18. Kh1 c5 19. Nf5 Qe4 20. Nxb8 Qxf5 21. Re1+ Qe6 22. Qh5 Kd8 23. Rxe6 fxe6 24. Qf7 Kc8 25. Qxf8+ Kb7 26. Nd7 c4 27. Qxg7 cxb3 28. axb3 Kc6 29. Rxa7 d4 30. Nxf6 Kb5 31. Qxc7 d3 32. Rb7+ Ka6 33. Qb6# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "23"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0123 (e2e4 b8c6 c2c4 c6b4)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e4 Nc6 2. c4 Nb4 3. Na3 h5 4. Be2 c6 5. d4 d6 6. Qa4 Na6 7. c5 Nc7 8. cxd6 exd6 9. Nf3 d5 10. Bd3 dxe4 11. Bxe4 Nf6 12. Bg5 Be7 13. Bxf6 Bxf6 14. Ne5 Qe7 15. Nac4 Nb5 16. O-O-O O-O 17. f4 Be6 18. d5 cxd5 19. Bxd5 Bxe5 20. Nxe5 Qc5+ 21. Bc4 Nd6 22. Rxd6 Qxd6 23. Rd1 Qe7 24. Bxe6 Qxe6 25. Kb1 Rfd8 26. Ka1 b5 27. Qc2 f6 28. Nf3 Rac8 29. Rxd8+ Rxd8 30. h4 Rc8 31. Qd1 Qc4 32. a3 Qxf4 33. Qd5+ Kf8 34. Qxb5 Rc1+ 35. Ka2 Qc4+ 36. Qxc4 Rxc4 37. Kb3 Rg4 38. Kc3 Rxg2 39. Nd4 Rh2 40. Nc6 Rxh4 41. Nxa7 g5 42. Nb5 g4 43. b3 Rh3+ 44. Kc2 g3 45. Nd4 g2 46. Ne2 Re3 47. Ng1 h4 48. Kd2 Rxb3 49. Ke1 h3 50. Kf2 h2 51. Kxg2 hxg1=Q+ 52. Kxg1 Rxa3 53. Kf2 Kf7 54. Ke2 Ke6 55. Kd2 Ke5 56. Kc2 Kd4 57. Kb2 Rc3 58. Ka2 Ke3 59. Kb2 Kd2 60. Kb1 Rb3+ 61. Ka1 Kc1 62. Ka2 Rc3 63. Ka1 Ra3# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "24"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0123 (e2e4 b8c6 c2c4 c6b4)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e4 Nc6 2. c4 Nb4 3. Na3 h5 4. Be2 c6 5. d4 Qa5 6. Bd2 Nf6 7. c5 Nxe4 8. Nc4 Qc7 9. Bxb4 Qf4 10. Nf3 d6 11. O-O dxc5 12. dxc5 Be6 13. Qc2 Rd8 14. g3 Qf5 15. Ne3 Qh7 16. Ba5 Rd7 17. Bd3 f5 18. Ne5 Rd4 19. Rfd1 g6 20. Bxe4 Bg7 21. Rxd4 Bxe5 22. Rd8+ Kf7 23. Rxh8 Qxh8 24. Bd3 Bd4 25. Bc4 Bxc4 26. Qxc4+ Kf8 27. Rd1 e5 28. Bc3 Qf6 29. Bxd4 exd4 30. Qxd4 Qxd4 31. Rxd4 b6 32. Rd6 Kf7 33. cxb6 axb6 34. Rxc6 b5 35. Nd5 g5 36. Rf6+ Kg7 37. Rxf5 Kg6 38. Ne7+ Kg7 39. Rxg5+ Kf6 40. Rxb5 Kxe7 41. Rxh5 Kf7 42. Kg2 Kg7 43. Rf5 Kg6 44. g4 Kg7 45. Kf3 Kh7 46. Rg5 Kh6 47. Kf4 Kh7 48. Kf5 Kh8 49. Kf6 Kh7 50. Kf7 Kh6 51. Rh5# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "25"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0127 (g2g3 b7b6 f1h3 h7h5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. g3 b6 2. Bh3 h5 3. a4 Rh6 4. f3 c5 5. d3 Rh8 6. Nc3 e6 7. Bf4 Nc6 8. Nb5 e5 9. Bg5 Qxg5 10. Nc7+ Kd8 11. Nxa8 Bb7 12. f4 exf4 13. Nf3 Qf6 14. a5 Nxa5 15. Nxb6 axb6 16. c3 g5 17. Ra4 fxg3 18. hxg3 g4 19. Rf4 Qg7 20. Bxg4 Bd6 21. Ra4 hxg4 22. Rxh8 gxf3 23. Rh3 Bxg3+ 24. Kd2 f2 25. e4 Bf4+ 26. Ke2 Qg4+ 27. Rf3 Nb3 28. Kxf2 Qh4+ 29. Ke2 Nc1+ 30. Qxc1 Bxc1 31. Rxf7 Qg4+ 32. Rf3 Bxb2 33. Ra7 Bc6 34. c4 Bd4 35. Ra6 Qg2+ 36. Rf2 Qxf2+ 37. Kd1 Be3 38. Ra8+ Bxa8 39. e5 Qd2# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "26"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0127 (g2g3 b7b6 f1h3 h7h5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. g3 b6 2. Bh3 h5 3. a4 Rh6 4. f3 c5 5. e4 Nc6 6. d3 Rd6 7. Nc3 e5 8. f4 g6 9. Nf3 Qf6 10. Nd5 Rxd5 11. exd5 Nd4 12. O-O exf4 13. c3 Nxf3+ 14. Qxf3 Ne7 15. d6 Nc6 16. Bxf4 Bxd6 17. Qd5 Be7 18. Rae1 a5 19. Bg5 Qg7 20. Bxe7 Nxe7 21. Qxa8 Kd8 22. Rxe7 Kxe7 23. Qxc8 f5 24. Re1+ Kd6 25. Qb8+ Kc6 26. Bg2+ d5 27. Qc8+ Kd6 28. Re6# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "27"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0136 (e2e4 g8h6 g1h3 g7g5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e4 Nh6 2. Nh3 g5 3. Nxg5 Rg8 4. Qe2 Ng4 5. Qxg4 h6 6. d4 hxg5 7. Bxg5 d5 8. Qf4 f6 9. Bh4 Rg4 10. Bb5+ c6 11. Qe3 Rxe4 12. Bd3 Rxe3+ 13. fxe3 Bh6 14. Kd2 c5 15. dxc5 d4 16. Kc1 Bxe3+ 17. Nd2 Qd5 18. Bg3 Qxg2 19. Bg6+ Kf8 20. Rd1 Bg4 21. Be4 Bxd2+ 22. Kb1 Qxe4 23. Rg1 Bf5 24. Rc1 Bxc1 25. a3 Qxc2+ 26. Ka2 Qxb2# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "28"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0136 (e2e4 g8h6 g1h3 g7g5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e4 Nh6 2. Nh3 g5 3. Nxg5 Rg8 4. Qe2 Ng4 5. d4 d5 6. h3 Nf6 7. e5 h6 8. Nxf7 Kxf7 9. exf6 exf6 10. Qh5+ Rg6 11. Bd3 Qe8+ 12. Be3 f5 13. Bxf5 Bxf5 14. Qxf5+ Kg7 15. O-O Qd7 16. Qh5 Nc6 17. Nc3 Rd8 18. Ne2 Kh7 19. Nf4 Rg5 20. Qe2 Re8 21. Qb5 b6 22. h4 Rf5 23. g3 Re4 24. Rae1 a6 25. Qd3 Nb4 26. Qb3 Nc6 27. f3 Re8 28. g4 Nxd4 29. Qd3 Rxe3 30. Rxe3 Qg7 31. Ne6 Nxf3+ 32. Rfxf3 Qxg4+ 33. Rg3 Bc5 34. Rxg4 Bxe3+ 35. Kg2 Kh8 36. Qxf5 d4 37. Qf8+ Kh7 38. Qg8# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "29"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0129 (g2g3 b8c6 f2f4 c6d4)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. g3 Nc6 2. f4 Nd4 3. e4 c6 4. h4 e5 5. fxe5 d5 6. c3 dxe4 7. cxd4 Qxd4 8. Qh5 Bc5 9. Kd1 Nh6 10. Ne2 Qf2 11. Nbc3 Bg4 12. Qg5 Qf3 13. Qxg7 Rg8 14. Qxh6 Qxh1 15. Qf4 Bf3 16. Ke1 Rf8 17. Na4 Bg1 18. d3 Bxe2 19. Bxe2 Bh2+ 20. Kd2 exd3 21. Bxd3 Qg2+ 22. Kc3 Rd8 23. Be3 Bxg3 24. Qf6 Qh2 25. Bd4 Bxh4 26. Qf3 Bg5 27. Rd1 Rd5 28. Bc4 Rxd4 29. Kxd4 f5 30. b4 Ke7 31. e6 Bd2 32. Kd3 Bxb4 33. Ke3 Rd8 34. Rxd8 Qe5+ 35. Kf2 Kxd8 36. Qd3+ Bd6 37. Nc3 Kc7 38. a4 h5 39. Kg2 h4 40. Kf1 h3 41. Qf3 h2 42. Bb3 Qf4 43. Qxf4 h1=Q+ 44. Kf2 Bxf4 45. e7 Qh4+ 46. Kf1 Qh3+ 47. Ke2 Kd7 48. Nd5 cxd5 49. e8=R Kxe8 50. Bxd5 Qe3+ 51. Kf1 Bg3 52. Bf7+ Kxf7 53. Kg2 Qf2+ 54. Kh3 Qh2# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "30"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0129 (g2g3 b8c6 f2f4 c6d4)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. g3 Nc6 2. f4 Nd4 3. e4 c6 4. h4 e5 5. c3 Ne6 6. fxe5 Be7 7. d4 Qb6 8. Nd2 Qc7 9. Nc4 b5 10. Nd6+ Bxd6 11. exd6 Qxd6 12. Ne2 Nf6 13. Bg2 Ng4 14. Bf3 h5 15. Nf4 Nxf4 16. Bxf4 Qe6 17. O-O O-O 18. a4 Ba6 19. Re1 bxa4 20. Qxa4 Bd3 21. Qd1 Bc4 22. Ra3 Rfe8 23. b3 Qe7 24. Ra5 Bd5 25. c4 Be6 26. Rxh5 Qb4 27. Rg5 Nf6 28. Rc5 Bg4 29. Bxg4 Nxg4 30. Bd2 Qa3 31. Qxg4 Qxb3 32. Rf1 Qd3 33. Qf4 Qxd4+ 34. Be3 Qf6 35. Rf5 Qg6 36. Bd4 a5 37. Rg5 Rf8 38. Rxg6 fxg6 39. Qe5 Rf6 40. Rxf6 gxf6 41. Qxf6 Kh7 42. Qg7# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "31"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0135 (e2e4 c7c5 g1h3 b7b5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e4 c5 2. Nh3 b5 3. Qf3 d6 4. Rg1 Bb7 5. Bxb5+ Bc6 6. Nc3 h6 7. Nf4 e6 8. e5 Qd7 9. Bxc6 Nxc6 10. exd6 Nf6 11. b3 Rb8 12. Bb2 Nd4 13. Qd3 Bxd6 14. Nfe2 Bxh2 15. Rh1 Bc7 16. Ne4 Nxe4 17. Qxe4 Nf5 18. g4 Nd4 19. Nxd4 cxd4 20. Qxd4 e5 21. Qe4 O-O 22. Rh5 f6 23. Ba3 Rfc8 24. Bb4 a5 25. Ba3 Bb6 26. c4 Bd4 27. Rc1 a4 28. Rh3 Qe6 29. Qd5 Qxd5 30. cxd5 Rxc1+ 31. Bxc1 Rd8 32. bxa4 Rxd5 33. Rb3 Rc5 34. Ba3 Rc2 35. a5 Kf7 36. Rb7+ Ke6 37. Re7+ Kd5 38. Rd7+ Ke4 39. Rxg7 Kd3 40. Rb7 Rxa2 41. Rb3+ Kc4 42. Rh3 e4 43. a6 e3 44. fxe3 Rxa3 45. Rh4 Be5 46. Ke2 Kb5 47. d4 Bh2 48. Rxh6 Rxa6 49. Kd3 Bg1 50. Rh3 Kb4 51. Ke4 Bf2 52. d5 Kc5 53. Rh1 Ra3 54. Rc1+ Kd6 55. Rc6+ Ke7 56. Kf3 Bh4 57. Re6+ Kd7 58. Ke4 Rb3 59. Kf4 Rb1 60. Ra6 Bg5+ 61. Kf5 Rf1+ 62. Ke4 Re1 63. Ra7+ Kc8 64. Ra3 Rd1 65. Ra7 Rg1 66. Kf3 Kd8 67. d6 Rd1 68. d7 Rd3 69. Ke4 Rxe3+ 70. Kd5 Ke7 71. Kc4 Re5 72. Rb7 Kd8 73. Ra7 Re7 74. Ra8+ Kxd7 75. Ra7+ Ke6 76. Rxe7+ Kxe7 77. Kd4 Kd6 78. Ke4 Kc5 79. Kd3 Kd5 80. Kc3 Ke4 81. Kb4 Kf3 82. Kb5 Kxg4 83. Kc4 f5 84. Kd3 Kf3 85. Kd4 f4 86. Kd3 Kg2 87. Kd4 f3 88. Ke4 Bc1 89. Kd4 f2 90. Kc3 f1=Q 91. Kd4 Qb5 92. Ke4 Bb2 93. Ke3 Qd5 94. Ke2 Bc3 95. Ke3 Qf3# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "32"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0135 (e2e4 c7c5 g1h3 b7b5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e4 c5 2. Nh3 b5 3. Qf3 d6 4. Rg1 Bb7 5. Bxb5+ Bc6 6. e5 Qd7 7. Ng5 Bxf3 8. Bxd7+ Nxd7 9. Nxf3 Nxe5 10. Nxe5 dxe5 11. d3 Nf6 12. Nd2 Rd8 13. b3 h5 14. Bb2 Nd7 15. f3 Rh6 16. Kf2 Ra6 17. a4 g6 18. Nc4 f6 19. Bc1 Nb6 20. Be3 e6 21. Rgb1 Rd7 22. Rd1 Nd5 23. Re1 Nxe3 24. Kxe3 Bh6+ 25. Kf2 h4 26. Rh1 Rc6 27. Rhd1 a6 28. g3 Rd4 29. c3 hxg3+ 30. hxg3 Rd7 31. Rh1 Bf8 32. Ke2 Rcc7 33. Rh8 Rb7 34. Rb1 g5 35. g4 Rd8 36. Nd2 Rbd7 37. Ne4 Kf7 38. Rbh1 Rxd3 39. R1h7+ Kg6 40. Ra7 f5 41. gxf5+ Kxf5 42. Rf7+ Kg6 43. Rfxf8 Rxf8 44. Rxf8 Rd5 45. Rf6+ Kg7 46. Rxe6 c4 47. bxc4 Ra5 48. c5 Kf8 49. c6 Rxa4 50. Kd3 Ra1 51. c7 Kf7 52. c8=Q Rd1+ 53. Kc2 Rd5 54. Qe8+ Kg7 55. Rg6+ Kh7 56. Nxg5# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "33"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "1/2-1/2"]
+[Opening "EXP0031P 0126 (e2e3 b8c6 h2h4 b7b6)"]
+[TimeControl "nodes/6000"]
+[Termination "INSUFFICIENT_MATERIAL"]
+
+1. e3 Nc6 2. h4 b6 3. Be2 b5 4. Bd3 Nh6 5. Bxb5 Nf5 6. Qf3 e6 7. g4 Nxh4 8. Rxh4 Qxh4 9. Bxc6 Rb8 10. Be4 h5 11. gxh5 d5 12. Bd3 Rxh5 13. Nc3 c6 14. a3 e5 15. b4 e4 16. Nxe4 Qh2 17. Kf1 dxe4 18. Bxe4 Bd6 19. Bb2 Rg5 20. Bxc6+ Kf8 21. Qh1 Qxh1 22. Bxh1 a5 23. f4 Rh5 24. Bf3 Rh2 25. c4 axb4 26. axb4 Rxd2 27. Bc1 Rc2 28. c5 Be7 29. Bd1 Rc4 30. Bd2 Bf6 31. Ra7 Bc3 32. Be2 Rxf4+ 33. exf4 Bxd2 34. b5 Be3 35. Bc4 Be6 36. Bxe6 fxe6 37. Ra5 Bxc5 38. Nf3 Bb4 39. Ra6 Rxb5 40. Rxe6 Bc3 41. Rc6 Bb2 42. Ng5 Ke7 43. Ne4 Rb4 44. Rc7+ Ke6 45. Ng5+ Kf5 46. Nh3 Bf6 47. Rc5+ Kg4 48. Nf2+ Kf3 49. Rc1 Rxf4 50. Nd3 Rh4 51. Ne1+ Kg3 52. Ke2 Rh2+ 53. Kd3 Rh1 54. Ke4 Rf1 55. Nd3 Rxc1 56. Nxc1 Kg4 57. Nd3 Bc3 58. Nf2+ Kg3 59. Ke3 Bd2+ 60. Ke2 Bh6 61. Ne4+ Kg2 62. Nc5 g5 63. Nd3 g4 64. Nf2 g3 65. Ne4 Bf4 66. Nxg3 Kxg3 1/2-1/2
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "34"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0126 (e2e3 b8c6 h2h4 b7b6)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e3 Nc6 2. h4 b6 3. Be2 b5 4. Bd3 Nh6 5. Bxb5 a6 6. Ba4 e5 7. Nc3 Nf5 8. Qh5 g6 9. Qe2 Nxh4 10. g3 Nf5 11. Nf3 Qf6 12. g4 Nfe7 13. Bb3 d5 14. Nxd5 Nxd5 15. Bxd5 Bxg4 16. Rg1 Nb4 17. Rxg4 Nxd5 18. Re4 Bd6 19. d3 h5 20. c4 Nb4 21. c5 Bxc5 22. Nxe5 O-O-O 23. a3 Nc6 24. d4 Nxe5 25. Rxe5 Ba7 26. Bd2 Rhe8 27. Rxe8 Rxe8 28. Qc4 Bxd4 29. Rc1 c5 30. Qd5 Kb8 31. Kf1 Bxb2 32. Rb1 Qb6 33. Ba5 Qb5+ 34. Kg2 Re5 35. Qd8+ Ka7 36. Qc7+ Ka8 37. Bb6 Qxb6 38. Qxb6 Rg5+ 39. Kh3 Rf5 40. Qxa6+ Kb8 41. Rxb2+ Kc7 42. Rb7+ Kd8 43. Qa8# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "35"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0130 (d2d3 b8a6 d1d2 a6c5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. d3 Na6 2. Qd2 Nc5 3. c3 Ne6 4. d4 f5 5. d5 Nc5 6. Qd4 d6 7. b4 e5 8. Qc4 Na4 9. Nf3 Bd7 10. g3 Nb6 11. Qb3 Nf6 12. c4 Be7 13. Nc3 O-O 14. c5 dxc5 15. d6+ c4 16. dxe7 Qxe7 17. Qa3 e4 18. Nd4 a5 19. Rb1 e3 20. Bxe3 Nfd5 21. Nxd5 Qe4 22. Ne7+ Kh8 23. Rd1 Qxh1 24. bxa5 f4 25. Bxf4 Bh3 26. Bxc7 Nd7 27. Kd2 Bxf1 28. Qa4 Nc5 29. Qxc4 Ne4+ 30. Kc2 Nxf2 31. Re1 Qe4+ 32. Kb3 Qe3+ 33. Ka4 Bh3 34. Nd5 Bd7+ 35. Nb5 Bxb5+ 36. Kxb5 Rf5 37. Rf1 Qe6 38. e4 Nd3 39. Qxd3 Rxf1 40. Bd6 Qd7+ 41. Kc5 Rc1+ 42. Kd4 Qxd6 43. Qb5 Rd1+ 44. Kc3 Qa3+ 45. Kc2 Qc1+ 46. Kb3 Qb1+ 47. Ka4 Qxa2+ 48. Kb4 Rc8 49. Qe8+ Rxe8 50. Kb5 Qb2+ 51. Nb4 Rb1 52. Kc4 Rxe4+ 53. Kd3 Qe2+ 54. Kc3 Rc4# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "36"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0130 (d2d3 b8a6 d1d2 a6c5)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. d3 Na6 2. Qd2 Nc5 3. c3 Ne6 4. d4 f5 5. Qd1 Nf6 6. Nf3 b6 7. c4 d5 8. e3 Qd6 9. Qc2 g6 10. cxd5 Nxd5 11. Bb5+ Bd7 12. Bc4 Nb4 13. Qb3 Bh6 14. Bd2 a5 15. a3 Nc6 16. d5 Nc5 17. Qc3 O-O-O 18. dxc6 Bxc6 19. O-O b5 20. Be2 a4 21. Rc1 Bxf3 22. Bxf3 Nb3 23. Ra2 Nxc1 24. Qxc1 Qe6 25. Nc3 Qc4 26. Be2 Rd3 27. Bxd3 Qxd3 28. Ra1 Rd8 29. Be1 Bg7 30. Na2 Bf6 31. Ba5 Rd7 32. Bc3 e5 33. Be1 e4 34. Qc6 Rd6 35. Qa8+ Kd7 36. Qf8 Bxb2 37. Nb4 Qc4 38. Rb1 Bxa3 39. Qg7+ Kc8 40. Qxh7 c5 41. Nc2 Qxc2 42. Qg8+ Kb7 43. Rxb5+ Kc6 44. Ra5 Qe2 45. Qa8+ Kd7 46. Ra7+ Ke6 47. Qe8+ Kd5 48. Qf7+ Re6 49. Rd7+ Kc6 50. Qxe6+ Kb5 51. Rb7# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "37"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0133 (e2e3 b8c6 d1e2 e7e6)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e3 Nc6 2. Qe2 e6 3. Qc4 h5 4. Ne2 Qg5 5. Nbc3 d5 6. Qf4 Qe7 7. Nd4 e5 8. Nxc6 bxc6 9. Qa4 Bd7 10. Qa5 Qd6 11. Bd3 Nf6 12. b3 Be7 13. a4 O-O 14. Ba3 c5 15. O-O a6 16. f4 e4 17. Be2 Qc6 18. Kh1 Rfe8 19. f5 Bd6 20. b4 cxb4 21. Bxb4 Reb8 22. Rab1 Rb6 23. Bxd6 Qxd6 24. Rb3 Rab8 25. Rf4 Bc8 26. Bd1 Rxb3 27. cxb3 c5 28. g3 Bb7 29. Kg1 d4 30. exd4 cxd4 31. Ne2 d3 32. Nc3 Re8 33. b4 e3 34. dxe3 Qc6 35. Bf3 Qxc3 36. Bxb7 d2 37. Bf3 Qxe3+ 38. Kg2 Ng4 39. Bd1 Qe2+ 40. Bxe2 Rxe2+ 41. Kf3 d1=Q 42. Qd8+ Qxd8 43. Kxe2 Qe8+ 44. Kd2 Qxa4 45. h3 Qa2+ 46. Ke1 Qa1+ 47. Ke2 Qb2+ 48. Kf3 Qf2+ 49. Ke4 Nf6+ 50. Ke5 Qxg3 51. h4 Qe3+ 52. Kd6 Qxf4+ 53. Kc5 Qxf5+ 54. Kc4 Qc2+ 55. Kd4 Qe4+ 56. Kc5 Qd5+ 57. Kb6 Qb5+ 58. Ka7 Nd7 59. Ka8 Qb8# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "38"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0133 (e2e3 b8c6 d1e2 e7e6)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. e3 Nc6 2. Qe2 e6 3. Qc4 h5 4. Ne2 Qg5 5. h4 Qg4 6. d4 d5 7. Qb3 Bd6 8. Nd2 Nf6 9. g3 Ne4 10. Bg2 Qf5 11. Nxe4 dxe4 12. c3 b6 13. Qc2 Bb7 14. Qxe4 Qb5 15. Qc2 Nb4 16. cxb4 Bxg2 17. Rh2 Bf3 18. a3 a5 19. Nc3 Qc6 20. b5 Qb7 21. e4 O-O-O 22. Qd3 Bg4 23. Kf1 Be5 24. Be3 c5 25. bxc6 Qa7 26. Kg2 Bb8 27. f3 Qa8 28. Qc4 Rd6 29. d5 exd5 30. exd5 Bf5 31. Nb5 Rg6 32. d6 Bxd6 33. Qxf7 Rxg3+ 34. Kh1 Rd8 35. Bxb6 Rg1+ 36. Rxg1 Bxh2 37. Na7+ Qxa7 38. Qxa7 Rd7 39. Qa8+ Bb8 40. Qa6+ Rb7 41. Qxb7# 1-0
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "39"]
+[White "StockBear 0.1.0-dev5"]
+[Black "Stockfish 8 64 POPCNT"]
+[Result "0-1"]
+[Opening "EXP0031P 0121 (b1c3 b8c6 g2g3 c6d4)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. Nc3 Nc6 2. g3 Nd4 3. Nb5 Nf6 4. Nc3 Ne6 5. Nf3 d5 6. d4 c5 7. Qd3 Qb6 8. dxc5 Nxc5 9. Qb5+ Qxb5 10. Nxb5 Na6 11. Bd2 e6 12. Ne5 Ne4 13. Be3 Nd6 14. Nxa7 Be7 15. Nxc8 Rxc8 16. Kd1 O-O 17. Nd7 Rfd8 18. Ne5 d4 19. Bd2 Ne4 20. Be1 Bf6 21. Nd3 Nd6 22. Bg2 b6 23. b4 e5 24. Bh3 Rc7 25. Rb1 b5 26. f3 Nc4 27. Kc1 Rc6 28. Bd2 Nd6 29. Kd1 Nc7 30. Nc5 Nd5 31. Rb3 Nc4 32. Nb7 Ra8 33. Bd7 Rc7 34. Nc5 Rxa2 35. Bxb5 Ra1+ 36. Bc1 Nde3+ 37. Rxe3 Nxe3+ 38. Kd2 Be7 39. c4 Bxc5 40. bxc5 Rxc5 41. Kd3 Rb1 42. g4 f6 43. f4 Nxg4 44. Ba6 Rb6 45. fxe5 fxe5 46. Rf1 Rxa6 47. Bb2 Ra2 48. Bc1 Ra4 49. h3 Ne3 50. Rf3 Nxc4 51. Rf1 Nd6 52. h4 e4+ 53. Kd2 e3+ 54. Kd1 Ra1 55. Rf8+ Kxf8 56. Ke1 Rcxc1# 0-1
+
+[Event "StockBear paired-opening match"]
+[Site "local"]
+[Date "????.??.??"]
+[Round "40"]
+[White "Stockfish 8 64 POPCNT"]
+[Black "StockBear 0.1.0-dev5"]
+[Result "1-0"]
+[Opening "EXP0031P 0121 (b1c3 b8c6 g2g3 c6d4)"]
+[TimeControl "nodes/6000"]
+[Termination "CHECKMATE"]
+
+1. Nc3 Nc6 2. g3 Nd4 3. Nb5 Nf6 4. Nc3 Ne6 5. e4 b6 6. d4 Bb7 7. d5 Nc5 8. Bg2 e5 9. Nge2 a5 10. Be3 Ng4 11. Bd2 Qf6 12. f3 Nh6 13. O-O Ba6 14. g4 g5 15. h4 gxh4 16. g5 Qg6 17. a3 Ng8 18. b4 Nb7 19. b5 Bc5+ 20. Kh1 h3 21. Bxh3 h6 22. bxa6 Rxa6 23. Kg2 Nd6 24. Rh1 Nf6 25. Ng3 Rg8 26. Bf5 Nxf5 27. exf5 Qg7 28. Rxh6 Nh7 29. f6 Nxf6 30. Qe2 Ng4 31. Nf5 Qxh6 32. Nxh6 Nxh6 33. Qxa6 Ke7 34. d6+ cxd6 35. Nd5+ Ke6 36. Nf6 Rg6 37. Qc4+ Ke7 38. Qa4 Kf8 39. Qxd7 Kg7 40. Qe8 Bd4 41. Rh1 e4 42. Rxh6 Rxg5+ 43. Bxg5 exf3+ 44. Kxf3 Be5 45. Qh8# 1-0
