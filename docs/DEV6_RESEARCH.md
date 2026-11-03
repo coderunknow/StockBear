@@ -187,3 +187,31 @@ vbuild-popcnt, nps.sh depth 16/20 vs dev4.
 - Remaining lever: bit-exact NPS via incremental eval (popcnt gave x1.12 NPS
   -> +3.6 [-19.6,+26.9], consistent with the +90/doubling slope within noise;
   x1.2-1.25 could add +15-30).
+
+## Incremental eval experiment (dev7 tail) — NEGATIVE, kept default-off
+
+- Implemented bit-exact incremental feature counts in StateInfo (raw per-param
+  counts maintained by make_move deltas; evaluate() applies active params at
+  read time). Verified bit-exact: evalcheck (500 random games x 100 plies x 7
+  seeds, counts vs full recompute after every move) OK; bench 243f9a1c1ba5b36f;
+  depth-16 nodes 19229509; ctest 11/11.
+- BUT NPS: 1.74-1.84M vs 2.49-2.55M for the non-incremental build (-27%): the
+  per-move delta work (attackers_to lookups + cheap-term recompute) costs more
+  than the saved features() calls. Gated behind SB_INCREMENTAL_EVAL (default 0);
+  default build remains bit-identical and full-speed (bench 243f9a1c1ba5b36f,
+  nodes 19229509, nps 2.51M, ctest 11/11).
+- Conclusion: at 40+4 the eval's ~27% node cost is mostly irreducible lookups;
+  no NPS step-change available. Combined with the confirmed +40..+48 point of
+  the champion family, the +50 LCB gate is not reachable by further NPS micro
+  work; param/search screening has plateaued (all confirmed values +39.9..+47.5
+  point, LCB +31.9..+39.5).
+
+## STATUS: INCOMPLETE — +50 ELO GATE NOT MET
+
+- dev6 confirmation (untouched suite 99682ada, 4400 g, seed 2026110207):
+  +47.5 [+39.5, +55.6]; null -3.5 [-17.3, +10.2]. LCB +39.5.
+- dev7 confirmation (untouched suite 98208a6e, 4400 g, seed 2026110309):
+  +39.9 [+31.9, +47.9]; null -4.1 [-18.2, +9.9]. LCB +31.9.
+- No PR (gate requires LCB95 strictly > +50). All evidence committed:
+  results under benchmarks/results/0.1.0-dev6|dev7/, suites, params, scripts,
+  docs (DEV6_RESEARCH.md, DEV6_CONFIRMATION.md, DEV7_CONFIRMATION.md).

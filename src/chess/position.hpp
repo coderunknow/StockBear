@@ -17,6 +17,7 @@
 #include "chess/bitboard.hpp"
 #include "chess/move.hpp"
 #include "chess/zobrist.hpp"
+#include "evaluation/eval_params.hpp"
 #include "evaluation/nnue.hpp"
 #include "utilities/types.hpp"
 
@@ -32,6 +33,10 @@ struct StateInfo {
     Key historyContext;          // signature of known reversible history
     std::int32_t accMg[ColorNB]; // material + piece-square accumulator (middlegame), cp
     std::int32_t accEg[ColorNB]; // material + piece-square accumulator (endgame), cp
+    // Raw feature counts per side (incremental evaluator); Mat*/Pst* slots are
+    // always zero because those terms live in accMg/accEg. Copied with the
+    // state, so unmake_move restores them for free.
+    std::int16_t feat[ColorNB][EvalParamNB] = {};
     Bitboard checkers;           // enemy pieces checking the side to move
     Bitboard pinned;             // side-to-move pieces pinned against their king
     std::uint64_t rule50;        // halfmove clock (plies since last pawn move/capture)
@@ -143,6 +148,14 @@ public:
     // Material + piece-square accumulators (cp), used by the evaluation.
     int acc_mg(Color c) const { return st().accMg[c]; }
     int acc_eg(Color c) const { return st().accEg[c]; }
+    const std::int16_t* feat_counts(Color c) const { return st().feat[c]; }
+    // Recompute all raw feature counts for the current board into st().
+    void compute_feature_counts();
+    // Delta-update st().feat after the board was changed by make_move_impl.
+    // oldBoard/occ0/oldOwn describe the position BEFORE the move.
+    void update_feature_counts(Move m, Square capSq, Piece captured,
+                               const Piece* oldBoard, Bitboard occ0,
+                               const Bitboard* oldOwn);
 
     // --- Attacks --------------------------------------------------------------
     Bitboard attackers_to(Square s) const { return attackers_to(s, pieces()); }
