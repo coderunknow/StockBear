@@ -109,3 +109,31 @@ development release. Training/data provenance, licenses, cost, testing and
 credible tournament evidence must precede any strength claim. Surpassing a
 leading engine is an aspirational research goal, not a result established by
 this release.
+
+---
+
+## 2026-11-03 — v0.1.0-dev6 cycle roadmap addendum (appended)
+
+Superseding context: the sections above describe the earlier dev1..dev5 plan.
+The current `v0.1.0-dev6` mission (branch `arena/3e6dd5b6-stockbear`) aims at a
+genuine, independently-confirmed >= +75 Elo gain (LCB95 > +50) over the **exact
+released dev5 portable artifact**, in two disjoint pre-registered confirmation
+batches at 40+4 ms, hash 16 MB, 1 thread. Long-term target: 3,000 Elo in a
+clearly specified external pool — treated as a strategic goal, not a claim.
+
+- **Complete external rating ladder** (`docs/DEV6_EXTERNAL_LADDER.md`): currently
+  NOT COMPLETED / BLOCKED (external binaries + NNUE require runner download; no
+  non-saturated anchor; primary gate unmet). This is the M0 blocker for any
+  absolute-rating statement.
+- **Evidence-driven staged plan** (`docs/DEV6_3000_ROADMAP.md`): M0 rating
+  foundation -> M1 reliably beat dev5 -> M2 eval gap -> M3 search depth/quality
+  -> M4 SMP/time -> M5 re-rate. No fabricated ratings or timelines; the numeric
+  gap to 3,000 is explicitly UNKNOWN until M0 is measured.
+- **Research priorities** from the Failure Ledger: classical evaluation first
+  (dev6 added 6 verified pawn/coordination features), then a materially
+  different modern NNUE with fast inference and a credible accuracy->strength
+  link, then search innovation; SMP/large architectures only after justification.
+- **Discipline**: pre-registration, opening-clustered CR1 95% CIs, null controls,
+  exact-SHA CI/review, append-only logs, no merge/tag/release without explicit
+  user approval. Gate outcome: `docs/DEV6_CONFIRMATION_REPORT.md`,
+  `docs/DEV6_REPORT.md`, `benchmarks/FAILURE_LEDGER.md`.

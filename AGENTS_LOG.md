@@ -444,3 +444,32 @@ Default and experimental evaluation builds pass 11/11 CTest entries; optional
 NumPy batch-feature differential has two passing tests. Screening evidence and
 negative NNUE reproduction are preserved under benchmarks/results/0.1.0-dev5.
 This is incomplete research, not a completed strength/release milestone.
+
+## 2026-11-03 — dev6 (v0.1.0-dev6) research cycle (branch arena/3e6dd5b6-stockbear)
+
+Preflight: inspected tags/releases/PRs/workflows/working tree; read AGENTS_LOG,
+DESIGN_LOG, README, ROADMAP, FAILURE_LEDGER and the DEV4/DEV5/DEV6/DEV7 docs.
+Resolved the annotated `v0.1.0-dev5` tag to commit `c94571313a1667048468cf6d4e070400dc5ab228`.
+Starting main SHA `6e7c2e02881faf93a84990a8345c41ad28bcae11`. Compute: 2 vCPU
+Xeon (AVX2/BMI2/POPCNT/LZCNT present), 3.8 GB RAM; free GitHub-hosted ubuntu-latest
+runner lane (4 vCPU dedicated VM) for isolated decisive matches; no paid compute.
+
+Correction recorded: the historical `docs/DEV6_RESEARCH.md`, `docs/DEV5_REPORT.md`,
+`DEV6_CONFIRMATION.md`, `DEV7_CONFIRMATION.md` and exp-0016/0017 belong to the
+**dev5 development cycle** (branch `arena/daa69a3b-stockbear`) and measured a +50
+gate against **dev4**. They are NOT this mission's dev6 (v0.1.0-dev6, +75 gate
+against released dev5). Superseding notices appended; history preserved.
+
+Work done: established the immutable exact released dev5 binary (exp-0025);
+implemented + independently verified 6 extended eval features (exp-0026); bumped
+VERSION to 0.1.0-dev6; generated two disjoint decisive opening suites and a
+power analysis; pre-registered exp-0027/0028/0029 and dispatched the isolated
+fixed-time batch via a dedicated free-runner lane (`dev6-lane.yml`). All evidence
+committed to survive resets. Independent CodeRabbit review of an exact final PR
+head is NOT requested because no PR is eligible while the strength gate is unmet;
+this is stated accurately rather than fabricated.
+
+Authorization status: NO merge, NO tag, NO release, NO PR opened. Those require
+explicit user approval and, per the mission, a PR is opened only after ALL
+mandatory gates pass. Gate outcome is reported honestly in
+`docs/DEV6_CONFIRMATION_REPORT.md` / `docs/DEV6_REPORT.md` / the Failure Ledger.

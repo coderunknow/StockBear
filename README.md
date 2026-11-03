@@ -255,3 +255,26 @@ time forfeits and illegal moves as losses. See
 - [dev2 evidence report](benchmarks/results/0.1.0-dev2/REPORT.md)
 - [Roadmap](docs/ROADMAP.md), [changelog](CHANGELOG.md), [release notes](RELEASE_NOTES.md)
 - [License](LICENSE) (Apache-2.0) and [third-party notices](THIRD_PARTY.md)
+
+---
+
+## 2026-11-03 — v0.1.0-dev6 research cycle (this branch)
+
+> This section is an **appended status note**; the released version of the
+> project remains `v0.1.0-dev5`. On the research branch
+> `arena/3e6dd5b6-stockbear`, `VERSION` is `0.1.0-dev6`, but **no dev6 release,
+> tag, merge or PR exists** — the mandatory strength gate is an honest,
+> independently-confirmed >= +75 Elo (LCB95 > +50) against the exact released
+> dev5 artifact, and no misleading release PR is opened while it is unmet.
+
+- Immutable baseline: `benchmarks/binaries/stockbear-dev5-release`
+  (SHA-256 `391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918`),
+  verified against the official dev5 release `SHA256SUMS.txt`.
+- dev6 research: six gated, independently-verified extended evaluation features
+  (`docs/DEV6_EVAL_FEATURES.md`), pre-registered decisive matches
+  (`docs/DEV6_PREREG.md`), power analysis (`docs/DEV6_POWER_ANALYSIS.md`),
+  external-rating-ladder status (`docs/DEV6_EXTERNAL_LADDER.md`), and the
+  evidence-driven 3,000-Elo roadmap (`docs/DEV6_3000_ROADMAP.md`).
+- Older `docs/DEV6_*.md` / `DEV5_REPORT.md` / `DEV7_CONFIRMATION.md` are
+  **historical dev5-cycle documents** (measured against dev4); see their
+  appended superseding notices. The dev6 gate is against released **dev5**.

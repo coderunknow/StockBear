@@ -37,3 +37,29 @@
 - Run: scripts/dev7_confirmation_run.sh — null 1100 g seed 2026110308, then
   candidate 4400 g seed 2026110309, alone, on this suite.
 8b9a421ec65232e6578aefab06929521a006a1581262fada632d1a7f9deba346  research-data/params_outcome_v6.txt
+
+---
+
+## SUPERSEDING NOTICE (2026-11-03) — historical dev5-cycle document, NOT the v0.1.0-dev6 mission
+
+This document is a **historical record from the dev5 development cycle** on
+branch `arena/daa69a3b-stockbear`. Its "dev6"/"dev7" labels refer to internal
+experiments (exp-0016/exp-0017) that measured a **+50 Elo gate against the
+immutable dev4 binary `1c5b61a7…`**, and are preserved unchanged as history.
+They are **not** the current mission's `v0.1.0-dev6`.
+
+The current `v0.1.0-dev6` cycle (branch `arena/3e6dd5b6-stockbear`, this session)
+has a different, harder objective: **>= +75 Elo with a two-sided opening-clustered
+95% CI lower bound strictly > +50, in two independent pre-registered
+confirmation batches, against the EXACT RELEASED `v0.1.0-dev5` portable artifact**
+(SHA-256 `391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918`), at
+its champion runtime (`params_abc.txt` + `TTEval=true`). dev5 itself already
+measured +64.7 [+57.5,+72.0] vs dev4 (exp-0024). No dev4-based measurement can
+satisfy the dev6 gate.
+
+Authoritative current-cycle documents: `docs/DEV6_PREREG_BASELINE.md`,
+`docs/DEV6_EVAL_FEATURES.md`, `docs/DEV6_PREREG.md`,
+`docs/DEV6_POWER_ANALYSIS.md`, `docs/DEV6_EXTERNAL_LADDER.md`,
+`docs/DEV6_3000_ROADMAP.md`, `docs/DEV6_CONFIRMATION_REPORT.md`,
+`docs/DEV6_REPORT.md`, and the dev6 section of `benchmarks/FAILURE_LEDGER.md`.
+This notice is appended (append-only); nothing above it has been rewritten.

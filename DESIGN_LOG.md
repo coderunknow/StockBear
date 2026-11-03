@@ -272,3 +272,54 @@
   trained HalfKP implementation. Do not reinterpret old model features.
 - Add binary/opening/explicit evaluator-input hashes to future match records.
   Fixed-node screening is exploratory; practical strength requires fixed time.
+
+## 2026-11-03 — dev6 (v0.1.0-dev6) research cycle: baseline = released dev5
+
+Working branch `arena/3e6dd5b6-stockbear` (this session's fixed research branch;
+the toolchain fixes the branch name, so it IS the dedicated dev6 branch). Starting
+main SHA `6e7c2e02881faf93a84990a8345c41ad28bcae11`. **All older "dev6"/"dev7"
+docs and exp-0016/0017 measured against dev4 during the dev5 cycle on a different
+branch — they are historical and cannot satisfy the dev6 gate.** The dev6 gate is
++75 Elo with LCB95 > +50 against the EXACT released v0.1.0-dev5 portable artifact.
+
+- **Immutable baseline provenance (exp-0025).** The sandbox cannot reach the
+  release-asset CDN; a free GitHub-hosted runner downloaded the official dev5
+  archives, verified them against the published SHA256SUMS.txt, and pinned the
+  exact Linux executable `benchmarks/binaries/stockbear-dev5-release`
+  (SHA-256 `391cb50e…`, bench `243f9a1c1ba5b36f` / d16 `a14ab62224f837e5`,
+  UCI `0.1.0-dev5`, flags `-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4`).
+  Shipped `params_abc.txt` SHA equals the repo champion file SHA
+  (`8a9dc81f…`), confirming the champion config of the published +64.7 claim.
+  Recorded in `benchmarks/dev6-baseline/manifest.json`, `docs/DEV6_PREREG_BASELINE.md`.
+- **Eval audit finding (exp-0026).** Of the four shipped "exp-0022" extended ids,
+  only `RookOn7th` and `KnightOutpost` were ever computed; `BackwardPawn` and
+  `PawnChain` were dead rows (declared but never counted). The default-off
+  incremental path maintained none of them.
+- **Design decision.** Implement all six extended features (the four existing +
+  two new: `ConnectedPassed`, `RookBehindPassed`) in ONE shared helper
+  `extended_counts(p, us)` used by `features()`, `accumulate_breakdown()` and the
+  incremental path — so live eval and offline breakdown cannot diverge. Append
+  the two new ids (append-only table). Ship all six at value 0 so the default
+  build stays bit-exact (bench signatures unchanged) AND gate the whole routine
+  behind an "any extended param non-zero" flag, so the champion/default config
+  pays zero extra per-node cost. This protects the cp-margin/NPS regime the
+  Failure Ledger identifies as decisive at 40+4 ms.
+- **Correctness.** Shared-helper guarantee + perturbed-parameter mirror test;
+  new unit test with hand-verifiable counts and gating; an INDEPENDENT
+  python-chess reference (`scripts/check_dev6_eval_features.py`) over a fixed
+  600-position corpus (43,200 feature checks, 0 mismatches); `evaldata --check`
+  600/600; ctest 11/11; exact portable `-flto=4` build reproduces both bench
+  signatures. Cost measured: ~13% of the combined (breakdown+evaluate) loop
+  when enabled, zero when gated off.
+- **Noise-minimised decisive design (exp-0027/0028/0029, pre-registered).**
+  Primary estimator opening-clustered CR1 / Student-t; 40+4 ms, hash 16, 1
+  thread; exact dev5 binary at champion options; two FRESH disjoint suites of
+  3300 distinct paired openings each (verified disjoint from each other and all
+  historical suites), split into 6 immutable slices of 550 so a 1100-game shard
+  uses every opening exactly once (no repeats within a batch); 13200 decisive
+  games + 2200 null games + screens; distinct seeds; symmetric pre-declared
+  forfeit/crash/illegal/max-ply handling. Power analysis from exp-0024 raw
+  records (`docs/DEV6_POWER_ANALYSIS.md`): combined half-width ~5 Elo at +75.
+- **Version discipline.** VERSION -> `0.1.0-dev6` on the research branch; no
+  dev5 tag/release touched; no dev7; no merge/tag/release/PR while the gate is
+  unmet (explicit user approval required for those).
