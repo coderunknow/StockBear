@@ -490,3 +490,100 @@ noted. Hardware: sandbox 2 vCPU (Intel Xeon 2.60 GHz), ~3.9 GB RAM, 20 GB disk.
   exp-0023 (+66.4 [+59.3,+73.6], native build) remains the native-runner
   measurement of the same source; the release claims the exp-0024 number for
   the portable artifact.
+
+---
+
+# v0.1.0-dev6 cycle (2026-11-03) — baseline = EXACT RELEASED dev5
+
+## Cycle framing and correction (read before using older entries)
+
+All entries above from the **dev5 development cycle** (branch
+`arena/daa69a3b-stockbear`, exp-0001..exp-0024) used the immutable **dev4**
+binary `1c5b61a7…` as baseline. exp-0016/exp-0017 were labelled "dev6"/"dev7"
+in that historical cycle but are internal experiments against dev4 with a +50
+gate; their results (+47.5/+39.9, LCB below +50) are preserved as history.
+**They are NOT the v0.1.0-dev6 mission and cannot satisfy its gate.** The
+current cycle (branch `arena/3e6dd5b6-stockbear`, VERSION `0.1.0-dev6`) has a
+harder objective: >= +75 Elo with a two-sided opening-clustered 95% CI lower
+bound strictly > +50, in two disjoint pre-registered confirmation batches,
+against the **exact released v0.1.0-dev5 portable artifact**
+(SHA-256 `391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918`) at
+champion options. dev5 already measured +64.7 [+57.5,+72.0] vs dev4 (exp-0024).
+Older dev4-baseline "dev6/dev7" confirmations are hereby classified
+**INVALID MEASUREMENT for the dev6 gate** (wrong baseline, wrong gate, different
+branch/cycle), not erased. Superseding notices appended to
+`docs/DEV5_REPORT.md`, `DEV6_RESEARCH.md`, `DEV6_CONFIRMATION.md`,
+`DEV7_CONFIRMATION.md`. Active constraints: the entire ledger above (no repeat
+of negative directions: small CPU NNUE, cp distillation, FullSoftBudget,
+qsearch-lite, PGO/TT/THP micro-opts, incremental eval, disabling dev4
+pruning/ordering, best-of-N param selection, fixed-node-only conclusions).
+
+---
+
+## exp-0025 — dev6 baseline provenance (verification, not a strength experiment)
+
+- **ID / source / binary SHAs:** release tag `v0.1.0-dev5` -> commit
+  `c94571313a1667048468cf6d4e070400dc5ab228`; `SHA256SUMS.txt` asset SHA
+  `8022866bc945145c6c80c437f20f83a534090cadbb3c8aea6334cffda3cd4773`; extracted
+  executable SHA `391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918`;
+  shipped == repo `params_abc.txt` SHA
+  `8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be`.
+- **Hypothesis / test:** the exact released dev5 portable artifact is resolved,
+  downloaded from the official release, checksum-verified, extracted, and pinned
+  as the immutable baseline (no approximate rebuild). Bench `243f9a1c1ba5b36f`,
+  d16 `a14ab62224f837e5`, UCI `0.1.0-dev5`, flags
+  `-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4`.
+- **Config / conditions:** free GitHub-hosted ubuntu-latest dedicated VM
+  (`dev6-lane.yml` verify-baseline job); both Linux/Windows archives verified
+  against the published `SHA256SUMS.txt`; sandbox could NOT reach the CDN
+  directly (infrastructure note, exp-0025 prereg).
+- **Raw paths:** `benchmarks/exp-runs/exp0025-baseline/` (assets, extract,
+  archive listing, checksums); `benchmarks/binaries/stockbear-dev5-release`;
+  `benchmarks/dev6-baseline/manifest.json`, `PROVENANCE.md`, `SHA256SUMS.txt`,
+  `params_abc_shipped.txt`.
+- **Statistics:** n/a (integrity verification; signatures and SHA-256 exact).
+- **Decision / classification:** SUCCESS (baseline pinned and immutable).
+- **Root cause / recurrence:** the sandbox's outbound allowlist excludes
+  `release-assets.githubusercontent.com`; use the free runner for official
+  asset acquisition. Audit: `docs/DEV6_PREREG_BASELINE.md`, runner run
+  `41635295602` (success).
+
+## exp-0026 — six extended pawn/coordination evaluation features (correctness)
+
+- **ID / source / binary SHAs:** branch `arena/3e6dd5b6-stockbear`; source
+  changes in `src/evaluation/eval_params.{hpp,cpp}`,
+  `src/evaluation/evaluation.cpp`, `tests/unit/test_eval_baseline.cpp`,
+  `benchmarks/params/dev3-shipped.txt`; candidate params
+  `research-data/params_dev6_a.txt` SHA
+  `e94c05628968474eaa52153a29904361604d34dacb240dfe5c20d4ba040338bd`. Source
+  commit `4cd9894…` (engine tree; dispatch tree `28a5c71…`). New default
+  eval checksum `0x5d90d35fb2203bde` (was `0x79473f95496c545e`).
+- **Hypothesis / chess rationale:** two shipped rows (`BackwardPawn`,
+  `PawnChain`) were dead (never counted); two new endgame-relevant features
+  (`ConnectedPassed`, `RookBehindPassed`) plus the four existing ones, correctly
+  implemented and gated, may add small positional/endgame strength on top of the
+  dev5 champion. Falsifier: pre-registered clustered 95% CI point < +75 or
+  LCB <= +50. Full rationale: `docs/DEV6_EVAL_FEATURES.md`.
+- **Config / conditions:** all six appended (append-only, shipped 0); single
+  shared `extended_counts()` used by `features()`, `accumulate_breakdown()` and
+  the incremental path; gated so default/champion build is bit-exact and pays
+  zero cost. Correctness: ctest 11/11 (41 unit tests), new gating/count unit
+  test, `evaldata --check` 600/600, default bench bit-exact, exact `-flto=4`
+  portable build reproduces both signatures, UCI `0.1.0-dev6`.
+- **Raw paths:** `benchmarks/positions/dev6_eval_features.epd` (600 FENs, seed
+  2026110401), `benchmarks/dev6-baseline/eval_features_reference.json`
+  (600 positions, 43,200 feature checks, **0 mismatches**), independent oracle
+  `scripts/check_dev6_eval_features.py`.
+- **Statistics:** correctness counts (all six features exercised); **no playing-
+  strength claim from correctness.** Cost measured: ~13% of the combined
+  breakdown+evaluate loop when enabled (~0.69 µs/eval), zero when gated off.
+- **Decision / classification:** SUCCESS (implementation + independent
+  verification). Strength verdict is measured separately in exp-0028/0029, NOT
+  assumed here.
+- **Root cause / recurrence / audits:** dead rows would silently make any tuning
+  of them meaningless; recurrence condition = any new eval row must be counted
+  in ALL of `features`/`accumulate_breakdown`/incremental and verified by an
+  independent oracle before tuning. Audit: independent python-chess reference
+  shares no code with the engine; mirror test with all six coefficients non-zero.
+  Continue to fixed-time testing only if a genuine strength hypothesis remains;
+  do not tune dead rows again.
