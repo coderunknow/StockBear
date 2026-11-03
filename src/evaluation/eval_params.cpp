@@ -52,6 +52,12 @@ constexpr std::array<EvalParamDef, EvalParamNB> kTable = {{
     {"KingDangerBishop", 3, 0, 0, 18},
     {"KingDangerRook", 3, 0, 0, 18},
     {"KingDangerQueen", 5, 0, 0, 30},
+    // exp-0022 appended features: shipped value 0 (bit-identical default build);
+    // the tuner explores [-100, 200].
+    {"RookOn7th", 0, 0, -100, 200},
+    {"KnightOutpost", 0, 0, -100, 200},
+    {"BackwardPawn", 0, 0, -100, 200},
+    {"PawnChain", 0, 0, -100, 200},
 }};
 
 EvalParams gActive{};

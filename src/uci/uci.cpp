@@ -255,6 +255,25 @@ void UciEngine::handle_setoption(const std::string& arguments) {
         catch (const std::exception& e) { emit(std::string("info string Hash allocation failed: ") + e.what()); }
         return;
     }
+    // Integer tuning options (exp-0019). Like the switches below they clear
+    // the TT afterwards: stored scores were produced under the previous margin.
+    int* intTarget = nullptr;
+    if (key == "aspirationwindow") intTarget = &params_.aspirationInitial;
+    else if (key == "futilitymargin") intTarget = &params_.futilityMargin;
+    else if (key == "revfutilitymargin") intTarget = &params_.revFutilityMargin;
+    else if (key == "deltamargin") intTarget = &params_.deltaMargin;
+    if (intTarget != nullptr) {
+        std::uint64_t parsed = 0;
+        if ((in >> extra) || !number(value, parsed, 2000)) {
+            emit("info string setoption: " + name + " must be an integer in 0..2000"); return;
+        }
+        if (key == "aspirationwindow" && parsed < 1) {
+            emit("info string setoption: AspirationWindow must be >= 1"); return;
+        }
+        *intTarget = static_cast<int>(parsed);
+        table_.clear();
+        return;
+    }
     // Boolean ablation switches for the search features. They default to the
     // values the engine ships with, so a GUI that never sends them is
     // unaffected; matches can compare "all on" against a single feature off.

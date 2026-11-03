@@ -374,3 +374,78 @@ noted. Hardware: sandbox 2 vCPU (Intel Xeon 2.60 GHz), ~3.9 GB RAM, 20 GB disk.
    tuning corpora, aspiration-window tuning, and any genuinely new eval
    features — each must be screened at clean 40+4 and confirmed on a fresh
    pre-registered untouched suite.
+
+## exp-0019 — margin / aspiration-window UCI options + runner screens
+
+- **ID / date / source:** exp-0019, 2026-11-03, commit `582e4b1` (options +
+  Actions pipeline); first runner batch failed on a lost setoption handler
+  edit (`unknown option AspirationWindow`), fixed and re-verified (bench
+  `243f9a1c1ba5b36f`, setoption accepted) before the decisive batch.
+- **Implementation:** `AspirationWindow`, `FutilityMargin`, `RevFutilityMargin`,
+  `DeltaMargin` UCI spin options (defaults 16/110/85/200 = dev4 values, so the
+  default build is bit-identical). Eval-scale diagnostic behind the hypothesis:
+  tuned params widen the eval distribution ~7-9 % (2159 self-play positions:
+  |mean| 454-462 cp, std 707-719 vs 424/661 for defaults), so cp margins are
+  relatively ~8 % tight.
+- **Runner lane results (GitHub-hosted ubuntu-latest, AMD EPYC 7763, 4 vCPU,
+  dedicated VM, 480 g @ 40+4 hash16 threads1, openings_dev4.txt):**
+  exp0019-base (champion params_abc+TTEval, plain flags) **+44.0
+  [+20.5,+67.9]** clustered; null **+7.3 [-9.2,+23.7]** (includes 0). Variant
+  screens re-run in the exp-0023 batch (see benchmarks/exp-runs/exp0019-*).
+- **Classification:** pending (screens running); base confirms the champion
+  family at ~+44-48 on a second hardware lane.
+
+## exp-0020 — bigger bullet-matched tuning corpus (in progress)
+
+- **ID / date / source:** exp-0020, 2026-11-03; 6000-game self-play corpus at
+  ~4.5k nodes/move (jittered 80-120 %, approximating the ~7k nodes/move
+  measured at 40+4), seed 20261104001, generated with build-dev6.
+- **Plan:** evaldata features + `tune_eval2.py --target outcome` on the fresh
+  corpus (more restarts/epochs), then a runner screen vs dev4. Corpus and
+  tuner outputs are kept under /tmp + research-data (corpora are large and
+  gitignored; hashes recorded in the run notes).
+
+## exp-0021 — `-march=native -flto` candidate build (POSITIVE, big)
+
+- **ID / date / source:** exp-0021, 2026-11-03; runner job `exp0021-native-*`
+  with `build_flags="-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native
+  -flto=4"`.
+- **Correctness:** bench `243f9a1c1ba5b36f` and bench --depth 16
+  `a14ab62224f837e5` asserted at runtime on the runner; locally the same
+  flags gave identical startpos d16 nodes; integer-only code, so vectorised
+  codegen is bit-exact. Sandbox NPS under load: 1.55-1.96M vs 1.35-1.43M for
+  the plain build (~+15-35 %).
+- **Result (runner lane, 480 g @ 40+4):** **+71.4 [+47.6,+95.8]** clustered
+  vs pinned dev4, with champion params_abc+TTEval; null -10.2 [-27.0,+6.6].
+  vs the plain-flags base (+44.0 [+20.5,+67.9]) on the same lane — ~+27 Elo
+  from NPS alone, consistent with the measured 2x-nodes ~ +90 Elo slope.
+- **Classification:** positive (kept). Carried into the exp-0023 decisive
+  confirmation candidate.
+
+## exp-0022 — new eval features with zero defaults (in progress)
+
+- **ID / date / source:** exp-0022, 2026-11-03, working tree at the exp-0023
+  push: appended `RookOn7th`, `KnightOutpost`, `BackwardPawn`, `PawnChain`
+  (enum + table rows with shipped value 0, range [-100,200]; counts added to
+  both `features()` and `accumulate_breakdown()`; dev3-shipped.txt extended;
+  checksum test updated to `0x79473f95496c545e`).
+- **Correctness:** bench `243f9a1c1ba5b36f` (defaults are 0 -> bit-identical),
+  ctest 11/11, `evaldata --check` 0 mismatches on 2159 positions.
+- **Plan:** tune them on the exp-0020 corpus (they stay 0 for the frozen
+  exp-0023 candidate because params_abc.txt does not mention them), then
+  screen any non-zero set on the runner lane.
+- **Caveat recorded:** the default-off SB_INCREMENTAL_EVAL path does not
+  maintain the new ids.
+
+## exp-0023 — decisive confirmation (pre-registered, RUNNING)
+
+- **Pre-registration:** docs/EXP0023_PREREG.md (committed before the run).
+  12 shards x 550 = 6600 g + 1100 g null on the fresh untouched suite
+  `openings_exp0001_confirmation.txt` (sha `32537dd8...`, seed 2026110501,
+  excludes all prior suites), candidate = pushed HEAD built with
+  `-march=native -flto=4` + params_abc + TTEval, baseline = pinned dev4
+  binary `1c5b61a7...`, 40+4, hash 16, threads 1, seeds 2026110601..612 +
+  null 2026110699, GitHub-hosted ubuntu-latest runners (dedicated VM).
+  Gate: pooled clustered LCB95 strictly > +50.
+- **Results:** see `benchmarks/exp-runs/exp0023-*/` (pushed by the runner
+  jobs) and the pooled estimate produced by `scripts/pool_matches.py`.

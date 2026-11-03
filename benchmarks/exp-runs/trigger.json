@@ -1,8 +1,176 @@
 {
-  "comment": "exp-0019 margin/aspiration screens + exp-0021 native/LTO screen on free GH runners (public repo). Pre-reg: docs/EXP0019_PREREG.md; all 480 g @40+4 hash16 threads1 vs pinned dev4 binary, openings_dev4.txt.",
+  "comment": "exp-0023 decisive confirmation (12x550=6600 g + 1100 g null on fresh exp0001 suite, native/LTO candidate vs pinned dev4) + exp-0019 variant screens. Pre-reg: docs/EXP0023_PREREG.md.",
   "jobs": [
     {
-      "id": "exp0019-null",
+      "id": "exp0023-shard01",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 550,
+      "seed": 2026110601,
+      "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+      "note": "exp-0023 decisive confirmation shard 1/12 (pre-registered docs/EXP0023_PREREG.md)"
+    },
+    {
+      "id": "exp0023-shard02",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 550,
+      "seed": 2026110602,
+      "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+      "note": "exp-0023 decisive confirmation shard 2/12 (pre-registered docs/EXP0023_PREREG.md)"
+    },
+    {
+      "id": "exp0023-shard03",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 550,
+      "seed": 2026110603,
+      "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+      "note": "exp-0023 decisive confirmation shard 3/12 (pre-registered docs/EXP0023_PREREG.md)"
+    },
+    {
+      "id": "exp0023-shard04",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 550,
+      "seed": 2026110604,
+      "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+      "note": "exp-0023 decisive confirmation shard 4/12 (pre-registered docs/EXP0023_PREREG.md)"
+    },
+    {
+      "id": "exp0023-shard05",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 550,
+      "seed": 2026110605,
+      "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+      "note": "exp-0023 decisive confirmation shard 5/12 (pre-registered docs/EXP0023_PREREG.md)"
+    },
+    {
+      "id": "exp0023-shard06",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 550,
+      "seed": 2026110606,
+      "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+      "note": "exp-0023 decisive confirmation shard 6/12 (pre-registered docs/EXP0023_PREREG.md)"
+    },
+    {
+      "id": "exp0023-shard07",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 550,
+      "seed": 2026110607,
+      "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+      "note": "exp-0023 decisive confirmation shard 7/12 (pre-registered docs/EXP0023_PREREG.md)"
+    },
+    {
+      "id": "exp0023-shard08",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 550,
+      "seed": 2026110608,
+      "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+      "note": "exp-0023 decisive confirmation shard 8/12 (pre-registered docs/EXP0023_PREREG.md)"
+    },
+    {
+      "id": "exp0023-shard09",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 550,
+      "seed": 2026110609,
+      "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+      "note": "exp-0023 decisive confirmation shard 9/12 (pre-registered docs/EXP0023_PREREG.md)"
+    },
+    {
+      "id": "exp0023-shard10",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 550,
+      "seed": 2026110610,
+      "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+      "note": "exp-0023 decisive confirmation shard 10/12 (pre-registered docs/EXP0023_PREREG.md)"
+    },
+    {
+      "id": "exp0023-shard11",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 550,
+      "seed": 2026110611,
+      "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+      "note": "exp-0023 decisive confirmation shard 11/12 (pre-registered docs/EXP0023_PREREG.md)"
+    },
+    {
+      "id": "exp0023-shard12",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 550,
+      "seed": 2026110612,
+      "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+      "note": "exp-0023 decisive confirmation shard 12/12 (pre-registered docs/EXP0023_PREREG.md)"
+    },
+    {
+      "id": "exp0023-null",
       "candidate_options": [
         "EvalParams=research-data/params_abc.txt",
         "TTEval=true"
@@ -12,23 +180,11 @@
         "EvalParams=research-data/params_abc.txt",
         "TTEval=true"
       ],
-      "games": 480,
-      "seed": 2026110410,
-      "openings": "benchmarks/positions/openings_dev4.txt",
-      "note": "runner-lane null"
-    },
-    {
-      "id": "exp0019-base",
-      "candidate_options": [
-        "EvalParams=research-data/params_abc.txt",
-        "TTEval=true"
-      ],
-      "baseline": "dev4",
-      "baseline_options": [],
-      "games": 480,
-      "seed": 2026110401,
-      "openings": "benchmarks/positions/openings_dev4.txt",
-      "note": "champion reference on runner lane"
+      "games": 1100,
+      "seed": 2026110699,
+      "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+      "note": "exp-0023 null (candidate vs candidate)"
     },
     {
       "id": "exp0019-aw8",
@@ -42,7 +198,7 @@
       "games": 480,
       "seed": 2026110404,
       "openings": "benchmarks/positions/openings_dev4.txt",
-      "note": ""
+      "note": "exp-0019 screen AspirationWindow=8 (re-run after setoption handler fix)"
     },
     {
       "id": "exp0019-aw32",
@@ -56,7 +212,7 @@
       "games": 480,
       "seed": 2026110402,
       "openings": "benchmarks/positions/openings_dev4.txt",
-      "note": ""
+      "note": "exp-0019 screen AspirationWindow=32 (re-run after setoption handler fix)"
     },
     {
       "id": "exp0019-aw48",
@@ -70,7 +226,7 @@
       "games": 480,
       "seed": 2026110403,
       "openings": "benchmarks/positions/openings_dev4.txt",
-      "note": ""
+      "note": "exp-0019 screen AspirationWindow=48 (re-run after setoption handler fix)"
     },
     {
       "id": "exp0019-fut140",
@@ -84,7 +240,7 @@
       "games": 480,
       "seed": 2026110405,
       "openings": "benchmarks/positions/openings_dev4.txt",
-      "note": ""
+      "note": "exp-0019 screen FutilityMargin=140 (re-run after setoption handler fix)"
     },
     {
       "id": "exp0019-fut170",
@@ -98,7 +254,7 @@
       "games": 480,
       "seed": 2026110406,
       "openings": "benchmarks/positions/openings_dev4.txt",
-      "note": ""
+      "note": "exp-0019 screen FutilityMargin=170 (re-run after setoption handler fix)"
     },
     {
       "id": "exp0019-rfut110",
@@ -112,7 +268,7 @@
       "games": 480,
       "seed": 2026110407,
       "openings": "benchmarks/positions/openings_dev4.txt",
-      "note": ""
+      "note": "exp-0019 screen RevFutilityMargin=110 (re-run after setoption handler fix)"
     },
     {
       "id": "exp0019-delta260",
@@ -126,38 +282,7 @@
       "games": 480,
       "seed": 2026110408,
       "openings": "benchmarks/positions/openings_dev4.txt",
-      "note": ""
-    },
-    {
-      "id": "exp0021-native-null",
-      "candidate_options": [
-        "EvalParams=research-data/params_abc.txt",
-        "TTEval=true"
-      ],
-      "baseline": "candidate",
-      "baseline_options": [
-        "EvalParams=research-data/params_abc.txt",
-        "TTEval=true"
-      ],
-      "games": 480,
-      "seed": 2026110422,
-      "openings": "benchmarks/positions/openings_dev4.txt",
-      "note": "native-lto null",
-      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4"
-    },
-    {
-      "id": "exp0021-native-base",
-      "candidate_options": [
-        "EvalParams=research-data/params_abc.txt",
-        "TTEval=true"
-      ],
-      "baseline": "dev4",
-      "baseline_options": [],
-      "games": 480,
-      "seed": 2026110421,
-      "openings": "benchmarks/positions/openings_dev4.txt",
-      "note": "exp-0021: -march=native -flto=4 build, champion opts",
-      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4"
+      "note": "exp-0019 screen DeltaMargin=260 (re-run after setoption handler fix)"
     }
   ]
 }

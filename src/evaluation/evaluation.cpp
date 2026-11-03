@@ -153,6 +153,15 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
             out.mg += mobility * mgp(id);
             out.eg += mobility * egp(id);
             }
+            if (pt == Knight) {
+                // exp-0022: knight outpost - advanced (relative rank 4-6),
+                // pawn-supported and not attackable by an enemy pawn.
+                const int rel = us == White ? rank_of(s) : 7 - rank_of(s);
+                if (rel >= 3 && rel <= 5 && (pawns & PawnAttacksBB[them][s]) &&
+                    !(enemyPawns & PawnAttacksBB[us][s])) {
+                    out.mg += mgp(KnightOutpost); out.eg += egp(KnightOutpost);
+                }
+            }
             if (pt == Rook) {
                 const Bitboard file = FileBB[file_of(s)];
                 if (!(pawns & file)) {
@@ -161,6 +170,10 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
                     } else {
                         out.mg += mgp(RookSemiOpenFile); out.eg += egp(RookSemiOpenFile);
                     }
+                }
+                // exp-0022: rook on the 7th rank.
+                if (rank_of(s) == (us == White ? 6 : 1)) {
+                    out.mg += mgp(RookOn7th); out.eg += egp(RookOn7th);
                 }
             }
         }
@@ -283,12 +296,22 @@ void accumulate_breakdown(const Position& p, Color us, EvalBreakdown& bd) {
             const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & mobilityArea);
             mg(id) += sign * mobility;
             eg(id) += sign * mobility;
+            if (pt == Knight) {
+                // exp-0022 knight outpost (mirror of features()).
+                const int rel = us == White ? rank_of(s) : 7 - rank_of(s);
+                if (rel >= 3 && rel <= 5 && (pawns & PawnAttacksBB[them][s]) &&
+                    !(enemyPawns & PawnAttacksBB[us][s])) {
+                    mg(KnightOutpost) += sign; eg(KnightOutpost) += sign;
+                }
+            }
             if (pt == Rook) {
                 const Bitboard file = FileBB[file_of(s)];
                 if (!(pawns & file)) {
                     if (!(enemyPawns & file)) { mg(RookOpenFile) += sign; eg(RookOpenFile) += sign; }
                     else { mg(RookSemiOpenFile) += sign; eg(RookSemiOpenFile) += sign; }
                 }
+                // exp-0022 rook on the 7th (mirror of features()).
+                if (rank_of(s) == (us == White ? 6 : 1)) { mg(RookOn7th) += sign; eg(RookOn7th) += sign; }
             }
         }
     }
