@@ -1,2 +1,4 @@
-verify v0.1.0-dev4 assets
-tag=v0.1.0-dev4
+# Marker file: push a change to this file to run the published-release audit.
+# verify-release.yml downloads the assets of TAG below, checks them against
+# SHA256SUMS.txt, exercises the Linux binary, and posts the evidence to PR #10.
+tag=v0.1.0-dev5
