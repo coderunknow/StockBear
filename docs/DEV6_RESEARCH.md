@@ -142,3 +142,25 @@ vbuild-popcnt, nps.sh depth 16/20 vs dev4.
   outv2: +58.0/+30.7/+30.0/+28.3/+58.7 (mean +41.2); abc: +41.6/+54.7 (mean +48.2);
   bullet-b1: +40.7/+24.0 (mean +32.4); outv2 without tteval: +48.5.
   Champion selected: build-dev6 + params_abc + TTEval=true.
+
+## dev6 CONFIRMATION RESULT (pre-registered, untouched suite) — GATE FAILED
+
+- Null (build-dev6 vs itself, 1100 g, seed 2026110208, dev6 suite): **-3.5
+  [-17.3, +10.2]**, 4 unadjudicated, no forfeits — clean.
+- Candidate (build-dev6 sha 15f1daa0 + params_abc sha 8a9dc81f + TTEval=true)
+  vs dev4 (sha 1c5b61a7), **4400 g, seed 2026110207, 40+4, hash 16, 1 thread,
+  max-plies 240, run alone** on openings_dev6_confirmation.txt
+  (sha 99682ada..., 2200 pairs):
+  **clustered Elo +47.5 [+39.5, +55.6]** (t=1.980 on 2188 df), paired +47.5
+  [+39.6, +55.5], SPRT LLR 14.07 accept H1. 4389 adjudicated (11 unadjudicated
+  max-plies), W+D+L = 1854+1276+1259, 3 TIME_FORFEITs (baseline side, 12.7/19.5/
+  28.6 ms stall moves), no crashes. Raw: benchmarks/results/0.1.0-dev6/
+  confirm-{null,champ}-time40_4.*
+- **GATE: LCB95 = +39.5, NOT strictly > +50 -> NOT MET. No PR.**
+- Note: engine paths in the run were the byte-identical backups
+  /home/user/bin-backup/stockbear-{dev4,dev6} because the sandbox wiper kept
+  deleting build*/ between null and candidate; sha256 match the
+  pre-registered values exactly.
+- Champion composition: -mpopcnt/-mbmi2/-mlzcnt + SB_SEE_CACHE (bit-exact,
+  bench 243f9a1c1ba5b36f, d16 nodes 19229509, ctest 11/11) + outcome-tuned
+  EvalParams (params_abc, 1.1M-position corpus) + TTEval=true.
