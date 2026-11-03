@@ -1,0 +1,77 @@
+name: Exp runner
+
+# Free compute lane for pre-registered experiments on this PUBLIC repo:
+# GitHub-hosted ubuntu-latest runners (4 vCPU, dedicated VM per job) are not
+# billed for public repositories. Triggered only by pushes that touch the
+# trigger file; each entry of `jobs` becomes one isolated matrix job that
+# builds the pinned binaries, verifies their SHA-256 + bench signature, runs
+# the requested match(es), and uploads benchmarks/exp-runs/<id>/ as an
+# artifact. Results are downloaded with `gh run download` and committed by
+# the agent; the workflow itself never pushes.
+on:
+  push:
+    paths:
+      - 'benchmarks/exp-runs/trigger.json'
+      - 'scripts/actions_exp_run.sh'
+      - '.github/workflows/exp-run.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  trigger:
+    name: Read trigger
+    runs-on: ubuntu-latest
+    outputs:
+      jobs: ${{ steps.read.outputs.jobs }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - id: read
+        run: |
+          python3 - <<'EOF'
+          import json
+          with open('benchmarks/exp-runs/trigger.json') as f:
+              data = json.load(f)
+          jobs = data['jobs']
+          assert isinstance(jobs, list) and jobs, 'jobs must be a non-empty list'
+          for j in jobs:
+              for key in ('id', 'games', 'seed', 'openings'):
+                  assert key in j, f'job missing {key}'
+          with open('jobs.json', 'w') as f:
+              json.dump(jobs, f)
+          print('jobs=' + json.dumps(jobs))
+          EOF
+          echo "jobs=$(cat jobs.json | python3 -c 'import json,sys; print(json.dumps(json.load(sys.stdin)))')" >> "$GITHUB_OUTPUT"
+
+  run:
+    name: ${{ matrix.job.id }}
+    needs: trigger
+    timeout-minutes: 420
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        job: ${{ fromJSON(needs.trigger.outputs.jobs) }}
+    env:
+      JOB: ${{ toJSON(matrix.job) }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0   # full history + tags: the dev4 baseline builds from tag v0.1.0-dev4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Run experiment job
+        run: bash scripts/actions_exp_run.sh "$JOB"
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ${{ matrix.job.id }}
+          path: benchmarks/exp-runs/${{ matrix.job.id }}/
+          if-no-files-found: warn
+          retention-days: 30

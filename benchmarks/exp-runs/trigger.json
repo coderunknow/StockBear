@@ -1,0 +1,17 @@
+{
+  "comment": "Smoke test of the Actions experiment pipeline: 16 games, candidate(default opts) vs dev4 baseline on openings_dev4.txt. Replace jobs for real experiments.",
+  "jobs": [
+    {
+      "id": "smoke-0001",
+      "candidate_options": [],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 16,
+      "seed": 20261103001,
+      "openings": "benchmarks/positions/openings_dev4.txt",
+      "null_games": 8,
+      "ctest": true,
+      "note": "pipeline smoke test"
+    }
+  ]
+}
