@@ -40,8 +40,12 @@ enum EvalParamId : int {
     KingDangerPawn, KingDangerKnight, KingDangerBishop, KingDangerRook, KingDangerQueen,
     // exp-0022: appended features. Their shipped values are 0, so a default
     // build is bit-identical (bench 243f9a1c1ba5b36f); the tuner may raise them.
-    // NOTE: the (default-off) SB_INCREMENTAL_EVAL path does not maintain these.
     RookOn7th, KnightOutpost, BackwardPawn, PawnChain,
+    // dev6 (exp-0026): genuinely new pawn-structure features, appended so the
+    // table stays append-only. Shipped value 0 -> default build bit-identical.
+    ConnectedPassed, RookBehindPassed,
+    // The table must only ever be appended: reordering/removing an entry would
+    // silently reinterpret every recorded tuning dataset and parameter file.
     EvalParamNB
 };
 

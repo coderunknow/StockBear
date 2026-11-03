@@ -80,6 +80,101 @@ int taper(int mg, int eg, int phase) {
 
 struct Score { int mg = 0; int eg = 0; };
 
+// dev6 exp-0026: the six "extended" pawn/coordination features are only paid
+// for when at least one of their parameters is non-zero. With the shipped set
+// (all six = 0) the default/champion build is bit-exact AND has zero extra
+// per-node cost: the search never even calls the extended feature routine.
+// The flag is recomputed in evaluation_rebuild_tables(), i.e. whenever a
+// parameter set is installed (default set at startup, or an EvalParams file
+// loaded through UCI / --params). This keeps evaluate()'s features() path,
+// eval_breakdown()'s accumulate_breakdown() path and the (default-off)
+// incremental path in agreement for every parameter set.
+bool gExtendedEval = false;
+bool extended_eval_active() { return gExtendedEval; }
+
+// Raw counts (always from `us`'s point of view) of the six extended features.
+// A single shared implementation is used by features(), accumulate_breakdown()
+// and cheap_feature_counts() so the live evaluation and the offline breakdown
+// can never drift apart. Semantics (documented in docs/DEV6_EVAL_FEATURES.md):
+//   RookOn7th       - a rook on the 7th rank (rank index 6 for White, 1 for Black).
+//   KnightOutpost    - knight on relative rank 3..5, defended by a friendly
+//                      pawn, and not attackable by an enemy pawn.
+//   PawnChain        - a pawn defended by at least one friendly pawn.
+//   BackwardPawn     - a non-passed pawn whose stop square is attacked by an
+//                      enemy pawn, not defended by a friendly pawn, and which
+//                      has fallen behind a friendly pawn on an adjacent file.
+//   ConnectedPassed  - a passed pawn with a friendly passed pawn on an
+//                      adjacent file (connected passers support each other).
+//   RookBehindPassed - a friendly rook on the same file as, and behind, a
+//                      friendly passed pawn (classic endgame support).
+struct ExtCounts {
+    int rookOn7th = 0, knightOutpost = 0, backwardPawn = 0,
+        pawnChain = 0, connectedPassed = 0, rookBehindPassed = 0;
+};
+
+ExtCounts extended_counts(const Position& p, Color us) {
+    const Color them = ~us;
+    const Bitboard pawns = p.pieces(us, Pawn);
+    const Bitboard enemyPawns = p.pieces(them, Pawn);
+    const Bitboard rooks = p.pieces(us, Rook);
+    const Bitboard knights = p.pieces(us, Knight);
+    ExtCounts e;
+
+    // Passed pawns use exactly the same rule as the shipped PassedPawnAdvance
+    // term (leading pawn of a file only), so "passed" is consistent everywhere.
+    Bitboard passed = 0;
+    for (Bitboard b = pawns; b;) {
+        const Square s = pop_lsb(b);
+        const int f = file_of(s);
+        if (!(enemyPawns & PassedPawnMaskBB[us][s]) &&
+            !(pawns & FileBB[f] & ForwardRanksBB[us][rank_of(s)]))
+            passed |= square_bb(s);
+    }
+
+    for (Bitboard b = pawns; b;) {
+        const Square s = pop_lsb(b);
+        const int f = file_of(s);
+        // PawnChain: a friendly pawn on a defending square (the squares from
+        // which a `us` pawn attacks `s` are exactly PawnAttacksBB[them][s]).
+        if (pawns & PawnAttacksBB[them][s]) ++e.pawnChain;
+        // ConnectedPassed: this is a passer with a passer on an adjacent file.
+        if ((passed & square_bb(s)) && (passed & AdjacentFilesBB[f])) ++e.connectedPassed;
+        // BackwardPawn: stop square = one step in `us`'s forward direction.
+        const int stop = int(s) + (us == White ? 8 : -8);
+        if (stop >= 0 && stop < 64) {
+            const Square stopSq = Square(stop);
+            const bool notPassed        = (enemyPawns & PassedPawnMaskBB[us][s]) != 0;
+            const bool enemyPawnHitsStop= (enemyPawns & PawnAttacksBB[us][stopSq]) != 0;
+            const bool friendlyDefends  = (pawns & PawnAttacksBB[them][stopSq]) != 0;
+            const bool behindNeighbour  = (pawns & AdjacentFilesBB[f] &
+                                          ForwardRanksBB[us][rank_of(s)]) != 0;
+            if (notPassed && enemyPawnHitsStop && !friendlyDefends && behindNeighbour)
+                ++e.backwardPawn;
+        }
+    }
+
+    // RookBehindPassed: ranks behind a White passer are the ranks below it,
+    // i.e. ForwardRanksBB[Black]; behind a Black passer are ranks above it.
+    for (Bitboard b = passed; b;) {
+        const Square s = pop_lsb(b);
+        e.rookBehindPassed += popcount(rooks & FileBB[file_of(s)] &
+                                       ForwardRanksBB[them][rank_of(s)]);
+    }
+
+    for (Bitboard b = knights; b;) {
+        const Square s = pop_lsb(b);
+        const int rel = us == White ? rank_of(s) : 7 - rank_of(s);
+        if (rel >= 3 && rel <= 5 && (pawns & PawnAttacksBB[them][s]) &&
+            !(enemyPawns & PawnAttacksBB[us][s]))
+            ++e.knightOutpost;
+    }
+    for (Bitboard b = rooks; b;) {
+        const Square s = pop_lsb(b);
+        if (rank_of(s) == (us == White ? 6 : 1)) ++e.rookOn7th;
+    }
+    return e;
+}
+
 // Dev5 isolated experiment: activity on an enemy-pawn-controlled square is
 // often illusory. This mask is deliberately geometric, not a legality test.
 Bitboard mobility_area(const Position& p, Color us) {
@@ -153,15 +248,6 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
             out.mg += mobility * mgp(id);
             out.eg += mobility * egp(id);
             }
-            if (pt == Knight) {
-                // exp-0022: knight outpost - advanced (relative rank 4-6),
-                // pawn-supported and not attackable by an enemy pawn.
-                const int rel = us == White ? rank_of(s) : 7 - rank_of(s);
-                if (rel >= 3 && rel <= 5 && (pawns & PawnAttacksBB[them][s]) &&
-                    !(enemyPawns & PawnAttacksBB[us][s])) {
-                    out.mg += mgp(KnightOutpost); out.eg += egp(KnightOutpost);
-                }
-            }
             if (pt == Rook) {
                 const Bitboard file = FileBB[file_of(s)];
                 if (!(pawns & file)) {
@@ -171,12 +257,27 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
                         out.mg += mgp(RookSemiOpenFile); out.eg += egp(RookSemiOpenFile);
                     }
                 }
-                // exp-0022: rook on the 7th rank.
-                if (rank_of(s) == (us == White ? 6 : 1)) {
-                    out.mg += mgp(RookOn7th); out.eg += egp(RookOn7th);
-                }
             }
         }
+    }
+
+    // dev6 extended pawn/coordination features (shared with eval_breakdown).
+    // Gated: with the shipped set (all six params = 0) this whole block is
+    // skipped, so the default/champion build stays bit-exact and full-speed.
+    if (extended_eval_active()) {
+        const ExtCounts e = extended_counts(p, us);
+        out.mg += e.rookOn7th        * mgp(RookOn7th)
+                + e.knightOutpost     * mgp(KnightOutpost)
+                + e.backwardPawn      * mgp(BackwardPawn)
+                + e.pawnChain         * mgp(PawnChain)
+                + e.connectedPassed   * mgp(ConnectedPassed)
+                + e.rookBehindPassed  * mgp(RookBehindPassed);
+        out.eg += e.rookOn7th        * egp(RookOn7th)
+                + e.knightOutpost     * egp(KnightOutpost)
+                + e.backwardPawn      * egp(BackwardPawn)
+                + e.pawnChain         * egp(PawnChain)
+                + e.connectedPassed   * egp(ConnectedPassed)
+                + e.rookBehindPassed  * egp(RookBehindPassed);
     }
 
     // Pawn shield and enemy activity around the king. Kept in the middlegame
@@ -296,24 +397,31 @@ void accumulate_breakdown(const Position& p, Color us, EvalBreakdown& bd) {
             const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & mobilityArea);
             mg(id) += sign * mobility;
             eg(id) += sign * mobility;
-            if (pt == Knight) {
-                // exp-0022 knight outpost (mirror of features()).
-                const int rel = us == White ? rank_of(s) : 7 - rank_of(s);
-                if (rel >= 3 && rel <= 5 && (pawns & PawnAttacksBB[them][s]) &&
-                    !(enemyPawns & PawnAttacksBB[us][s])) {
-                    mg(KnightOutpost) += sign; eg(KnightOutpost) += sign;
-                }
-            }
             if (pt == Rook) {
                 const Bitboard file = FileBB[file_of(s)];
                 if (!(pawns & file)) {
                     if (!(enemyPawns & file)) { mg(RookOpenFile) += sign; eg(RookOpenFile) += sign; }
                     else { mg(RookSemiOpenFile) += sign; eg(RookSemiOpenFile) += sign; }
                 }
-                // exp-0022 rook on the 7th (mirror of features()).
-                if (rank_of(s) == (us == White ? 6 : 1)) { mg(RookOn7th) += sign; eg(RookOn7th) += sign; }
             }
         }
+    }
+
+    // dev6 extended features (identical counts to features(), shared helper).
+    if (extended_eval_active()) {
+        const ExtCounts e = extended_counts(p, us);
+        mg(RookOn7th)        += sign * e.rookOn7th;
+        eg(RookOn7th)        += sign * e.rookOn7th;
+        mg(KnightOutpost)     += sign * e.knightOutpost;
+        eg(KnightOutpost)     += sign * e.knightOutpost;
+        mg(BackwardPawn)      += sign * e.backwardPawn;
+        eg(BackwardPawn)      += sign * e.backwardPawn;
+        mg(PawnChain)         += sign * e.pawnChain;
+        eg(PawnChain)         += sign * e.pawnChain;
+        mg(ConnectedPassed)   += sign * e.connectedPassed;
+        eg(ConnectedPassed)   += sign * e.connectedPassed;
+        mg(RookBehindPassed)  += sign * e.rookBehindPassed;
+        eg(RookBehindPassed)  += sign * e.rookBehindPassed;
     }
 
     const Square k = p.king_square(us);
@@ -371,10 +479,23 @@ void cheap_feature_counts(const Position& p, Color us, std::int16_t* out) {
     const Bitboard pawns = p.pieces(us, Pawn);
     const Bitboard enemyPawns = p.pieces(them, Pawn);
     // Only the genuinely cheap terms; mobility (20-23) and king danger (27-29)
-    // live outside this range and are maintained incrementally.
+    // live outside this range and are maintained incrementally. The six dev6
+    // extended ids are now maintained here too (they are pawn/rook based and
+    // cheap), closing the exp-0022 caveat for the default-off incremental path.
     for (int id : {int(BishopPair), int(IsolatedPawn), int(DoubledPawn), int(PassedPawnAdvance),
-                   int(RookOpenFile), int(RookSemiOpenFile), int(PawnShield)})
+                   int(RookOpenFile), int(RookSemiOpenFile), int(PawnShield),
+                   int(RookOn7th), int(KnightOutpost), int(BackwardPawn), int(PawnChain),
+                   int(ConnectedPassed), int(RookBehindPassed)})
         out[id] = 0;
+    if (extended_eval_active()) {
+        const ExtCounts e = extended_counts(p, us);
+        out[RookOn7th]       = std::int16_t(e.rookOn7th);
+        out[KnightOutpost]    = std::int16_t(e.knightOutpost);
+        out[BackwardPawn]     = std::int16_t(e.backwardPawn);
+        out[PawnChain]        = std::int16_t(e.pawnChain);
+        out[ConnectedPassed]  = std::int16_t(e.connectedPassed);
+        out[RookBehindPassed] = std::int16_t(e.rookBehindPassed);
+    }
     if (p.count(us, Bishop) >= 2) out[BishopPair] = 1;
     Bitboard b = pawns;
     while (b) {
@@ -455,7 +576,20 @@ void init_evaluation() {
     });
 }
 
-void evaluation_rebuild_tables() { build_tables(active_eval_params()); }
+void evaluation_rebuild_tables() {
+    build_tables(active_eval_params());
+    const EvalParams& p = active_eval_params();
+    // The extended features are computed only when at least one of their
+    // parameters is non-zero. With the shipped def6 default set and with the
+    // dev5 champion set (params_abc.txt) this is false, so the search pays no
+    // extra per-node cost and remains bit-exact (bench 243f9a1c1ba5b36f).
+    gExtendedEval = p.mg[RookOn7th] || p.eg[RookOn7th]
+                 || p.mg[KnightOutpost] || p.eg[KnightOutpost]
+                 || p.mg[BackwardPawn] || p.eg[BackwardPawn]
+                 || p.mg[PawnChain] || p.eg[PawnChain]
+                 || p.mg[ConnectedPassed] || p.eg[ConnectedPassed]
+                 || p.mg[RookBehindPassed] || p.eg[RookBehindPassed];
+}
 
 EvalBreakdown eval_breakdown(const Position& p) {
     EvalBreakdown bd;

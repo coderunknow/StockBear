@@ -1,0 +1,49 @@
+# dev6 exp-0026 candidate: the confirmed dev5 champion (params_abc.txt outcome
+# tune) PLUS the six extended pawn/coordination features enabled with small,
+# chess-motivated, hypothesis-driven priors (NOT tuned on any validation loss;
+# the fixed-time playing-strength screen is the sole arbiter). Material and the
+# 32 champion coefficients are byte-identical to params_abc.txt so the only
+# difference from dev5's champion is the six appended features. See
+# docs/DEV6_EVAL_FEATURES.md for the rationale and sign semantics.
+#
+# Ablation control: research-data/params_abc.txt (all six extended = 0) on the
+# SAME dev6 binary isolates the extended features' contribution.
+MaterialPawn 100 123
+MaterialKnight 314 303
+MaterialBishop 335 336
+MaterialRook 523 552
+MaterialQueen 1031 1000
+PstPawnRank 2 5
+PstPawnFile 1 0
+PstKnightCenter 10 6
+PstBishopCenter 5 4
+PstRookRank 3 0
+PstRookFile 2 0
+PstRookCenter 0 3
+PstQueenCenter 3 5
+PstKingRank -8 0
+PstKingFile -7 0
+PstKingCenter 0 10
+BishopPair 29 40
+IsolatedPawn -12 -9
+DoubledPawn -9 -13
+PassedPawnAdvance 1 6
+MobilityKnight 5 3
+MobilityBishop 7 4
+MobilityRook 3 5
+MobilityQueen 3 4
+RookOpenFile 22 13
+RookSemiOpenFile 12 7
+PawnShield 9 0
+KingDangerPawn 2 0
+KingDangerKnight 3 0
+KingDangerBishop 3 0
+KingDangerRook 4 0
+KingDangerQueen 7 0
+# --- extended features (mg eg) ---
+RookOn7th 10 14
+KnightOutpost 6 4
+BackwardPawn -10 -8
+PawnChain 2 2
+ConnectedPassed 8 16
+RookBehindPassed 5 10

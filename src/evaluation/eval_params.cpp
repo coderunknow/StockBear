@@ -58,6 +58,9 @@ constexpr std::array<EvalParamDef, EvalParamNB> kTable = {{
     {"KnightOutpost", 0, 0, -100, 200},
     {"BackwardPawn", 0, 0, -100, 200},
     {"PawnChain", 0, 0, -100, 200},
+    // dev6 exp-0026 appended features: shipped 0 (bit-identical default build).
+    {"ConnectedPassed", 0, 0, -100, 200},
+    {"RookBehindPassed", 0, 0, -100, 200},
 }};
 
 EvalParams gActive{};

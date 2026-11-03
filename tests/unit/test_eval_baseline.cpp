@@ -153,10 +153,12 @@ TEST(unit, evaluation_reproduces_dev2_baseline) {
     // evaluation it inherited and records the negative result instead of shipping
     // an unvalidated set.
     // exp-0022 appended four zero-valued features (RookOn7th, KnightOutpost,
-    // BackwardPawn, PawnChain), which changes the raw checksum of the table;
-    // the semantic pin below (dev2_evaluate equality) plus bench
-    // 243f9a1c1ba5b36f still guarantee the shipped evaluation is unchanged.
-    CHECK(eval_params_checksum(default_eval_params()) == 0x79473f95496c545eULL);
+    // BackwardPawn, PawnChain) and dev6 exp-0026 appended two more
+    // (ConnectedPassed, RookBehindPassed), also shipped 0. Each append changes
+    // the raw checksum of the table; the semantic pin below (dev2_evaluate
+    // equality) plus bench 243f9a1c1ba5b36f still guarantee the shipped
+    // evaluation is unchanged. All appended ids default to 0.
+    CHECK(eval_params_checksum(default_eval_params()) == 0x5d90d35fb2203bdeULL);
     CHECK(active_eval_params() == default_eval_params());
     std::vector<Position> positions;
     for (const auto& c : SearchCases) positions.push_back(test::position(c.fen));
@@ -342,4 +344,64 @@ TEST(unit, evaluation_parameter_file_rejects_malformed_values) {
     }
     // And nothing was installed by those failures.
     CHECK(active_eval_params() == default_eval_params());
+}
+
+TEST(unit, dev6_extended_pawn_features_counts_and_gating) {
+    // dev6 exp-0026: the six extended features must (a) be zero with the
+    // shipped set (gating -> default build bit-exact and full-speed), (b)
+    // produce hand-verifiable counts once enabled, and (c) keep evaluate() ==
+    // eval_from_breakdown() on feature-rich positions. The counts below are
+    // independently reproduced by scripts/check_dev6_eval_features.py against
+    // a python-chess oracle (benchmarks/dev6-baseline/eval_features_reference.json).
+    struct Restore {
+        ~Restore() { std::string ignore; apply_eval_params(default_eval_params(), &ignore); }
+    } restore;
+
+    auto mgCount = [](const char* fen, EvalParamId id) {
+        const Position p = test::position(fen);
+        return eval_breakdown(p).mg[std::size_t(id)];
+    };
+    const EvalParamId ids[] = {RookOn7th, KnightOutpost, BackwardPawn,
+                               PawnChain, ConnectedPassed, RookBehindPassed};
+
+    // (a) Shipped set: extended counts are zero (extended path is gated off).
+    std::string error;
+    CHECK(apply_eval_params(default_eval_params(), &error));
+    for (EvalParamId id : ids)
+        CHECK_EQ(mgCount("7k/R7/8/8/8/8/8/7K b - - 0 1", id), 0);
+
+    // (b) Enable all six (each = 1) and check independent, pinned counts.
+    EvalParams probe = default_eval_params();
+    for (EvalParamId id : ids) { probe.mg[std::size_t(id)] = 1; probe.eg[std::size_t(id)] = 1; }
+    CHECK(apply_eval_params(probe, &error));
+    CHECK_EQ(mgCount("7k/8/8/8/8/8/R7/7K w - - 0 1", RookOn7th), 0);   // a2 rook: negative control
+    CHECK_EQ(mgCount("7k/R7/8/8/8/8/8/7K b - - 0 1", RookOn7th), 1);   // white R on a7
+    CHECK_EQ(mgCount("7k/8/8/8/8/8/r7/7K b - - 0 1", RookOn7th), -1);  // black R on a2 (its 7th)
+    CHECK_EQ(mgCount("7k/8/8/3N4/4P3/8/8/7K w - - 0 1", KnightOutpost), 1);
+    CHECK_EQ(mgCount("7k/8/8/8/4P3/3P4/8/7K w - - 0 1", PawnChain), 1);
+    CHECK_EQ(mgCount("7k/8/8/4PP2/8/8/8/7K w - - 0 1", ConnectedPassed), 2);
+    CHECK_EQ(mgCount("7k/8/8/8/8/8/P7/R6K w - - 0 1", RookBehindPassed), 1);
+    CHECK_EQ(mgCount("r3k2r/ppp2ppp/2n5/3pp3/1b2P3/2NP1N2/PPP2PPP/R3KB1R w KQkq - 0 1",
+                     BackwardPawn), 1);
+    // mg and eg counts are identical for these features.
+    for (EvalParamId id : ids) {
+        const Position p = test::position("7k/8/8/8/4P3/3P4/8/7K w - - 0 1");
+        const EvalBreakdown bd = eval_breakdown(p);
+        CHECK_EQ(bd.mg[std::size_t(id)], bd.eg[std::size_t(id)]);
+    }
+
+    // (c) evaluate() and the breakdown agree with extended params active.
+    const char* fens[] = {
+        "7k/R7/8/8/8/8/8/7K b - - 0 1",
+        "7k/8/8/4PP2/8/8/8/7K w - - 0 1",
+        "r3k2r/ppp2ppp/2n5/3pp3/1b2P3/2NP1N2/PPP2PPP/R3KB1R w KQkq - 0 1",
+        "7k/8/8/8/8/8/P7/R6K w - - 0 1",
+    };
+    for (const char* fen : fens) {
+        const Position p = test::position(fen);
+        const EvalBreakdown bd = eval_breakdown(p);
+        const int white = eval_from_breakdown(bd, active_eval_params());
+        const int expected = p.side_to_move() == White ? white : -white;
+        CHECK_EQ(evaluate(p), expected);
+    }
 }
