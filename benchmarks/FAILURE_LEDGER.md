@@ -587,3 +587,145 @@ pruning/ordering, best-of-N param selection, fixed-node-only conclusions).
   shares no code with the engine; mirror test with all six coefficients non-zero.
   Continue to fixed-time testing only if a genuine strength hypothesis remains;
   do not tune dead rows again.
+
+---
+
+## exp-0027 — screens on `openings_dev4.txt` (diagnostic, never gate evidence)
+
+- **ID / source / binary SHAs:** pre-registered `docs/DEV6_PREREG.md`; dispatch
+  commit `28a5c719721e809759bdb3cf22436e8034cdabbd`; runner candidate binary SHA
+  `4b06b1176ad331073430d4350bd7f5e1c9fa2e031f5ee6fe7e88954443730c15`
+  (built ubuntu-latest / GCC 13 / glibc 2.39, portable
+  `-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4`, bench `243f9a1c1ba5b36f`);
+  baseline = exact released dev5 `391cb50e…` at champion (`params_abc.txt` SHA
+  `8a9dc81f…` + `TTEval=true`). Suite `openings_dev4.txt` SHA
+  `3feeac711c8eded5a26b84f57e4bf9190b12634558a7a8e5e9a6d34bfcc5250d`.
+- **Hypotheses / config / conditions:** (i) primary = candidate `params_dev6_a`
+  (SHA `e94c0562…`) vs dev5, 2000 g, seed 2026120101; (ii) integrity control =
+  candidate `params_abc` vs dev5 (identical config both sides), 1100 g, seed
+  2026120102; (iii) historical reuse = `params_exp0020` (SHA `2a7f103c…`) vs
+  dev5, 1100 g, seed 2026120103. All 40+4 ms, hash 16, 1 thread, dedicated
+  ubuntu-latest VM.
+- **Raw paths:** `benchmarks/exp-runs/exp0027-screen|control|exp0020/`
+  (PGN + JSONL + CSV + manifest + report); recomputation
+  `benchmarks/dev6-baseline/confirmation_results.json`,
+  `scripts/dev6_confirmation_report.py`.
+- **Statistics (clustered CR1 / t, ~240 clusters):** primary **−25.0
+  [−42.9, −7.3]** (REGRESSION); control **+33.0 [+13.7, +52.5]** (unexpected,
+  see below); exp0020 **−12.1 [−33.7, +9.4]** (CI includes 0, INCONCLUSIVE).
+  1100/2000 g, W/D/L and pentanomial/termination counts in the confirmation
+  report; 6/3/3 unadjudicated max-ply; 0 forfeits, 0 illegal moves, 0 crashes,
+  0 UCI failures.
+- **Decision / classification:** primary REGRESSION; exp0020 INCONCLUSIVE;
+  control INCONCLUSIVE (INVALID MEASUREMENT as an integrity/equivalence check).
+- **Root cause / recurrence / audits:** the control's +33 cannot be a config
+  error (verified both engines got the identical params file + options from the
+  raw `match.jsonl`). It is confounded by the **toolchain**: dev5 was built on
+  ubuntu-22.04, the candidate on ubuntu-latest (Ubuntu 24.04 / GCC 13), which can
+  change fixed-time NPS even with identical bench signatures; a 1100-game/240-
+  cluster screen also has ~±19 Elo noise. My source changes are ruled out as the
+  cause: on one machine, at identical `bench --depth 16` node counts, the local
+  dev6 build is only 1.015x the released dev5 NPS (52.3 s vs 53.1 s). Nulls
+  cannot detect a between-binary NPS difference (both null sides share one
+  binary). **Confound-free ablation on the SAME suite/binary/baseline**: switching
+  `params_abc` -> `params_dev6_a` costs ≈ **−58 Elo** (+33 -> −25). Required fix
+  before any future approval: build both sides in ONE reproducible toolchain,
+  verify binary-level NPS equivalence, re-run the control. Prereg ref: §1/§8;
+  audit: `docs/DEV6_CONFIRMATION_REPORT.md` "Integrity investigation".
+- **Continue / abandon / revisit:** ABANDON `params_exp0020` reuse (no gain);
+  ABANDON the six-feature direction (see exp-0028/0029 + ablation); REVISIT the
+  integrity control only with a matched-toolchain build.
+
+## exp-0028 — decisive confirmation batch A (candidate vs EXACT dev5)
+
+- **ID / source / binary SHAs:** prereg `docs/DEV6_PREREG.md`; dispatch `28a5c71…`;
+  candidate binary `4b06b117…` + `params_dev6_a.txt` (`e94c0562…`) + `TTEval=true`;
+  baseline `391cb50e…` + `params_abc.txt` (`8a9dc81f…`) + `TTEval=true`. Master
+  suite `openings_exp0028_confirmation.txt` SHA
+  `1d69972297f1a2a8f24d4040fb39f8d423f9d013abff6b7c3e266606e36d2c25` (3300
+  distinct openings, 6 disjoint 550-opening slices; SHAs in
+  `benchmarks/dev6-baseline/decisive_suites.json`). Candidate build flags
+  portable `-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4`, bench
+  `243f9a1c1ba5b36f`.
+- **Hypothesis:** H1, the six extended features deliver >= +75 Elo with
+  LCB95 > +50 vs exact dev5. Falsifier: point < +75 or LCB <= +50.
+- **Config / conditions:** 6 shards x 1100 g = 6600 g, 40+4 ms, hash 16, 1
+  thread, `--max-plies 240`, paired colour-reversed, one pair per distinct
+  opening (NO repeats within batch), seeds 2026120201..0206, 6 dedicated
+  ubuntu-latest VMs (AMD EPYC 7763, 4 vCPU), no concurrent CPU work. Null:
+  `exp0028-null`, 1100 g candidate-vs-identical, seed 2026120299.
+- **Raw paths:** `benchmarks/exp-runs/exp0028-shard01..06/` and
+  `exp0028-null/` (PGN/JSONL/CSV/manifest/report per job); pooled recomputation
+  `benchmarks/dev6-baseline/confirmation_results.json`.
+- **Statistics:** 6600 g, +2090 =2071 −2418 (47.51%), clustered CR1
+  **−17.8 Elo [−24.1, −11.5]**, 3279 clusters, t=1.980 on 3278 df, paired
+  −17.8 [−24.1, −11.6], pentanomial [234,610,1358,740,337], SPRT (approx.) LLR
+  −10.04; 21 unadjudicated max-ply; 0 forfeits / 0 illegal / 0 crashes / 0 UCI
+  failures; 2 STALEMATE. Null **+0.6 [−9.5, +10.7]** (includes 0, PASS).
+  Leave-one-shard-out points −14.1..−21.2 (stable).
+- **Decision / classification:** **REGRESSION** (H1 falsified, batch negative).
+- **Root cause / recurrence / audits:** small hand-set linear pawn/coordination
+  priors on top of an already-tuned champion eval degrade fixed-time play;
+  consistent with the ledger's lesson that validation-loss/prior reasoning does
+  not transfer to playing strength. Recurrence condition: any eval term added
+  without fixed-time evidence. Audit: independent recomputation from raw JSONL
+  by `scripts/dev6_confirmation_report.py`; nulls clean; integrity confound
+  documented (exp-0027 control). Continue/abandon: ABANDON this feature set.
+
+## exp-0029 — decisive confirmation batch B (independent, disjoint suite)
+
+- **ID / source / binary SHAs:** identical candidate/baseline/build to exp-0028
+  (candidate `4b06b117…` + `params_dev6_a.txt` `e94c0562…`; dev5 `391cb50e…` +
+  `params_abc.txt` `8a9dc81f…`), but a **disjoint fresh** master suite
+  `openings_exp0029_confirmation.txt` SHA
+  `c491a9e5182bd41748a638bd7d987225b6a233e18e8e91ac2758053350f17b3e` (3300
+  distinct openings, verified disjoint from batch A and ALL historical suites).
+- **Hypothesis / config / conditions:** same H1; 6 shards x 1100 g = 6600 g,
+  seeds 2026120301..0306, null `exp0029-null` 1100 g seed 2026120399; all other
+  conditions identical to exp-0028.
+- **Raw paths:** `benchmarks/exp-runs/exp0029-shard01..06/`, `exp0029-null/`.
+- **Statistics:** 6600 g, +2049 =2185 −2356 (47.67%), clustered CR1
+  **−16.2 Elo [−22.4, −10.0]**, 3290 clusters, paired −16.2 [−22.3, −10.0],
+  SPRT (approx.) LLR −9.56; 10 unadjudicated max-ply; 0 adversarial engine
+  events; 3 STALEMATE. Null **−2.5 [−12.8, +7.7]** (includes 0, PASS).
+- **Decision / classification:** **REGRESSION** (independent replication of
+  exp-0028; both batches negative and reasonably consistent −17.8 / −16.2).
+
+## COMBINED decisive verdict (the dev6 gate)
+
+- **Statistics:** 13200 games, +4139 =4256 −4774 (47.59%), pooled opening-
+  clustered CR1 **−17.0 Elo, 95% CI [−21.4, −12.6]**, 6569 clusters, t=1.980
+  on 6568 df; paired pentanomial −17.0 [−21.4, −12.6]; cluster bootstrap
+  (2000 reps) [−21.4, −12.6]; SPRT (normal approximation) LLR −19.61; combined
+  null −0.9 [−8.1, +6.2]. 31 unadjudicated max-ply, 0 forfeits / 0 illegal /
+  0 crashes / 0 UCI failures / 5 STALEMATE. Power analysis
+  (`docs/DEV6_POWER_ANALYSIS.md`) shows the design had ample power to detect
+  +75; it instead decisively excludes it.
+- **Gate results:** Gate 1 point >= +75 **FAIL** (−17.0); Gate 1 LCB > +50
+  **FAIL** (−21.4); Gate 2 both batches positive **FAIL**; consistency **PASS**;
+  Gate 3 nulls include 0 **PASS**; Gate 4 no unresolved engine-failure
+  regression **PASS**; overall **FAIL / GATE NOT MET**.
+- **Classification:** **REGRESSION** for the candidate; **INVALID MEASUREMENT**
+  (confounded) for the integrity control; **SUCCESS** for the null controls and
+  the measurement design; **INFRASTRUCTURE FAILURE** (cosmetic) for concurrent
+  push-retry empty commits (all 17 result dirs verified intact; history not
+  rewritten).
+- **Root cause:** the six extended linear features are harmful at 40+4 ms
+  (≈ −58 Elo isolated ablation; −17 Elo net vs dev5 across 13200 games).
+  Recurrence conditions: do not re-tune or recombine this feature set without a
+  genuinely new, pre-registered, correctness-verified hypothesis and matched
+  toolchain; do not resurrect dead rows; do not claim strength from correctness.
+- **Continue / abandon / revisit:** ABANDON this feature set and this param file.
+  CONTINUE research on materially different hypotheses per
+  `docs/DEV6_3000_ROADMAP.md` (M0 rating foundation first, then a genuinely
+  stronger evaluator with a measured accuracy->strength link). REVISIT only the
+  toolchain-integrity control with matched builds. No cherry-picking: all screens
+  and both batches reported in full.
+- **Authorization / audits:** NO PR, NO merge, NO `v0.1.0-dev6` tag, NO release,
+  NO dev7, NO approval sought (all require explicit user authorization and a
+  passing gate). CodeRabbit review on an exact final PR head: **SKIPPED / not
+  applicable** — no PR is eligible while the gate is unmet; documented manual
+  audit = `scripts/dev6_confirmation_report.py` independent recomputation,
+  `scripts/check_dev6_eval_features.py` python-chess oracle, ctest 11/11, CI run
+  `41638608619` (success) and lane run `41638608427` (success) on source head
+  `28a5c71…`. Full report: `docs/DEV6_REPORT.md`.

@@ -473,3 +473,22 @@ Authorization status: NO merge, NO tag, NO release, NO PR opened. Those require
 explicit user approval and, per the mission, a PR is opened only after ALL
 mandatory gates pass. Gate outcome is reported honestly in
 `docs/DEV6_CONFIRMATION_REPORT.md` / `docs/DEV6_REPORT.md` / the Failure Ledger.
+
+### dev6 cycle completion (2026-11-03, appended)
+
+Decisive free-runner lane run `41638608427` (17 jobs, 18m11s, SUCCESS) and CI
+run `41638608619` (4m21s, SUCCESS), both on source head `28a5c71…`. All 17
+result directories verified intact (PGN/JSONL/CSV/manifest); concurrent pushes
+created cosmetic empty commits, history not rewritten. Independently recomputed
+the primary clustered CR1 estimate from raw records: combined −17.0
+[−21.4, −12.6] Elo, gate FAILED; nulls include 0; no adversarial engine events.
+Recorded the integrity-control confound (toolchain), the isolated −58 Elo
+feature ablation, and the complete experiment table in the Failure Ledger,
+CHANGELOG, `docs/DEV6_CONFIRMATION_REPORT.md` and `docs/DEV6_REPORT.md`.
+External ladder NOT COMPLETED -> status taxonomy "Not yet verified / Blocked";
+absolute rating and 3,000-Elo gap UNKNOWN, not claimed. No CodeRabbit review
+requested (no eligible PR); documented manual audit performed instead.
+**Authorization status unchanged: NO PR, NO merge, NO tag, NO release, NO dev7,
+no approval sought** because the mandatory gate is unmet. Deliverables committed
+to branch `arena/3e6dd5b6-stockbear`; start was from verified starting SHA
+`6e7c2e0…`, branch name fixed by the toolchain.

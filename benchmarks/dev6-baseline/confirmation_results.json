@@ -1,0 +1,847 @@
+{
+  "source": "raw benchmarks/exp-runs/<id>/match.jsonl committed by the free dev6 lane",
+  "primary_estimator": "opening-clustered CR1 variance, two-sided 95% Student-t (G-1 df), logistic Elo",
+  "prereg": "docs/DEV6_PREREG.md",
+  "verdict": "FAIL / GATE NOT MET",
+  "gates": {
+    "gate1_point_ge_75": false,
+    "gate1_lcb_gt_50": false,
+    "gate2_both_batches_positive": false,
+    "gate2_reasonably_consistent": true,
+    "gate3_nulls_include_zero": true,
+    "gate4_no_unresolved_engine_failure": true,
+    "all_pass": false
+  },
+  "analyses": {
+    "screen_primary": {
+      "ids": [
+        "exp0027-screen"
+      ],
+      "games_total": 2000,
+      "games_adjudicated": 1995,
+      "unadjudicated": 5,
+      "wins": 586,
+      "draws": 679,
+      "losses": 730,
+      "score_pct": 46.391,
+      "pairs": 995,
+      "clusters": 240,
+      "clustered_elo": -25.009584003674927,
+      "clustered_ci95": [
+        -42.88529098676152,
+        -7.265200735601128
+      ],
+      "clustered_t": 1.98,
+      "clustered_df": 239,
+      "paired_elo": -25.009584003674927,
+      "paired_ci95": [
+        -36.11805150063477,
+        -13.951944450480472
+      ],
+      "pentanomial": [
+        56,
+        188,
+        409,
+        241,
+        101
+      ],
+      "sprt": {
+        "llr": -4.342236669003666,
+        "lower_bound": -2.9444389791664403,
+        "upper_bound": 2.9444389791664403,
+        "h0_elo": 0.0,
+        "h1_elo": 5.0,
+        "sigma_pair_scores": 0.5105645081706377,
+        "decision": "accept H0",
+        "method": "normal-approximation SPRT on paired scores (approximation)"
+      },
+      "terminations": {
+        "THREEFOLD_REPETITION": 634,
+        "CHECKMATE": 1316,
+        "INSUFFICIENT_MATERIAL": 38,
+        "STALEMATE": 1,
+        "UNADJUDICATED_MAX_PLIES": 5,
+        "FIFTY_MOVES": 6
+      },
+      "adverse_events": {
+        "time_forfeit": 0,
+        "illegal_move": 0,
+        "crash_or_engine_failure": 0,
+        "uci_failure": 0,
+        "max_ply_unadjudicated": 5
+      },
+      "cluster_bootstrap": {
+        "replicates": 2000,
+        "elo_ci95": [
+          -36.271485498062276,
+          -14.149668199914329
+        ],
+        "note": "paired (cluster) bootstrap of colour-reversed pairs"
+      },
+      "leave_one_shard_out": []
+    },
+    "screen_control": {
+      "ids": [
+        "exp0027-control"
+      ],
+      "games_total": 1100,
+      "games_adjudicated": 1094,
+      "unadjudicated": 6,
+      "wins": 409,
+      "draws": 378,
+      "losses": 307,
+      "score_pct": 54.662,
+      "pairs": 544,
+      "clusters": 240,
+      "clustered_elo": 32.990212394066326,
+      "clustered_ci95": [
+        13.664796273936528,
+        52.52153841339461
+      ],
+      "clustered_t": 1.98,
+      "clustered_df": 239,
+      "paired_elo": 32.990212394066326,
+      "paired_ci95": [
+        17.95746272291018,
+        48.147209911178095
+      ],
+      "pentanomial": [
+        59,
+        138,
+        225,
+        91,
+        31
+      ],
+      "sprt": {
+        "llr": 2.611627810899074,
+        "lower_bound": -2.9444389791664403,
+        "upper_bound": 2.9444389791664403,
+        "h0_elo": 0.0,
+        "h1_elo": 5.0,
+        "sigma_pair_scores": 0.5120545774770907,
+        "decision": "continue",
+        "method": "normal-approximation SPRT on paired scores (approximation)"
+      },
+      "terminations": {
+        "THREEFOLD_REPETITION": 353,
+        "CHECKMATE": 716,
+        "UNADJUDICATED_MAX_PLIES": 6,
+        "INSUFFICIENT_MATERIAL": 23,
+        "FIFTY_MOVES": 2
+      },
+      "adverse_events": {
+        "time_forfeit": 0,
+        "illegal_move": 0,
+        "crash_or_engine_failure": 0,
+        "uci_failure": 0,
+        "max_ply_unadjudicated": 6
+      },
+      "cluster_bootstrap": {
+        "replicates": 2000,
+        "elo_ci95": [
+          18.218728556956123,
+          48.21526161384636
+        ],
+        "note": "paired (cluster) bootstrap of colour-reversed pairs"
+      },
+      "leave_one_shard_out": []
+    },
+    "screen_exp0020": {
+      "ids": [
+        "exp0027-exp0020"
+      ],
+      "games_total": 1100,
+      "games_adjudicated": 1097,
+      "unadjudicated": 3,
+      "wins": 356,
+      "draws": 346,
+      "losses": 395,
+      "score_pct": 48.222,
+      "pairs": 547,
+      "clusters": 240,
+      "clustered_elo": -12.073003461783655,
+      "clustered_ci95": [
+        -33.65906043732354,
+        9.420167119005693
+      ],
+      "clustered_t": 1.98,
+      "clustered_df": 239,
+      "paired_elo": -12.073003461783655,
+      "paired_ci95": [
+        -27.930795519681308,
+        3.734631522121851
+      ],
+      "pentanomial": [
+        51,
+        94,
+        225,
+        120,
+        57
+      ],
+      "sprt": {
+        "llr": -1.1204084831660968,
+        "lower_bound": -2.9444389791664403,
+        "upper_bound": 2.9444389791664403,
+        "h0_elo": 0.0,
+        "h1_elo": 5.0,
+        "sigma_pair_scores": 0.5427511598735557,
+        "decision": "continue",
+        "method": "normal-approximation SPRT on paired scores (approximation)"
+      },
+      "terminations": {
+        "CHECKMATE": 751,
+        "THREEFOLD_REPETITION": 316,
+        "INSUFFICIENT_MATERIAL": 28,
+        "FIFTY_MOVES": 2,
+        "UNADJUDICATED_MAX_PLIES": 3
+      },
+      "adverse_events": {
+        "time_forfeit": 0,
+        "illegal_move": 0,
+        "crash_or_engine_failure": 0,
+        "uci_failure": 0,
+        "max_ply_unadjudicated": 3
+      },
+      "cluster_bootstrap": {
+        "replicates": 2000,
+        "elo_ci95": [
+          -27.057043906655863,
+          4.1287707701650005
+        ],
+        "note": "paired (cluster) bootstrap of colour-reversed pairs"
+      },
+      "leave_one_shard_out": []
+    },
+    "batch_A": {
+      "ids": [
+        "exp0028-shard01",
+        "exp0028-shard02",
+        "exp0028-shard03",
+        "exp0028-shard04",
+        "exp0028-shard05",
+        "exp0028-shard06"
+      ],
+      "games_total": 6600,
+      "games_adjudicated": 6579,
+      "unadjudicated": 21,
+      "wins": 2090,
+      "draws": 2071,
+      "losses": 2418,
+      "score_pct": 47.507,
+      "pairs": 3279,
+      "clusters": 3279,
+      "clustered_elo": -17.816508919697707,
+      "clustered_ci95": [
+        -24.1341273765444,
+        -11.510641320896172
+      ],
+      "clustered_t": 1.98,
+      "clustered_df": 3278,
+      "paired_elo": -17.816508919697707,
+      "paired_ci95": [
+        -24.070125292349736,
+        -11.574406713072447
+      ],
+      "pentanomial": [
+        234,
+        610,
+        1358,
+        740,
+        337
+      ],
+      "sprt": {
+        "llr": -10.04298792016941,
+        "lower_bound": -2.9444389791664403,
+        "upper_bound": 2.9444389791664403,
+        "h0_elo": 0.0,
+        "h1_elo": 5.0,
+        "sigma_pair_scores": 0.5239512019486158,
+        "decision": "accept H0",
+        "method": "normal-approximation SPRT on paired scores (approximation)"
+      },
+      "terminations": {
+        "CHECKMATE": 4508,
+        "THREEFOLD_REPETITION": 1956,
+        "INSUFFICIENT_MATERIAL": 108,
+        "FIFTY_MOVES": 5,
+        "UNADJUDICATED_MAX_PLIES": 21,
+        "STALEMATE": 2
+      },
+      "adverse_events": {
+        "time_forfeit": 0,
+        "illegal_move": 0,
+        "crash_or_engine_failure": 0,
+        "uci_failure": 0,
+        "max_ply_unadjudicated": 21
+      },
+      "cluster_bootstrap": {
+        "replicates": 2000,
+        "elo_ci95": [
+          -24.14551846984484,
+          -11.871890562469748
+        ],
+        "note": "paired (cluster) bootstrap of colour-reversed pairs"
+      },
+      "leave_one_shard_out": [
+        {
+          "dropped": "exp0028-shard01",
+          "elo": -16.36574652729439,
+          "ci95": [
+            -23.259175403187506,
+            -9.485170906603221
+          ]
+        },
+        {
+          "dropped": "exp0028-shard02",
+          "elo": -18.011041938630584,
+          "ci95": [
+            -24.93442121274166,
+            -11.101926272507757
+          ]
+        },
+        {
+          "dropped": "exp0028-shard03",
+          "elo": -21.177201936077253,
+          "ci95": [
+            -28.088351583046645,
+            -14.282752410970003
+          ]
+        },
+        {
+          "dropped": "exp0028-shard04",
+          "elo": -14.123935497536651,
+          "ci95": [
+            -21.066566189321303,
+            -7.19256119511414
+          ]
+        },
+        {
+          "dropped": "exp0028-shard05",
+          "elo": -19.895134165783983,
+          "ci95": [
+            -26.856392098327113,
+            -12.949798060978498
+          ]
+        },
+        {
+          "dropped": "exp0028-shard06",
+          "elo": -17.32248572530578,
+          "ci95": [
+            -24.21824068589087,
+            -10.44034190270855
+          ]
+        }
+      ]
+    },
+    "batch_B": {
+      "ids": [
+        "exp0029-shard01",
+        "exp0029-shard02",
+        "exp0029-shard03",
+        "exp0029-shard04",
+        "exp0029-shard05",
+        "exp0029-shard06"
+      ],
+      "games_total": 6600,
+      "games_adjudicated": 6590,
+      "unadjudicated": 10,
+      "wins": 2049,
+      "draws": 2185,
+      "losses": 2356,
+      "score_pct": 47.671,
+      "pairs": 3290,
+      "clusters": 3290,
+      "clustered_elo": -16.16900160277137,
+      "clustered_ci95": [
+        -22.373861316480024,
+        -9.974432481908305
+      ],
+      "clustered_t": 1.98,
+      "clustered_df": 3289,
+      "paired_elo": -16.16900160277137,
+      "paired_ci95": [
+        -22.311008328013354,
+        -10.037078194187368
+      ],
+      "pentanomial": [
+        222,
+        630,
+        1373,
+        750,
+        315
+      ],
+      "sprt": {
+        "llr": -9.557537418575917,
+        "lower_bound": -2.9444389791664403,
+        "upper_bound": 2.9444389791664403,
+        "h0_elo": 0.0,
+        "h1_elo": 5.0,
+        "sigma_pair_scores": 0.5157550624202845,
+        "decision": "accept H0",
+        "method": "normal-approximation SPRT on paired scores (approximation)"
+      },
+      "terminations": {
+        "CHECKMATE": 4405,
+        "THREEFOLD_REPETITION": 2054,
+        "INSUFFICIENT_MATERIAL": 122,
+        "FIFTY_MOVES": 6,
+        "UNADJUDICATED_MAX_PLIES": 10,
+        "STALEMATE": 3
+      },
+      "adverse_events": {
+        "time_forfeit": 0,
+        "illegal_move": 0,
+        "crash_or_engine_failure": 0,
+        "uci_failure": 0,
+        "max_ply_unadjudicated": 10
+      },
+      "cluster_bootstrap": {
+        "replicates": 2000,
+        "elo_ci95": [
+          -22.25994942467659,
+          -9.980957491244405
+        ],
+        "note": "paired (cluster) bootstrap of colour-reversed pairs"
+      },
+      "leave_one_shard_out": [
+        {
+          "dropped": "exp0029-shard01",
+          "elo": -19.286553285244334,
+          "ci95": [
+            -26.100616776069824,
+            -12.487281368651452
+          ]
+        },
+        {
+          "dropped": "exp0029-shard02",
+          "elo": -15.151301351524987,
+          "ci95": [
+            -21.950793568174216,
+            -8.363389551238155
+          ]
+        },
+        {
+          "dropped": "exp0029-shard03",
+          "elo": -15.734109593435294,
+          "ci95": [
+            -22.520398915344096,
+            -8.9597981384318
+          ]
+        },
+        {
+          "dropped": "exp0029-shard04",
+          "elo": -15.855378563638398,
+          "ci95": [
+            -22.629671283205035,
+            -9.093113134109643
+          ]
+        },
+        {
+          "dropped": "exp0029-shard05",
+          "elo": -15.52649950206246,
+          "ci95": [
+            -22.285679219818867,
+            -8.779045910751568
+          ]
+        },
+        {
+          "dropped": "exp0029-shard06",
+          "elo": -15.46304214272335,
+          "ci95": [
+            -22.316559564454767,
+            -8.621531084985092
+          ]
+        }
+      ]
+    },
+    "combined": {
+      "ids": [
+        "exp0028-shard01",
+        "exp0028-shard02",
+        "exp0028-shard03",
+        "exp0028-shard04",
+        "exp0028-shard05",
+        "exp0028-shard06",
+        "exp0029-shard01",
+        "exp0029-shard02",
+        "exp0029-shard03",
+        "exp0029-shard04",
+        "exp0029-shard05",
+        "exp0029-shard06"
+      ],
+      "games_total": 13200,
+      "games_adjudicated": 13169,
+      "unadjudicated": 31,
+      "wins": 4139,
+      "draws": 4256,
+      "losses": 4774,
+      "score_pct": 47.589,
+      "pairs": 6569,
+      "clusters": 6569,
+      "clustered_elo": -16.99128041535275,
+      "clustered_ci95": [
+        -21.41697782959754,
+        -12.571086108739426
+      ],
+      "clustered_t": 1.98,
+      "clustered_df": 6568,
+      "paired_elo": -16.99128041535275,
+      "paired_ci95": [
+        -21.37216094632264,
+        -12.61579216379292
+      ],
+      "pentanomial": [
+        456,
+        1240,
+        2731,
+        1490,
+        652
+      ],
+      "sprt": {
+        "llr": -19.611276267953606,
+        "lower_bound": -2.9444389791664403,
+        "upper_bound": 2.9444389791664403,
+        "h0_elo": 0.0,
+        "h1_elo": 5.0,
+        "sigma_pair_scores": 0.5198282255818255,
+        "decision": "accept H0",
+        "method": "normal-approximation SPRT on paired scores (approximation)"
+      },
+      "terminations": {
+        "CHECKMATE": 8913,
+        "THREEFOLD_REPETITION": 4010,
+        "INSUFFICIENT_MATERIAL": 230,
+        "FIFTY_MOVES": 11,
+        "UNADJUDICATED_MAX_PLIES": 31,
+        "STALEMATE": 5
+      },
+      "adverse_events": {
+        "time_forfeit": 0,
+        "illegal_move": 0,
+        "crash_or_engine_failure": 0,
+        "uci_failure": 0,
+        "max_ply_unadjudicated": 31
+      },
+      "cluster_bootstrap": {
+        "replicates": 2000,
+        "elo_ci95": [
+          -21.395297349746862,
+          -12.566895057554653
+        ],
+        "note": "paired (cluster) bootstrap of colour-reversed pairs"
+      },
+      "leave_one_shard_out": [
+        {
+          "dropped": "exp0028-shard01",
+          "elo": -16.25822184666864,
+          "ci95": [
+            -20.868482745006762,
+            -11.653675411309642
+          ]
+        },
+        {
+          "dropped": "exp0028-shard02",
+          "elo": -17.00456104580449,
+          "ci95": [
+            -21.62399657523902,
+            -12.39112534968496
+          ]
+        },
+        {
+          "dropped": "exp0028-shard03",
+          "elo": -18.44147680539323,
+          "ci95": [
+            -23.057196269775503,
+            -13.832252089087635
+          ]
+        },
+        {
+          "dropped": "exp0028-shard04",
+          "elo": -15.241086455799218,
+          "ci95": [
+            -19.866669665171937,
+            -10.62089674798584
+          ]
+        },
+        {
+          "dropped": "exp0028-shard05",
+          "elo": -17.86027497003414,
+          "ci95": [
+            -22.49143214570096,
+            -13.235450622077193
+          ]
+        },
+        {
+          "dropped": "exp0028-shard06",
+          "elo": -16.692047579293625,
+          "ci95": [
+            -21.30298664725127,
+            -12.086976755972339
+          ]
+        },
+        {
+          "dropped": "exp0029-shard01",
+          "elo": -18.485760883696503,
+          "ci95": [
+            -23.117033376183485,
+            -13.86104260324919
+          ]
+        },
+        {
+          "dropped": "exp0029-shard02",
+          "elo": -16.602516220612696,
+          "ci95": [
+            -21.229486743091964,
+            -11.981423189579383
+          ]
+        },
+        {
+          "dropped": "exp0029-shard03",
+          "elo": -16.868398824578573,
+          "ci95": [
+            -21.491341820237555,
+            -12.25141679327776
+          ]
+        },
+        {
+          "dropped": "exp0029-shard04",
+          "elo": -16.923442485609804,
+          "ci95": [
+            -21.542716806527025,
+            -12.310139042154818
+          ]
+        },
+        {
+          "dropped": "exp0029-shard05",
+          "elo": -16.77323775305108,
+          "ci95": [
+            -21.387905457439267,
+            -12.164476290870505
+          ]
+        },
+        {
+          "dropped": "exp0029-shard06",
+          "elo": -16.744323390422792,
+          "ci95": [
+            -21.387760205020207,
+            -12.106856367050511
+          ]
+        }
+      ]
+    },
+    "null_A": {
+      "ids": [
+        "exp0028-null"
+      ],
+      "games_total": 1100,
+      "games_adjudicated": 1099,
+      "unadjudicated": 1,
+      "wins": 390,
+      "draws": 322,
+      "losses": 387,
+      "score_pct": 50.136,
+      "pairs": 549,
+      "clusters": 549,
+      "clustered_elo": 0.6328524039498642,
+      "clustered_ci95": [
+        -9.480955404581792,
+        10.747733167457323
+      ],
+      "clustered_t": 1.98,
+      "clustered_df": 548,
+      "paired_elo": 0.6328524039498642,
+      "paired_ci95": [
+        -9.3785601857338,
+        10.645316325640682
+      ],
+      "pentanomial": [
+        17,
+        66,
+        382,
+        70,
+        14
+      ],
+      "sprt": {
+        "llr": -0.3579165782732944,
+        "lower_bound": -2.9444389791664403,
+        "upper_bound": 2.9444389791664403,
+        "h0_elo": 0.0,
+        "h1_elo": 5.0,
+        "sigma_pair_scores": 0.3443977566603114,
+        "decision": "continue",
+        "method": "normal-approximation SPRT on paired scores (approximation)"
+      },
+      "terminations": {
+        "CHECKMATE": 777,
+        "THREEFOLD_REPETITION": 298,
+        "UNADJUDICATED_MAX_PLIES": 1,
+        "INSUFFICIENT_MATERIAL": 23,
+        "FIFTY_MOVES": 1
+      },
+      "adverse_events": {
+        "time_forfeit": 0,
+        "illegal_move": 0,
+        "crash_or_engine_failure": 0,
+        "uci_failure": 0,
+        "max_ply_unadjudicated": 1
+      },
+      "cluster_bootstrap": {
+        "replicates": 2000,
+        "elo_ci95": [
+          -9.495138781914354,
+          10.761919557289321
+        ],
+        "note": "paired (cluster) bootstrap of colour-reversed pairs"
+      },
+      "leave_one_shard_out": []
+    },
+    "null_B": {
+      "ids": [
+        "exp0029-null"
+      ],
+      "games_total": 1100,
+      "games_adjudicated": 1100,
+      "unadjudicated": 0,
+      "wins": 365,
+      "draws": 362,
+      "losses": 373,
+      "score_pct": 49.636,
+      "pairs": 550,
+      "clusters": 550,
+      "clustered_elo": -2.5268488094770234,
+      "clustered_ci95": [
+        -12.77763519778067,
+        7.719539055156
+      ],
+      "clustered_t": 1.98,
+      "clustered_df": 549,
+      "paired_elo": -2.5268488094770234,
+      "paired_ci95": [
+        -12.673824107887413,
+        7.61581660947897
+      ],
+      "pentanomial": [
+        10,
+        82,
+        366,
+        74,
+        18
+      ],
+      "sprt": {
+        "llr": -0.9386794965541655,
+        "lower_bound": -2.9444389791664403,
+        "upper_bound": 2.9444389791664403,
+        "h0_elo": 0.0,
+        "h1_elo": 5.0,
+        "sigma_pair_scores": 0.3492664941764328,
+        "decision": "continue",
+        "method": "normal-approximation SPRT on paired scores (approximation)"
+      },
+      "terminations": {
+        "CHECKMATE": 738,
+        "THREEFOLD_REPETITION": 340,
+        "INSUFFICIENT_MATERIAL": 22
+      },
+      "adverse_events": {
+        "time_forfeit": 0,
+        "illegal_move": 0,
+        "crash_or_engine_failure": 0,
+        "uci_failure": 0,
+        "max_ply_unadjudicated": 0
+      },
+      "cluster_bootstrap": {
+        "replicates": 2000,
+        "elo_ci95": [
+          -12.955873724291822,
+          7.581615961068752
+        ],
+        "note": "paired (cluster) bootstrap of colour-reversed pairs"
+      },
+      "leave_one_shard_out": []
+    },
+    "null_combined": {
+      "ids": [
+        "exp0028-null",
+        "exp0029-null"
+      ],
+      "games_total": 2200,
+      "games_adjudicated": 2199,
+      "unadjudicated": 1,
+      "wins": 755,
+      "draws": 684,
+      "losses": 760,
+      "score_pct": 49.886,
+      "pairs": 1099,
+      "clusters": 1099,
+      "clustered_elo": -0.9484161469663416,
+      "clustered_ci95": [
+        -8.144609939632934,
+        6.24696388269446
+      ],
+      "clustered_t": 1.98,
+      "clustered_df": 1098,
+      "paired_elo": -0.9484161469663416,
+      "paired_ci95": [
+        -8.071765628263037,
+        6.174135964145651
+      ],
+      "pentanomial": [
+        27,
+        148,
+        748,
+        144,
+        32
+      ],
+      "sprt": {
+        "llr": -1.30569611572286,
+        "lower_bound": -2.9444389791664403,
+        "upper_bound": 2.9444389791664403,
+        "h0_elo": 0.0,
+        "h1_elo": 5.0,
+        "sigma_pair_scores": 0.34671475435843724,
+        "decision": "continue",
+        "method": "normal-approximation SPRT on paired scores (approximation)"
+      },
+      "terminations": {
+        "CHECKMATE": 1515,
+        "THREEFOLD_REPETITION": 638,
+        "UNADJUDICATED_MAX_PLIES": 1,
+        "INSUFFICIENT_MATERIAL": 45,
+        "FIFTY_MOVES": 1
+      },
+      "adverse_events": {
+        "time_forfeit": 0,
+        "illegal_move": 0,
+        "crash_or_engine_failure": 0,
+        "uci_failure": 0,
+        "max_ply_unadjudicated": 1
+      },
+      "cluster_bootstrap": {
+        "replicates": 2000,
+        "elo_ci95": [
+          -8.062964399753382,
+          6.48157939059411
+        ],
+        "note": "paired (cluster) bootstrap of colour-reversed pairs"
+      },
+      "leave_one_shard_out": [
+        {
+          "dropped": "exp0028-null",
+          "elo": -2.5268488094770234,
+          "ci95": [
+            -12.77763519778067,
+            7.719539055156
+          ]
+        },
+        {
+          "dropped": "exp0029-null",
+          "elo": 0.6328524039498642,
+          "ci95": [
+            -9.480955404581792,
+            10.747733167457323
+          ]
+        }
+      ]
+    }
+  }
+}

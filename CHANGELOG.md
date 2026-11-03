@@ -268,3 +268,19 @@ opening-clustered 95% CI lower bound strictly > +50) over the **exact released
   raw records by `scripts/dev6_confirmation_report.py`. No strength claim, PR,
   merge, tag or release is made while any mandatory gate is unmet; those require
   explicit user approval.
+
+### dev6 cycle outcome (appended 2026-11-03, results now final)
+
+**The strength gate FAILED.** Combined 13,200-game, two disjoint decisive
+batches: **−17.0 Elo, 95% CI [−21.4, −12.6]** vs the exact released dev5
+(batch A −17.8 [−24.1,−11.5], batch B −16.2 [−22.4,−10.0]); nulls +0.6
+[−9.5,+10.7] and −2.5 [−12.8,+7.7] (both include 0); 0 forfeits/illegal
+moves/crashes/UCI failures. The six extended features are a measured
+**REGRESSION** (≈ −58 Elo isolated ablation). An integrity confound (control
++33.0 Elo) was traced to the ubuntu-22.04-vs-ubuntu-24.04 toolchain difference
+and documented, not hidden; it does not change the negative verdict. External
+rating ladder NOT COMPLETED (blocked); absolute rating / gap to 3,000 Elo
+UNKNOWN and not claimed. CI and the 17-job lane both SUCCESS on source head
+`28a5c71…`. Therefore: **no strength claim, no PR, no merge, no tag, no
+release, no dev7.** Full: `docs/DEV6_REPORT.md`,
+`docs/DEV6_CONFIRMATION_REPORT.md`, `benchmarks/FAILURE_LEDGER.md`.

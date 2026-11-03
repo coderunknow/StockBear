@@ -294,6 +294,72 @@ def main():
         for k, v in gates.items():
             L.append(f"| {k} | {desc.get(k,'')} | {'PASS' if v else 'FAIL'} |")
     L.append("")
+    L.append("## Integrity investigation: the control's unexplained +33 Elo")
+    L.append("")
+    sc, sp = analyses["screen_control"], analyses["screen_primary"]
+    L.append("The pre-registered integrity control was meant to confirm that the dev6 binary "
+             "with `params_abc` (extended features gated off) is behaviourally identical to the "
+             "released dev5 champion. It did **not**: the control measured "
+             f"{fmt_e(sc['clustered_elo']) if sc else 'n/a'} "
+             f"{fmt_ci(sc['clustered_ci95']) if sc else ''} Elo. Verified from the raw "
+             "`match.jsonl` configuration that this is NOT a config error: engine A is the "
+             "runner-built dev6 binary (SHA `4b06b117…`), engine B the released dev5 binary "
+             "(SHA `391cb50e…`), and BOTH were sent the identical `params_abc.txt` "
+             "(SHA `8a9dc81f…`) + `TTEval=true`, 40+4 ms, hash 16, 1 thread.")
+    L.append("")
+    L.append("Leading hypotheses, and what was checked:")
+    L.append("")
+    L.append("- **Toolchain difference (most plausible).** The dev5 release artifact was built by "
+             "`release.yml` on `ubuntu-22.04`; the dev6 candidate was rebuilt by the free lane "
+             "on `ubuntu-latest` (manifest: `glibc2.39`, AMD EPYC 7763 => Ubuntu 24.04 / GCC 13). "
+             "Different compiler/image can change NPS at equal 40+4 ms and therefore strength, "
+             "even with identical source semantics and identical bench signatures "
+             "(both `243f9a1c1ba5b36f`). The runner candidate binary is not available inside the "
+             "sandbox for a direct NPS comparison, so this cannot be pinned down here.")
+    L.append("- **Screen sampling variation.** The control is a 1100-game screen on "
+             "`openings_dev4.txt` with only ~240 distinct clusters (half-width ~19 Elo); +33 is "
+             "statistically positive but modest. Nulls cannot detect a *between-binary* NPS "
+             "difference because both null sides use the same binary (they correctly show ~0 and "
+             "rule out harness/order/colour bias).")
+    L.append("- **My source changes are ruled out as the cause.** On one machine, at identical "
+             "`bench --depth 16` node counts, the locally-built dev6 binary (same portable "
+             "`-flto=4` flags, GCC 12) is only 1.015x the released dev5 binary's NPS "
+             "(170,160,152 nodes in 52.3 s vs 53.1 s) — negligible; with the shipped set the "
+             "extended routine is not called at all. A ~+33 Elo advantage cannot come from this.")
+    L.append("")
+    if sc and sp:
+        delta = (sp["clustered_elo"] or 0) - (sc["clustered_elo"] or 0)
+        L.append(f"**Isolated feature ablation (confound-free within-suite contrast).** On the "
+                 f"SAME opening suite (`openings_dev4.txt`), SAME dev6 binary and SAME dev5 "
+                 f"baseline, only `EvalParams` differs: control `params_abc` = "
+                 f"{fmt_e(sc['clustered_elo'])} Elo, primary `params_dev6_a` = "
+                 f"{fmt_e(sp['clustered_elo'])} Elo. Enabling the six extended features therefore "
+                 f"costs ≈ **{delta:.1f} Elo** (wide screen CIs). This is independent of any "
+                 f"toolchain confound (it cancels), matches the decisive −17 Elo result "
+                 f"(the candidate starts from a possible ~+33 build advantage and the features "
+                 f"cost more), and is the primary algorithmic conclusion: **the features are "
+                 f"harmful**, not merely neutral.")
+    L.append("")
+    L.append("Consequence: this control is classified **INCONCLUSIVE / confounded** (an "
+             "unexplained difference between the benchmarked and packaged binary). Per the "
+             "mission it must be investigated and resolved before ANY approval decision; here "
+             "the verdict is negative regardless, so no approval is sought. Required fix for a "
+             "future cycle: build the candidate with the SAME release toolchain/image "
+             "(or re-pin BOTH sides to one reproducible build environment), verify binary-level "
+             "NPS equivalence, and re-run the integrity control before any strength comparison. "
+             "This confound does NOT weaken the primary conclusion: the candidate LOST by "
+             f"{fmt_e(c['clustered_elo']) if c else 'n/a'} Elo in two independent 6600-game "
+             "batches with clean nulls.")
+    L.append("")
+    L.append("## Infrastructure note (not a strength result)")
+    L.append("")
+    L.append("Seventeen lane jobs pushed results concurrently; the push-retry loop produced some "
+             "duplicate empty `[skip ci]` commits. All 17 result directories were verified "
+             "present on the branch with their PGN/JSONL/CSV/manifest; no data was lost. "
+             "Classified INFRASTRUCTURE FAILURE (cosmetic), recurrence condition = many "
+             "concurrent result-pushing jobs; fix = a single aggregation job or a "
+             "non-empty-commit guard. History was not rewritten (no destructive remote ops).")
+    L.append("")
     L.append("## Verdict and consequences")
     L.append("")
     if verdict == "PASS":

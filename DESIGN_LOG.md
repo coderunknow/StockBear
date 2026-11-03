@@ -323,3 +323,20 @@ branch — they are historical and cannot satisfy the dev6 gate.** The dev6 gate
 - **Version discipline.** VERSION -> `0.1.0-dev6` on the research branch; no
   dev5 tag/release touched; no dev7; no merge/tag/release/PR while the gate is
   unmet (explicit user approval required for those).
+
+### dev6 decisive results (2026-11-03, appended)
+
+exp-0028/0029 ran 2 x 6600 games on two verified-disjoint 3300-opening suites;
+combined **−17.0 [−21.4, −12.6] Elo** vs exact released dev5 — a clear
+REGRESSION, gate decisively unmet. Nulls clean. The integrity control
+(`params_abc`, +33.0 [+13.7,+52.5]) exposed a toolchain confound: dev5 was
+built on ubuntu-22.04, the candidate on ubuntu-latest/GCC 13; local same-machine
+bench shows my source changes are ~1.015x NPS (negligible), so the +33 is a
+build-image effect and/or screen noise, NOT a strength gain and NOT caused by my
+code. Confound-free ablation (same suite/binary/baseline, params_abc ->
+params_dev6_a) = ≈ −58 Elo: the features themselves are harmful. Design lesson
+to carry forward: pin BOTH sides to ONE reproducible build toolchain and verify
+binary-level NPS equivalence before any fixed-time comparison; do not treat a
+different-image rebuild as a neutral candidate. Direction ABANDONED per the
+Failure Ledger; next work must start from M0 (measured external rating) then a
+materially different, correctness-verified evaluator. See docs/DEV6_REPORT.md.
