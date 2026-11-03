@@ -13,7 +13,9 @@ run() {
     --openings benchmarks/positions/openings_dev4.txt \
     --pgn $OUT/clean-time40p4-$name.pgn --jsonl $OUT/clean-time40p4-$name.jsonl --csv $OUT/clean-time40p4-$name.csv 2>&1 | grep -E "^games|clustered"
 }
+i=1
 for p in params_outcome_v5 params_outcome_v6 params_bullet_b2 params_bullet_b3 params_abc_s095 params_abc_s105 params_abc_s110; do
-  run $p --a-option EvalParams=research-data/$p.txt --a-option TTEval=true --seed 20261400$((RANDOM%10))
+  run $p --a-option EvalParams=research-data/$p.txt --a-option TTEval=true --seed $((20261400+i))
+  i=$((i+1))
 done
 echo ALL_DONE
