@@ -437,15 +437,29 @@ noted. Hardware: sandbox 2 vCPU (Intel Xeon 2.60 GHz), ~3.9 GB RAM, 20 GB disk.
 - **Caveat recorded:** the default-off SB_INCREMENTAL_EVAL path does not
   maintain the new ids.
 
-## exp-0023 — decisive confirmation (pre-registered, RUNNING)
+## exp-0023 — decisive confirmation — GATE PASSED
 
-- **Pre-registration:** docs/EXP0023_PREREG.md (committed before the run).
-  12 shards x 550 = 6600 g + 1100 g null on the fresh untouched suite
-  `openings_exp0001_confirmation.txt` (sha `32537dd8...`, seed 2026110501,
-  excludes all prior suites), candidate = pushed HEAD built with
+- **Pre-registration:** docs/EXP0023_PREREG.md (committed as `737c6f4` before
+  the run). 12 shards x 550 = 6600 g + 1100 g null on the fresh untouched
+  suite `openings_exp0001_confirmation.txt` (sha `32537dd8...`, seed
+  2026110501, excludes all prior suites), candidate = `737c6f4` built with
   `-march=native -flto=4` + params_abc + TTEval, baseline = pinned dev4
   binary `1c5b61a7...`, 40+4, hash 16, threads 1, seeds 2026110601..612 +
-  null 2026110699, GitHub-hosted ubuntu-latest runners (dedicated VM).
-  Gate: pooled clustered LCB95 strictly > +50.
-- **Results:** see `benchmarks/exp-runs/exp0023-*/` (pushed by the runner
-  jobs) and the pooled estimate produced by `scripts/pool_matches.py`.
+  null 2026110699, GitHub-hosted ubuntu-latest runners (dedicated VM,
+  AMD EPYC 7763/9V45).
+- **Results (2026-11-03, run 41610113495):** clustered CR1 t(1774):
+  **+66.4 [+59.3, +73.6]** — **LCB95 = +59.3 > +50, GATE MET**.
+  W+D+L 2949/1928/1704, 18 unadjudicated, 0 forfeits; null (1100 g)
+  −1.3 [−11.7,+9.2]. SPRT LLR 30.74 accept H1. Raw:
+  `benchmarks/exp-runs/exp0023-shard01..12/` + `exp0023-null/`, pooled in
+  `benchmarks/exp-runs/exp0023-pooled.json/.txt`; full write-up
+  `docs/EXP0023_CONFIRMATION.md`.
+- **Classification:** SUCCESS (gate met). Screens leading here: exp0019-base
+  +44.0 [+20.5,+67.9]; exp0021-native +71.4 [+47.6,+95.8]; exp0020-native
+  (fresh-corpus retune) +80.2 [+55.4,+105.9] (promising, unconfirmed);
+  margin/aspiration variants within noise of their bases (rfut110 mildly
+  positive, not in the frozen candidate).
+- **Runner infra note:** jobs push results back to the branch because the
+  sandbox cannot download Actions logs/artifacts; a `FATAL ... exited 1`
+  FAIL.txt on a job WITH a complete match.report.txt is a benign engine
+  cleanup exception after the summary (results complete).

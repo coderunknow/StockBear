@@ -1,0 +1,142 @@
+{
+  "summary": {
+    "games": 6581,
+    "wins": 2949,
+    "draws": 1928,
+    "losses": 1704,
+    "naive": {
+      "games": 6581,
+      "score": 0.5945904877678164,
+      "ci95": [
+        0.5826766331025542,
+        0.6063939782076492
+      ],
+      "method": "Wilson on fractional game scores (ignores pair dependence)"
+    },
+    "paired": {
+      "pairs": 3282,
+      "score": 0.5944546008531383,
+      "pair_score_mean": 1.1889092017062766,
+      "pair_score_stderr": 0.009222443552662909,
+      "pentanomial_counts_2_1.5_1_0.5_0": [
+        551,
+        883,
+        1253,
+        445,
+        150
+      ],
+      "elo_difference": 66.43168556793715,
+      "method": "pentanomial over opening pairs; normal interval on the pair mean",
+      "elo_ci95": [
+        59.94137296818207,
+        72.96813707926073
+      ]
+    },
+    "opening_clustered": {
+      "clusters": 1775,
+      "pair_score_mean": 1.1889092017062766,
+      "pair_score_stderr": 0.01004208373695499,
+      "critical_value": 1.98,
+      "elo_difference": 66.43168556793715,
+      "method": "opening-clustered (CR1) variance of the pair mean with a Student-t interval on G-1 degrees of freedom",
+      "elo_ci95": [
+        59.29464952230903,
+        73.62455454285343
+      ]
+    },
+    "sprt": {
+      "llr": 30.744142870771128,
+      "lower_bound": -2.9444389791664403,
+      "upper_bound": 2.9444389791664403,
+      "h0_elo": 0.0,
+      "h1_elo": 5.0,
+      "sigma_pair_scores": 0.5283421925223275,
+      "decision": "accept H1",
+      "method": "normal-approximation SPRT on paired scores (approximation)"
+    },
+    "shards": [
+      {
+        "file": "benchmarks/exp-runs/exp0023-shard01/match.jsonl",
+        "games": 550,
+        "pairs": 274,
+        "unadjudicated": 1
+      },
+      {
+        "file": "benchmarks/exp-runs/exp0023-shard02/match.jsonl",
+        "games": 550,
+        "pairs": 274,
+        "unadjudicated": 1
+      },
+      {
+        "file": "benchmarks/exp-runs/exp0023-shard03/match.jsonl",
+        "games": 550,
+        "pairs": 273,
+        "unadjudicated": 2
+      },
+      {
+        "file": "benchmarks/exp-runs/exp0023-shard04/match.jsonl",
+        "games": 550,
+        "pairs": 274,
+        "unadjudicated": 1
+      },
+      {
+        "file": "benchmarks/exp-runs/exp0023-shard05/match.jsonl",
+        "games": 550,
+        "pairs": 270,
+        "unadjudicated": 5
+      },
+      {
+        "file": "benchmarks/exp-runs/exp0023-shard06/match.jsonl",
+        "games": 550,
+        "pairs": 273,
+        "unadjudicated": 2
+      },
+      {
+        "file": "benchmarks/exp-runs/exp0023-shard07/match.jsonl",
+        "games": 550,
+        "pairs": 274,
+        "unadjudicated": 1
+      },
+      {
+        "file": "benchmarks/exp-runs/exp0023-shard08/match.jsonl",
+        "games": 550,
+        "pairs": 273,
+        "unadjudicated": 2
+      },
+      {
+        "file": "benchmarks/exp-runs/exp0023-shard09/match.jsonl",
+        "games": 550,
+        "pairs": 274,
+        "unadjudicated": 1
+      },
+      {
+        "file": "benchmarks/exp-runs/exp0023-shard10/match.jsonl",
+        "games": 550,
+        "pairs": 274,
+        "unadjudicated": 1
+      },
+      {
+        "file": "benchmarks/exp-runs/exp0023-shard11/match.jsonl",
+        "games": 550,
+        "pairs": 275,
+        "unadjudicated": 0
+      },
+      {
+        "file": "benchmarks/exp-runs/exp0023-shard12/match.jsonl",
+        "games": 550,
+        "pairs": 274,
+        "unadjudicated": 1
+      }
+    ],
+    "games_total": 6600,
+    "unadjudicated": 18,
+    "terminations": {
+      "THREEFOLD_REPETITION": 1792,
+      "CHECKMATE": 4653,
+      "INSUFFICIENT_MATERIAL": 124,
+      "UNADJUDICATED_MAX_PLIES": 19,
+      "STALEMATE": 3,
+      "FIFTY_MOVES": 9
+    }
+  }
+}
