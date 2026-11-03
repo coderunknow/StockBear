@@ -1,0 +1,36 @@
+{
+  "job": {
+    "id": "smoke-local2",
+    "candidate_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true",
+      "AspirationWindow=48"
+    ],
+    "baseline": "dev4",
+    "baseline_options": [],
+    "games": 8,
+    "seed": 2026110601,
+    "openings": "benchmarks/positions/openings_dev4.txt",
+    "note": "repro"
+  },
+  "ran_at_utc": "2026-11-03T09:14:25.762800+00:00",
+  "runner": {
+    "name": "",
+    "arch": "",
+    "os": "",
+    "nproc": "2",
+    "cpuinfo": "model name\t: Intel(R) Xeon(R) Processor @ 2.60GHz",
+    "note": "GitHub-hosted runner, dedicated VM per job (CPU-isolated); public repo => no billing"
+  },
+  "platform": "Linux-6.1.158+-x86_64-with-glibc2.36",
+  "git_head": "f544d9b180f1be2bbd7d8d57e16c844bf3edc0ab",
+  "git_head_subject": "exp-run[exp0019-aw48]: results (run 41608541730, job run)",
+  "dev4_sha256": "1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae",
+  "dev4_bench": "243f9a1c1ba5b36f",
+  "candidate_sha256": "639ec13b36d748da186c95e9ea62eb1049c3f27f4bbd31d2c1a42b9f77a206bc",
+  "candidate_bench": "243f9a1c1ba5b36f",
+  "opening_suite": "benchmarks/positions/openings_dev4.txt",
+  "opening_suite_sha256": "3feeac711c8eded5a26b84f57e4bf9190b12634558a7a8e5e9a6d34bfcc5250d",
+  "candidate_build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1",
+  "dev4_build": "cmake -DCMAKE_BUILD_TYPE=Release (plain) from tag v0.1.0-dev4"
+}
