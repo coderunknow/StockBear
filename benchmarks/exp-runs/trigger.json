@@ -1,17 +1,15 @@
 {
-  "comment": "Smoke test of the Actions experiment pipeline: 16 games, candidate(default opts) vs dev4 baseline on openings_dev4.txt. Replace jobs for real experiments.",
+  "comment": "exp-0019 screen matrix, pre-registered in docs/EXP0019_PREREG.md (2026-11-03). Candidate = this checkout + params_abc + TTEval + variant option; baseline = dev4 tag binary. 480 g @ 40+4 hash16 threads1, openings_dev4.txt.",
   "jobs": [
-    {
-      "id": "smoke-0001",
-      "candidate_options": [],
-      "baseline": "dev4",
-      "baseline_options": [],
-      "games": 16,
-      "seed": 20261103001,
-      "openings": "benchmarks/positions/openings_dev4.txt",
-      "null_games": 8,
-      "ctest": true,
-      "note": "pipeline smoke test"
-    }
+    {"id": "smoke-0002", "candidate_options": ["EvalParams=research-data/params_abc.txt", "TTEval=true"], "baseline": "dev4", "baseline_options": [], "games": 16, "seed": 2026110400, "openings": "benchmarks/positions/openings_dev4.txt", "ctest": true, "note": "pipeline validation with champion options"},
+    {"id": "exp0019-null", "candidate_options": ["EvalParams=research-data/params_abc.txt", "TTEval=true"], "baseline": "candidate", "baseline_options": ["EvalParams=research-data/params_abc.txt", "TTEval=true"], "games": 480, "seed": 2026110410, "openings": "benchmarks/positions/openings_dev4.txt", "note": "runner-lane null"},
+    {"id": "exp0019-base", "candidate_options": ["EvalParams=research-data/params_abc.txt", "TTEval=true"], "baseline": "dev4", "baseline_options": [], "games": 480, "seed": 2026110401, "openings": "benchmarks/positions/openings_dev4.txt", "note": "champion reference on runner lane"},
+    {"id": "exp0019-aw8", "candidate_options": ["EvalParams=research-data/params_abc.txt", "TTEval=true", "AspirationWindow=8"], "baseline": "dev4", "baseline_options": [], "games": 480, "seed": 2026110404, "openings": "benchmarks/positions/openings_dev4.txt"},
+    {"id": "exp0019-aw32", "candidate_options": ["EvalParams=research-data/params_abc.txt", "TTEval=true", "AspirationWindow=32"], "baseline": "dev4", "baseline_options": [], "games": 480, "seed": 2026110402, "openings": "benchmarks/positions/openings_dev4.txt"},
+    {"id": "exp0019-aw48", "candidate_options": ["EvalParams=research-data/params_abc.txt", "TTEval=true", "AspirationWindow=48"], "baseline": "dev4", "baseline_options": [], "games": 480, "seed": 2026110403, "openings": "benchmarks/positions/openings_dev4.txt"},
+    {"id": "exp0019-fut140", "candidate_options": ["EvalParams=research-data/params_abc.txt", "TTEval=true", "FutilityMargin=140"], "baseline": "dev4", "baseline_options": [], "games": 480, "seed": 2026110405, "openings": "benchmarks/positions/openings_dev4.txt"},
+    {"id": "exp0019-fut170", "candidate_options": ["EvalParams=research-data/params_abc.txt", "TTEval=true", "FutilityMargin=170"], "baseline": "dev4", "baseline_options": [], "games": 480, "seed": 2026110406, "openings": "benchmarks/positions/openings_dev4.txt"},
+    {"id": "exp0019-rfut110", "candidate_options": ["EvalParams=research-data/params_abc.txt", "TTEval=true", "RevFutilityMargin=110"], "baseline": "dev4", "baseline_options": [], "games": 480, "seed": 2026110407, "openings": "benchmarks/positions/openings_dev4.txt"},
+    {"id": "exp0019-delta260", "candidate_options": ["EvalParams=research-data/params_abc.txt", "TTEval=true", "DeltaMargin=260"], "baseline": "dev4", "baseline_options": [], "games": 480, "seed": 2026110408, "openings": "benchmarks/positions/openings_dev4.txt"}
   ]
 }

@@ -48,6 +48,12 @@ struct SearchParams {
     bool aspiration = true;
     int aspirationInitial = 16;
     int aspirationWiden = 32;
+    // cp-denominated search margins (exp-0019: exposed as UCI options because
+    // the tuned eval scales changed; defaults are the dev4 values, so a
+    // default build stays bit-identical, bench 243f9a1c1ba5b36f).
+    int futilityMargin = 110;      // per remaining depth
+    int revFutilityMargin = 85;    // per remaining depth
+    int deltaMargin = 200;         // qsearch delta-pruning safety margin
     bool nullMove = true;
     bool lmr = true;
     bool reverseFutility = true;

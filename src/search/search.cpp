@@ -322,7 +322,7 @@ int Search::quiescence(Position& pos, int alpha, int beta, int ply) {
         alpha = std::max(alpha, best);
         // Delta pruning: if no single capture can lift the score to alpha, the
         // static evaluation is already the best this node can offer.
-        if (best + SeeValue[Queen] + SB_DELTA_MARGIN <= alpha) return best;
+        if (best + SeeValue[Queen] + params_.deltaMargin <= alpha) return best;
         generate_moves(pos, moves, GenType::QSearch);
         if (moves.empty()) {
             // No capture and no promotion: only stalemate can change the score.

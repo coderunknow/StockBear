@@ -34,21 +34,30 @@ ID=$(python3 -c 'import json,sys; print(json.loads(sys.argv[1])["id"])' "$JOB_JS
 OUT="benchmarks/exp-runs/$ID"
 mkdir -p "$OUT"
 
-field() { python3 -c 'import json,sys; j=json.loads(sys.argv[1]); print(json.dumps(j.get(sys.argv[2], sys.argv[3])))' "$JOB_JSON" "$1" "$2"; }
+jget() { # key default: strings print raw, everything else JSON-encoded
+  python3 - "$JOB_JSON" "$1" "$2" <<'EOF'
+import json, sys
+job = json.loads(sys.argv[1]); key = sys.argv[2]
+try: default = json.loads(sys.argv[3])
+except Exception: default = sys.argv[3]
+v = job.get(key, default)
+print(v if isinstance(v, str) else json.dumps(v))
+EOF
+}
 opt_args() { # $1 = options list json array, $2 = prefix (--a-option/--b-option)
   python3 -c 'import json,sys; [print(f"{sys.argv[2]}={o}") for o in json.loads(sys.argv[1])]' "$1" "$2"
 }
 
-CAND_OPTS=$(field candidate_options '[]')
-BASE=$(field baseline '"dev4"')
-BASE_OPTS=$(field baseline_options '[]')
-GAMES=$(field games '0')
-SEED=$(field seed '0')
-OPENINGS=$(field openings '""')
-BASE_MS=$(field base_ms '40'); INC_MS=$(field inc_ms '4')
-HASH=$(field hash '16'); THREADS=$(field threads '1'); MAXPLIES=$(field max_plies '240')
-NULL_GAMES=$(field null_games '0'); CTEST=$(field ctest 'false')
-NOTE=$(field note '""')
+CAND_OPTS=$(jget candidate_options '[]')
+BASE=$(jget baseline '"dev4"')
+BASE_OPTS=$(jget baseline_options '[]')
+GAMES=$(jget games '0')
+SEED=$(jget seed '0')
+OPENINGS=$(jget openings '""')
+BASE_MS=$(jget base_ms '40'); INC_MS=$(jget inc_ms '4')
+HASH=$(jget hash '16'); THREADS=$(jget threads '1'); MAXPLIES=$(jget max_plies '240')
+NULL_GAMES=$(jget null_games '0'); CTEST=$(jget ctest 'false')
+NOTE=$(jget note '""')
 
 echo "=== job $ID ==="
 echo "candidate_options=$CAND_OPTS baseline=$BASE baseline_options=$BASE_OPTS games=$GAMES seed=$SEED openings=$OPENINGS null_games=$NULL_GAMES"
@@ -61,7 +70,7 @@ if [ "$BASE" = "dev4" ] || [ "$NULL_GAMES" != "0" ]; then
      && cmake --build build -j 4 --target stockbear > /dev/null)
   DEV4_BIN=/tmp/dev4src/build/stockbear
   DEV4_SHA=$(sha256sum "$DEV4_BIN" | cut -d' ' -f1)
-  DEV4_BENCH=$("$DEV4_BIN" bench 2>&1 | tail -1)
+  DEV4_BENCH=$("$DEV4_BIN" bench 2>&1 | sed -n 's/.*signature //p' | tail -1)
   echo "dev4 sha256=$DEV4_SHA bench=$DEV4_BENCH"
   if [ "$DEV4_SHA" != "1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae" ]; then
     echo "FATAL: dev4 baseline sha mismatch" >&2; exit 1
@@ -77,7 +86,7 @@ cmake -S . -B build-exp -DCMAKE_BUILD_TYPE=Release \
 cmake --build build-exp -j 4 --target stockbear > /dev/null
 CAND_BIN=build-exp/stockbear
 CAND_SHA=$(sha256sum "$CAND_BIN" | cut -d' ' -f1)
-CAND_BENCH=$("$CAND_BIN" bench 2>&1 | tail -1)
+CAND_BENCH=$("$CAND_BIN" bench 2>&1 | sed -n 's/.*signature //p' | tail -1)
 echo "candidate sha256=$CAND_SHA bench=$CAND_BENCH"
 if [ "$CAND_BENCH" != "243f9a1c1ba5b36f" ]; then
   echo "FATAL: candidate bench signature changed (must stay 243f9a1c1ba5b36f)" >&2; exit 1

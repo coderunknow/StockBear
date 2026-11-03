@@ -440,6 +440,12 @@ void UciEngine::loop() {
             emit(std::string("option name Improving type check default ") + check(params_.improving));
             emit(std::string("option name TTEval type check default ") + check(params_.ttEval));
             emit(std::string("option name FullSoftBudget type check default ") + check(params_.fullSoftBudget));
+            // exp-0019: cp-denominated margins and the aspiration half-window as
+            // integer options so they can be screened without rebuilding.
+            emit("option name AspirationWindow type spin default 16 min 1 max 1200");
+            emit("option name FutilityMargin type spin default 110 min 0 max 2000");
+            emit("option name RevFutilityMargin type spin default 85 min 0 max 2000");
+            emit("option name DeltaMargin type spin default 200 min 0 max 2000");
             emit("option name MultiPV type spin default 1 min 1 max 8");
             emit("option name EvalParams type string default <empty>");
             emit(std::string("option name NNUE type check default ") + check(useNnue_));
