@@ -1,0 +1,15 @@
+# StockBear 0.1.0-dev6; threads=1; network=none; kernel=avx2; hash_requested_mb=16; hash_allocated_bytes=16777200; mode=depth;12; params=aspiration=1,nullMove=1,lmr=1,reverseFutility=1,futility=1,seePruning=1,checkExtension=1,counterMoves=0,continuationHistory=0,captureHistory=0,historyMaluses=0,lmrHistory=0,modernLmr=0,moveCountPruning=0,iir=0,improving=0,ttEval=0
+name,bestmove,depth,score_type,score,nodes,time_us,nps,hashfull,pv,fen
+"Starting position",d2d4,12,cp,27,733363,387085,1894578,222,"d2d4 d7d5 d1d3 g8f6 b1c3 b8c6 g1f3 g7g6 c1f4 c8f5 d3b5 a8b8","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+"Complex middlegame",e2a6,12,cp,-53,2445811,1223162,1999580,261,"e2a6 e6d5 e5g6 f7g6 c3b5 e8d8 e1c1 f6e4 d2f4 g7e5 g2h3 h8h4","r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"
+"Mate in one",f7g7,12,mate,1,319,55,5800000,0,"f7g7","7k/5Q2/6K1/8/8/8/8/8 w - - 0 1"
+"Rook and pawn ending",b4f4,12,cp,77,74716,29974,2492693,24,"b4f4 h4g3 f4c4 h5c5 c4c5 d6c5 e2e4 g3g2 e4e5 g2f3 e5e6 c5c4","8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1"
+"Promotion race",g1h2,12,cp,1150,1184828,306465,3866111,321,"g1h2 h7g6 a7a8q g6f5 a8d5 f5g6 h2g3 g6f6 g3f2 f6e7 f2e3 e7f6","8/P6k/8/8/8/8/7p/6K1 w - - 0 1"
+"Hanging queen",e4d5,12,cp,0,5628,1365,4123076,2,"e4d5 e8d7 e1f1 d7d6 f1g2 d6d5","4k3/8/8/3q4/4P3/8/8/4K3 w - - 0 1"
+"Developed middlegame",c4b3,12,cp,443,837150,479253,1746780,232,"c4b3 c6e5 c1e3 e5f3 g2f3 g4h3 f1e1 h3d7 b1a3 e7e5 f3f4 e5a5","r4rk1/1pp1qppp/p1np1n2/8/2B1P1b1/2PP1N2/PP3PPP/RNBQ1RK1 w - - 0 10"
+"Bare kings drawn",e1d1,0,cp,0,0,2,0,0,"e1d1","8/8/8/8/8/4k3/8/4K3 w - - 0 1"
+"Mate in two",b2c3,12,mate,2,943,251,3756972,0,"b2c3 a4a3 f5a5","8/8/8/5Q2/k7/8/1K6/8 w - - 0 1"
+"Forced check evasion",g1h1,12,mate,-3,2850,613,4649265,0,"g1h1 g2h2 h1g1 f2a2 g1f1 a2a1","7k/8/8/8/8/8/5rr1/6K1 w - - 0 1"
+"Avoid immediate mate",a1a3,12,cp,-1161,1276105,327223,3899802,360,"a1a3 b3a3 b1c2 h6e3 c2d1 a3b4 d1c2 e3e2 c2b1 b4c5 b1c1 e2e4","8/8/7q/8/8/1k6/8/RK6 w - - 0 1"
+"Stalemate avoidance",b7b8r,12,mate,3,924,240,3850000,0,"b7b8r h1h2 b8b3 h2h1 b3h3","8/1P6/8/8/8/8/8/5K1k w - - 0 1"
+# signature e45fa2ec2287eb41

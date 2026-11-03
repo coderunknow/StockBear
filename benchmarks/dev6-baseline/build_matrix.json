@@ -1,0 +1,142 @@
+{
+  "experiment": "exp-0030",
+  "prereg": "docs/DEV6_PREREG_EXP0030.md",
+  "environment": {
+    "os": "Linux-6.1.158+-x86_64-with-glibc2.36",
+    "kernel": "6.1.158+",
+    "machine": "x86_64",
+    "cpu_model": "Intel(R) Xeon(R) Processor @ 2.60GHz",
+    "cpu_isa_relevant": [
+      "abm",
+      "avx",
+      "avx2",
+      "bmi1",
+      "bmi2",
+      "fma",
+      "popcnt",
+      "sse4_2",
+      "ssse3"
+    ],
+    "nproc": 2,
+    "ram_mb": 3940,
+    "gcc": "gcc (Debian 12.2.0-14+deb12u1) 12.2.0",
+    "ld": "GNU ld (GNU Binutils for Debian) 2.40",
+    "cmake": "cmake version 4.4.4",
+    "glibc": "glibc 2.36",
+    "python": "3.11.2",
+    "cxx_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "lto": "-flto=4 (in CXX_FLAGS)",
+    "build_type": "Release",
+    "march_native": false,
+    "generator": "Ninja",
+    "runtime": {
+      "hash_mb": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "fixed_time": "40+4 ms",
+      "champion_params": "research-data/params_abc.txt",
+      "champion_params_sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be"
+    }
+  },
+  "sources": {
+    "A1_dev5_rebuilt": {
+      "tree": "v0.1.0-dev5",
+      "source_commit": "c94571313a1667048468cf6d4e070400dc5ab228",
+      "archive_sha256": "4107ff56bfacf2b4ad61a05e1928c1de24720d26a4fa112f6fadc1c759746eaa",
+      "files": 775,
+      "dir": "build-dev5-src"
+    },
+    "A2_candidate_rebuilt": {
+      "tree": "HEAD",
+      "source_commit": "4ba68115992a92c2c71ef477354e867092525c68",
+      "archive_sha256": "899ae35a83ba2a7f2e78ace3391952ee886d527ae70a670ac3f73baf0dd28c2d",
+      "files": 911,
+      "dir": "build-cand-src"
+    }
+  },
+  "binaries": {
+    "A1_dev5_rebuilt": {
+      "path": "build-dev5/stockbear",
+      "sha256": "214cbed002e58fbc94d74a089491bba94634e9e8d06b782992548fdacaa9b501"
+    },
+    "A2_candidate_rebuilt": {
+      "path": "build-cand/stockbear",
+      "sha256": "28b40cd691cc4c2b892aad27f42f4c62b50962e0d8183b9fdc339e1563d66538"
+    },
+    "B_official_release": {
+      "path": "benchmarks/binaries/stockbear-dev5-release",
+      "sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918"
+    }
+  },
+  "E1_signatures": {
+    "signatures": {
+      "A1_dev5_rebuilt": {
+        "bench_d6": "243f9a1c1ba5b36f",
+        "bench_d16": "a14ab62224f837e5",
+        "bench_d12_paramsabc": "e45fa2ec2287eb41"
+      },
+      "A2_candidate_rebuilt": {
+        "bench_d6": "243f9a1c1ba5b36f",
+        "bench_d16": "a14ab62224f837e5",
+        "bench_d12_paramsabc": "e45fa2ec2287eb41"
+      },
+      "B_official_release": {
+        "bench_d6": "243f9a1c1ba5b36f",
+        "bench_d16": "a14ab62224f837e5",
+        "bench_d12_paramsabc": "e45fa2ec2287eb41"
+      }
+    },
+    "pass": true
+  },
+  "E2_full_fixed_node_csv": {
+    "detail": {
+      "default": {
+        "rows": 12,
+        "rows_A2": 12,
+        "differing_rows": 0,
+        "identical": true
+      },
+      "params_abc": {
+        "rows": 12,
+        "rows_A2": 12,
+        "differing_rows": 0,
+        "identical": true
+      }
+    },
+    "pass": true
+  },
+  "E3_fixed_time_nps": {
+    "tolerance": [
+      0.97,
+      1.03
+    ],
+    "ratio_A2_over_A1": 0.9764556736562954,
+    "pass": true,
+    "official_over_A1": 0.9906106911786906
+  },
+  "E4_fixed_time_control_match": {
+    "status": "RUN",
+    "games": 400,
+    "wins": 130,
+    "draws": 114,
+    "losses": 156,
+    "clusters": 200,
+    "elo": -22.615198760895478,
+    "elo_ci95": [
+      -47.417494070101135,
+      1.9586602552485626
+    ],
+    "criterion": "two-sided opening-clustered CR1 95% CI includes 0",
+    "pass": true,
+    "time_forfeit_events": {
+      "TIME_FORFEIT (StockBear 0.1.0-dev6, 47.3ms move)": 1,
+      "TIME_FORFEIT (StockBear 0.1.0-dev6, 30.9ms move)": 1,
+      "TIME_FORFEIT (StockBear 0.1.0-dev6, 4.7ms move)": 1,
+      "TIME_FORFEIT (StockBear 0.1.0-dev6, 10.2ms move)": 1,
+      "TIME_FORFEIT (StockBear 0.1.0-dev5, 16.9ms move)": 1
+    },
+    "time_forfeit_total": 5,
+    "note": "Local shared 2-vCPU sandbox: time forfeits and a negative point estimate are consistent with documented local fixed-time noise (ledger, +/-25 Elo). Decisive matches must use isolated runners."
+  },
+  "E5_decision": "PASS"
+}

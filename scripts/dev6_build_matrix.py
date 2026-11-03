@@ -139,7 +139,67 @@ def toolchain():
     }
 
 
+def compute_e4():
+    """Read the separately-run E4 control match (if present)."""
+    ctrl = ROOT / "benchmarks" / "exp-runs" / "exp0030-control" / "pooled.json"
+    if not ctrl.exists():
+        return {"status": "NOT_RUN", "note": "run separately with scripts/tournament.py"}
+    summ = json.loads(ctrl.read_text())["summary"]
+    cl = summ["opening_clustered"]
+    terms = summ.get("terminations", {})
+    forfeits = {k: v for k, v in terms.items() if "FORFEIT" in k.upper()}
+    return {"status": "RUN", "games": summ["games_total"],
+            "wins": summ["wins"], "draws": summ["draws"], "losses": summ["losses"],
+            "clusters": cl.get("clusters"), "elo": cl.get("elo_difference"),
+            "elo_ci95": cl.get("elo_ci95"),
+            "criterion": "two-sided opening-clustered CR1 95% CI includes 0",
+            "pass": bool(cl.get("elo_ci95") and cl["elo_ci95"][0] is not None
+                        and cl["elo_ci95"][0] <= 0 <= cl["elo_ci95"][1]),
+            "time_forfeit_events": forfeits, "time_forfeit_total": sum(forfeits.values()),
+            "note": ("Local shared 2-vCPU sandbox: time forfeits and a negative point "
+                     "estimate are consistent with documented local fixed-time noise "
+                     "(ledger, +/-25 Elo). Decisive matches must use isolated runners.")}
+
+
+def e4_markdown(e4):
+    if e4.get("status") != "RUN":
+        return ["## E4 — fixed-time control match", "", "NOT RUN.", ""]
+    return ["## E4 — fixed-time control match (corroboration)", "",
+            f"A2(candidate rebuilt, `params_abc`+TTEval) vs A1(dev5 rebuilt, same), "
+            f"{e4['games']} paired games, 40+4 ms, fresh disjoint 200-opening slice: "
+            f"+{e4['wins']} ={e4['draws']} -{e4['losses']}, clustered CR1 "
+            f"**{e4['elo']:+.1f} [{e4['elo_ci95'][0]:+.1f}, {e4['elo_ci95'][1]:+.1f}] Elo**, "
+            f"{e4['clusters']} clusters. Criterion (CI includes 0): "
+            f"**{'PASS' if e4['pass'] else 'FAIL'}**.", "",
+            f"TIME_FORFEIT events: {e4['time_forfeit_total']} "
+            f"({e4['time_forfeit_events']}). {e4['note']} The previous +33 Elo control "
+            "used a DIFFERENT toolchain image; under the matched toolchain here the large "
+            "positive offset is absent. This local result is NOT used as strength evidence.", ""]
+
+
+def finalize_only():
+    """Patch the JSON record + append the E4 section without rebuilding."""
+    e4 = compute_e4()
+    result = json.loads(JSON_OUT.read_text())
+    result["E4_fixed_time_control_match"] = e4
+    result["E5_decision"] = ("PASS" if (result["E1_signatures"]["pass"] and
+        result["E2_full_fixed_node_csv"]["pass"] and result["E3_fixed_time_nps"]["pass"]
+        and e4.get("pass", False)) else "FAIL")
+    JSON_OUT.write_text(json.dumps(result, indent=2) + "\n")
+    md = MD_OUT.read_text()
+    if "## E4 —" not in md:
+        md += "\n" + "\n".join(e4_markdown(e4)) + \
+              "\nRaw E4: `benchmarks/exp-runs/exp0030-control/` (PGN/JSONL/CSV/pooled.json).\n"
+        MD_OUT.write_text(md)
+    print(json.dumps({"E4": e4.get("pass"), "E4_elo": e4.get("elo"),
+                      "E4_ci": e4.get("elo_ci95"), "forfeits": e4.get("time_forfeit_total"),
+                      "E5": result["E5_decision"]}, indent=2))
+
+
 def main():
+    if "--finalize-only" in sys.argv:
+        finalize_only()
+        return
     OUTDIR.mkdir(parents=True, exist_ok=True)
     env = toolchain()
     log_all = []
@@ -203,14 +263,18 @@ def main():
           "pass": 0.97 <= ratio <= 1.03,
           "official_over_A1": nps["B_official_release"]["best_nps"] / nps["A1_dev5_rebuilt"]["best_nps"]}
 
+    # ---- E4: fixed-time control match (run separately, results if present) ----
+    e4 = compute_e4()
+
     result = {
         "experiment": "exp-0030", "prereg": "docs/DEV6_PREREG_EXP0030.md",
         "environment": env, "sources": srcinfo, "binaries": binaries,
         "E1_signatures": {"signatures": sig, "pass": e1},
         "E2_full_fixed_node_csv": {"detail": e2, "pass": e2_pass},
         "E3_fixed_time_nps": e3,
-        "E4_fixed_time_control_match": {"status": "NOT_RUN_HERE", "note": "run separately; see docs/DEV6_EXP0030_BUILD_INTEGRITY.md"},
-        "E5_decision": ("PASS" if (e1 and e2_pass and e3["pass"]) else "FAIL"),
+        "E4_fixed_time_control_match": e4,
+        "E5_decision": ("PASS" if (e1 and e2_pass and e3["pass"] and
+                                   e4.get("pass", False)) else "FAIL"),
     }
     JSON_OUT.write_text(json.dumps(result, indent=2) + "\n")
 
@@ -261,8 +325,10 @@ def main():
     else:
         L += ["A criterion FAILED — do NOT start strength experiments; diagnose "
               "compiler/flags/source drift and repeat under a new experiment ID."]
-    L += ["", "Raw: `benchmarks/exp-runs/exp0030-build-integrity/` (build.log + all "
-          "bench CSVs), machine-readable `benchmarks/dev6-baseline/build_matrix.json`."]
+    L += [""] + e4_markdown(e4)
+    L += ["Raw: `benchmarks/exp-runs/exp0030-build-integrity/` (build.log + all "
+          "bench CSVs), E4 `benchmarks/exp-runs/exp0030-control/`, machine-readable "
+          "`benchmarks/dev6-baseline/build_matrix.json`."]
     MD_OUT.write_text("\n".join(L) + "\n")
     print(json.dumps({"E1": e1, "E2": e2_pass, "E3": e3["pass"],
                       "ratio": round(ratio, 4), "official_ratio": round(e3["official_over_A1"], 4),

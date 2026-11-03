@@ -1,0 +1,78 @@
+{
+  "summary": {
+    "games": 400,
+    "wins": 130,
+    "draws": 114,
+    "losses": 156,
+    "naive": {
+      "games": 400,
+      "score": 0.4675,
+      "ci95": [
+        0.4191457978919653,
+        0.516472501239764
+      ],
+      "method": "Wilson on fractional game scores (ignores pair dependence)"
+    },
+    "paired": {
+      "pairs": 200,
+      "score": 0.4675,
+      "pair_score_mean": 0.935,
+      "pair_score_stderr": 0.035675463465347404,
+      "pentanomial_counts_2_1.5_1_0.5_0": [
+        14,
+        26,
+        102,
+        36,
+        22
+      ],
+      "elo_difference": -22.615198760895478,
+      "method": "pentanomial over opening pairs; normal interval on the pair mean",
+      "elo_ci95": [
+        -47.16451953174597,
+        1.71030840126517
+      ]
+    },
+    "opening_clustered": {
+      "clusters": 200,
+      "pair_score_mean": 0.935,
+      "pair_score_stderr": 0.0356754634653474,
+      "critical_value": 1.98,
+      "elo_difference": -22.615198760895478,
+      "method": "opening-clustered (CR1) variance of the pair mean with a Student-t interval on G-1 degrees of freedom",
+      "elo_ci95": [
+        -47.417494070101135,
+        1.9586602552485626
+      ]
+    },
+    "sprt": {
+      "llr": -0.816270479642795,
+      "lower_bound": -2.9444389791664403,
+      "upper_bound": 2.9444389791664403,
+      "h0_elo": 0.0,
+      "h1_elo": 5.0,
+      "sigma_pair_scores": 0.5045272427664015,
+      "decision": "continue",
+      "method": "normal-approximation SPRT on paired scores (approximation)"
+    },
+    "shards": [
+      {
+        "file": "benchmarks/exp-runs/exp0030-control/match.jsonl",
+        "games": 400,
+        "pairs": 200,
+        "unadjudicated": 0
+      }
+    ],
+    "games_total": 400,
+    "unadjudicated": 0,
+    "terminations": {
+      "CHECKMATE": 281,
+      "THREEFOLD_REPETITION": 100,
+      "INSUFFICIENT_MATERIAL": 14,
+      "TIME_FORFEIT (StockBear 0.1.0-dev6, 47.3ms move)": 1,
+      "TIME_FORFEIT (StockBear 0.1.0-dev6, 30.9ms move)": 1,
+      "TIME_FORFEIT (StockBear 0.1.0-dev6, 4.7ms move)": 1,
+      "TIME_FORFEIT (StockBear 0.1.0-dev6, 10.2ms move)": 1,
+      "TIME_FORFEIT (StockBear 0.1.0-dev5, 16.9ms move)": 1
+    }
+  }
+}

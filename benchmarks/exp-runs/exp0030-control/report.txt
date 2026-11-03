@@ -1,0 +1,7 @@
+games 400: +130 =114 -156
+naive      : score 0.468 [0.419, 0.516], Elo -22.6 [-56.7, +11.5]
+paired     : 200 opening pairs, score 0.468, Elo -22.6 [-47.2, +1.7]
+             pair scores 2/1.5/1/0.5/0 = [14, 26, 102, 36, 22]
+clustered  : 200 openings, Elo -22.6 [-47.4, +2.0] (t=1.980 on 199 df)
+sprt       : LLR -0.82 (bounds -2.94, 2.94) -> continue
+shards 1 games 400 unadjudicated 0 terminations {'CHECKMATE': 281, 'THREEFOLD_REPETITION': 100, 'INSUFFICIENT_MATERIAL': 14, 'TIME_FORFEIT (StockBear 0.1.0-dev6, 47.3ms move)': 1, 'TIME_FORFEIT (StockBear 0.1.0-dev6, 30.9ms move)': 1, 'TIME_FORFEIT (StockBear 0.1.0-dev6, 4.7ms move)': 1, 'TIME_FORFEIT (StockBear 0.1.0-dev6, 10.2ms move)': 1, 'TIME_FORFEIT (StockBear 0.1.0-dev5, 16.9ms move)': 1}
