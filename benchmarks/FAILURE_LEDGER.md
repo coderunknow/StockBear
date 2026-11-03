@@ -463,3 +463,30 @@ noted. Hardware: sandbox 2 vCPU (Intel Xeon 2.60 GHz), ~3.9 GB RAM, 20 GB disk.
   sandbox cannot download Actions logs/artifacts; a `FATAL ... exited 1`
   FAIL.txt on a job WITH a complete match.report.txt is a benign engine
   cleanup exception after the summary (results complete).
+
+## exp-0024 — release-artifact gate: GATE PASSED (2026-11-03, run 41620641753)
+
+- **Question:** does the PORTABLE release artifact build (champion flags
+  WITHOUT `-march=native`: `-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4`,
+  x86-64-v3) clear the mandatory +50 gate vs the pinned dev4 binary?
+- **Pre-registration:** docs/EXP0024_PREREG.md (committed as `511a756` before
+  the run). 12 shards x 550 = 6600 g + 1100 g null on the fresh untouched
+  suite `openings_exp0002_confirmation.txt` (sha `90e99b37...`, seed
+  2026110502, excludes all prior suites incl. exp0001), candidate = `511a756`
+  portable build + params_abc + TTEval, baseline = pinned dev4 `1c5b61a7...`,
+  40+4, hash 16, threads 1, seeds 2026110701..712 + null 2026110799,
+  GitHub-hosted ubuntu-latest dedicated VMs.
+- **Results:** clustered CR1 t(1745): **+64.7 [+57.5, +72.0]** —
+  **LCB95 = +57.5 > +50, GATE MET**. W+D+L 2907/1986/1692, 15 unadjudicated
+  (game-level = pair-level here), 1 TIME_FORFEIT by the dev4 baseline (8.2 ms
+  move; scored as its loss per the symmetric policy, counted not hidden);
+  6585 adjudicated + 15 = 6600. Null (1100 g) +1.3 [−8.0, +10.6]. SPRT LLR
+  28.96 accept H1. Raw: `benchmarks/exp-runs/exp0024-shard01..12/` +
+  `exp0024-null/`; pooled `exp0024-pooled.json/.txt`; write-up
+  `docs/EXP0024_CONFIRMATION.md`; independent audit `exp0024-audit.json`
+  (scripts/audit_exp0023.py --exp exp0024, zero problems, matches pooled to
+  full precision).
+- **Classification:** SUCCESS (gate met on the exact shipped configuration).
+  exp-0023 (+66.4 [+59.3,+73.6], native build) remains the native-runner
+  measurement of the same source; the release claims the exp-0024 number for
+  the portable artifact.

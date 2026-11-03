@@ -31,9 +31,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DEV4_SHA = "1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae"
 BENCH = "243f9a1c1ba5b36f"
+# exp id -> (shard prefix, suite file, null dir, prereg head) mapping is set
+# from --exp in main(); these are the exp-0023 defaults.
 SUITE = ROOT / "benchmarks/positions/openings_exp0001_confirmation.txt"
 SHARDS = [ROOT / f"benchmarks/exp-runs/exp0023-shard{i:02d}" for i in range(1, 13)]
 NULL = ROOT / "benchmarks/exp-runs/exp0023-null"
+PREFIX = "exp0023"
 
 Z95 = 1.959963984540054
 
@@ -98,7 +101,7 @@ def analyse(records, manifest, label, config=None):
     """Independent recomputation. Returns a dict of all statistics."""
     problems = []
     n = len(records)
-    if label == "exp0023-decisive":
+    if label == PREFIX + "-decisive":
         # pooled: 12 shards, each contributing ids 1..550
         want = sorted(list(range(1, 551)) * 12)
         if sorted(r["game"] for r in records) != want:
@@ -180,7 +183,8 @@ def analyse(records, manifest, label, config=None):
         "wins": wins, "draws": draws, "losses": losses,
         "accounting_ok": (len(game_scores) + unadj_games == n),
         "terminations": terms,
-        "forfeits": terms.get("TIME_FORFEIT", 0) + terms.get("ENGINE_CRASH", 0),
+        "forfeits": sum(v for k, v in terms.items()
+                        if k.startswith("TIME_FORFEIT") or k.startswith("ENGINE_CRASH")),
         "clustered": clustered, "paired": paired, "sprt": sprt,
         "problems": problems,
         "manifest": manifest,
@@ -189,9 +193,20 @@ def analyse(records, manifest, label, config=None):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--expect-head", default="737c6f473ed86677e3b79146f0e97bf1d3099369")
+    ap.add_argument("--exp", default="exp0023", help="experiment id, e.g. exp0023 or exp0024")
+    ap.add_argument("--expect-head", default=None)
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
+    global SUITE, SHARDS, NULL, PREFIX
+    PREFIX = args.exp
+    suite_name = {"exp0023": "openings_exp0001_confirmation.txt",
+                  "exp0024": "openings_exp0002_confirmation.txt"}[args.exp]
+    SUITE = ROOT / f"benchmarks/positions/{suite_name}"
+    SHARDS = [ROOT / f"benchmarks/exp-runs/{args.exp}-shard{i:02d}" for i in range(1, 13)]
+    NULL = ROOT / f"benchmarks/exp-runs/{args.exp}-null"
+    if args.expect_head is None:
+        args.expect_head = {"exp0023": "737c6f473ed86677e3b79146f0e97bf1d3099369",
+                            "exp0024": "511a75662ea50257b2cbfde50b7d16cc85098fff"}[args.exp]
     report = {"suite_sha256": sha256_file(SUITE), "checks": [], "problems": []}
 
     suite_lines = SUITE.read_text().splitlines()
@@ -213,7 +228,8 @@ def main():
             if config.get("max_plies", 240) != 240 if "max_plies" in config else False:
                 pass
         seed = man["job"]["seed"]
-        if seed != 2026110601 + i:
+        seed_base = 2026110601 if args.exp == "exp0023" else 2026110701
+        if seed != seed_base + i:
             report["problems"].append(f"shard{i+1:02d}: seed {seed} != {2026110601+i}")
         if man["job"]["games"] != 550:
             report["problems"].append(f"shard{i+1:02d}: games {man['job']['games']} != 550")
@@ -223,13 +239,15 @@ def main():
             report["problems"].append(f"shard{i+1:02d}: bench mismatch")
         if man.get("opening_suite_sha256") != report["suite_sha256"]:
             report["problems"].append(f"shard{i+1:02d}: suite sha mismatch")
-        if man.get("git_head", "").startswith(args.expect_head[:12]) is False:
+        if not man.get("git_head", "").startswith(args.expect_head[:12]):
             report["problems"].append(f"shard{i+1:02d}: git_head {man.get('git_head')}")
         opts = man["job"].get("candidate_options", [])
         if not any("params_abc" in o for o in opts) or not any("TTEval=true" in o for o in opts):
             report["problems"].append(f"shard{i+1:02d}: candidate options {opts}")
-        if "-march=native" not in man["job"].get("build_flags", ""):
-            report["problems"].append(f"shard{i+1:02d}: build_flags {man['job'].get('build_flags')}")
+        want_flags = ("-march=native" if args.exp == "exp0023" else "-flto=4")
+        got_flags = man["job"].get("build_flags", "")
+        if want_flags not in got_flags or ("-march=native" in got_flags) != (args.exp == "exp0023"):
+            report["problems"].append(f"shard{i+1:02d}: build_flags {got_flags}")
         report["checks"].append((f"shard{i+1:02d} records", len(recs)))
         # every opening used must be in the suite
         for r in recs:
@@ -237,7 +255,7 @@ def main():
                 report["problems"].append(f"shard{i+1:02d}: opening not in suite: {r['opening'][:40]}")
                 break
 
-    decisive = analyse(all_records, {}, "exp0023-decisive", config=None)
+    decisive = analyse(all_records, {}, PREFIX + "-decisive", config=None)
     # per-shard id check (pooled ids repeat 0..549 per shard by design)
     for i, d in enumerate(SHARDS):
         recs, man, config, summary = load_shard(d)
@@ -247,14 +265,15 @@ def main():
     report["problems"].extend(decisive["problems"])
 
     null_recs, null_man, null_cfg, null_sum = load_shard(NULL)
-    null = analyse(null_recs, null_man, "exp0023-null", config=null_cfg)
+    null = analyse(null_recs, null_man, PREFIX + "-null", config=null_cfg)
     report["null"] = {k: v for k, v in null.items() if k != "manifest"}
     report["problems"].extend(null["problems"])
-    if null_man["job"]["seed"] != 2026110699:
+    null_seed = 2026110699 if args.exp == "exp0023" else 2026110799
+    if null_man["job"]["seed"] != null_seed:
         report["problems"].append(f"null seed {null_man['job']['seed']}")
 
     # cross-check against the committed pooled estimate
-    pooled_path = ROOT / "benchmarks/exp-runs/exp0023-pooled.json"
+    pooled_path = ROOT / f"benchmarks/exp-runs/{args.exp}-pooled.json"
     if pooled_path.exists():
         pooled = json.loads(pooled_path.read_text())["summary"]
         pc = pooled["opening_clustered"]
@@ -274,10 +293,11 @@ def main():
     def git(*a):
         return subprocess.run(["git", *a], capture_output=True, text=True,
                               cwd=ROOT).stdout.strip()
-    prereg_commit = git("log", "--format=%H %cI", "--follow", "--",
-                        "docs/EXP0023_PREREG.md")
-    suite_commit = git("log", "--format=%H %cI", "--",
-                        "benchmarks/positions/openings_exp0001_confirmation.txt")
+    prereg_doc = {"exp0023": "docs/EXP0023_PREREG.md", "exp0024": "docs/EXP0024_PREREG.md"}[args.exp]
+    suite_file = {"exp0023": "benchmarks/positions/openings_exp0001_confirmation.txt",
+                  "exp0024": "benchmarks/positions/openings_exp0002_confirmation.txt"}[args.exp]
+    prereg_commit = git("log", "--format=%H %cI", "--follow", "--", prereg_doc)
+    suite_commit = git("log", "--format=%H %cI", "--", suite_file)
     trigger_at_head = git("show", f"{args.expect_head}:benchmarks/exp-runs/trigger.json")
     report["prereg_commits"] = prereg_commit.splitlines()[-1] if prereg_commit else None
     report["suite_commits"] = suite_commit.splitlines()[-1] if suite_commit else None
@@ -285,15 +305,15 @@ def main():
     # commit (trigger.json legitimately changes when later experiment batches
     # are queued; the exp0023 batch itself is preserved at the prereg commit).
     report["prereg_doc_unmodified"] = git("diff", "--stat", args.expect_head, "HEAD",
-                                          "--", "docs/EXP0023_PREREG.md") == ""
+                                          "--", prereg_doc) == ""
     report["suite_unmodified"] = git("diff", "--stat", args.expect_head, "HEAD",
-                                     "--", "benchmarks/positions/openings_exp0001_confirmation.txt") == ""
+                                     "--", suite_file) == ""
     report["prereg_trigger_preserved"] = git("show",
-        f"{args.expect_head}:benchmarks/exp-runs/trigger.json").count("exp0023-") >= 13
+        f"{args.expect_head}:benchmarks/exp-runs/trigger.json").count(args.exp + "-") >= 13
     tj = json.loads(trigger_at_head)
     ids = sorted(j["id"] for j in tj["jobs"])
     report["trigger_jobs_at_prereg_head"] = ids
-    exp = sorted(f"exp0023-shard{i:02d}" for i in range(1, 13)) + ["exp0023-null"]
+    exp = sorted(f"{args.exp}-shard{i:02d}" for i in range(1, 13)) + [f"{args.exp}-null"]
     if not all(e in ids for e in exp):
         report["problems"].append("prereg trigger.json missing confirmation jobs")
 
