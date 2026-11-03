@@ -1,6 +1,163 @@
 {
-  "comment": "smoke-0003: validate push-back of results to the branch (1 tiny job).",
+  "comment": "exp-0019 margin/aspiration screens + exp-0021 native/LTO screen on free GH runners (public repo). Pre-reg: docs/EXP0019_PREREG.md; all 480 g @40+4 hash16 threads1 vs pinned dev4 binary, openings_dev4.txt.",
   "jobs": [
-    {"id": "smoke-0003", "candidate_options": ["EvalParams=research-data/params_abc.txt", "TTEval=true"], "baseline": "dev4", "baseline_options": [], "games": 8, "seed": 2026110500, "openings": "benchmarks/positions/openings_dev4.txt", "null_games": 4, "ctest": true, "note": "push-back validation"}
+    {
+      "id": "exp0019-null",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "candidate",
+      "baseline_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "games": 480,
+      "seed": 2026110410,
+      "openings": "benchmarks/positions/openings_dev4.txt",
+      "note": "runner-lane null"
+    },
+    {
+      "id": "exp0019-base",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 480,
+      "seed": 2026110401,
+      "openings": "benchmarks/positions/openings_dev4.txt",
+      "note": "champion reference on runner lane"
+    },
+    {
+      "id": "exp0019-aw8",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "AspirationWindow=8"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 480,
+      "seed": 2026110404,
+      "openings": "benchmarks/positions/openings_dev4.txt",
+      "note": ""
+    },
+    {
+      "id": "exp0019-aw32",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "AspirationWindow=32"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 480,
+      "seed": 2026110402,
+      "openings": "benchmarks/positions/openings_dev4.txt",
+      "note": ""
+    },
+    {
+      "id": "exp0019-aw48",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "AspirationWindow=48"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 480,
+      "seed": 2026110403,
+      "openings": "benchmarks/positions/openings_dev4.txt",
+      "note": ""
+    },
+    {
+      "id": "exp0019-fut140",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "FutilityMargin=140"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 480,
+      "seed": 2026110405,
+      "openings": "benchmarks/positions/openings_dev4.txt",
+      "note": ""
+    },
+    {
+      "id": "exp0019-fut170",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "FutilityMargin=170"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 480,
+      "seed": 2026110406,
+      "openings": "benchmarks/positions/openings_dev4.txt",
+      "note": ""
+    },
+    {
+      "id": "exp0019-rfut110",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "RevFutilityMargin=110"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 480,
+      "seed": 2026110407,
+      "openings": "benchmarks/positions/openings_dev4.txt",
+      "note": ""
+    },
+    {
+      "id": "exp0019-delta260",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "DeltaMargin=260"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 480,
+      "seed": 2026110408,
+      "openings": "benchmarks/positions/openings_dev4.txt",
+      "note": ""
+    },
+    {
+      "id": "exp0021-native-null",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "candidate",
+      "baseline_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "games": 480,
+      "seed": 2026110422,
+      "openings": "benchmarks/positions/openings_dev4.txt",
+      "note": "native-lto null",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4"
+    },
+    {
+      "id": "exp0021-native-base",
+      "candidate_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "baseline": "dev4",
+      "baseline_options": [],
+      "games": 480,
+      "seed": 2026110421,
+      "openings": "benchmarks/positions/openings_dev4.txt",
+      "note": "exp-0021: -march=native -flto=4 build, champion opts",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4"
+    }
   ]
 }

@@ -61,6 +61,7 @@ trap 'echo "ERR at line $LINENO (status $?)" >> "$OUT/FAIL.txt"' ERR
 commit_and_push() {
   git config user.email "exp-runner@stockbear.local"
   git config user.name "exp-runner"
+  sleep 2   # let the `exec > >(tee ...)` process substitution flush run.log
   for attempt in 1 2 3 4 5 6; do
     git pull --rebase origin "$BRANCH" > /dev/null 2>&1 || git rebase --abort > /dev/null 2>&1 || true
     git add -A "benchmarks/exp-runs/$ID" 2>/dev/null || true
@@ -95,18 +96,20 @@ NOTE=$(jget note '""')
 
 echo "candidate_options=$CAND_OPTS baseline=$BASE baseline_options=$BASE_OPTS games=$GAMES seed=$SEED openings=$OPENINGS null_games=$NULL_GAMES build_flags=$BUILD_FLAGS"
 
-# ---- immutable dev4 baseline from the tag (pinned: plain Release, sha 1c5b61a7...) ----
+# ---- immutable dev4 baseline: the pinned binary committed in the repo ----
+# (The gate's baseline is the exact v0.1.0-dev4 binary 1c5b61a7...; committing it
+#  keeps runner matches literally on that binary instead of a rebuild whose
+#  sha depends on the runner's compiler.)
 if [ "$BASE" = "dev4" ] || [ "$NULL_GAMES" != "0" ]; then
-  rm -rf /tmp/dev4src
-  git worktree add --force /tmp/dev4src v0.1.0-dev4 > /dev/null 2>&1 || fail "dev4 worktree failed"
-  (cd /tmp/dev4src && cmake -S . -B build -DCMAKE_BUILD_TYPE=Release > /dev/null \
-     && cmake --build build -j 4 --target stockbear > /dev/null) || fail "dev4 build failed"
-  DEV4_BIN=/tmp/dev4src/build/stockbear
+  DEV4_BIN=benchmarks/binaries/stockbear-dev4-1c5b61a7
+  [ -x "$DEV4_BIN" ] || fail "pinned dev4 binary missing: $DEV4_BIN"
   DEV4_SHA=$(sha256sum "$DEV4_BIN" | cut -d' ' -f1)
   DEV4_BENCH=$("$DEV4_BIN" bench 2>&1 | sed -n 's/.*signature //p' | tail -1)
-  echo "dev4 sha256=$DEV4_SHA bench=$DEV4_BENCH"
+  DEV4_D16=$("$DEV4_BIN" bench --depth 16 2>&1 | sed -n 's/.*signature //p' | tail -1)
+  echo "dev4 sha256=$DEV4_SHA bench=$DEV4_BENCH bench-d16=$DEV4_D16"
   [ "$DEV4_SHA" = "1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae" ] || fail "dev4 baseline sha mismatch: $DEV4_SHA"
   [ "$DEV4_BENCH" = "243f9a1c1ba5b36f" ] || fail "dev4 baseline bench mismatch: $DEV4_BENCH"
+  [ "$DEV4_D16" = "a14ab62224f837e5" ] || fail "dev4 baseline d16 signature mismatch: $DEV4_D16"
 fi
 
 # ---- candidate from this checkout ----
