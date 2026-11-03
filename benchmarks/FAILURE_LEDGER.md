@@ -906,3 +906,57 @@ pruning/ordering, best-of-N param selection, fixed-node-only conclusions).
   must come from the paired design WITH its CIs. 200 games/pairing cannot
   resolve ~20 Elo effects: future paired screens need >= ~1,000 games/pairing.
 - **Next:** exp-0033 isolated strength direction; no gate weakened.
+
+## exp-0033 — isolated razoring ablation (REJECTED)
+
+- **ID / class:** exp-0033, SEARCH-EFFICIENCY / strength SCREEN (not a gate
+  test). Prereg `docs/DEV6_PREREG_EXP0033.md`, frozen BEFORE implementation.
+- **Hypothesis:** at shallow depth a node far below alpha can be confirmed as a
+  fail-low by a null-window qsearch, saving nodes without losing strength.
+  `SearchParams::razoring` existed but was unimplemented/unexposed — a
+  genuinely unmeasured direction, not a recorded dead end.
+- **Identities / control:** ONE binary `build-exp0033/stockbear` SHA
+  `c412125179d5873ec4ae5cb4a06c728dc081986724666e27f8cad241fa8c57b3`,
+  `Razoring=true` vs `Razoring=false`; same `params_abc.txt` + `TTEval=true`,
+  Hash 16, Threads 1. Zero toolchain confound. Context baseline immutable
+  official dev5 `391cb50e…` (separately, context ONLY).
+- **Build/runtime:** GCC 12.2.0, `-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1
+  -flto=4`, no `-march=native`, Release/Ninja/CMake 4.4.4. Fixed-node
+  `go nodes 6000` +/-15 %, max 240 plies. Two disjoint 600-opening batches
+  (fresh, excluded all earlier suites), colour-reversed, 1,200 games each.
+- **Commands / raw:** `scripts/dev6_exp0033.py`, `scripts/tournament.py`,
+  `scripts/match_stats.py`; `benchmarks/exp-runs/exp0033-batchA|batchB|context-vs-dev5/`
+  (PGN/JSONL/CSV), `benchmarks/dev6-baseline/exp0033_results.json`.
+- **P1 efficiency (MIXED, reported honestly):** `bench --depth 12` total nodes
+  OFF 6,562,637 -> ON 6,339,128 (**-3.4 %**), PASS as literally preregistered;
+  but `position startpos; go depth 12` OFF 543,800 -> ON 733,944
+  (**+34.96 %**), and a 10-position diverse sample was ON/OFF 0.8585. The
+  saving is position-dependent and small; the regression is real at startpos.
+- **P2 correctness PASS:** default-off signatures exact `243f9a1c1ba5b36f`
+  (d4) / `a14ab62224f837e5` (d16); Release CTest 11/11; ASan+UBSan CTest
+  11/11; python-chess oracle 600 positions / 43,200 checks / 0 mismatches;
+  3x `bench --depth 12` signature `e45fa2ec2287eb41` deterministic; 0
+  TIME_FORFEIT / illegal / crash / UCI failures across all matches.
+- **P3 strength (REJECT):** batch A `-16.54 [-31.06,-2.09]` Elo
+  (`+386=370-443`, score 0.4762); batch B `-35.27 [-49.40,-21.26]`
+  (`+354=368-476`, score 0.4491); **combined `-25.88 [-36.00,-15.80]`**
+  (2,397 adjudicated games, `+740=738-919`, score 0.4627, 1,197 clusters).
+  Context vs dev5 `-28.87 [-53.58,-4.45]` (400 games). 3
+  `UNADJUDICATED_MAX_PLIES` games excluded per documented rule.
+- **Decision (frozen rule):** combined point < +10, LCB < -10, both batches
+  < -5 -> **REJECT / CLOSE exp-0033**. No fixed-time Elo claim (P4). No gate
+  pass, no PR/merge/tag/release.
+- **Root cause:** verifying a fail-low with qsearch costs a full qsearch at
+  EVERY triggered shallow node; when captures lift the stand-pat back to alpha
+  the node is then searched anyway, so the extra work is not recovered. Worse,
+  returning a qsearch bound as the node value perturbs TT entries and PV
+  propagation at depth <= 3, losing tactical accuracy at the shallow depths
+  that dominate a 6,000-node search. Net effect: -26 Elo.
+- **Lessons / non-repeatable:** do NOT repeat razoring with a different margin,
+  depth cut-off or schedule — that would be tuning on these results. Do NOT
+  apply qsearch-verified whole-node pruning at depth <= 3. Productive
+  alternative: prune INDIVIDUAL bad moves using information already computed
+  (SEE) rather than pruning the whole node.
+- **Next:** exp-0034 (registered BEFORE its results, materially different
+  mechanism: SEE-based bad-capture pruning), then a larger shared-opening
+  confirmation with isolated runners if it advances. Mission ACTIVE.

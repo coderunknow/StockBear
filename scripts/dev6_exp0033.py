@@ -124,17 +124,20 @@ def main():
     ok = [r for r in results if r["tag"].startswith("batch") and "error" not in r]
     combined = None
     if len(ok) == 2:
-        allpairs, allgames = [], []
+        allpairs, allgames, pair_openings = [], [], []
         for r in ok:
             recs = [json.loads(l) for l in (ROOT / r["dir"] / "match.jsonl").read_text().splitlines()
                     if "\"game\"" in l]
             recs.sort(key=lambda x: x["game"])
             gs = [x["score_a"] for x in recs if x["score_a"] is not None]
             allgames += gs
-            for k in range(0, len(gs) - 1, 2):
-                allpairs.append(gs[k] + gs[k+1])
+            for k in range(0, len(recs) - 1, 2):
+                if recs[k]["score_a"] is not None and recs[k+1]["score_a"] is not None:
+                    allpairs.append(recs[k]["score_a"] + recs[k+1]["score_a"])
+                    pair_openings.append(recs[k]["opening"])
         s = match_stats.summarise(allgames, allpairs,
-                                  match_stats.lmr_step(allpairs, 0.0, 5.0))
+                                  match_stats.lmr_step(allpairs, 0.0, 5.0),
+                                  pair_openings=pair_openings)
         combined = {"wins": s["wins"], "draws": s["draws"], "losses": s["losses"],
                     "games": len(allgames), "elo": s.get("opening_clustered", {}).get("elo_difference"),
                     "ci95": s.get("opening_clustered", {}).get("elo_ci95"),

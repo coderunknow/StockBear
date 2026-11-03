@@ -1,0 +1,125 @@
+{
+  "experiment": "exp-0033",
+  "prereg": "docs/DEV6_PREREG_EXP0033.md",
+  "control": "same binary, Razoring=true vs false",
+  "candidate_binary_sha256": "c412125179d5873ec4ae5cb4a06c728dc081986724666e27f8cad241fa8c57b3",
+  "official_dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "master_suite_sha256": "f67c57c719340d5fc4f125e92b1b3385084b759e62e8126aa689ae50b5624cbe",
+  "p1_bench_depth12_nodes": {
+    "razoring_off": 6562637,
+    "razoring_on": 6339128,
+    "delta_pct": -3.4
+  },
+  "p1_startpos_go_depth12_nodes": {
+    "razoring_off": 543800,
+    "razoring_on": 733944,
+    "delta_pct": 34.96
+  },
+  "results": [
+    {
+      "tag": "batchA",
+      "dir": "benchmarks/exp-runs/exp0033-batchA",
+      "binary_a_sha256": "c412125179d5873ec4ae5cb4a06c728dc081986724666e27f8cad241fa8c57b3",
+      "binary_b_sha256": "c412125179d5873ec4ae5cb4a06c728dc081986724666e27f8cad241fa8c57b3",
+      "openings_sha256": "e2f23cec7e7105f402b6314d51538f5b479494c82d6e495410ddf920a3fb5b41",
+      "seed": 2026111300,
+      "games": 1199,
+      "unadjudicated": 1,
+      "wins": 386,
+      "draws": 370,
+      "losses": 443,
+      "score": 0.4762301918265221,
+      "elo": -16.543232559536925,
+      "ci95": [
+        -31.05622052430867,
+        -2.087737614248669
+      ],
+      "clusters": 599,
+      "llr_normal_approx": null,
+      "terminations": {
+        "CHECKMATE": 829,
+        "THREEFOLD_REPETITION": 349,
+        "FIFTY_MOVES": 4,
+        "INSUFFICIENT_MATERIAL": 16,
+        "STALEMATE": 1,
+        "UNADJUDICATED_MAX_PLIES": 1
+      },
+      "time_forfeit": 0,
+      "illegal": 0
+    },
+    {
+      "tag": "batchB",
+      "dir": "benchmarks/exp-runs/exp0033-batchB",
+      "binary_a_sha256": "c412125179d5873ec4ae5cb4a06c728dc081986724666e27f8cad241fa8c57b3",
+      "binary_b_sha256": "c412125179d5873ec4ae5cb4a06c728dc081986724666e27f8cad241fa8c57b3",
+      "openings_sha256": "27ad6e1b951f84cb805fc1203b228c74f2927e34513282fe384e57bb5fd59dd3",
+      "seed": 2026111301,
+      "games": 1198,
+      "unadjudicated": 2,
+      "wins": 354,
+      "draws": 368,
+      "losses": 476,
+      "score": 0.44908180300500833,
+      "elo": -35.27092428406387,
+      "ci95": [
+        -49.39823586884445,
+        -21.258959573365047
+      ],
+      "clusters": 598,
+      "llr_normal_approx": null,
+      "terminations": {
+        "CHECKMATE": 830,
+        "THREEFOLD_REPETITION": 345,
+        "INSUFFICIENT_MATERIAL": 23,
+        "UNADJUDICATED_MAX_PLIES": 2
+      },
+      "time_forfeit": 0,
+      "illegal": 0
+    },
+    {
+      "tag": "context-vs-dev5",
+      "dir": "benchmarks/exp-runs/exp0033-context-vs-dev5",
+      "binary_a_sha256": "c412125179d5873ec4ae5cb4a06c728dc081986724666e27f8cad241fa8c57b3",
+      "binary_b_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+      "openings_sha256": "06ffcdc5f311747e1728df4e4d57b317565c8cbdcde1871c8323331122cbfbac",
+      "seed": 2026111400,
+      "games": 399,
+      "unadjudicated": 1,
+      "wins": 116,
+      "draws": 133,
+      "losses": 150,
+      "score": 0.4573934837092732,
+      "elo": -28.873762281702735,
+      "ci95": [
+        -53.581934241285055,
+        -4.454053993393307
+      ],
+      "clusters": 199,
+      "llr_normal_approx": null,
+      "terminations": {
+        "THREEFOLD_REPETITION": 123,
+        "CHECKMATE": 266,
+        "INSUFFICIENT_MATERIAL": 9,
+        "UNADJUDICATED_MAX_PLIES": 1,
+        "STALEMATE": 1
+      },
+      "time_forfeit": 0,
+      "illegal": 0
+    }
+  ],
+  "combined": {
+    "wins": 740,
+    "draws": 738,
+    "losses": 919,
+    "games": 2397,
+    "elo": -25.880483278316945,
+    "ci95": [
+      -36.0000695706298,
+      -15.804550764482048
+    ],
+    "score": 0.4626616604088444,
+    "clusters": 1197,
+    "pairs": 1197
+  },
+  "combined_repair_note": "Combined opening-clustered CR1 recomputed from raw JSONL with pair_openings; first write omitted pair_openings and produced null CI. Raw games unchanged."
+}

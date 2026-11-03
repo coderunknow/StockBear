@@ -1,0 +1,80 @@
+{
+  "experiment": "exp-0034",
+  "prereg": "docs/DEV6_PREREG_EXP0034.md",
+  "control": "same binary, BadCapturePruning=true vs false",
+  "binary_sha256": "075ec955a65acad4624cc6d3f4998763aaa7b968e4d01a27e73cd9dfd4c77d82",
+  "master_suite_sha256": "f8c8eb2917c95539aa2433a4cebfb2e35460de88b7c14ae01acb4cad8b187280",
+  "p1_bench_depth12_nodes": {
+    "off": 6562637,
+    "on": 5821954,
+    "delta_pct": -11.29
+  },
+  "results": [
+    {
+      "tag": "batchA",
+      "dir": "benchmarks/exp-runs/exp0034-batchA",
+      "games": 399,
+      "unadjudicated": 1,
+      "wins": 152,
+      "draws": 127,
+      "losses": 120,
+      "score": 0.5401002506265664,
+      "elo": 27.11649117305394,
+      "ci95": [
+        1.4669520890329852,
+        53.064997977211824
+      ],
+      "clusters": 199,
+      "terminations": {
+        "THREEFOLD_REPETITION": 119,
+        "CHECKMATE": 272,
+        "INSUFFICIENT_MATERIAL": 7,
+        "UNADJUDICATED_MAX_PLIES": 1,
+        "FIFTY_MOVES": 1
+      },
+      "time_forfeit": 0,
+      "illegal": 0,
+      "seed": 2026111600
+    },
+    {
+      "tag": "batchB",
+      "dir": "benchmarks/exp-runs/exp0034-batchB",
+      "games": 400,
+      "unadjudicated": 0,
+      "wins": 148,
+      "draws": 120,
+      "losses": 132,
+      "score": 0.52,
+      "elo": 13.904842503684801,
+      "ci95": [
+        -12.409611125404261,
+        40.380021450060255
+      ],
+      "clusters": 200,
+      "terminations": {
+        "CHECKMATE": 280,
+        "THREEFOLD_REPETITION": 112,
+        "INSUFFICIENT_MATERIAL": 7,
+        "FIFTY_MOVES": 1
+      },
+      "time_forfeit": 0,
+      "illegal": 0,
+      "seed": 2026111601
+    }
+  ],
+  "combined": {
+    "games": 799,
+    "wins": 300,
+    "draws": 247,
+    "losses": 252,
+    "score": 0.5300375469336671,
+    "elo": 20.486708778209582,
+    "ci95": [
+      2.123295845411327,
+      38.96527577251873
+    ],
+    "clusters": 399
+  },
+  "decision": "ADVANCE",
+  "finalise_note": "Combined and per-batch values recomputed from raw JSONL after the driver twice crashed while formatting/recombining (missing pair_openings on the first run, an unadjudicated None pair in the combined loop on the second). Raw games are the completed rerun and are unchanged; no game was re-run for this finalisation. Driver source corrected for reproducibility."
+}

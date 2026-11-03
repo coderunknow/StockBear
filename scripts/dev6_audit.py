@@ -83,7 +83,7 @@ for name,path,tags in (("exp0033",BASE/"exp0033_results.json",("batchA","batchB"
         cmp(f"{name} combined score",s,ce["score"])
         e=elo(s)
         print(f"{name}: combined +{w}={dr}-{l} score {s:.4f} "
-              f"independent Elo-from-score {e:+.2f}; stored CR1 {ce['elo']:+.2f} {ce['ci95']}")
+              f"independent Elo-from-score {e:+.2f}; stored CR1 {ce['elo']} {ce['ci95']}")
 
 print(f"\nchecked {checked} stored values across raw match.jsonl files")
 print("AUDIT:", "PASS" if not issues else "FAIL")
