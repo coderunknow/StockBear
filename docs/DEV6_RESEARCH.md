@@ -164,3 +164,26 @@ vbuild-popcnt, nps.sh depth 16/20 vs dev4.
 - Champion composition: -mpopcnt/-mbmi2/-mlzcnt + SB_SEE_CACHE (bit-exact,
   bench 243f9a1c1ba5b36f, d16 nodes 19229509, ctest 11/11) + outcome-tuned
   EvalParams (params_abc, 1.1M-position corpus) + TTEval=true.
+
+## dev7 CONFIRMATION RESULT (pre-registered dev7 suite) — GATE FAILED again
+
+- Null (champ vs itself, 1100 g, seed 2026110308, dev7 suite 98208a6e):
+  **-4.1 [-18.2, +9.9]**, 3 unadjudicated, clean.
+- Candidate (build-dev6 sha 15f1daa0 + params_outcome_v6 sha 8b9a421e +
+  TTEval=true + HistoryMaluses=false) vs dev4 (1c5b61a7), 4400 g, seed
+  2026110309, 40+4, hash 16, 1 thread, alone:
+  **clustered +39.9 [+31.9, +47.9]** (t=1.980 on 2175 df), paired +39.9
+  [+31.9, +47.8], SPRT LLR 11.65. 4376 adjudicated, 24 unadjudicated.
+  Raw: benchmarks/results/0.1.0-dev7/confirm-*.  **LCB +31.9 <= +50: GATE NOT
+  MET, no PR.**
+- Confirmed values so far: dev6 suite abc+tteval +47.5 [+39.5,+55.6];
+  dev7 suite v6+tteval+hmoff +39.9 [+31.9,+47.9]. Screen maxima (+55.6) were
+  selection noise; the champion family truly sits at +40..+48 point.
+- Switch ablations at 40+4 (v6+tteval baseline +50.3 pooled): all default-on
+  switches are >= their off value except HistoryMaluses-off (+54.0/+57.2,
+  but confirmed lower). Futility-off -2.2, ReverseFutility-off +28.4,
+  CounterMoves-off +31.3, ContinuationHistory-off +32.8, CaptureHistory-off
+  +35.7, LMRHistory-off +47.7, Improving-off +27.7.
+- Remaining lever: bit-exact NPS via incremental eval (popcnt gave x1.12 NPS
+  -> +3.6 [-19.6,+26.9], consistent with the +90/doubling slope within noise;
+  x1.2-1.25 could add +15-30).
