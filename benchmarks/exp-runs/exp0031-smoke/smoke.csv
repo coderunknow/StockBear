@@ -1,0 +1,5 @@
+game,opening,white,black,result,score_a,termination,plies,remaining_white_ms,remaining_black_ms
+1,EXP0030 0102 (f2f4 d7d5 g1h3 c8g4),StockBear 0.1.0-dev5,Stockfish 11 64 POPCNT,0-1,0,CHECKMATE,88,40.0,40.0
+2,EXP0030 0102 (f2f4 d7d5 g1h3 c8g4),Stockfish 11 64 POPCNT,StockBear 0.1.0-dev5,1-0,0,CHECKMATE,123,40.0,40.0
+3,EXP0030 0007 (e2e4 b8c6 f1a6 c6d4),StockBear 0.1.0-dev5,Stockfish 11 64 POPCNT,1-0,1,CHECKMATE,103,40.0,40.0
+4,EXP0030 0007 (e2e4 b8c6 f1a6 c6d4),Stockfish 11 64 POPCNT,StockBear 0.1.0-dev5,1/2-1/2,0.5,THREEFOLD_REPETITION,156,40.0,40.0

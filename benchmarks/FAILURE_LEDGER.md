@@ -729,3 +729,64 @@ pruning/ordering, best-of-N param selection, fixed-node-only conclusions).
   `scripts/check_dev6_eval_features.py` python-chess oracle, ctest 11/11, CI run
   `41638608619` (success) and lane run `41638608427` (success) on source head
   `28a5c71…`. Full report: `docs/DEV6_REPORT.md`.
+
+---
+
+## exp-0030 — reproducible build environment + Track A/B integrity (M0.1)
+
+- **ID / prereg:** `docs/DEV6_PREREG_EXP0030.md` (committed before measurement;
+  tolerances frozen a priori). Script `scripts/dev6_build_matrix.py`.
+- **Hypothesis / rationale:** the previous `params_abc` control's +33.0
+  [+13.7,+52.5] Elo was a build-image artifact (dev5 released from ubuntu-22.04,
+  candidate built by the lane on ubuntu-latest/GCC 13). Gate 4 of
+  `docs/DEV6_PREREG.md` requires "no unexplained difference between benchmarked
+  and packaged binary", so no strength experiment may run until this is
+  controlled. Rebuild BOTH source trees in ONE pinned toolchain and measure
+  fixed-node and fixed-time performance.
+- **Baseline / candidate identities:** A1 = `git archive v0.1.0-dev5` (commit
+  `c945713…`, archive SHA `4107ff56…`), rebuilt; A2 = `git archive <HEAD>`
+  (current dev6 source, extended features shipped 0), rebuilt; B = official
+  immutable artifact `391cb50e…` (Track B, NEVER rebuilt/renamed). Executable
+  SHAs: A1 `214cbed002e58fbc94d74a089491bba94634e9e8d06b782992548fdacaa9b501`,
+  A2 `28b40cd691cc4c2b892aad27f42f4c62b50962e0d8183b9fdc339e1563d66538`,
+  B `391cb50e…`. Full hashes in `benchmarks/dev6-baseline/build_matrix.json`.
+- **Build environment (recorded):** Linux 6.1.158+ x86_64, glibc 2.36, Intel
+  Xeon 2.60GHz (popcnt/bmi2/avx2/abm), 2 vCPU, 3.9 GB; GCC 12.2.0, GNU ld
+  2.40, CMake 4.4.4, Ninja; `-DCMAKE_BUILD_TYPE=Release -G Ninja
+  -DCMAKE_CXX_FLAGS="-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4"`,
+  NO `-march=native`; hash 16, threads 1, `--max-plies 240`, champion
+  `params_abc.txt` + `TTEval=true`. Builds sequential, no concurrent CPU work.
+- **Commands / raw paths:** `scripts/dev6_build_matrix.py` (also
+  `--finalize-only`); `benchmarks/exp-runs/exp0030-build-integrity/`
+  (build.log + 9 full bench CSVs); `benchmarks/exp-runs/exp0030-control/`
+  (400-game PGN/JSONL/CSV/pooled.json); `benchmarks/dev6-baseline/build_matrix.json`.
+- **Statistics / results (pre-registered criteria):**
+  - **E1 fixed-node signatures PASS**: all three binaries `bench`
+    `243f9a1c1ba5b36f`, `bench --depth 16` `a14ab62224f837e5`,
+    `bench --depth 12 --params params_abc` `e45fa2ec2287eb41`.
+  - **E2 full fixed-node CSV PASS**: 12/12 bench rows byte-identical A1 vs A2
+    (default and params_abc, timing columns excluded) — bit-exact search.
+  - **E3 fixed-time NPS PASS**: A1 2.514M, A2 2.455M, B 2.490M; ratio A2/A1
+    **0.9765** inside frozen tolerance [0.97,1.03]; B/A1 0.9906 (reference only).
+  - **E4 fixed-time control PASS**: A2 vs A1, 400 paired games, fresh disjoint
+    200-opening slice (SHA `f3f03dc9…`), clustered CR1 **−22.6 [−47.4,+2.0]
+    Elo**, CI includes 0. 5 TIME_FORFEIT events (4 candidate, 1 dev5), 0
+    illegal/crash/UCI failures. Point estimate negative and forfeits are
+    consistent with documented LOCAL 2-vCPU fixed-time noise (±25 Elo); decisive
+    matches must use isolated runners. Not used as strength evidence.
+  - **E5 decision PASS** (E1+E2+E3+E4).
+- **Classification:** SUCCESS (measurement-integrity foundation). The +33 Elo
+  control is confirmed toolchain-induced: under a matched toolchain no large
+  positive offset exists; candidate is 2.35% SLOWER (gating branch), so it can
+  only be slightly weaker, never +33 stronger, at fixed time.
+- **Root cause / recurrence / audits:** different compiler images produce NPS
+  differences that masquerade as eval strength at 40+4 ms. Recurrence condition:
+  any comparison between binaries built by different toolchains. REQUIRED FIX
+  (now applied): Track A = both sides built in ONE pinned toolchain; Track B =
+  official artifact measured separately and NEVER described as a rebuild.
+  Audit: independent full bench-CSV differential, signature match, 3-run NPS,
+  400-game control, all SHAs recorded. Do not use the shared local sandbox for
+  decisive fixed-time matches (time forfeits); use isolated runners.
+- **Continue / abandon / revisit:** CONTINUE to exp-0031 (M0.2 external ladder).
+  Do NOT repeat the +33 control on mismatched toolchains. Next gate prerequisite
+  satisfied: Track A is a valid controlled source-level comparison environment.
