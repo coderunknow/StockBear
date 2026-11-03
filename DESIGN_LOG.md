@@ -366,3 +366,31 @@ The six-feature direction remains ABANDONED (documented above). Subsequent work:
    Implemented as a default-off UCI switch on ONE binary so the ablation has
    zero toolchain confound. Prereg `docs/DEV6_PREREG_EXP0033.md`. Efficiency
    result is mixed and reported honestly. No gate weakened.
+
+## exp-0033 rejected, exp-0034 pilot advance (design lessons)
+
+Razoring at depth <= 3 with qsearch verification is harmful (-25.88 Elo): the
+qsearch probe is pure overhead whenever a capture rescues the stand-pat, and
+returning a qsearch bound perturbs TT/PV at the shallow depths that dominate a
+6,000-node search. Do NOT re-tune its margin. The productive successor prunes
+INDIVIDUAL losing captures using SEE already computed in `score_moves()` —
+-11.29 % fixed-depth nodes, +20.49 [+2.12,+38.97] in an 800-game fixed-node
+pilot with all correctness checks passing. Both new switches are default-OFF
+UCI checks on ONE binary, giving a zero-toolchain-confound ablation; default
+builds remain bit-identical to dev5. Two harness defects (missing
+`pair_openings`, unadjudicated `None` pairs) were found, disclosed and fixed —
+a reminder that result-processing code needs the same prereg-level care as
+search code. No gate is weakened; a pilot advance is not a strength claim.
+
+## exp-0035 confirmed (fixed-node) — what is and is not established
+
+A ~+27 Elo fixed-node improvement from SEE-based bad-capture pruning is now
+reproducible across two disjoint 1,000-game batches with a same-binary,
+single-switch control, plus a ~+19 Elo (CI includes 0) check against an
+identical-toolchain dev5 rebuild. That is a real, isolated, audited effect at
+`go nodes 6000` on this hardware. It is NOT transferable to a fixed-time Elo
+claim: exp-0030 documented 5 TIME_FORFEIT events and +/-25 Elo of shared-clock
+noise on this 2-vCPU sandbox, and the historical +33 Elo "gain" was a build
+image artifact. Keep the switch default OFF until isolated-runner fixed-time
+confirmation; changing the default would alter the shipped bench signature and
+require a fresh artifact/CI cycle. No gate weakened.

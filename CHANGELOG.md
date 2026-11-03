@@ -314,3 +314,26 @@ remains valid for that cycle. This entry records **subsequent local work on
 - **No dev6 gate is met. No strength claim. No PR/merge/tag/release/dev7.**
   All commits local; **no remote writes** since the ASK directive. Final-source
   CI cannot be tied to a pushed SHA without explicit authorization.
+
+## exp-0033 / exp-0034 / exp-0035 (append-only outcome notice)
+
+exp-0033 (razoring) **REJECTED**: combined `-25.88 [-36.00,-15.80]` Elo over
+2,397 games (batch A -16.54, batch B -35.27), 0 forfeits; P1 efficiency mixed
+(bench -3.4 % but startpos +35 %). exp-0034 (SEE bad-capture pruning, a
+materially different direction) **ADVANCE** from its 800-game pilot:
+`+20.49 [+2.12,+38.97]` Elo, P1 `-11.29 %` nodes, correctness PASS. This is
+a PILOT, NOT a gate pass and NOT a strength claim. exp-0035 larger fixed-node
+confirmation is the exact next action. All local, no remote writes, no
+PR/merge/tag/release/dev7; gates remain UNMET.
+
+## exp-0035 outcome (append-only)
+
+Larger fixed-node confirmation **CONFIRMED (fixed-node only)**: combined
+`+27.10 [+15.94,+38.33]` Elo (1,989 games; batch A +22.75 [+7.28,+38.31],
+batch B +31.51 [+15.40,+47.76]); Track A context vs identical-toolchain dev5
+rebuild `+19.19 [-0.76,+39.28]`; 0 forfeits. Independent re-audit of 179
+stored values PASS. `BadCapturePruning` remains **default OFF**; default builds
+stay bit-identical to dev5. **This is NOT a dev6 gate pass, NOT a fixed-time
+Elo, NOT a strength claim for release.** Decisive fixed-time confirmation on
+isolated runners and final-source CI are NOT RUN and require an authorized
+push. No PR/merge/tag/release/dev7; gates UNMET; mission ACTIVE.

@@ -960,3 +960,104 @@ pruning/ordering, best-of-N param selection, fixed-node-only conclusions).
 - **Next:** exp-0034 (registered BEFORE its results, materially different
   mechanism: SEE-based bad-capture pruning), then a larger shared-opening
   confirmation with isolated runners if it advances. Mission ACTIVE.
+
+## exp-0034 — SEE bad-capture pruning pilot (ADVANCE, not a gate pass)
+
+- **ID / class:** exp-0034, POST-REJECTION materially different direction, PILOT
+  SCREEN. Prereg `docs/DEV6_PREREG_EXP0034.md`, frozen BEFORE results.
+  Registered because exp-0033 was REJECTED (-25.88 Elo combined).
+- **Mechanism:** skip non-hash CAPTURES with `SEE < -100` cp at depth <= 3 in
+  non-PV / non-check / non-mate-window nodes, reusing the SEE already computed
+  by `score_moves()`. Distinct from razoring (which pruned whole nodes via a
+  qsearch verification). `BadCapturePruning` UCI `check`, default OFF.
+- **Identities / control:** ONE binary `build-exp0034/stockbear` SHA
+  `075ec955a65acad4624cc6d3f4998763aaa7b968e4d01a27e73cd9dfd4c77d82`, switch
+  ON vs OFF; `params_abc.txt` + `TTEval=true`, Hash 16, Threads 1. Built in a
+  SEPARATE directory so exp-0033's in-flight binary stayed immutable.
+- **Build/runtime / raw:** same pinned GCC 12.2.0 toolchain; fixed-node 6000
+  +/-15 %, max 240 plies; 2 disjoint 400-opening batches x 400 games = 800
+  games. `scripts/dev6_exp0034.py`,
+  `benchmarks/exp-runs/exp0034-batchA|batchB/`,
+  `benchmarks/dev6-baseline/exp0034_results.json`.
+- **P1 PASS:** `bench --depth 12` nodes 6,562,637 -> 5,821,954 (**-11.29 %**).
+  Default-off signatures exact `243f9a1c1ba5b36f` / `a14ab62224f837e5`.
+- **P2 PASS:** CTest 11/11, python-chess oracle 600/43,200/0, 2x deterministic
+  `e45fa2ec2287eb41`, 0 TIME_FORFEIT / illegal / crash / UCI failures.
+- **P3:** batch A `+27.12 [+1.47,+53.06]` (score 0.5401, +152=127-120, 1
+  unadjudicated); batch B `+13.90 [-12.41,+40.38]` (0.5200, +148=120-132);
+  **combined `+20.49 [+2.12,+38.97]`** (799 games, +300=247-252, score 0.5300,
+  399 clusters). 0 forfeits.
+- **Decision (frozen):** point >= +10, LCB > -10, both batches >= -5, P1/P2
+  PASS -> **ADVANCE** to exp-0035 larger confirmation. **NOT a dev6 gate
+  pass, NOT a strength claim** (800 games, fixed-node, same-binary ablation;
+  Gate 1 needs >= +75 with LCB > +50 on two fixed-time datasets vs dev5).
+- **Outcome / limitation:** two driver crashes occurred while FORMATTING /
+  recombining results (first: `pair_openings` omitted -> None Elo; second: an
+  unadjudicated `None` pair in the combined loop). NO result JSON was written
+  by either crashed run; the completed rerun's raw games are unchanged and were
+  finalised by an independent recomputation. Both defects are corrected in the
+  committed driver and disclosed here. 800 games cannot resolve more than a
+  large effect; the CI is wide.
+- **Lessons / non-repeatable:** do not claim strength from a pilot; do not
+  re-tune the frozen 100 cp margin on these results. Shared paired openings and
+  >= ~1,000 games/batch are needed. Fixed-time confirmation requires isolated
+  runners.
+- **Next:** exp-0035 (2 x 1,000 primary + 600 Track A context games), then
+  isolated-runner fixed-time work only after explicit authorization.
+
+## exp-0035 — larger fixed-node confirmation of bad-capture pruning (CONFIRMED, fixed-node only)
+
+- **ID / class:** exp-0035, CONFIRMATION (fixed-node). Prereg
+  `docs/DEV6_PREREG_EXP0035.md`, frozen BEFORE results; triggered by exp-0034's
+  frozen ADVANCE rule. NOT a dev6 gate test.
+- **Hypothesis:** `BadCapturePruning=true` is stronger than `false` at fixed
+  nodes with a tighter CI, and the switch-ON candidate is not worse than an
+  identical-toolchain dev5 rebuild.
+- **Identities:** primary ONE binary `build-exp0034/stockbear`
+  `075ec955a65acad4624cc6d3f4998763aaa7b968e4d01a27e73cd9dfd4c77d82` (ON vs
+  OFF). Track A context: same candidate (ON) vs `build-dev5/stockbear`
+  `214cbed002e58fbc94d74a089491bba94634e9e8d06b782992548fdacaa9b501`
+  (`git archive v0.1.0-dev5` rebuilt in the SAME pinned toolchain), both
+  `params_abc.txt` + `TTEval=true`. Official dev5 `391cb50e…` remains
+  immutable, NOT used here and never relabelled.
+- **Build/runtime / raw:** GCC 12.2.0, `-mpopcnt -mbmi2 -mlzcnt
+  -DSB_SEE_CACHE=1 -flto=4`, no `-march=native`, Release/Ninja/CMake 4.4.4;
+  fixed-node 6000 +/-15 %, hash 16, threads 1, max 240 plies. Two disjoint
+  1,000-opening batches x 1,000 games = 2,000 primary games + 600 Track A
+  context games on a third fresh 300-opening slice (2,600 games total).
+  `scripts/dev6_exp0035.py`, `benchmarks/exp-runs/exp0035-batchA|batchB|trackA/`,
+  `benchmarks/dev6-baseline/exp0035_results.json`.
+- **Results (two-sided opening-clustered CR1 95 % CI):**
+  - batch A `+22.75 [+7.28,+38.31]` (score 0.5331, +376=311-310)
+  - batch B `+31.51 [+15.40,+47.76]` (score 0.5428, +384=309-299)
+  - **combined `+27.10 [+15.94,+38.33]`** (1,989 adjudicated games,
+    +760=620-609, score 0.5380, 989 clusters)
+  - Track A context (candidate ON vs identical-toolchain dev5 rebuild)
+    `+19.19 [-0.76,+39.28]` (score 0.5275, +230=172-197, 600 games)
+  - **0** TIME_FORFEIT / illegal / crash / UCI failures; 11
+    `UNADJUDICATED_MAX_PLIES` exclusions (documented rule).
+- **Correctness:** default-off signatures exact `243f9a1c1ba5b36f` /
+  `a14ab62224f837e5`; CTest 11/11 Release and 11/11 ASan+UBSan; python-chess
+  oracle 600/43,200/0; 3x deterministic `e45fa2ec2287eb41`.
+- **Independent audit:** `scripts/dev6_audit.py` re-parsed every raw
+  `match.jsonl` from scratch: **179 stored values verified, AUDIT PASS**;
+  independent Elo-from-score +26.43 agrees with stored CR1 +27.10.
+- **Decision (frozen):** combined point >= +10, combined LCB > 0, both batches
+  >= -5, Track A CI lower bound > -10, correctness PASS ->
+  **CONFIRMED (fixed-node only)**.
+- **NOT claimed:** this is NOT a dev6 gate pass, NOT a fixed-time Elo, NOT an
+  absolute/CCRL rating, and NOT a gap-to-3000 estimate. Gate 1 requires >= +75
+  with LCB > +50 on two independent FIXED-TIME datasets against exact dev5;
+  Gate 4 requires final-source CI and the exact packaged binary.
+- **Root cause of the gain (mechanism, evidence-backed):** skipping clearly
+  losing captures at shallow depth removes ~11 % of fixed-depth nodes and
+  avoids polluting the TT/PV with hopeless capture lines; the same-binary
+  switch isolation makes the ~+27 Elo attributable to the mechanism rather
+  than to a toolchain or opening-set difference.
+- **Lessons / non-repeatable:** do NOT re-tune the frozen 100 cp margin on this
+  result; do NOT promote the switch to default before a fixed-time isolated
+  confirmation (would change the shipped bench signature); do NOT claim a
+  strength gate pass from fixed-node evidence alone.
+- **Next:** decisive FIXED-TIME confirmation on isolated CI runners with
+  unchanged Gate 1/2/3/4, exact packaged candidate artifact, and final-source
+  CI. Requires explicit authorization for a push. Mission ACTIVE.

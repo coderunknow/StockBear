@@ -60,7 +60,8 @@ for r in pb["pairings"]:
     cmp(f"{Path(r['dir']).name} wins",w,r["wins"])
 # exp-0033 / exp-0034
 for name,path,tags in (("exp0033",BASE/"exp0033_results.json",("batchA","batchB","context-vs-dev5")),
-                       ("exp0034",BASE/"exp0034_results.json",("batchA","batchB"))):
+                       ("exp0034",BASE/"exp0034_results.json",("batchA","batchB")),
+                       ("exp0035",BASE/"exp0035_results.json",("batchA","batchB","trackA"))):
     if not path.exists(): print(f"{name}: results file not present yet (NOT RUN)"); continue
     o=json.loads(path.read_text())
     for t in tags:

@@ -1,0 +1,104 @@
+{
+  "experiment": "exp-0035",
+  "prereg": "docs/DEV6_PREREG_EXP0035.md",
+  "candidate_binary_sha256": "075ec955a65acad4624cc6d3f4998763aaa7b968e4d01a27e73cd9dfd4c77d82",
+  "trackA_dev5_rebuilt_sha256": "214cbed002e58fbc94d74a089491bba94634e9e8d06b782992548fdacaa9b501",
+  "master_suite_sha256": "323f42eb5fc3dfda20304db678c3316a7eadf21023e1693ce0cac32deee07520",
+  "results": [
+    {
+      "games": 997,
+      "unadjudicated": 3,
+      "wins": 376,
+      "draws": 311,
+      "losses": 310,
+      "score": 0.533099297893681,
+      "elo": 22.75209844553731,
+      "ci95": [
+        7.284169145691004,
+        38.31067891515866
+      ],
+      "clusters": 497,
+      "terminations": {
+        "THREEFOLD_REPETITION": 284,
+        "CHECKMATE": 686,
+        "UNADJUDICATED_MAX_PLIES": 3,
+        "INSUFFICIENT_MATERIAL": 25,
+        "FIFTY_MOVES": 2
+      },
+      "time_forfeit": 0,
+      "illegal": 0,
+      "tag": "batchA",
+      "dir": "benchmarks/exp-runs/exp0035-batchA",
+      "seed": 2026111800,
+      "openings_sha256": "fb3ea3ac85712e381ad2d19a8ab5947ff326d3988ca2e1964e2a59a0b21fe30f"
+    },
+    {
+      "games": 992,
+      "unadjudicated": 8,
+      "wins": 384,
+      "draws": 309,
+      "losses": 299,
+      "score": 0.5428427419354839,
+      "elo": 31.510674660015596,
+      "ci95": [
+        15.401276124082539,
+        47.75643217273223
+      ],
+      "clusters": 492,
+      "terminations": {
+        "CHECKMATE": 683,
+        "THREEFOLD_REPETITION": 285,
+        "INSUFFICIENT_MATERIAL": 23,
+        "STALEMATE": 1,
+        "UNADJUDICATED_MAX_PLIES": 8
+      },
+      "time_forfeit": 0,
+      "illegal": 0,
+      "tag": "batchB",
+      "dir": "benchmarks/exp-runs/exp0035-batchB",
+      "seed": 2026111801,
+      "openings_sha256": "47adbe2ba314517d7f55835eb9ee79e24e94d0430df2405899155608161d9d40"
+    },
+    {
+      "games": 599,
+      "unadjudicated": 1,
+      "wins": 230,
+      "draws": 172,
+      "losses": 197,
+      "score": 0.5275459098497496,
+      "elo": 19.192364569878333,
+      "ci95": [
+        -0.7641937043560667,
+        39.2763862149917
+      ],
+      "clusters": 299,
+      "terminations": {
+        "CHECKMATE": 427,
+        "THREEFOLD_REPETITION": 165,
+        "INSUFFICIENT_MATERIAL": 5,
+        "FIFTY_MOVES": 2,
+        "UNADJUDICATED_MAX_PLIES": 1
+      },
+      "time_forfeit": 0,
+      "illegal": 0,
+      "tag": "trackA",
+      "dir": "benchmarks/exp-runs/exp0035-trackA",
+      "seed": 2026111802,
+      "openings_sha256": "322095519ceb3127b0fef2a6cc59b725fc6c2e961708213c6239c19048a2f369"
+    }
+  ],
+  "combined": {
+    "games": 1989,
+    "wins": 760,
+    "draws": 620,
+    "losses": 609,
+    "score": 0.5379587732528909,
+    "elo": 27.10494654485493,
+    "ci95": [
+      15.937217792805383,
+      38.32887190135203
+    ],
+    "clusters": 989
+  },
+  "decision": "CONFIRMED (fixed-node only)"
+}

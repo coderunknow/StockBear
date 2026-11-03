@@ -507,3 +507,28 @@ passes Gate 1 (>= +75 with LCB > +50 on both datasets); Gate 4 cannot be
 completed without final-source CI on an isolated runner. Terminal state is
 therefore NOT reached; mission remains ACTIVE. Authorization status: ASK —
 explicit approval required before any push / PR / merge / tag / release.
+
+## exp-0033 / exp-0034 / exp-0035 status
+
+exp-0033 REJECTED and closed per its frozen rule (ledger appended). exp-0034
+ADVANCE from pilot per its frozen rule; exp-0035 larger fixed-node confirmation
+registered and running. Independent re-audit script
+`scripts/dev6_audit.py` re-parses every raw `match.jsonl` from scratch.
+Correctness: Release 11/11, ASan+UBSan 11/11, oracle 600/43,200/0, bit-exact
+default bench signatures, 3x determinism. All work LOCAL; no push/PR/merge/tag/
+release/dev7; authorization status ASK. Terminal state NOT reached: Gate 1
+(>= +75, LCB > +50, both fixed-time batches) and Gate 4 (final-source CI,
+exact packaged binary) are UNMET, and decisive fixed-time matches require
+isolated CI runners reachable only via an authorized push. Mission ACTIVE.
+
+## exp-0035 final state (local)
+
+exp-0035 CONFIRMED (fixed-node only), ledger/docs/CHANGELOG/DESIGN_LOG updated,
+independent audit PASS (179 values). `BadCapturePruning` default OFF; all
+default builds bit-identical. Local CI-equivalents PASS; remote final-source CI
+NOT RUN (no push). Gates 1-4 UNMET (no passing fixed-time candidate, exact
+packaged artifact not tested, no final-source CI). Terminal state
+**BLOCKED — NOT COMPLETE**, mission ACTIVE. Authorization status ASK: no remote
+writes performed; explicit approval needed before any push, PR, merge, tag or
+release. Exact next action: authorized push -> isolated-runner fixed-time
+confirmation of exp-0035 with unchanged Gates 1-4.
