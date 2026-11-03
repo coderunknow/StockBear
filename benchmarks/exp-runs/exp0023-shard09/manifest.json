@@ -1,0 +1,36 @@
+{
+  "job": {
+    "id": "exp0023-shard09",
+    "candidate_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "baseline": "dev4",
+    "baseline_options": [],
+    "games": 550,
+    "seed": 2026110609,
+    "openings": "benchmarks/positions/openings_exp0001_confirmation.txt",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+    "note": "exp-0023 decisive confirmation shard 9/12 (pre-registered docs/EXP0023_PREREG.md)"
+  },
+  "ran_at_utc": "2026-11-03T09:21:48.523950+00:00",
+  "runner": {
+    "name": "GitHub Actions 1000007947",
+    "arch": "X64",
+    "os": "Linux",
+    "nproc": "4",
+    "cpuinfo": "model name\t: AMD EPYC 7763 64-Core Processor",
+    "note": "GitHub-hosted runner, dedicated VM per job (CPU-isolated); public repo => no billing"
+  },
+  "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+  "git_head": "737c6f473ed86677e3b79146f0e97bf1d3099369",
+  "git_head_subject": "exp-0022 eval features (zero defaults, bit-exact) + uci setoption fix + exp-0023 pre-registered decisive confirmation batch",
+  "dev4_sha256": "1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae",
+  "dev4_bench": "243f9a1c1ba5b36f",
+  "candidate_sha256": "89004dae3a2562d7f2286b2ee67c5446248a66241e4cdebb590538af172df579",
+  "candidate_bench": "243f9a1c1ba5b36f",
+  "opening_suite": "benchmarks/positions/openings_exp0001_confirmation.txt",
+  "opening_suite_sha256": "32537dd843e8cb1e9f852d055dee964a3f95102e1d6c3dec05e0c6b215da07bd",
+  "candidate_build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -march=native -flto=4",
+  "dev4_build": "cmake -DCMAKE_BUILD_TYPE=Release (plain) from tag v0.1.0-dev4"
+}
