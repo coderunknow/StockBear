@@ -1,0 +1,1 @@
+FATAL: tournament match exited 1 (see match.stdout.log)
