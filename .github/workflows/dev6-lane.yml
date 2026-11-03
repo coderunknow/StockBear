@@ -1,0 +1,78 @@
+name: Dev6 research lane
+
+# Free compute lane for the v0.1.0-dev6 research cycle. Kept separate from the
+# historical exp-run.yml so the dev4/dev5 experiment records and pipeline stay
+# untouched. GitHub-hosted ubuntu-latest runners (4 vCPU, dedicated VM per job)
+# are not billed for this public repository. Each matrix job builds the candidate
+# from this checkout, uses the EXACT released v0.1.0-dev5 portable binary as the
+# immutable baseline (downloaded from the immutable release and checksummed),
+# runs the requested matches, and COMMITS all evidence under
+# benchmarks/exp-runs/<id>/ and benchmarks/dev6-baseline/ back to the branch
+# (the sandbox cannot reach the release-asset CDN, so the runner + branch are
+# the provenance/results channel).
+on:
+  push:
+    paths:
+      - 'benchmarks/exp-runs/dev6-trigger.json'
+      - 'scripts/actions_dev6_lane.sh'
+      - '.github/workflows/dev6-lane.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  trigger:
+    name: Read dev6 trigger
+    runs-on: ubuntu-latest
+    outputs:
+      jobs: ${{ steps.read.outputs.jobs }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - id: read
+        run: |
+          python3 - <<'EOF'
+          import json
+          data = json.load(open('benchmarks/exp-runs/dev6-trigger.json'))
+          jobs = data['jobs']
+          assert isinstance(jobs, list) and jobs, 'jobs must be a non-empty list'
+          for j in jobs:
+              for key in ('id', 'task'):
+                  assert key in j, f'job missing {key}'
+          print('jobs=' + json.dumps(jobs))
+          EOF
+          echo "jobs=$(python3 -c 'import json; print(json.dumps(json.load(open("benchmarks/exp-runs/dev6-trigger.json"))["jobs"]))')" >> "$GITHUB_OUTPUT"
+
+  run:
+    name: ${{ matrix.job.id }}
+    needs: trigger
+    timeout-minutes: 420
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        job: ${{ fromJSON(needs.trigger.outputs.jobs) }}
+    env:
+      JOB: ${{ toJSON(matrix.job) }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Run dev6 experiment job
+        run: bash scripts/actions_dev6_lane.sh "$JOB"
+      - name: Upload results (backup channel)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ${{ matrix.job.id }}
+          path: |
+            benchmarks/exp-runs/${{ matrix.job.id }}/
+            benchmarks/dev6-baseline/
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,10 @@
+{
+ "comment": "dev6 cycle, exp-0025: FIRST establish the immutable dev5 baseline from the official v0.1.0-dev5 release. This verify-baseline job downloads + checksums the official archives, pins the exact portable Linux executable into benchmarks/binaries/, and records full provenance. No matches are run in this batch. Pre-registration: docs/DEV6_PREREG_BASELINE.md.",
+ "jobs": [
+  {
+   "id": "exp0025-baseline",
+   "task": "verify-baseline",
+   "note": "exp-0025: download/verify/pin the exact released v0.1.0-dev5 portable binary as the immutable dev6 baseline; record SHA-256, bench signatures, shipped params, and published strength claim."
+  }
+ ]
+}
