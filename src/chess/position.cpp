@@ -21,10 +21,14 @@
 // ---------------------------------------------------------------------------
 #include "chess/position.hpp"
 #include "evaluation/evaluation.hpp"
+#ifndef SB_INCREMENTAL_EVAL
+#define SB_INCREMENTAL_EVAL 0
+#endif
 #include "chess/fen.hpp"
 #include "chess/dead_position.hpp"
 
 #include <algorithm>
+#include <cstring>
 #include <array>
 #include <limits>
 #include <cstdlib>
@@ -340,6 +344,107 @@ void Position::make_move(Move m) { make_move_impl(m, true); }
 
 void Position::make_move_without_repetition(Move m) { make_move_impl(m, false); }
 
+void Position::compute_feature_counts() {
+#if !defined(STOCKBEAR_SAFE_MOBILITY) && SB_INCREMENTAL_EVAL
+    all_feature_counts(*this, White, st().feat[White]);
+    all_feature_counts(*this, Black, st().feat[Black]);
+#endif
+}
+
+// Delta-update the raw feature counts after the board changed. The cheap terms
+// (pawn structure, bishop pair, rook files, pawn shield) are recomputed from
+// scratch; mobility and king danger are updated only for the pieces whose
+// attack sets can have changed (attackers of the from/to/captured squares plus
+// the moved and captured pieces themselves).
+void Position::update_feature_counts(Move m, Square capSq, Piece captured,
+                                      const Piece* oldBoard, Bitboard occ0,
+                                      const Bitboard* oldOwn) {
+#if !defined(STOCKBEAR_SAFE_MOBILITY) && SB_INCREMENTAL_EVAL
+    if (move_type(m) == CastlingMove) { compute_feature_counts(); return; }
+    const Square from = move_from(m), to = move_to(m);
+    const Bitboard occ1 = pieces();
+    const Bitboard own1[ColorNB] = { byColorBB[White], byColorBB[Black] };
+    const Piece movedOld = oldBoard[from];
+    const Color us = color_of(movedOld);
+    const Piece movedNew = board_[to];
+    const bool capture = captured != NoPiece;
+    const Bitboard movedMask = square_bb(from) | square_bb(to) | (capture ? square_bb(capSq) : 0);
+
+    for (Color s : {White, Black}) {
+        std::int16_t* f = st().feat[s];
+        const Color them = ~s;
+        // Cheap terms: full recompute (mirrors features() exactly).
+        cheap_feature_counts(*this, s, f);
+        // Squares whose attackers' mobility/KD may have changed.
+        Bitboard aff = attackers_to(from, occ0) | attackers_to(to, occ1)
+                     | (capture ? attackers_to(capSq, occ0) : Bitboard(0));
+        aff &= ~movedMask;
+        // --- mobility of side s ---
+        Bitboard bb = aff & byColorBB[s];
+        while (bb) {
+            const Square sq = pop_lsb(bb);
+            const PieceType pt = type_of(board_[sq]);
+            if (pt == Knight || pt == Bishop || pt == Rook || pt == Queen) {
+                const int oldc = mobility_count_at(*this, s, pt, sq, occ0, oldOwn[s]);
+                const int newc = mobility_count_at(*this, s, pt, sq, occ1, own1[s]);
+                f[mobility_param_id(pt)] += std::int16_t(newc - oldc);
+            }
+        }
+        if (s == us) { // the moved piece (old square -> new square, type may change)
+            const PieceType ptO = type_of(movedOld);
+            if (ptO == Knight || ptO == Bishop || ptO == Rook || ptO == Queen)
+                f[mobility_param_id(ptO)] -= std::int16_t(mobility_count_at(*this, s, ptO, from, occ0, oldOwn[s]));
+            const PieceType ptN = type_of(movedNew);
+            if (ptN == Knight || ptN == Bishop || ptN == Rook || ptN == Queen)
+                f[mobility_param_id(ptN)] += std::int16_t(mobility_count_at(*this, s, ptN, to, occ1, own1[s]));
+        }
+        if (capture && s == color_of(captured)) {
+            const PieceType pt = type_of(captured);
+            if (pt == Knight || pt == Bishop || pt == Rook || pt == Queen)
+                f[mobility_param_id(pt)] -= std::int16_t(mobility_count_at(*this, s, pt, capSq, occ0, oldOwn[s]));
+        }
+        // --- king danger of side s (enemy pieces attacking s's king zone) ---
+        const bool kingMoved = (s == us && type_of(movedOld) == King);
+        if (kingMoved) {
+            for (int id = int(KingDangerPawn); id <= int(KingDangerQueen); ++id) f[id] = 0;
+            const Bitboard zone = KingZoneBB[s][king_square(s)];
+            for (PieceType pt : {Pawn, Knight, Bishop, Rook, Queen}) {
+                Bitboard b = pieces(them, pt);
+                while (b) {
+                    const Square sq = pop_lsb(b);
+                    f[king_danger_param_id(pt)] -= std::int16_t(king_danger_count_at(*this, them, pt, sq, occ1, zone));
+                }
+            }
+        } else {
+            const Bitboard zone = KingZoneBB[s][king_square(s)];
+            Bitboard bk = aff & byColorBB[them];
+            while (bk) {
+                const Square sq = pop_lsb(bk);
+                const PieceType pt = type_of(board_[sq]);
+                if (pt == King) continue; // kings are not king-danger attackers
+                const int oldh = king_danger_count_at(*this, them, pt, sq, occ0, zone);
+                const int newh = king_danger_count_at(*this, them, pt, sq, occ1, zone);
+                f[king_danger_param_id(pt)] -= std::int16_t(newh - oldh);
+            }
+            if (s == ~us) { // the moved piece (color us) is an enemy piece of s
+                const PieceType ptO = type_of(movedOld);
+                if (ptO != King)
+                    f[king_danger_param_id(ptO)] += std::int16_t(king_danger_count_at(*this, us, ptO, from, occ0, zone));
+                const PieceType ptN = type_of(movedNew);
+                if (ptN != King)
+                    f[king_danger_param_id(ptN)] -= std::int16_t(king_danger_count_at(*this, us, ptN, to, occ1, zone));
+            }
+            if (capture && s == us && type_of(captured) != King) { // captured enemy piece of s
+                const PieceType pt = type_of(captured);
+                f[king_danger_param_id(pt)] += std::int16_t(king_danger_count_at(*this, them, pt, capSq, occ0, zone));
+            }
+        }
+    }
+#else
+    (void)m; (void)capSq; (void)captured; (void)oldBoard; (void)occ0; (void)oldOwn;
+#endif
+}
+
 void Position::make_move_impl(Move m, bool trackRepetition) {
     if (history_.empty() || !is_ok(m)) throw std::invalid_argument("move requires an initialized position");
     const Square from = move_from(m), to = move_to(m);
@@ -351,6 +456,13 @@ void Position::make_move_impl(Move m, bool trackRepetition) {
     // The FEN ep square is retained even if uncapturable, but only a legally
     // available capture distinguishes positions for repetition and hashing.
     const bool oldEpHasLegalCapture = legal_en_passant_capturers() != 0;
+#if !defined(STOCKBEAR_SAFE_MOBILITY) && SB_INCREMENTAL_EVAL
+    // Snapshot for the incremental feature-count update at the end.
+    Piece oldBoard[SQ_NB];
+    std::memcpy(oldBoard, board_, sizeof(oldBoard));
+    const Bitboard occ0 = pieces();
+    const Bitboard oldOwn[ColorNB] = { byColorBB[White], byColorBB[Black] };
+#endif
 
     // Copy-then-push: never pass a reference to a vector element into push_back
     // (reallocation would invalidate it).
@@ -476,6 +588,11 @@ void Position::make_move_impl(Move m, bool trackRepetition) {
 
     // 9) Check/pin info for the new side to move.
     set_check_info();
+
+#if !defined(STOCKBEAR_SAFE_MOBILITY) && SB_INCREMENTAL_EVAL
+    // 10) Incremental raw feature counts (board is final now).
+    update_feature_counts(m, capturedSquare, Piece(newSt.capturedPiece), oldBoard, occ0, oldOwn);
+#endif
 
     // King-bucketed networks cannot be updated incrementally; rebuild both
     // perspectives now that the board is final.

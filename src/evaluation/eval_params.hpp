@@ -38,6 +38,10 @@ enum EvalParamId : int {
     PawnShield,
     // Enemy attacks into our king zone, per attacking piece type.
     KingDangerPawn, KingDangerKnight, KingDangerBishop, KingDangerRook, KingDangerQueen,
+    // exp-0022: appended features. Their shipped values are 0, so a default
+    // build is bit-identical (bench 243f9a1c1ba5b36f); the tuner may raise them.
+    // NOTE: the (default-off) SB_INCREMENTAL_EVAL path does not maintain these.
+    RookOn7th, KnightOutpost, BackwardPawn, PawnChain,
     EvalParamNB
 };
 

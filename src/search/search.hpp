@@ -48,6 +48,12 @@ struct SearchParams {
     bool aspiration = true;
     int aspirationInitial = 16;
     int aspirationWiden = 32;
+    // cp-denominated search margins (exp-0019: exposed as UCI options because
+    // the tuned eval scales changed; defaults are the dev4 values, so a
+    // default build stays bit-identical, bench 243f9a1c1ba5b36f).
+    int futilityMargin = 110;      // per remaining depth
+    int revFutilityMargin = 85;    // per remaining depth
+    int deltaMargin = 200;         // qsearch delta-pruning safety margin
     bool nullMove = true;
     bool lmr = true;
     bool reverseFutility = true;
@@ -79,6 +85,10 @@ struct SearchParams {
     bool improving = false;         // static-eval trend feeds pruning margins
     bool ttEval = false;            // reuse the static evaluation stored in the TT
     bool razoring = false;          // drop into quiescence near the alpha bound
+    // --- dev5 experiments -----------------------------------------------------
+    // Use the whole soft time slice instead of stopping at 55-70% of it.
+    // dev4 left the early stops in; dev5 measures them at a fixed time control.
+    bool fullSoftBudget = false;
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control

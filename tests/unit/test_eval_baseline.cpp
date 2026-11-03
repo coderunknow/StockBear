@@ -70,7 +70,17 @@ Dev2Score dev2_features(const Position& p, Color us) {
         b = p.pieces(us, pt);
         while (b) {
             const Square s = pop_lsb(b);
-            const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & ~ours);
+            Bitboard available = ~ours;
+#ifdef STOCKBEAR_SAFE_MOBILITY
+            // The research build intentionally changes this one feature. Use
+            // the pawn attack table directly as an independent oracle; normal
+            // builds still check the published dev2 evaluator unchanged.
+            for (Bitboard enemies = enemyPawns; enemies;) {
+                const Square pawn = pop_lsb(enemies);
+                available &= ~PawnAttacksBB[them][pawn];
+            }
+#endif
+            const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & available);
             out.mg += mobility * mgWeight[pt];
             out.eg += mobility * egWeight[pt];
             if (pt == Rook) {
@@ -142,7 +152,11 @@ TEST(unit, evaluation_reproduces_dev2_baseline) {
     // by matches and none was stronger (docs/TUNING.md), so the release keeps the
     // evaluation it inherited and records the negative result instead of shipping
     // an unvalidated set.
-    CHECK(eval_params_checksum(default_eval_params()) == 0xda1921f604ae255eULL);
+    // exp-0022 appended four zero-valued features (RookOn7th, KnightOutpost,
+    // BackwardPawn, PawnChain), which changes the raw checksum of the table;
+    // the semantic pin below (dev2_evaluate equality) plus bench
+    // 243f9a1c1ba5b36f still guarantee the shipped evaluation is unchanged.
+    CHECK(eval_params_checksum(default_eval_params()) == 0x79473f95496c545eULL);
     CHECK(active_eval_params() == default_eval_params());
     std::vector<Position> positions;
     for (const auto& c : SearchCases) positions.push_back(test::position(c.fen));

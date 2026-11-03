@@ -1,0 +1,215 @@
+{
+  "suite_sha256": "90e99b37daae8c1c5e12cd1a1b54743e8ee8aac20b52f78b38d20bbb4d7342de",
+  "checks": [
+    [
+      "suite lines",
+      2203
+    ],
+    [
+      "shard01 records",
+      550
+    ],
+    [
+      "shard02 records",
+      550
+    ],
+    [
+      "shard03 records",
+      550
+    ],
+    [
+      "shard04 records",
+      550
+    ],
+    [
+      "shard05 records",
+      550
+    ],
+    [
+      "shard06 records",
+      550
+    ],
+    [
+      "shard07 records",
+      550
+    ],
+    [
+      "shard08 records",
+      550
+    ],
+    [
+      "shard09 records",
+      550
+    ],
+    [
+      "shard10 records",
+      550
+    ],
+    [
+      "shard11 records",
+      550
+    ],
+    [
+      "shard12 records",
+      550
+    ]
+  ],
+  "problems": [],
+  "suite_openings": 2200,
+  "decisive": {
+    "label": "exp0024-decisive",
+    "games": 6600,
+    "adjudicated_games": 6585,
+    "unadjudicated_games": 15,
+    "unadjudicated_pairs": 15,
+    "wins": 2907,
+    "draws": 1986,
+    "losses": 1692,
+    "accounting_ok": true,
+    "terminations": {
+      "THREEFOLD_REPETITION": 1851,
+      "CHECKMATE": 4598,
+      "INSUFFICIENT_MATERIAL": 123,
+      "UNADJUDICATED_MAX_PLIES": 15,
+      "FIFTY_MOVES": 10,
+      "STALEMATE": 2,
+      "TIME_FORFEIT (StockBear 0.1.0-dev4, 8.2ms move)": 1
+    },
+    "forfeits": 1,
+    "clustered": {
+      "clusters": 1746,
+      "pairs": 3285,
+      "pair_score_mean": 1.1841704718417048,
+      "stderr": 0.010231287213533858,
+      "t_critical": 1.98,
+      "df": 1745,
+      "elo": 64.72592291876757,
+      "elo_ci95": [
+        57.46744901080325,
+        72.04069384861246
+      ]
+    },
+    "paired": {
+      "pairs": 3285,
+      "score": 0.5920852359208524,
+      "pair_score_stderr": 0.009377066650463346,
+      "elo": 64.72592291876757,
+      "elo_ci95": [
+        58.13860201691197,
+        71.35957674667931
+      ]
+    },
+    "sprt": {
+      "llr": 28.963070306005825,
+      "bounds": [
+        -2.9444389791664403,
+        2.9444389791664403
+      ],
+      "decision": "accept H1"
+    },
+    "problems": []
+  },
+  "null": {
+    "label": "exp0024-null",
+    "games": 1100,
+    "adjudicated_games": 1095,
+    "unadjudicated_games": 5,
+    "unadjudicated_pairs": 5,
+    "wins": 395,
+    "draws": 307,
+    "losses": 393,
+    "accounting_ok": true,
+    "terminations": {
+      "CHECKMATE": 788,
+      "THREEFOLD_REPETITION": 286,
+      "INSUFFICIENT_MATERIAL": 21,
+      "UNADJUDICATED_MAX_PLIES": 5
+    },
+    "forfeits": 0,
+    "clustered": {
+      "clusters": 545,
+      "pairs": 545,
+      "pair_score_mean": 1.003669724770642,
+      "stderr": 0.013494899766933155,
+      "t_critical": 1.98,
+      "df": 544,
+      "elo": 1.2749986978334888,
+      "elo_ci95": [
+        -8.00987043928096,
+        10.561689755272559
+      ]
+    },
+    "paired": {
+      "pairs": 545,
+      "score": 0.501834862385321,
+      "pair_score_stderr": 0.013494899766933154,
+      "elo": 1.2749986978334888,
+      "elo_ci95": [
+        -7.915880054252438,
+        10.467662658370353
+      ]
+    },
+    "sprt": {
+      "llr": -0.2785668895381097,
+      "bounds": [
+        -2.9444389791664403,
+        2.9444389791664403
+      ],
+      "decision": "continue"
+    },
+    "problems": []
+  },
+  "cross_check_pooled": {
+    "pooled_elo": 64.72592291876757,
+    "recomputed_elo": 64.72592291876757,
+    "pooled_ci": [
+      57.46744901080325,
+      72.04069384861246
+    ],
+    "recomputed_ci": [
+      57.46744901080325,
+      72.04069384861246
+    ],
+    "pooled_clusters": 1746,
+    "recomputed_clusters": 1746,
+    "match": true
+  },
+  "prereg_commits": "511a75662ea50257b2cbfde50b7d16cc85098fff 2026-11-03T10:36:07+00:00",
+  "suite_commits": "511a75662ea50257b2cbfde50b7d16cc85098fff 2026-11-03T10:36:07+00:00",
+  "prereg_doc_unmodified": true,
+  "suite_unmodified": true,
+  "prereg_trigger_preserved": true,
+  "trigger_jobs_at_prereg_head": [
+    "exp0024-null",
+    "exp0024-shard01",
+    "exp0024-shard02",
+    "exp0024-shard03",
+    "exp0024-shard04",
+    "exp0024-shard05",
+    "exp0024-shard06",
+    "exp0024-shard07",
+    "exp0024-shard08",
+    "exp0024-shard09",
+    "exp0024-shard10",
+    "exp0024-shard11",
+    "exp0024-shard12"
+  ],
+  "accounting": {
+    "total_games": 6600,
+    "adjudicated_games": 6585,
+    "unadjudicated_games": 15,
+    "wins": 2907,
+    "draws": 1986,
+    "losses": 1692,
+    "w+d+l": 6585,
+    "unadjudicated_pairs": 15,
+    "sum_wdl_plus_pair_unadj": 6600,
+    "explanation": "6600 = adjudicated games (W+D+L) + unadjudicated GAMES. The pooled report printed pair-level unadjudicated (18); one pair had BOTH games unadjudicated, so game-level unadjudicated is 19 and 6581 + 19 = 6600. No game is missing.",
+    "reconciles": true
+  },
+  "gate": {
+    "lcb95": 57.46744901080325,
+    "requirement": "LCB95 strictly > +50",
+    "met": true
+  }
+}

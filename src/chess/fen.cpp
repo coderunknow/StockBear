@@ -145,6 +145,7 @@ bool parse_fen(const std::string& fen, Position& position, std::string* error) {
     if (p.legal_en_passant_capturers()) st.key ^= Zobrist::epFile[file_of(p.ep_square())];
     st.historyContext = Zobrist::context_seed(st.key);
     p.set_check_info();
+    p.compute_feature_counts();
     // A freshly parsed FEN starts a new history, so the neural accumulator is
     // built from the board rather than inherited from anything.
     p.refresh_nnue_accumulator();

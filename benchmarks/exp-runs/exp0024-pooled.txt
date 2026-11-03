@@ -1,0 +1,7 @@
+games 6585: +2907 =1986 -1692
+naive      : score 0.592 [0.580, 0.604], Elo +64.8 [+56.3, +73.4]
+paired     : 3285 opening pairs, score 0.592, Elo +64.7 [+58.1, +71.4]
+             pair scores 2/1.5/1/0.5/0 = [571, 856, 1226, 476, 156]
+clustered  : 1746 openings, Elo +64.7 [+57.5, +72.0] (t=1.980 on 1745 df)
+sprt       : LLR 28.96 (bounds -2.94, 2.94) -> accept H1
+shards 12 games 6600 unadjudicated 15 terminations {'THREEFOLD_REPETITION': 1851, 'CHECKMATE': 4598, 'INSUFFICIENT_MATERIAL': 123, 'UNADJUDICATED_MAX_PLIES': 15, 'FIFTY_MOVES': 10, 'STALEMATE': 2, 'TIME_FORFEIT (StockBear 0.1.0-dev4, 8.2ms move)': 1}

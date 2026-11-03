@@ -1,0 +1,190 @@
+{
+ "comment": "exp-0024 release-artifact gate: 12x550=6600 g + 1100 g null on fresh exp0002 suite, portable champion build (no -march=native) vs pinned dev4. Pre-reg: docs/EXP0024_PREREG.md. Replaces the executed exp-0020/0021 screen batch.",
+ "jobs": [
+  {
+   "id": "exp0024-shard01",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline": "dev4",
+   "baseline_options": [],
+   "games": 550,
+   "seed": 2026110701,
+   "openings": "benchmarks/positions/openings_exp0002_confirmation.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "note": "exp-0024 release-artifact gate shard 1/12 (pre-registered docs/EXP0024_PREREG.md); portable champion build, no -march=native"
+  },
+  {
+   "id": "exp0024-shard02",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline": "dev4",
+   "baseline_options": [],
+   "games": 550,
+   "seed": 2026110702,
+   "openings": "benchmarks/positions/openings_exp0002_confirmation.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "note": "exp-0024 release-artifact gate shard 2/12 (pre-registered docs/EXP0024_PREREG.md); portable champion build, no -march=native"
+  },
+  {
+   "id": "exp0024-shard03",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline": "dev4",
+   "baseline_options": [],
+   "games": 550,
+   "seed": 2026110703,
+   "openings": "benchmarks/positions/openings_exp0002_confirmation.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "note": "exp-0024 release-artifact gate shard 3/12 (pre-registered docs/EXP0024_PREREG.md); portable champion build, no -march=native"
+  },
+  {
+   "id": "exp0024-shard04",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline": "dev4",
+   "baseline_options": [],
+   "games": 550,
+   "seed": 2026110704,
+   "openings": "benchmarks/positions/openings_exp0002_confirmation.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "note": "exp-0024 release-artifact gate shard 4/12 (pre-registered docs/EXP0024_PREREG.md); portable champion build, no -march=native"
+  },
+  {
+   "id": "exp0024-shard05",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline": "dev4",
+   "baseline_options": [],
+   "games": 550,
+   "seed": 2026110705,
+   "openings": "benchmarks/positions/openings_exp0002_confirmation.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "note": "exp-0024 release-artifact gate shard 5/12 (pre-registered docs/EXP0024_PREREG.md); portable champion build, no -march=native"
+  },
+  {
+   "id": "exp0024-shard06",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline": "dev4",
+   "baseline_options": [],
+   "games": 550,
+   "seed": 2026110706,
+   "openings": "benchmarks/positions/openings_exp0002_confirmation.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "note": "exp-0024 release-artifact gate shard 6/12 (pre-registered docs/EXP0024_PREREG.md); portable champion build, no -march=native"
+  },
+  {
+   "id": "exp0024-shard07",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline": "dev4",
+   "baseline_options": [],
+   "games": 550,
+   "seed": 2026110707,
+   "openings": "benchmarks/positions/openings_exp0002_confirmation.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "note": "exp-0024 release-artifact gate shard 7/12 (pre-registered docs/EXP0024_PREREG.md); portable champion build, no -march=native"
+  },
+  {
+   "id": "exp0024-shard08",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline": "dev4",
+   "baseline_options": [],
+   "games": 550,
+   "seed": 2026110708,
+   "openings": "benchmarks/positions/openings_exp0002_confirmation.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "note": "exp-0024 release-artifact gate shard 8/12 (pre-registered docs/EXP0024_PREREG.md); portable champion build, no -march=native"
+  },
+  {
+   "id": "exp0024-shard09",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline": "dev4",
+   "baseline_options": [],
+   "games": 550,
+   "seed": 2026110709,
+   "openings": "benchmarks/positions/openings_exp0002_confirmation.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "note": "exp-0024 release-artifact gate shard 9/12 (pre-registered docs/EXP0024_PREREG.md); portable champion build, no -march=native"
+  },
+  {
+   "id": "exp0024-shard10",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline": "dev4",
+   "baseline_options": [],
+   "games": 550,
+   "seed": 2026110710,
+   "openings": "benchmarks/positions/openings_exp0002_confirmation.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "note": "exp-0024 release-artifact gate shard 10/12 (pre-registered docs/EXP0024_PREREG.md); portable champion build, no -march=native"
+  },
+  {
+   "id": "exp0024-shard11",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline": "dev4",
+   "baseline_options": [],
+   "games": 550,
+   "seed": 2026110711,
+   "openings": "benchmarks/positions/openings_exp0002_confirmation.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "note": "exp-0024 release-artifact gate shard 11/12 (pre-registered docs/EXP0024_PREREG.md); portable champion build, no -march=native"
+  },
+  {
+   "id": "exp0024-shard12",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline": "dev4",
+   "baseline_options": [],
+   "games": 550,
+   "seed": 2026110712,
+   "openings": "benchmarks/positions/openings_exp0002_confirmation.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "note": "exp-0024 release-artifact gate shard 12/12 (pre-registered docs/EXP0024_PREREG.md); portable champion build, no -march=native"
+  },
+  {
+   "id": "exp0024-null",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline": "candidate",
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026110799,
+   "openings": "benchmarks/positions/openings_exp0002_confirmation.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "note": "exp-0024 null (candidate vs candidate, portable artifact build)"
+  }
+ ]
+}

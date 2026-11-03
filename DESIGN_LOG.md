@@ -259,3 +259,16 @@
   `unit` group had 37 tests; `git grep "TEST(unit," 32e7d9d -- tests` gives 39.
   `docs/TESTING.md` now states the count as a property of the tree, and the dev4
   report records the recount rather than silently editing history.
+
+## 2026-11-02 — dev5 research begins (not a release)
+
+- Reproduced the exact dev4 tag; CTest 11/11, depth-6 signature unchanged.
+- Found historical NNUE artifact hash discrepancy. Verified actual committed
+  bytes against independent integer evaluation on 75,416 positions. Preserve
+  historical reports and record the discrepancy in DEV5_EVALUATION_DIAGNOSIS.
+- Isolate pawn-safe mobility behind default-OFF CMake research flag; independent
+  feature oracle and focused unit test, no default strength claim.
+- Extend batch feature generation for existing king buckets, not an end-to-end
+  trained HalfKP implementation. Do not reinterpret old model features.
+- Add binary/opening/explicit evaluator-input hashes to future match records.
+  Fixed-node screening is exploratory; practical strength requires fixed time.

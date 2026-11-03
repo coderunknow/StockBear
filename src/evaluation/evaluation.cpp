@@ -15,6 +15,9 @@
 #include <mutex>
 
 namespace stockbear {
+#ifndef SB_INCREMENTAL_EVAL
+#define SB_INCREMENTAL_EVAL 0 // 1: evaluate() reads StateInfo feature counts
+#endif
 
 int PieceValueMg[PieceTypeNB] = {0, 100, 320, 335, 500, 975, 0};
 int PieceValueEg[PieceTypeNB] = {0, 120, 305, 330, 520, 950, 0};
@@ -77,12 +80,28 @@ int taper(int mg, int eg, int phase) {
 
 struct Score { int mg = 0; int eg = 0; };
 
+// Dev5 isolated experiment: activity on an enemy-pawn-controlled square is
+// often illusory. This mask is deliberately geometric, not a legality test.
+Bitboard mobility_area(const Position& p, Color us) {
+    Bitboard area = ~p.pieces(us);
+#ifdef STOCKBEAR_SAFE_MOBILITY
+    Bitboard attacked = 0;
+    for (Bitboard pawns = p.pieces(~us, Pawn); pawns;) {
+        const Square s = pop_lsb(pawns);
+        attacked |= attacks_bb(Pawn, ~us, s, p.pieces());
+    }
+    area &= ~attacked;
+#endif
+    return area;
+}
+
 // The live evaluation of one side. Mirrors `accumulate_breakdown` below
 // term for term; `eval_breakdown_matches_evaluate` in the unit tests is what
 // keeps the two from drifting apart.
-Score features(const Position& p, Color us, const EvalParams& par) {
+Score features(const Position& p, Color us, const EvalParams& par, bool lite = false) {
     const Color them = ~us;
-    const Bitboard ours = p.pieces(us), pawns = p.pieces(us, Pawn);
+    const Bitboard pawns = p.pieces(us, Pawn);
+    const Bitboard mobilityArea = mobility_area(p, us);
     const Bitboard enemyPawns = p.pieces(them, Pawn);
     Score out;
     const auto mgp = [&](EvalParamId id) { return par.mg[std::size_t(id)]; };
@@ -121,16 +140,28 @@ Score features(const Position& p, Color us, const EvalParams& par) {
 
     // Count geometrically available squares as a cheap activity proxy.
     for (PieceType pt : {Knight, Bishop, Rook, Queen}) {
+        if (lite && pt != Rook) continue; // lite: rook loop kept only for open-file terms
         b = p.pieces(us, pt);
         while (b) {
             Square s = pop_lsb(b);
-            const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & ~ours);
+            if (!lite) {
+            const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & mobilityArea);
             EvalParamId id = MobilityKnight;
             if (pt == Bishop) id = MobilityBishop;
             else if (pt == Rook) id = MobilityRook;
             else if (pt == Queen) id = MobilityQueen;
             out.mg += mobility * mgp(id);
             out.eg += mobility * egp(id);
+            }
+            if (pt == Knight) {
+                // exp-0022: knight outpost - advanced (relative rank 4-6),
+                // pawn-supported and not attackable by an enemy pawn.
+                const int rel = us == White ? rank_of(s) : 7 - rank_of(s);
+                if (rel >= 3 && rel <= 5 && (pawns & PawnAttacksBB[them][s]) &&
+                    !(enemyPawns & PawnAttacksBB[us][s])) {
+                    out.mg += mgp(KnightOutpost); out.eg += egp(KnightOutpost);
+                }
+            }
             if (pt == Rook) {
                 const Bitboard file = FileBB[file_of(s)];
                 if (!(pawns & file)) {
@@ -139,6 +170,10 @@ Score features(const Position& p, Color us, const EvalParams& par) {
                     } else {
                         out.mg += mgp(RookSemiOpenFile); out.eg += egp(RookSemiOpenFile);
                     }
+                }
+                // exp-0022: rook on the 7th rank.
+                if (rank_of(s) == (us == White ? 6 : 1)) {
+                    out.mg += mgp(RookOn7th); out.eg += egp(RookOn7th);
                 }
             }
         }
@@ -152,18 +187,20 @@ Score features(const Position& p, Color us, const EvalParams& par) {
         const Bitboard shieldFiles = FileBB[file_of(k)] | AdjacentFilesBB[file_of(k)];
         out.mg += mgp(PawnShield) * popcount(pawns & shieldFiles & RankBB[frontRank]);
     }
-    const Bitboard zone = KingZoneBB[us][k];
-    for (PieceType pt : {Pawn, Knight, Bishop, Rook, Queen}) {
-        EvalParamId id = KingDangerPawn;
-        if (pt == Knight) id = KingDangerKnight;
-        else if (pt == Bishop) id = KingDangerBishop;
-        else if (pt == Rook) id = KingDangerRook;
-        else if (pt == Queen) id = KingDangerQueen;
-        b = p.pieces(them, pt);
-        while (b) {
-            Square s = pop_lsb(b);
-            const int hits = popcount(attacks_bb(pt, them, s, p.pieces()) & zone);
-            out.mg -= hits * mgp(id);
+    if (!lite) {
+        const Bitboard zone = KingZoneBB[us][k];
+        for (PieceType pt : {Pawn, Knight, Bishop, Rook, Queen}) {
+            EvalParamId id = KingDangerPawn;
+            if (pt == Knight) id = KingDangerKnight;
+            else if (pt == Bishop) id = KingDangerBishop;
+            else if (pt == Rook) id = KingDangerRook;
+            else if (pt == Queen) id = KingDangerQueen;
+            b = p.pieces(them, pt);
+            while (b) {
+                Square s = pop_lsb(b);
+                const int hits = popcount(attacks_bb(pt, them, s, p.pieces()) & zone);
+                out.mg -= hits * mgp(id);
+            }
         }
     }
     return out;
@@ -219,7 +256,8 @@ void add_pst_counts(EvalBreakdown& bd, PieceType pt, int idx, int sign) {
 void accumulate_breakdown(const Position& p, Color us, EvalBreakdown& bd) {
     const Color them = ~us;
     const int sign = us == White ? 1 : -1;
-    const Bitboard ours = p.pieces(us), pawns = p.pieces(us, Pawn);
+    const Bitboard pawns = p.pieces(us, Pawn);
+    const Bitboard mobilityArea = mobility_area(p, us);
     const Bitboard enemyPawns = p.pieces(them, Pawn);
     const auto mg = [&](EvalParamId id) -> int& { return bd.mg[std::size_t(id)]; };
     const auto eg = [&](EvalParamId id) -> int& { return bd.eg[std::size_t(id)]; };
@@ -255,15 +293,25 @@ void accumulate_breakdown(const Position& p, Color us, EvalBreakdown& bd) {
         else if (pt == Queen) id = MobilityQueen;
         for (Bitboard bb = p.pieces(us, pt); bb;) {
             const Square s = pop_lsb(bb);
-            const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & ~ours);
+            const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & mobilityArea);
             mg(id) += sign * mobility;
             eg(id) += sign * mobility;
+            if (pt == Knight) {
+                // exp-0022 knight outpost (mirror of features()).
+                const int rel = us == White ? rank_of(s) : 7 - rank_of(s);
+                if (rel >= 3 && rel <= 5 && (pawns & PawnAttacksBB[them][s]) &&
+                    !(enemyPawns & PawnAttacksBB[us][s])) {
+                    mg(KnightOutpost) += sign; eg(KnightOutpost) += sign;
+                }
+            }
             if (pt == Rook) {
                 const Bitboard file = FileBB[file_of(s)];
                 if (!(pawns & file)) {
                     if (!(enemyPawns & file)) { mg(RookOpenFile) += sign; eg(RookOpenFile) += sign; }
                     else { mg(RookSemiOpenFile) += sign; eg(RookSemiOpenFile) += sign; }
                 }
+                // exp-0022 rook on the 7th (mirror of features()).
+                if (rank_of(s) == (us == White ? 6 : 1)) { mg(RookOn7th) += sign; eg(RookOn7th) += sign; }
             }
         }
     }
@@ -291,6 +339,111 @@ void accumulate_breakdown(const Position& p, Color us, EvalBreakdown& bd) {
     }
 }
 } // namespace
+
+// --- Raw feature counts (incremental evaluator) -------------------------------
+// These mirror features() term for term but produce raw counts instead of
+// weighted sums, so the active EvalParams can be applied (or reloaded) at
+// evaluate() time. test_eval_baseline keeps evaluate() == dev2 oracle, which
+// transitively verifies these counts against features().
+EvalParamId mobility_param_id(PieceType pt) {
+    switch (pt) {
+    case Knight: return MobilityKnight;
+    case Bishop: return MobilityBishop;
+    case Rook:   return MobilityRook;
+    default:     return MobilityQueen;
+    }
+}
+
+EvalParamId king_danger_param_id(PieceType pt) {
+    switch (pt) {
+    case Pawn:   return KingDangerPawn;
+    case Knight: return KingDangerKnight;
+    case Bishop: return KingDangerBishop;
+    case Rook:   return KingDangerRook;
+    default:     return KingDangerQueen;
+    }
+}
+
+// Terms that depend only on pawn/rook/king placement and bishop count — cheap
+// enough to recompute from scratch on every make_move.
+void cheap_feature_counts(const Position& p, Color us, std::int16_t* out) {
+    const Color them = ~us;
+    const Bitboard pawns = p.pieces(us, Pawn);
+    const Bitboard enemyPawns = p.pieces(them, Pawn);
+    // Only the genuinely cheap terms; mobility (20-23) and king danger (27-29)
+    // live outside this range and are maintained incrementally.
+    for (int id : {int(BishopPair), int(IsolatedPawn), int(DoubledPawn), int(PassedPawnAdvance),
+                   int(RookOpenFile), int(RookSemiOpenFile), int(PawnShield)})
+        out[id] = 0;
+    if (p.count(us, Bishop) >= 2) out[BishopPair] = 1;
+    Bitboard b = pawns;
+    while (b) {
+        const Square s = pop_lsb(b);
+        const int f = file_of(s);
+        if (!(pawns & AdjacentFilesBB[f])) out[IsolatedPawn] += 1;
+        if (!(enemyPawns & PassedPawnMaskBB[us][s])) {
+            if (!(pawns & FileBB[f] & ForwardRanksBB[us][rank_of(s)])) {
+                const int advance = us == White ? rank_of(s) : 7 - rank_of(s);
+                out[PassedPawnAdvance] += std::int16_t(advance * advance);
+            }
+        }
+    }
+    for (int f = 0; f < 8; ++f) {
+        const int extra = std::max(0, popcount(pawns & FileBB[f]) - 1);
+        out[DoubledPawn] += std::int16_t(extra);
+    }
+    b = p.pieces(us, Rook);
+    while (b) {
+        const Square s = pop_lsb(b);
+        const Bitboard file = FileBB[file_of(s)];
+        if (!(pawns & file)) {
+            if (!(enemyPawns & file)) out[RookOpenFile] += 1;
+            else out[RookSemiOpenFile] += 1;
+        }
+    }
+    const Square k = p.king_square(us);
+    const int frontRank = rank_of(k) + (us == White ? 1 : -1);
+    if (frontRank >= 0 && frontRank < 8) {
+        const Bitboard shieldFiles = FileBB[file_of(k)] | AdjacentFilesBB[file_of(k)];
+        out[PawnShield] += std::int16_t(popcount(pawns & shieldFiles & RankBB[frontRank]));
+    }
+}
+
+int mobility_count_at(const Position& p, Color us, PieceType pt, Square sq,
+                      Bitboard occ, Bitboard own) {
+    (void)p;
+    return popcount(attacks_bb(pt, us, sq, occ) & ~own);
+}
+
+int king_danger_count_at(const Position& p, Color them, PieceType pt, Square sq,
+                         Bitboard occ, Bitboard zone) {
+    (void)p;
+    return popcount(attacks_bb(pt, them, sq, occ) & zone);
+}
+
+// Full raw counts for one side (cheap terms + mobility + king danger).
+void all_feature_counts(const Position& p, Color us, std::int16_t* out) {
+    for (int id = 0; id < int(EvalParamNB); ++id) out[id] = 0;
+    cheap_feature_counts(p, us, out);
+    const Bitboard occ = p.pieces();
+    const Bitboard own = p.pieces(us);
+    const Color them = ~us;
+    for (PieceType pt : {Knight, Bishop, Rook, Queen}) {
+        Bitboard b = p.pieces(us, pt);
+        while (b) {
+            const Square s = pop_lsb(b);
+            out[mobility_param_id(pt)] += std::int16_t(mobility_count_at(p, us, pt, s, occ, own));
+        }
+    }
+    const Bitboard zone = KingZoneBB[us][p.king_square(us)];
+    for (PieceType pt : {Pawn, Knight, Bishop, Rook, Queen}) {
+        Bitboard b = p.pieces(them, pt);
+        while (b) {
+            const Square s = pop_lsb(b);
+            out[king_danger_param_id(pt)] -= std::int16_t(king_danger_count_at(p, them, pt, s, occ, zone));
+        }
+    }
+}
 
 void init_evaluation() {
     // Idempotent: parse_fen calls this on every FEN, and an experiment that
@@ -333,7 +486,34 @@ int evaluate(const Position& p) {
         return nnue::evaluate_from_scratch(p);
     }
     const EvalParams& par = active_eval_params();
+#if defined(STOCKBEAR_SAFE_MOBILITY) || !SB_INCREMENTAL_EVAL
+    // Default (and safe-mobility) path: compute features() directly.
     const Score w = features(p, White, par), b = features(p, Black, par);
+    const int mg = p.acc_mg(White) - p.acc_mg(Black) + w.mg - b.mg;
+    const int eg = p.acc_eg(White) - p.acc_eg(Black) + w.eg - b.eg;
+#else
+    // Incremental path: raw per-side counts live in the Position's StateInfo
+    // (maintained by make_move) and the active parameters are applied here.
+    const std::int16_t* fw = p.feat_counts(White);
+    const std::int16_t* fb = p.feat_counts(Black);
+    int wmg = 0, weg = 0, bmg = 0, beg = 0;
+    for (int id = int(BishopPair); id < int(EvalParamNB); ++id) {
+        wmg += fw[id] * par.mg[std::size_t(id)];
+        weg += fw[id] * par.eg[std::size_t(id)];
+        bmg += fb[id] * par.mg[std::size_t(id)];
+        beg += fb[id] * par.eg[std::size_t(id)];
+    }
+    const int mg = p.acc_mg(White) - p.acc_mg(Black) + (wmg - bmg);
+    const int eg = p.acc_eg(White) - p.acc_eg(Black) + (weg - beg);
+#endif
+    const int score = taper(mg, eg, phase_of(p));
+    return p.side_to_move() == White ? score : -score;
+}
+
+int evaluate_lite(const Position& p) {
+    if (nnue::active_network() != nullptr) return evaluate(p);
+    const EvalParams& par = active_eval_params();
+    const Score w = features(p, White, par, true), b = features(p, Black, par, true);
     const int mg = p.acc_mg(White) - p.acc_mg(Black) + w.mg - b.mg;
     const int eg = p.acc_eg(White) - p.acc_eg(Black) + w.eg - b.eg;
     const int score = taper(mg, eg, phase_of(p));

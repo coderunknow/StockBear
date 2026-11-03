@@ -88,6 +88,13 @@ target_compile_definitions(stockbear_core PUBLIC
     STOCKBEAR_VERSION_PATCH=${PROJECT_VERSION_PATCH})
 target_link_libraries(stockbear_core PUBLIC Threads::Threads)
 
+# Research-only ablation. Keep the dev4 evaluator as the default until an
+# untouched fixed-time confirmation supports promoting this candidate.
+option(STOCKBEAR_SAFE_MOBILITY "Experimental pawn-safe mobility evaluation" OFF)
+if(STOCKBEAR_SAFE_MOBILITY)
+    target_compile_definitions(stockbear_core PUBLIC STOCKBEAR_SAFE_MOBILITY=1)
+endif()
+
 # --- Optional AVX2 neural-network kernel -------------------------------------
 # The engine must run on machines without AVX2, so the vectorised forward pass
 # lives in its own translation unit that is compiled with AVX2 enabled and is

@@ -1,4 +1,8 @@
 #include "search/transposition_table.hpp"
+#ifdef __linux__
+#include <cstdint>
+#include <sys/mman.h>
+#endif
 #include "utilities/types.hpp"
 #include <algorithm>
 #include <stdexcept>
@@ -24,6 +28,21 @@ void TranspositionTable::resize(std::size_t megabytes) {
     std::vector<Bucket> replacement(std::max<std::size_t>(1, wanted));
     buckets_.swap(replacement);
     generation_ = 1;
+#if defined(__linux__) && defined(MADV_HUGEPAGE)
+    // Ask for transparent huge pages on the aligned 2 MiB subrange of the
+    // table: random TT probes otherwise thrash the TLB with 4 KiB pages.
+    // Purely an allocation hint; the table contents and behaviour are
+    // unchanged (bench signature stays bit-identical).
+    if (buckets_.size() * sizeof(Bucket) >= 2 * 1024 * 1024) {
+        const std::uintptr_t base = reinterpret_cast<std::uintptr_t>(buckets_.data());
+        const std::size_t bytes = buckets_.size() * sizeof(Bucket);
+        const std::uintptr_t aligned =
+            (base + 2 * 1024 * 1024 - 1) & ~static_cast<std::uintptr_t>(2 * 1024 * 1024 - 1);
+        const std::size_t offset = static_cast<std::size_t>(aligned - base);
+        if (offset < bytes)
+            (void)madvise(reinterpret_cast<void*>(aligned), bytes - offset, MADV_HUGEPAGE);
+    }
+#endif
 }
 
 void TranspositionTable::clear() {

@@ -255,6 +255,25 @@ void UciEngine::handle_setoption(const std::string& arguments) {
         catch (const std::exception& e) { emit(std::string("info string Hash allocation failed: ") + e.what()); }
         return;
     }
+    // Integer tuning options (exp-0019). Like the switches below they clear
+    // the TT afterwards: stored scores were produced under the previous margin.
+    int* intTarget = nullptr;
+    if (key == "aspirationwindow") intTarget = &params_.aspirationInitial;
+    else if (key == "futilitymargin") intTarget = &params_.futilityMargin;
+    else if (key == "revfutilitymargin") intTarget = &params_.revFutilityMargin;
+    else if (key == "deltamargin") intTarget = &params_.deltaMargin;
+    if (intTarget != nullptr) {
+        std::uint64_t parsed = 0;
+        if ((in >> extra) || !number(value, parsed, 2000)) {
+            emit("info string setoption: " + name + " must be an integer in 0..2000"); return;
+        }
+        if (key == "aspirationwindow" && parsed < 1) {
+            emit("info string setoption: AspirationWindow must be >= 1"); return;
+        }
+        *intTarget = static_cast<int>(parsed);
+        table_.clear();
+        return;
+    }
     // Boolean ablation switches for the search features. They default to the
     // values the engine ships with, so a GUI that never sends them is
     // unaffected; matches can compare "all on" against a single feature off.
@@ -276,6 +295,7 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     else if (key == "iir") flag = &params_.iir;
     else if (key == "improving") flag = &params_.improving;
     else if (key == "tteval") flag = &params_.ttEval;
+    else if (key == "fullsoftbudget") flag = &params_.fullSoftBudget;
     if (flag == nullptr) {
         emit("info string setoption: unknown option " + name); return;
     }
@@ -438,6 +458,13 @@ void UciEngine::loop() {
             emit(std::string("option name IIR type check default ") + check(params_.iir));
             emit(std::string("option name Improving type check default ") + check(params_.improving));
             emit(std::string("option name TTEval type check default ") + check(params_.ttEval));
+            emit(std::string("option name FullSoftBudget type check default ") + check(params_.fullSoftBudget));
+            // exp-0019: cp-denominated margins and the aspiration half-window as
+            // integer options so they can be screened without rebuilding.
+            emit("option name AspirationWindow type spin default 16 min 1 max 1200");
+            emit("option name FutilityMargin type spin default 110 min 0 max 2000");
+            emit("option name RevFutilityMargin type spin default 85 min 0 max 2000");
+            emit("option name DeltaMargin type spin default 200 min 0 max 2000");
             emit("option name MultiPV type spin default 1 min 1 max 8");
             emit("option name EvalParams type string default <empty>");
             emit(std::string("option name NNUE type check default ") + check(useNnue_));

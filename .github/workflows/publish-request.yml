@@ -9,7 +9,7 @@ name: Publish requested prerelease
 # is a successful push-to-main run for that exact commit.
 on:
   push:
-    branches: [arena/75415e79-stockbear]
+    branches: [arena/75415e79-stockbear, arena/daa69a3b-stockbear]
     paths: ['.github/publish-request']
 
 permissions:
@@ -22,5 +22,7 @@ jobs:
       contents: write # Create the prerelease and upload its archives.
     uses: ./.github/workflows/release.yml
     with:
-      tag: v0.1.0-dev4
-      validation_run_id: '41392388489'
+      tag: v0.1.0-dev5
+      # Filled in by the post-merge marker push with the green push-to-main
+      # CI run id for the tagged commit; release.yml re-verifies it exactly.
+      validation_run_id: '0'

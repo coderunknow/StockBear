@@ -3,6 +3,7 @@
 Requires optional chess==1.11.2 and a built StockBear executable.
 """
 import json
+import hashlib
 from pathlib import Path
 import subprocess
 import sys
@@ -25,6 +26,15 @@ with tempfile.TemporaryDirectory() as tmp:
     # The budget must be recorded, otherwise a reader cannot tell whether the
     # match was played to a clock or to a node limit.
     assert records[0]["configuration"]["nodes_per_move"] == 2000, records[0]
+    config = records[0]["configuration"]
+    expected_binary = hashlib.sha256(Path(engine).read_bytes()).hexdigest()
+    assert config["engine_a_sha256"] == expected_binary
+    assert config["engine_b_sha256"] == expected_binary
+    assert config["opening_sha256"] == hashlib.sha256(
+        Path(config["opening_file"]).read_bytes()).hexdigest()
+    assert config["engine_a_input_files"] == {}
+    assert config["engine_b_input_files"] == {}
+
     assert records[-1]["summary"]["config"]["nodes_per_move"] == 2000, records[-1]
     games = [item for item in records if "game" in item]
     assert len(games) == 2 and games[0]["opening"] == games[1]["opening"], games

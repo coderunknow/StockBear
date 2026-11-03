@@ -1,0 +1,74 @@
+{
+  "summary": {
+    "games": 1095,
+    "wins": 395,
+    "draws": 307,
+    "losses": 393,
+    "naive": {
+      "games": 1095,
+      "score": 0.5009132420091325,
+      "ci95": [
+        0.4713469573790317,
+        0.5304731414022308
+      ],
+      "method": "Wilson on fractional game scores (ignores pair dependence)"
+    },
+    "paired": {
+      "pairs": 545,
+      "score": 0.501834862385321,
+      "pair_score_mean": 1.003669724770642,
+      "pair_score_stderr": 0.013494899766933154,
+      "pentanomial_counts_2_1.5_1_0.5_0": [
+        9,
+        72,
+        389,
+        64,
+        11
+      ],
+      "elo_difference": 1.2749986978334888,
+      "method": "pentanomial over opening pairs; normal interval on the pair mean",
+      "elo_ci95": [
+        -7.915880054252438,
+        10.467662658370353
+      ]
+    },
+    "opening_clustered": {
+      "clusters": 545,
+      "pair_score_mean": 1.003669724770642,
+      "pair_score_stderr": 0.013494899766933155,
+      "critical_value": 1.98,
+      "elo_difference": 1.2749986978334888,
+      "method": "opening-clustered (CR1) variance of the pair mean with a Student-t interval on G-1 degrees of freedom",
+      "elo_ci95": [
+        -8.00987043928096,
+        10.561689755272559
+      ]
+    },
+    "sprt": {
+      "llr": -0.2785668895381097,
+      "lower_bound": -2.9444389791664403,
+      "upper_bound": 2.9444389791664403,
+      "h0_elo": 0.0,
+      "h1_elo": 5.0,
+      "sigma_pair_scores": 0.31504160716827073,
+      "decision": "continue",
+      "method": "normal-approximation SPRT on paired scores (approximation)"
+    },
+    "shards": [
+      {
+        "file": "benchmarks/exp-runs/exp0024-null/match.jsonl",
+        "games": 1100,
+        "pairs": 545,
+        "unadjudicated": 5
+      }
+    ],
+    "games_total": 1100,
+    "unadjudicated": 5,
+    "terminations": {
+      "CHECKMATE": 788,
+      "THREEFOLD_REPETITION": 286,
+      "INSUFFICIENT_MATERIAL": 21,
+      "UNADJUDICATED_MAX_PLIES": 5
+    }
+  }
+}

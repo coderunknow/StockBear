@@ -135,8 +135,28 @@ def batch_indices(boards: np.ndarray, sides: np.ndarray, king_buckets: int = 1):
 
     base0 = kinds * 64 + squares          # White's perspective
     base1 = kinds * 64 + (squares ^ 56)   # Black's perspective
+    if king_buckets not in (1, 4, 16, 64):
+        raise ValueError("king_buckets must be 1, 4, 16 or 64")
     if king_buckets > 1:
-        raise NotImplementedError("king-bucketed batches are not used by the shipped net")
+        # Derive one bucket per board/perspective, then broadcast only to the
+        # occupied rows. Keep this identical to board_features, not dependent
+        # on the order in which pieces happen to occur in the batch.
+        buckets = []
+        for king, flip in ((6, 0), (12, 56)):
+            mask_king = boards == king
+            if not np.all(mask_king.sum(axis=1) == 1):
+                raise ValueError("position must contain exactly one king per side")
+            relative = np.argmax(mask_king, axis=1) ^ flip
+            rank, file = relative // 8, relative % 8
+            if king_buckets == 4:
+                bucket = rank // 2
+            elif king_buckets == 16:
+                bucket = (rank // 2) * 4 + file // 2
+            else:
+                bucket = relative
+            buckets.append(bucket)
+        base0 += 768 * buckets[0][positions]
+        base1 += 768 * buckets[1][positions]
     white_to_move = sides[positions] == 0
     first = np.where(white_to_move, base0, base1)
     second = np.where(white_to_move, base1, base0)
