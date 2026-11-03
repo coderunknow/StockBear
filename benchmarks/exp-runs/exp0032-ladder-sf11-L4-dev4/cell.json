@@ -1,0 +1,37 @@
+{
+  "cell": 5,
+  "subject": "dev4",
+  "anchor": "sf11-L4",
+  "subject_binary": "/home/user/StockBear/benchmarks/binaries/stockbear-dev4-1c5b61a7",
+  "subject_sha256": "1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae",
+  "subject_options": [],
+  "anchor_binary": "/home/user/StockBear/benchmarks/binaries/external/stockfish-sf11",
+  "anchor_sha256": "59503c6023b94bdcb97061601315cc1201d664dbef4bb89a1e8d13c6535b832a",
+  "anchor_options": [
+    "Skill Level=4"
+  ],
+  "opening_slice": "benchmarks/positions/openings_exp0032_s05.txt",
+  "opening_slice_sha256": "b5d239c95b458d7701f4de4be64497a4383b41615e311f18cffef92d0a3f4d02",
+  "seed": 2026110904,
+  "games": 80,
+  "nodes": 6000,
+  "nodes_jitter": 0.15,
+  "command": "/home/user/StockBear/.venv/bin/python /home/user/StockBear/scripts/tournament.py --engine-a /home/user/StockBear/benchmarks/binaries/stockbear-dev4-1c5b61a7 --engine-b /home/user/StockBear/benchmarks/binaries/external/stockfish-sf11 --games 80 --base-ms 40 --inc-ms 4 --hash 16 --threads 1 --max-plies 240 --nodes 6000 --nodes-jitter 0.15 --openings /home/user/StockBear/benchmarks/positions/openings_exp0032_s05.txt --seed 2026110904 --b-option Skill Level=4 --pgn /home/user/StockBear/benchmarks/exp-runs/exp0032-ladder-sf11-L4-dev4/match.pgn --jsonl /home/user/StockBear/benchmarks/exp-runs/exp0032-ladder-sf11-L4-dev4/match.jsonl --csv /home/user/StockBear/benchmarks/exp-runs/exp0032-ladder-sf11-L4-dev4/match.csv",
+  "games_completed": 80,
+  "wins": 58,
+  "draws": 10,
+  "losses": 12,
+  "score": 0.7875,
+  "elo": 227.55665123012312,
+  "ci95": [
+    145.35020582669068,
+    341.6078672872124
+  ],
+  "clusters": 40,
+  "terminations": {
+    "CHECKMATE": 70,
+    "THREEFOLD_REPETITION": 10
+  },
+  "unadjudicated": 0,
+  "time_forfeit": 0
+}

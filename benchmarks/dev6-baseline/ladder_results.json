@@ -1,0 +1,1164 @@
+{
+  "experiment": "exp-0032",
+  "prereg": "docs/DEV6_PREREG_EXP0031.md",
+  "model": "Bradley-Terry-Davidson (draw-aware), MLE, sum(r)=0",
+  "scale": "pool-specific INTERNAL rating; Elo units = (400/ln10)*r; NOT CCRL/FIDE comparable",
+  "engines": [
+    "dev4",
+    "dev5_official",
+    "dev5_rebuilt",
+    "dev6_champion",
+    "dev6_failed",
+    "sf10",
+    "sf11-L12",
+    "sf11-L16",
+    "sf11-L20",
+    "sf11-L4",
+    "sf11-L8",
+    "sf8",
+    "sf9"
+  ],
+  "games": 3186,
+  "clusters": 1600,
+  "draw_parameter_nu": 0.18970909396161187,
+  "observed_draw_rate": 0.10671688637790333,
+  "nll": 2101.931697619637,
+  "fit_success": true,
+  "bootstrap_replicates": 1000,
+  "residual_rmse": 0.03279324625589849,
+  "ratings": [
+    {
+      "engine": "dev4",
+      "internal_elo": -197.87281193626586,
+      "ci95": [
+        -238.37182247123764,
+        -162.3046388172817
+      ],
+      "games": 638
+    },
+    {
+      "engine": "dev5_official",
+      "internal_elo": -204.98998744625538,
+      "ci95": [
+        -246.75097791937017,
+        -165.6557240319269
+      ],
+      "games": 640
+    },
+    {
+      "engine": "dev5_rebuilt",
+      "internal_elo": -173.90400232689626,
+      "ci95": [
+        -214.7317392773087,
+        -136.32572499094192
+      ],
+      "games": 637
+    },
+    {
+      "engine": "dev6_champion",
+      "internal_elo": -169.0058231556016,
+      "ci95": [
+        -210.63924711193602,
+        -134.07117137467472
+      ],
+      "games": 635
+    },
+    {
+      "engine": "dev6_failed",
+      "internal_elo": -184.70077828939318,
+      "ci95": [
+        -227.49124912351527,
+        -149.74776211146067
+      ],
+      "games": 636
+    },
+    {
+      "engine": "sf10",
+      "internal_elo": 330.82888454718596,
+      "ci95": [
+        270.0919200944017,
+        412.9862715264162
+      ],
+      "games": 399
+    },
+    {
+      "engine": "sf11-L12",
+      "internal_elo": -9.768922315214226,
+      "ci95": [
+        -52.06680917684085,
+        31.13935507111282
+      ],
+      "games": 397
+    },
+    {
+      "engine": "sf11-L16",
+      "internal_elo": -4.273374084494764,
+      "ci95": [
+        -41.73680290378102,
+        33.54754659417297
+      ],
+      "games": 396
+    },
+    {
+      "engine": "sf11-L20",
+      "internal_elo": 312.3481010279268,
+      "ci95": [
+        245.90838179326437,
+        387.3679888720904
+      ],
+      "games": 399
+    },
+    {
+      "engine": "sf11-L4",
+      "internal_elo": -427.38504631186345,
+      "ci95": [
+        -479.7063796165601,
+        -388.051366374633
+      ],
+      "games": 399
+    },
+    {
+      "engine": "sf11-L8",
+      "internal_elo": -58.998995459311665,
+      "ci95": [
+        -94.54579397257285,
+        -24.90479821766336
+      ],
+      "games": 397
+    },
+    {
+      "engine": "sf8",
+      "internal_elo": 485.789080510576,
+      "ci95": [
+        407.6148132449019,
+        601.9527291548338
+      ],
+      "games": 400
+    },
+    {
+      "engine": "sf9",
+      "internal_elo": 301.93367523960757,
+      "ci95": [
+        243.56567030881084,
+        371.7945465535304
+      ],
+      "games": 399
+    }
+  ],
+  "games_per_pairing": [
+    {
+      "subject": "dev5_official",
+      "anchor": "sf11-L4",
+      "games": 80,
+      "score": 0.71875,
+      "ci95": [
+        93.60859312193553,
+        247.36236120904312
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf11-L4",
+      "games": 80,
+      "score": 0.7125,
+      "ci95": [
+        77.10734173598325,
+        258.54106977449493
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf11-L4",
+      "games": 80,
+      "score": 0.7375,
+      "ci95": [
+        111.06916047262007,
+        263.8759226125428
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf11-L4",
+      "games": 79,
+      "score": 0.8481012658227848,
+      "ci95": [
+        208.03794040131413,
+        434.48032645764954
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf11-L4",
+      "games": 80,
+      "score": 0.7875,
+      "ci95": [
+        145.35020582669068,
+        341.6078672872124
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf11-L8",
+      "games": 80,
+      "score": 0.2625,
+      "ci95": [
+        -272.9491107980623,
+        -105.28403809698321
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf11-L8",
+      "games": 79,
+      "score": 0.3860759493670886,
+      "ci95": [
+        -138.52711966589274,
+        -28.795604173516388
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf11-L8",
+      "games": 80,
+      "score": 0.38125,
+      "ci95": [
+        -160.85358273350172,
+        -14.773221010768767
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf11-L8",
+      "games": 78,
+      "score": 0.34615384615384615,
+      "ci95": [
+        -194.04484305389263,
+        -34.29692486385736
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf11-L8",
+      "games": 80,
+      "score": 0.38125,
+      "ci95": [
+        -153.39464770425454,
+        -20.909074779870217
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf11-L12",
+      "games": 80,
+      "score": 0.3,
+      "ci95": [
+        -234.85791107795117,
+        -74.46439802146072
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf11-L12",
+      "games": 79,
+      "score": 0.3227848101265823,
+      "ci95": [
+        -206.35386920057775,
+        -55.924758966874364
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf11-L12",
+      "games": 79,
+      "score": 0.2974683544303797,
+      "ci95": [
+        -243.63268950641972,
+        -66.72496615127727
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf11-L12",
+      "games": 80,
+      "score": 0.2625,
+      "ci95": [
+        -266.19089604859647,
+        -109.56888760675551
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf11-L12",
+      "games": 79,
+      "score": 0.31645569620253167,
+      "ci95": [
+        -215.88610656467893,
+        -58.16563367103951
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf11-L16",
+      "games": 80,
+      "score": 0.26875,
+      "ci95": [
+        -255.32200923697778,
+        -107.14147223361499
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf11-L16",
+      "games": 80,
+      "score": 0.3375,
+      "ci95": [
+        -202.72236237529015,
+        -43.59019506231967
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf11-L16",
+      "games": 77,
+      "score": 0.37662337662337664,
+      "ci95": [
+        -163.89127688679247,
+        -25.732139728804803
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf11-L16",
+      "games": 79,
+      "score": 0.24050632911392406,
+      "ci95": [
+        -303.9617637132355,
+        -125.95594573061403
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf11-L16",
+      "games": 80,
+      "score": 0.25,
+      "ci95": [
+        -271.5807494946312,
+        -125.51897385722275
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf11-L20",
+      "games": 80,
+      "score": 0.10625,
+      "ci95": [
+        -546.5658594940817,
+        -273.902337232464
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf11-L20",
+      "games": 80,
+      "score": 0.09375,
+      "ci95": [
+        -578.5314475630046,
+        -297.33899809709925
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf11-L20",
+      "games": 79,
+      "score": 0.06329113924050633,
+      "ci95": [
+        -716.7148009937426,
+        -359.13655410269286
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf11-L20",
+      "games": 80,
+      "score": 0.125,
+      "ci95": [
+        -494.49068497588604,
+        -246.1514170994378
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf11-L20",
+      "games": 80,
+      "score": 0.05625,
+      "ci95": [
+        -741.2850144249657,
+        -384.2743926888673
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf8",
+      "games": 80,
+      "score": 0.0625,
+      "ci95": [
+        -684.4723576674919,
+        -370.54942983312145
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf8",
+      "games": 80,
+      "score": 0.05625,
+      "ci95": [
+        -868.5059763786116,
+        -370.77230496102425
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf8",
+      "games": 80,
+      "score": 0.04375,
+      "ci95": [
+        -752.462356880717,
+        -437.62990302042317
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf8",
+      "games": 80,
+      "score": 0.01875,
+      "ci95": [
+        null,
+        -523.8395060397654
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf8",
+      "games": 80,
+      "score": 0.04375,
+      "ci95": [
+        null,
+        -406.87354842742593
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf9",
+      "games": 80,
+      "score": 0.125,
+      "ci95": [
+        -478.90221046604574,
+        -251.55947113792035
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf9",
+      "games": 79,
+      "score": 0.08227848101265822,
+      "ci95": [
+        -645.0904413804028,
+        -330.17885101063536
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf9",
+      "games": 80,
+      "score": 0.0875,
+      "ci95": [
+        -594.9129453201026,
+        -310.4005285440921
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf9",
+      "games": 80,
+      "score": 0.09375,
+      "ci95": [
+        -578.5314475630046,
+        -297.33899809709925
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf9",
+      "games": 80,
+      "score": 0.075,
+      "ci95": [
+        -626.6653117346876,
+        -340.2843200286545
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf10",
+      "games": 80,
+      "score": 0.075,
+      "ci95": [
+        -650.1733389594824,
+        -335.10657910298283
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf10",
+      "games": 80,
+      "score": 0.0875,
+      "ci95": [
+        -594.9129453201027,
+        -310.4005285440921
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf10",
+      "games": 80,
+      "score": 0.11875,
+      "ci95": [
+        -507.8061002644759,
+        -255.8945624701527
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf10",
+      "games": 80,
+      "score": 0.0875,
+      "ci95": [
+        -611.9227900353573,
+        -306.39444350251534
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf10",
+      "games": 79,
+      "score": 0.04430379746835443,
+      "ci95": [
+        null,
+        -402.04377399613156
+      ]
+    }
+  ],
+  "residuals": [
+    {
+      "subject": "dev5_official",
+      "anchor": "sf11-L4",
+      "games": 80,
+      "observed": 0.71875,
+      "predicted": 0.7443,
+      "residual": -0.0255,
+      "elo_ci95": [
+        93.60859312193553,
+        247.36236120904312
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf11-L4",
+      "games": 80,
+      "observed": 0.7125,
+      "predicted": 0.7712,
+      "residual": -0.0587,
+      "elo_ci95": [
+        77.10734173598325,
+        258.54106977449493
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf11-L4",
+      "games": 80,
+      "observed": 0.7375,
+      "predicted": 0.7752,
+      "residual": -0.0377,
+      "elo_ci95": [
+        111.06916047262007,
+        263.8759226125428
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf11-L4",
+      "games": 79,
+      "observed": 0.8481012658227848,
+      "predicted": 0.7621,
+      "residual": 0.086,
+      "elo_ci95": [
+        208.03794040131413,
+        434.48032645764954
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf11-L4",
+      "games": 80,
+      "observed": 0.7875,
+      "predicted": 0.7506,
+      "residual": 0.0369,
+      "elo_ci95": [
+        145.35020582669068,
+        341.6078672872124
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf11-L8",
+      "games": 80,
+      "observed": 0.2625,
+      "predicted": 0.3309,
+      "residual": -0.0684,
+      "elo_ci95": [
+        -272.9491107980623,
+        -105.28403809698321
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf11-L8",
+      "games": 79,
+      "observed": 0.3860759493670886,
+      "predicted": 0.3647,
+      "residual": 0.0213,
+      "elo_ci95": [
+        -138.52711966589274,
+        -28.795604173516388
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf11-L8",
+      "games": 80,
+      "observed": 0.38125,
+      "predicted": 0.3702,
+      "residual": 0.011,
+      "elo_ci95": [
+        -160.85358273350172,
+        -14.773221010768767
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf11-L8",
+      "games": 78,
+      "observed": 0.34615384615384615,
+      "predicted": 0.3528,
+      "residual": -0.0066,
+      "elo_ci95": [
+        -194.04484305389263,
+        -34.29692486385736
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf11-L8",
+      "games": 80,
+      "observed": 0.38125,
+      "predicted": 0.3385,
+      "residual": 0.0428,
+      "elo_ci95": [
+        -153.39464770425454,
+        -20.909074779870217
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf11-L12",
+      "games": 80,
+      "observed": 0.3,
+      "predicted": 0.2811,
+      "residual": 0.0189,
+      "elo_ci95": [
+        -234.85791107795117,
+        -74.46439802146072
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf11-L12",
+      "games": 79,
+      "observed": 0.3227848101265823,
+      "predicted": 0.312,
+      "residual": 0.0108,
+      "elo_ci95": [
+        -206.35386920057775,
+        -55.924758966874364
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf11-L12",
+      "games": 79,
+      "observed": 0.2974683544303797,
+      "predicted": 0.317,
+      "residual": -0.0195,
+      "elo_ci95": [
+        -243.63268950641972,
+        -66.72496615127727
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf11-L12",
+      "games": 80,
+      "observed": 0.2625,
+      "predicted": 0.301,
+      "residual": -0.0385,
+      "elo_ci95": [
+        -266.19089604859647,
+        -109.56888760675551
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf11-L12",
+      "games": 79,
+      "observed": 0.31645569620253167,
+      "predicted": 0.2879,
+      "residual": 0.0285,
+      "elo_ci95": [
+        -215.88610656467893,
+        -58.16563367103951
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf11-L16",
+      "games": 80,
+      "observed": 0.26875,
+      "predicted": 0.2758,
+      "residual": -0.0071,
+      "elo_ci95": [
+        -255.32200923697778,
+        -107.14147223361499
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf11-L16",
+      "games": 80,
+      "observed": 0.3375,
+      "predicted": 0.3063,
+      "residual": 0.0312,
+      "elo_ci95": [
+        -202.72236237529015,
+        -43.59019506231967
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf11-L16",
+      "games": 77,
+      "observed": 0.37662337662337664,
+      "predicted": 0.3113,
+      "residual": 0.0653,
+      "elo_ci95": [
+        -163.89127688679247,
+        -25.732139728804803
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf11-L16",
+      "games": 79,
+      "observed": 0.24050632911392406,
+      "predicted": 0.2955,
+      "residual": -0.055,
+      "elo_ci95": [
+        -303.9617637132355,
+        -125.95594573061403
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf11-L16",
+      "games": 80,
+      "observed": 0.25,
+      "predicted": 0.2826,
+      "residual": -0.0326,
+      "elo_ci95": [
+        -271.5807494946312,
+        -125.51897385722275
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf11-L20",
+      "games": 80,
+      "observed": 0.10625,
+      "predicted": 0.0824,
+      "residual": 0.0238,
+      "elo_ci95": [
+        -546.5658594940817,
+        -273.902337232464
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf11-L20",
+      "games": 80,
+      "observed": 0.09375,
+      "predicted": 0.0933,
+      "residual": 0.0005,
+      "elo_ci95": [
+        -578.5314475630046,
+        -297.33899809709925
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf11-L20",
+      "games": 79,
+      "observed": 0.06329113924050633,
+      "predicted": 0.0951,
+      "residual": -0.0318,
+      "elo_ci95": [
+        -716.7148009937426,
+        -359.13655410269286
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf11-L20",
+      "games": 80,
+      "observed": 0.125,
+      "predicted": 0.0894,
+      "residual": 0.0356,
+      "elo_ci95": [
+        -494.49068497588604,
+        -246.1514170994378
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf11-L20",
+      "games": 80,
+      "observed": 0.05625,
+      "predicted": 0.0848,
+      "residual": -0.0285,
+      "elo_ci95": [
+        -741.2850144249657,
+        -384.2743926888673
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf8",
+      "games": 80,
+      "observed": 0.0625,
+      "predicted": 0.0418,
+      "residual": 0.0207,
+      "elo_ci95": [
+        -684.4723576674919,
+        -370.54942983312145
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf8",
+      "games": 80,
+      "observed": 0.05625,
+      "predicted": 0.0471,
+      "residual": 0.0091,
+      "elo_ci95": [
+        -868.5059763786116,
+        -370.77230496102425
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf8",
+      "games": 80,
+      "observed": 0.04375,
+      "predicted": 0.048,
+      "residual": -0.0043,
+      "elo_ci95": [
+        -752.462356880717,
+        -437.62990302042317
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf8",
+      "games": 80,
+      "observed": 0.01875,
+      "predicted": 0.0452,
+      "residual": -0.0264,
+      "elo_ci95": [
+        null,
+        -523.8395060397654
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf8",
+      "games": 80,
+      "observed": 0.04375,
+      "predicted": 0.0429,
+      "residual": 0.0008,
+      "elo_ci95": [
+        null,
+        -406.87354842742593
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf9",
+      "games": 80,
+      "observed": 0.125,
+      "predicted": 0.0859,
+      "residual": 0.0391,
+      "elo_ci95": [
+        -478.90221046604574,
+        -251.55947113792035
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf9",
+      "games": 79,
+      "observed": 0.08227848101265822,
+      "predicted": 0.0972,
+      "residual": -0.0149,
+      "elo_ci95": [
+        -645.0904413804028,
+        -330.17885101063536
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf9",
+      "games": 80,
+      "observed": 0.0875,
+      "predicted": 0.0991,
+      "residual": -0.0116,
+      "elo_ci95": [
+        -594.9129453201026,
+        -310.4005285440921
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf9",
+      "games": 80,
+      "observed": 0.09375,
+      "predicted": 0.0931,
+      "residual": 0.0006,
+      "elo_ci95": [
+        -578.5314475630046,
+        -297.33899809709925
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf9",
+      "games": 80,
+      "observed": 0.075,
+      "predicted": 0.0884,
+      "residual": -0.0134,
+      "elo_ci95": [
+        -626.6653117346876,
+        -340.2843200286545
+      ]
+    },
+    {
+      "subject": "dev5_official",
+      "anchor": "sf10",
+      "games": 80,
+      "observed": 0.075,
+      "predicted": 0.0766,
+      "residual": -0.0016,
+      "elo_ci95": [
+        -650.1733389594824,
+        -335.10657910298283
+      ]
+    },
+    {
+      "subject": "dev5_rebuilt",
+      "anchor": "sf10",
+      "games": 80,
+      "observed": 0.0875,
+      "predicted": 0.0867,
+      "residual": 0.0008,
+      "elo_ci95": [
+        -594.9129453201027,
+        -310.4005285440921
+      ]
+    },
+    {
+      "subject": "dev6_champion",
+      "anchor": "sf10",
+      "games": 80,
+      "observed": 0.11875,
+      "predicted": 0.0884,
+      "residual": 0.0304,
+      "elo_ci95": [
+        -507.8061002644759,
+        -255.8945624701527
+      ]
+    },
+    {
+      "subject": "dev6_failed",
+      "anchor": "sf10",
+      "games": 80,
+      "observed": 0.0875,
+      "predicted": 0.083,
+      "residual": 0.0045,
+      "elo_ci95": [
+        -611.9227900353573,
+        -306.39444350251534
+      ]
+    },
+    {
+      "subject": "dev4",
+      "anchor": "sf10",
+      "games": 79,
+      "observed": 0.04430379746835443,
+      "predicted": 0.0788,
+      "residual": -0.0345,
+      "elo_ci95": [
+        null,
+        -402.04377399613156
+      ]
+    }
+  ],
+  "leave_one_anchor_out": [
+    {
+      "dropped_anchor": "sf10",
+      "subject_order": [
+        "dev5_rebuilt",
+        "dev6_champion",
+        "dev6_failed",
+        "dev4",
+        "dev5_official"
+      ],
+      "fitted": true
+    },
+    {
+      "dropped_anchor": "sf11-L12",
+      "subject_order": [
+        "dev6_champion",
+        "dev6_failed",
+        "dev5_rebuilt",
+        "dev4",
+        "dev5_official"
+      ],
+      "fitted": true
+    },
+    {
+      "dropped_anchor": "sf11-L16",
+      "subject_order": [
+        "dev6_failed",
+        "dev5_rebuilt",
+        "dev6_champion",
+        "dev4",
+        "dev5_official"
+      ],
+      "fitted": true
+    },
+    {
+      "dropped_anchor": "sf11-L20",
+      "subject_order": [
+        "dev6_champion",
+        "dev5_rebuilt",
+        "dev4",
+        "dev6_failed",
+        "dev5_official"
+      ],
+      "fitted": true
+    },
+    {
+      "dropped_anchor": "sf11-L4",
+      "subject_order": [
+        "dev6_champion",
+        "dev5_rebuilt",
+        "dev5_official",
+        "dev6_failed",
+        "dev4"
+      ],
+      "fitted": true
+    },
+    {
+      "dropped_anchor": "sf11-L8",
+      "subject_order": [
+        "dev6_champion",
+        "dev5_rebuilt",
+        "dev6_failed",
+        "dev5_official",
+        "dev4"
+      ],
+      "fitted": true
+    },
+    {
+      "dropped_anchor": "sf8",
+      "subject_order": [
+        "dev6_champion",
+        "dev5_rebuilt",
+        "dev6_failed",
+        "dev4",
+        "dev5_official"
+      ],
+      "fitted": true
+    },
+    {
+      "dropped_anchor": "sf9",
+      "subject_order": [
+        "dev6_champion",
+        "dev5_rebuilt",
+        "dev6_failed",
+        "dev4",
+        "dev5_official"
+      ],
+      "fitted": true
+    }
+  ],
+  "contextual_calibration": {
+    "status": "NOT DEFENSIBLY CALIBRATED",
+    "note": "SF11 UCI_Elo is an approximate self-rating for a different time control (60+0.6) and full-strength SF; mapping a fixed-node pool onto it is a rough context only. The gap to 3000 Elo is NOT asserted.",
+    "slope": 1.6200666131475456,
+    "intercept": 2449.76161435409,
+    "anchor_residual_sd_elo": 199.12130780133987,
+    "sf11_anchor_points": [
+      {
+        "anchor": "sf11-L4",
+        "internal_elo": -427.38504631186345,
+        "sf11_UCI_Elo_context": 1784.9383861554497
+      },
+      {
+        "anchor": "sf11-L8",
+        "internal_elo": -58.998995459311665,
+        "sf11_UCI_Elo_context": 2112.972091364561
+      },
+      {
+        "anchor": "sf11-L12",
+        "internal_elo": -9.768922315214226,
+        "sf11_UCI_Elo_context": 2409.1985908634906
+      },
+      {
+        "anchor": "sf11-L16",
+        "internal_elo": -4.273374084494764,
+        "sf11_UCI_Elo_context": 2686.492195100169
+      },
+      {
+        "anchor": "sf11-L20",
+        "internal_elo": 312.3481010279268,
+        "sf11_UCI_Elo_context": 2950.5075356318257
+      }
+    ],
+    "dev5_official_approximate_context_elo": 2117.664179662877,
+    "caveat": "Systematic error is unknown and likely large; this number is CONTEXT, not a measured absolute rating, and must not be used to claim a gap to 3000 or any CCRL equivalence."
+  },
+  "saturated_cells": [
+    "sf8",
+    "sf8",
+    "sf8",
+    "sf10"
+  ]
+}

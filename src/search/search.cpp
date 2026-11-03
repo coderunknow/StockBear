@@ -35,6 +35,11 @@ constexpr int HistoryLimit = 60000;
 // quiets than this still gets its cutoff rewarded; only the penalties are
 // truncated, which is a quality trade-off, not a correctness one.
 constexpr int MaxPenalisedQuiets = 24;
+// exp-0033: fixed, pre-registered razoring margins by remaining depth.
+// Deliberately NOT a tunable search parameter: the schedule is frozen in
+// docs/DEV6_PREREG_EXP0033.md before any measurement, so it cannot be
+// optimised on the test openings.
+constexpr int RazorMargin[4] = {0, 125, 175, 300};
 
 // Integer-only reduction schedule; keeps results bit-identical across
 // platforms and compilers (a floating-point logarithm does not guarantee that).
@@ -407,6 +412,18 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
                         : inCheck ? false
                         : ply >= 2 ? staticEval > evalStack_[ply - 2] - 10
                         : true;
+
+    // exp-0033 razoring: at shallow depth a node whose static evaluation is far
+    // below alpha almost certainly fails low. Confirm with a cheap null-window
+    // quiescence before spending a full move loop. Default off, so the shipped
+    // search stays bit-identical. Guarded away from mate windows and PV nodes so
+    // it can never change a proven mate value.
+    if (params_.razoring && !pvNode && !inCheck && !mateWindow && depth <= 3 &&
+        staticEval + RazorMargin[depth] < alpha) {
+        const int razorValue = quiescence(pos, alpha - 1, alpha, ply);
+        if (aborted_) return 0;
+        if (razorValue < alpha) return razorValue;
+    }
 
     // Reverse futility pruning: at shallow depth a large static margin over beta
     // is good enough, provided no mate score can be involved.

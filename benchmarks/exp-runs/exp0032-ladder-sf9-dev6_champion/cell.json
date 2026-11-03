@@ -1,0 +1,40 @@
+{
+  "cell": 33,
+  "subject": "dev6_champion",
+  "anchor": "sf9",
+  "subject_binary": "/home/user/StockBear/build-cand/stockbear",
+  "subject_sha256": "28b40cd691cc4c2b892aad27f42f4c62b50962e0d8183b9fdc339e1563d66538",
+  "subject_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "anchor_binary": "/home/user/StockBear/benchmarks/binaries/external/stockfish-sf9",
+  "anchor_sha256": "865ca8119e05c3541a88c69cd4ce1c434279eeb0c7537ca4bf157c84bff3bdac",
+  "anchor_options": [],
+  "opening_slice": "benchmarks/positions/openings_exp0032_s33.txt",
+  "opening_slice_sha256": "5a3a3b7135871d32a8984a2147e7892f2c266ed79c96f0828e20a0acc3dc0b3c",
+  "seed": 2026110932,
+  "games": 80,
+  "nodes": 6000,
+  "nodes_jitter": 0.15,
+  "command": "/home/user/StockBear/.venv/bin/python /home/user/StockBear/scripts/tournament.py --engine-a /home/user/StockBear/build-cand/stockbear --engine-b /home/user/StockBear/benchmarks/binaries/external/stockfish-sf9 --games 80 --base-ms 40 --inc-ms 4 --hash 16 --threads 1 --max-plies 240 --nodes 6000 --nodes-jitter 0.15 --openings /home/user/StockBear/benchmarks/positions/openings_exp0032_s33.txt --seed 2026110932 --a-option EvalParams=research-data/params_abc.txt --a-option TTEval=true --pgn /home/user/StockBear/benchmarks/exp-runs/exp0032-ladder-sf9-dev6_champion/match.pgn --jsonl /home/user/StockBear/benchmarks/exp-runs/exp0032-ladder-sf9-dev6_champion/match.jsonl --csv /home/user/StockBear/benchmarks/exp-runs/exp0032-ladder-sf9-dev6_champion/match.csv",
+  "games_completed": 80,
+  "wins": 4,
+  "draws": 6,
+  "losses": 70,
+  "score": 0.0875,
+  "elo": -407.2899280424797,
+  "ci95": [
+    -594.9129453201026,
+    -310.4005285440921
+  ],
+  "clusters": 40,
+  "terminations": {
+    "CHECKMATE": 74,
+    "FIFTY_MOVES": 1,
+    "THREEFOLD_REPETITION": 4,
+    "INSUFFICIENT_MATERIAL": 1
+  },
+  "unadjudicated": 0,
+  "time_forfeit": 0
+}

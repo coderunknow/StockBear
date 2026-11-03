@@ -36,14 +36,12 @@ def load_games():
             if "game" in o and o.get("score_a") is not None:
                 recs.append(o)
         recs.sort(key=lambda r: r["game"])
-        for k in range(0, len(recs) - 1, 2):
-            if k + 1 >= len(recs):
-                continue
-            a, b = recs[k], recs[k + 1]
-            for x in (a, b):
-                games.append({"i": c["subject"], "j": c["anchor"],
-                              "score": x["score_a"], "cluster": x["opening"],
-                              "cell": d.name})
+        # every adjudicated game is included: no pair-based filtering, so an
+        # unadjudicated game never causes its neighbours to be dropped.
+        for x in recs:
+            games.append({"i": c["subject"], "j": c["anchor"],
+                          "score": x["score_a"], "cluster": x["opening"],
+                          "cell": d.name})
         cells.append({"subject": c["subject"], "anchor": c["anchor"],
                       "games": c["games_completed"], "score": c["score"],
                       "ci95": c["ci95"]})

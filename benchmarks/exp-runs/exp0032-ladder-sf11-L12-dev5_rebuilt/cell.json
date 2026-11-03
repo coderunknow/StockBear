@@ -1,0 +1,42 @@
+{
+  "cell": 12,
+  "subject": "dev5_rebuilt",
+  "anchor": "sf11-L12",
+  "subject_binary": "/home/user/StockBear/build-dev5/stockbear",
+  "subject_sha256": "214cbed002e58fbc94d74a089491bba94634e9e8d06b782992548fdacaa9b501",
+  "subject_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "anchor_binary": "/home/user/StockBear/benchmarks/binaries/external/stockfish-sf11",
+  "anchor_sha256": "59503c6023b94bdcb97061601315cc1201d664dbef4bb89a1e8d13c6535b832a",
+  "anchor_options": [
+    "Skill Level=12"
+  ],
+  "opening_slice": "benchmarks/positions/openings_exp0032_s12.txt",
+  "opening_slice_sha256": "0c183e5e6bed6059c244848e8592dd85032ffe85d74e48e73157c84dddd3cfe1",
+  "seed": 2026110911,
+  "games": 80,
+  "nodes": 6000,
+  "nodes_jitter": 0.15,
+  "command": "/home/user/StockBear/.venv/bin/python /home/user/StockBear/scripts/tournament.py --engine-a /home/user/StockBear/build-dev5/stockbear --engine-b /home/user/StockBear/benchmarks/binaries/external/stockfish-sf11 --games 80 --base-ms 40 --inc-ms 4 --hash 16 --threads 1 --max-plies 240 --nodes 6000 --nodes-jitter 0.15 --openings /home/user/StockBear/benchmarks/positions/openings_exp0032_s12.txt --seed 2026110911 --a-option EvalParams=research-data/params_abc.txt --a-option TTEval=true --b-option Skill Level=12 --pgn /home/user/StockBear/benchmarks/exp-runs/exp0032-ladder-sf11-L12-dev5_rebuilt/match.pgn --jsonl /home/user/StockBear/benchmarks/exp-runs/exp0032-ladder-sf11-L12-dev5_rebuilt/match.jsonl --csv /home/user/StockBear/benchmarks/exp-runs/exp0032-ladder-sf11-L12-dev5_rebuilt/match.csv",
+  "games_completed": 79,
+  "wins": 16,
+  "draws": 19,
+  "losses": 44,
+  "score": 0.3227848101265823,
+  "elo": -125.4476491888007,
+  "ci95": [
+    -206.35386920057775,
+    -55.924758966874364
+  ],
+  "clusters": 39,
+  "terminations": {
+    "CHECKMATE": 60,
+    "THREEFOLD_REPETITION": 18,
+    "INSUFFICIENT_MATERIAL": 1,
+    "UNADJUDICATED_MAX_PLIES": 1
+  },
+  "unadjudicated": 1,
+  "time_forfeit": 0
+}
