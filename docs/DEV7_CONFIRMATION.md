@@ -19,3 +19,21 @@
 - dev6 result on the previous untouched suite (seed 2026110207, 4400 g):
   +47.5 [+39.5, +55.6] -> gate failed; this dev7 suite is the fresh validation
   set required after a failed candidate.
+
+## Candidate pre-registration (commit BEFORE the confirmation run)
+
+- Champion: dev6 binary SHA-256
+  `15f1daa086fa7226181260ac795ad7ad58de58d254c3043d656b2d0e1534aa09`
+  (build command in docs/DEV6_CONFIRMATION.md; bench 243f9a1c1ba5b36f,
+  depth-16 nodes 19229509, CTest 11/11) — run from the byte-identical backup
+  `/home/user/bin-backup/stockbear-dev6` because the sandbox wiper deletes
+  `build*/` mid-run.
+- Runtime options for engine A: `EvalParams=research-data/params_outcome_v6.txt`
+  (SHA-256 recorded below) + `TTEval=true` + `HistoryMaluses=false`.
+- Selection evidence (clean 40+4 480 g screens on dev4 openings, champion
+  binary, vs dev4): v6+tteval +50.5/+50.0; v6+tteval+HistoryMaluses=false
+  +54.0/+57.2 (pooled +55.6); abc+tteval +41.6/+54.7; all other param sets
+  and switch ablations lower (benchmarks/results/0.1.0-dev7/).
+- Run: scripts/dev7_confirmation_run.sh — null 1100 g seed 2026110308, then
+  candidate 4400 g seed 2026110309, alone, on this suite.
+8b9a421ec65232e6578aefab06929521a006a1581262fada632d1a7f9deba346  research-data/params_outcome_v6.txt
