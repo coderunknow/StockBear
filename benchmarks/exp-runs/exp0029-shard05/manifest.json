@@ -1,0 +1,46 @@
+{
+  "job": {
+    "id": "exp0029-shard05",
+    "task": "match",
+    "candidate_options": [
+      "EvalParams=research-data/params_dev6_a.txt",
+      "TTEval=true"
+    ],
+    "baseline_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "games": 1100,
+    "seed": 2026120305,
+    "openings": "benchmarks/positions/openings_exp0029_shard05.txt",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "base_ms": 40,
+    "inc_ms": 4,
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "note": "exp-0029 decisive batch B shard 5/6 (pre-reg docs/DEV6_PREREG.md); fresh disjoint suite"
+  },
+  "ran_at_utc": "2026-11-03T12:47:53.143999+00:00",
+  "git_head": "28a5c719721e809759bdb3cf22436e8034cdabbd",
+  "git_head_subject": "dev6: pre-register exp-0027/0028/0029 (frozen before results), power analysis, disjoint decisive suites, dispatch decisive batch",
+  "runner": {
+    "os": "Linux",
+    "nproc": "4",
+    "cpuinfo": "model name\t: Intel(R) Xeon(R) 6975P-C",
+    "note": "GitHub-hosted ubuntu-latest dedicated VM; public repo => no billing"
+  },
+  "platform": "Linux-7.0.0-1014-aws-x86_64-with-glibc2.39",
+  "baseline": "EXACT released v0.1.0-dev5 portable binary (benchmarks/binaries/stockbear-dev5-release)",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "dev5_bench": "243f9a1c1ba5b36f",
+  "candidate_sha256": "4b06b1176ad331073430d4350bd7f5e1c9fa2e031f5ee6fe7e88954443730c15",
+  "candidate_bench": "243f9a1c1ba5b36f",
+  "candidate_build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "opening_suite": "benchmarks/positions/openings_exp0029_shard05.txt",
+  "opening_suite_sha256": "01869209536caf024bddba790ba36458d5d2315d19c64ee979d6cfd2de5a742c",
+  "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ]
+}
