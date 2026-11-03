@@ -1,0 +1,37 @@
+{
+  "task": "verify-baseline",
+  "job": {
+    "id": "exp0025-baseline",
+    "task": "verify-baseline",
+    "note": "exp-0025: download/verify/pin the exact released v0.1.0-dev5 portable binary as the immutable dev6 baseline; record SHA-256, bench signatures, shipped params, and published strength claim."
+  },
+  "ran_at_utc": "2026-11-03T12:24:22.802356+00:00",
+  "runner": {
+    "os": "Linux",
+    "arch": "X64",
+    "nproc": "",
+    "cpuinfo": "",
+    "note": "GitHub-hosted ubuntu-latest dedicated VM; public repo => no billing"
+  },
+  "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+  "git_head": "a7bf00ffad95a6038888c66ebefa32cdf140670a",
+  "release_tag": "v0.1.0-dev5",
+  "release_commit": "c94571313a1667048468cf6d4e070400dc5ab228",
+  "release_asset_url": "https://github.com/coderunknow/StockBear/releases/download/v0.1.0-dev5/stockbear-0.1.0-dev5-linux-x64.tar.gz",
+  "sha256sums_txt_sha256": "8022866bc945145c6c80c437f20f83a534090cadbb3c8aea6334cffda3cd4773",
+  "dev5_binary_path": "benchmarks/binaries/stockbear-dev5-release",
+  "dev5_binary_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "dev5_bench_signature": "243f9a1c1ba5b36f",
+  "dev5_bench_depth16_signature": "a14ab62224f837e5",
+  "dev5_uci_id_name": "id name StockBear 0.1.0-dev5",
+  "dev5_build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4 (x86-64-v3 portable)",
+  "dev5_compiler": "GitHub-hosted ubuntu-22.04 image GCC (release.yml package job)",
+  "dev5_champion_options": {
+    "EvalParams": "research-data/params_abc.txt",
+    "TTEval": "true"
+  },
+  "shipped_params_abc_sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be",
+  "repo_params_abc_sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be",
+  "published_strength_claim": "exp-0024 portable artifact +64.7 [+57.5,+72.0] vs dev4 (6600 g @ 40+4 ms)",
+  "immutable": true
+}

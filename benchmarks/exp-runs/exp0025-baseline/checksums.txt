@@ -1,0 +1,2 @@
+stockbear-0.1.0-dev5-linux-x64.tar.gz: OK
+stockbear-0.1.0-dev5-windows-x64.zip: OK
