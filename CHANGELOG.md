@@ -218,3 +218,53 @@ First independent development prerelease.
 - Deliberately deferred neural evaluation, training, tablebases, pondering, Chess960, MultiPV, speculative pruning and multithreaded search. Full arbitrary dead-position adjudication and polished time/evaluation strength remain future work.
 
 See [release notes](RELEASE_NOTES.md) and [benchmark evidence](benchmarks/results/0.1.0-dev1/REPORT.md). This prerelease does not claim strength parity or superiority with Stockfish.
+
+---
+
+## 0.1.0-dev6 — 2026-11-03 (research cycle on branch `arena/3e6dd5b6-stockbear`; NOT released)
+
+> Appended out of version order to preserve append-only history. This is a
+> **research branch**, not a public release: no `v0.1.0-dev6` tag, GitHub
+> release, merge or PR exists while the mandatory strength gate is unmet.
+
+Objective: a genuine, independently-confirmed >= +75 Elo gain (two-sided
+opening-clustered 95% CI lower bound strictly > +50) over the **exact released
+`v0.1.0-dev5` portable artifact** at champion options — not dev4.
+
+- **Immutable baseline (exp-0025).** Verified the official dev5 release archives
+  against the published `SHA256SUMS.txt` on a free GitHub-hosted runner and
+  pinned the exact Linux executable `benchmarks/binaries/stockbear-dev5-release`
+  (SHA-256 `391cb50e…`, bench `243f9a1c1ba5b36f` / d16 `a14ab62224f837e5`). The
+  shipped `params_abc.txt` SHA equals the repo champion file. Provenance in
+  `benchmarks/dev6-baseline/`. dev5 tags/releases are untouched.
+- **Extended evaluation (exp-0026).** Audited the evaluator: `BackwardPawn` and
+  `PawnChain` were shipped but never counted (dead rows), and the incremental
+  path maintained none of the four "exp-0022" features. Implemented all six
+  extended features (plus two new: `ConnectedPassed`, `RookBehindPassed`) in one
+  shared helper used by `features()`, `accumulate_breakdown()` and the incremental
+  path, appended the two new ids (append-only, shipped 0), and gated the whole
+  routine so the default/champion build is bit-exact and pays zero extra cost.
+  New default checksum `0x5d90d35fb2203bde`. Verified by ctest 11/11 (41 unit
+  tests incl. a new gating/count test), an independent python-chess oracle over
+  600 positions (43,200 checks, 0 mismatches), `evaldata --check` 600/600,
+  exact `-flto=4` portable build reproducing both bench signatures, and UCI
+  `0.1.0-dev6`. Cost ~13% of the breakdown+evaluate loop when enabled, zero when
+  gated off. See `docs/DEV6_EVAL_FEATURES.md`.
+- **Noise-minimised decisive design (exp-0027/0028/0029).** Pre-registered
+  (`docs/DEV6_PREREG.md`) two fresh, verified-disjoint suites of 3300 distinct
+  paired openings each (6 immutable 550-opening slices per batch -> no repeated
+  opening within a batch), 40+4 ms, hash 16, 1 thread, exact dev5 baseline at
+  champion options, distinct seeds, candidate-vs-identical nulls, symmetric
+  forfeit/crash/illegal/max-ply rules. Power analysis from exp-0024 raw records
+  (`docs/DEV6_POWER_ANALYSIS.md`): combined 13,200-game expected CI half-width
+  ~5 Elo at a true +75. Dedicated free-runner lane `dev6-lane.yml`.
+- **Documents.** `docs/DEV6_EXTERNAL_LADDER.md` (status, methodology, opponent
+  dossier), `docs/DEV6_3000_ROADMAP.md` (evidence-driven staged plan; 3,000 Elo
+  is a strategic target, not a claim), plus appended superseding notices on the
+  historical dev5-cycle docs and append-only `DESIGN_LOG.md` / `AGENTS_LOG.md`.
+- **Verdict:** reported honestly (Verified / Partially verified / Not yet
+  verified / Inconclusive / Failed / Skipped / Blocked) in
+  `docs/DEV6_CONFIRMATION_REPORT.md` and `docs/DEV6_REPORT.md`, recomputed from
+  raw records by `scripts/dev6_confirmation_report.py`. No strength claim, PR,
+  merge, tag or release is made while any mandatory gate is unmet; those require
+  explicit user approval.
