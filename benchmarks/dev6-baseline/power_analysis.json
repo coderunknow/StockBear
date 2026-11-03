@@ -1,0 +1,90 @@
+{
+  "source": "exp-0024 raw match.jsonl (12 shards), the released dev5 portable artifact confirmation",
+  "shards": [
+    "match.jsonl",
+    "match.jsonl",
+    "match.jsonl",
+    "match.jsonl",
+    "match.jsonl",
+    "match.jsonl",
+    "match.jsonl",
+    "match.jsonl",
+    "match.jsonl",
+    "match.jsonl",
+    "match.jsonl",
+    "match.jsonl"
+  ],
+  "observed_pairs": 3284,
+  "observed_clusters": 1748,
+  "observed_pairs_per_cluster": 1.8787185354691076,
+  "observed_pair_score_mean": 1.1758526187576126,
+  "observed_clustered_elo": 61.739203098924065,
+  "observed_clustered_ci95": [
+    54.30999409292101,
+    69.22471559881747
+  ],
+  "observed_pair_score_stderr": 0.010503415919883977,
+  "pair_score_variance_independent": 0.29095190760507594,
+  "pair_score_variance_with_exp0024_cluster_effect": 0.362296613818261,
+  "design": "2 batches x 3300 distinct openings x 2 colour-reversed games = 13200 games, one pair per cluster",
+  "projection_at_point_plus75": {
+    "per_batch_independent": {
+      "pairs": 3300,
+      "distinct_openings": 3300,
+      "games": 6600,
+      "score_stderr": 0.009389741462298677,
+      "elo_halfwidth": 6.599078536237087,
+      "point_elo": 75.0,
+      "expected_ci95": [
+        68.40092146376291,
+        81.59907853623709
+      ]
+    },
+    "combined_independent": {
+      "pairs": 6600,
+      "distinct_openings": 6600,
+      "games": 13200,
+      "score_stderr": 0.006639549861579883,
+      "elo_halfwidth": 4.665946588929689,
+      "point_elo": 75.0,
+      "expected_ci95": [
+        70.33405341107031,
+        79.66594658892969
+      ]
+    },
+    "per_batch_with_cluster_effect": {
+      "pairs": 3300,
+      "distinct_openings": 3300,
+      "games": 6600,
+      "score_stderr": 0.01047792215433004,
+      "elo_halfwidth": 7.364085576502852,
+      "point_elo": 75.0,
+      "expected_ci95": [
+        67.63591442349716,
+        82.36408557650284
+      ]
+    },
+    "combined_with_cluster_effect": {
+      "pairs": 6600,
+      "distinct_openings": 6600,
+      "games": 13200,
+      "score_stderr": 0.007409009808071531,
+      "elo_halfwidth": 5.206768789813417,
+      "point_elo": 75.0,
+      "expected_ci95": [
+        69.79323121018658,
+        80.20676878981342
+      ]
+    }
+  },
+  "sample_for_lcb_gt_50_at_point_75": {
+    "independent_clusters": {
+      "pairs_for_hw25": 231,
+      "games_for_hw25": 462
+    },
+    "exp0024_cluster_effect": {
+      "pairs_for_hw25": 288,
+      "games_for_hw25": 576
+    }
+  }
+}

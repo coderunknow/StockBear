@@ -1,10 +1,381 @@
 {
- "comment": "dev6 cycle, exp-0025: FIRST establish the immutable dev5 baseline from the official v0.1.0-dev5 release. This verify-baseline job downloads + checksums the official archives, pins the exact portable Linux executable into benchmarks/binaries/, and records full provenance. No matches are run in this batch. Pre-registration: docs/DEV6_PREREG_BASELINE.md.",
+ "comment": "dev6 decisive cycle, pre-registered in docs/DEV6_PREREG.md (committed before any result). Baseline = EXACT released v0.1.0-dev5 portable binary at champion options. Screens exp0027 (3), decisive batch A exp0028 (6x1100 + null), decisive batch B exp0029 (6x1100 + null). 40+4 ms, hash16, threads1. Total decisive 13200 games, 6600 distinct opening clusters, two disjoint fresh suites. Power: docs/DEV6_POWER_ANALYSIS.md.",
  "jobs": [
   {
-   "id": "exp0025-baseline",
-   "task": "verify-baseline",
-   "note": "exp-0025: download/verify/pin the exact released v0.1.0-dev5 portable binary as the immutable dev6 baseline; record SHA-256, bench signatures, shipped params, and published strength claim."
+   "id": "exp0027-screen",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 2000,
+   "seed": 2026120101,
+   "openings": "benchmarks/positions/openings_dev4.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0027 primary 40+4 screen: candidate(params_dev6_a) vs exact dev5 champion; screen suite only, never gate evidence"
+  },
+  {
+   "id": "exp0027-control",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120102,
+   "openings": "benchmarks/positions/openings_dev4.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0027 integrity/ablation control: dev6 binary with params_abc (extended gated off) vs dev5 champion; expect ~0"
+  },
+  {
+   "id": "exp0027-exp0020",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_exp0020.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120103,
+   "openings": "benchmarks/positions/openings_dev4.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0027 historical reuse screen: unconfirmed params_exp0020 vs dev5 champion; fully reported, not the frozen candidate"
+  },
+  {
+   "id": "exp0028-shard01",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120201,
+   "openings": "benchmarks/positions/openings_exp0028_shard01.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0028 decisive batch A shard 1/6 (pre-reg docs/DEV6_PREREG.md); fresh disjoint suite"
+  },
+  {
+   "id": "exp0028-shard02",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120202,
+   "openings": "benchmarks/positions/openings_exp0028_shard02.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0028 decisive batch A shard 2/6 (pre-reg docs/DEV6_PREREG.md); fresh disjoint suite"
+  },
+  {
+   "id": "exp0028-shard03",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120203,
+   "openings": "benchmarks/positions/openings_exp0028_shard03.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0028 decisive batch A shard 3/6 (pre-reg docs/DEV6_PREREG.md); fresh disjoint suite"
+  },
+  {
+   "id": "exp0028-shard04",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120204,
+   "openings": "benchmarks/positions/openings_exp0028_shard04.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0028 decisive batch A shard 4/6 (pre-reg docs/DEV6_PREREG.md); fresh disjoint suite"
+  },
+  {
+   "id": "exp0028-shard05",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120205,
+   "openings": "benchmarks/positions/openings_exp0028_shard05.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0028 decisive batch A shard 5/6 (pre-reg docs/DEV6_PREREG.md); fresh disjoint suite"
+  },
+  {
+   "id": "exp0028-shard06",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120206,
+   "openings": "benchmarks/positions/openings_exp0028_shard06.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0028 decisive batch A shard 6/6 (pre-reg docs/DEV6_PREREG.md); fresh disjoint suite"
+  },
+  {
+   "id": "exp0028-null",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 0,
+   "seed": 2026120298,
+   "openings": "benchmarks/positions/openings_exp0028_shard01.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0028 null: candidate vs identical candidate, 1100 games (lane-bias control)",
+   "null_games": 1100
+  },
+  {
+   "id": "exp0029-shard01",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120301,
+   "openings": "benchmarks/positions/openings_exp0029_shard01.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0029 decisive batch B shard 1/6 (pre-reg docs/DEV6_PREREG.md); fresh disjoint suite"
+  },
+  {
+   "id": "exp0029-shard02",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120302,
+   "openings": "benchmarks/positions/openings_exp0029_shard02.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0029 decisive batch B shard 2/6 (pre-reg docs/DEV6_PREREG.md); fresh disjoint suite"
+  },
+  {
+   "id": "exp0029-shard03",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120303,
+   "openings": "benchmarks/positions/openings_exp0029_shard03.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0029 decisive batch B shard 3/6 (pre-reg docs/DEV6_PREREG.md); fresh disjoint suite"
+  },
+  {
+   "id": "exp0029-shard04",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120304,
+   "openings": "benchmarks/positions/openings_exp0029_shard04.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0029 decisive batch B shard 4/6 (pre-reg docs/DEV6_PREREG.md); fresh disjoint suite"
+  },
+  {
+   "id": "exp0029-shard05",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120305,
+   "openings": "benchmarks/positions/openings_exp0029_shard05.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0029 decisive batch B shard 5/6 (pre-reg docs/DEV6_PREREG.md); fresh disjoint suite"
+  },
+  {
+   "id": "exp0029-shard06",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 1100,
+   "seed": 2026120306,
+   "openings": "benchmarks/positions/openings_exp0029_shard06.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0029 decisive batch B shard 6/6 (pre-reg docs/DEV6_PREREG.md); fresh disjoint suite"
+  },
+  {
+   "id": "exp0029-null",
+   "task": "match",
+   "candidate_options": [
+    "EvalParams=research-data/params_dev6_a.txt",
+    "TTEval=true"
+   ],
+   "baseline_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+   ],
+   "games": 0,
+   "seed": 2026120398,
+   "openings": "benchmarks/positions/openings_exp0029_shard01.txt",
+   "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+   "base_ms": 40,
+   "inc_ms": 4,
+   "hash": 16,
+   "threads": 1,
+   "max_plies": 240,
+   "note": "exp-0029 null: candidate vs identical candidate, 1100 games (lane-bias control)",
+   "null_games": 1100
   }
  ]
 }

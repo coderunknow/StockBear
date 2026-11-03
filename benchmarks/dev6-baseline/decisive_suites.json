@@ -1,0 +1,95 @@
+{
+  "plies": 8,
+  "pairs_per_batch": 3300,
+  "shards_per_batch": 6,
+  "openings_per_shard": 550,
+  "excluded_from": [
+    "openings.txt",
+    "openings_dev4.txt",
+    "openings_dev5_confirmation.txt",
+    "openings_dev6_confirmation.txt",
+    "openings_dev7_confirmation.txt",
+    "openings_exp0001_confirmation.txt",
+    "openings_exp0002_confirmation.txt"
+  ],
+  "batches": [
+    {
+      "batch": "exp0028",
+      "seed": 2026110503,
+      "master": "openings_exp0028_confirmation.txt",
+      "master_sha256": "1d69972297f1a2a8f24d4040fb39f8d423f9d013abff6b7c3e266606e36d2c25",
+      "pairs": 3300,
+      "slices": [
+        {
+          "file": "openings_exp0028_shard01.txt",
+          "sha256": "2aec0bc9afc5bdc1842e1b2ba9bf4d63e5f1b214d76e4472abb4da746fc12021",
+          "openings": 550
+        },
+        {
+          "file": "openings_exp0028_shard02.txt",
+          "sha256": "c20eba90e20790ffb14702a2428b0f11c97dba9648ade6d57fdf18db4cb44a40",
+          "openings": 550
+        },
+        {
+          "file": "openings_exp0028_shard03.txt",
+          "sha256": "0eb9d0dc44ba9bead3d4b26470768152a041ce30e8d4ffdd7404b7bb60f495f4",
+          "openings": 550
+        },
+        {
+          "file": "openings_exp0028_shard04.txt",
+          "sha256": "e6b6f8072ab76f3b1faab68aef80c45bc388aa7d55308e28981f8e2fd5924c16",
+          "openings": 550
+        },
+        {
+          "file": "openings_exp0028_shard05.txt",
+          "sha256": "f15ad6c36d7575b843c81305dfa9d3363473f28dcafb79fa23a79948dbf832f2",
+          "openings": 550
+        },
+        {
+          "file": "openings_exp0028_shard06.txt",
+          "sha256": "508799329a5790806a134eeafebe696e9ef3c5c294a9d117923fa12d0f4a1fe3",
+          "openings": 550
+        }
+      ]
+    },
+    {
+      "batch": "exp0029",
+      "seed": 2026110504,
+      "master": "openings_exp0029_confirmation.txt",
+      "master_sha256": "c491a9e5182bd41748a638bd7d987225b6a233e18e8e91ac2758053350f17b3e",
+      "pairs": 3300,
+      "slices": [
+        {
+          "file": "openings_exp0029_shard01.txt",
+          "sha256": "0d882bb7996006cb6c47ffea43bf2e6862fe2238fa94fc7c9e6c02db61046886",
+          "openings": 550
+        },
+        {
+          "file": "openings_exp0029_shard02.txt",
+          "sha256": "eee21d492e5c9d4fac3f56ebe1cc4c95ac367c60d86dc5b6e0dd1bc520e091c4",
+          "openings": 550
+        },
+        {
+          "file": "openings_exp0029_shard03.txt",
+          "sha256": "86ccd4997e85a6edab8dcf31b2f717ab668b92c55d142838e9388100df9f7673",
+          "openings": 550
+        },
+        {
+          "file": "openings_exp0029_shard04.txt",
+          "sha256": "3c2fc9ef6e85abae1f8dcf98f2bbed0a880eb1dfe706b3aa6814d3eecad2b3b1",
+          "openings": 550
+        },
+        {
+          "file": "openings_exp0029_shard05.txt",
+          "sha256": "01869209536caf024bddba790ba36458d5d2315d19c64ee979d6cfd2de5a742c",
+          "openings": 550
+        },
+        {
+          "file": "openings_exp0029_shard06.txt",
+          "sha256": "bb1474e7ad47039ec79787b373175a5cc3df093d2de259f333302e3e9f691f7e",
+          "openings": 550
+        }
+      ]
+    }
+  ]
+}

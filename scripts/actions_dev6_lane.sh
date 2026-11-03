@@ -53,7 +53,9 @@ commit_and_push() {
   for attempt in 1 2 3 4 5 6; do
     git pull --rebase origin "$BRANCH" > /dev/null 2>&1 || git rebase --abort > /dev/null 2>&1 || true
     git add -A "benchmarks/exp-runs/$ID" benchmarks/dev6-baseline benchmarks/binaries 2>/dev/null || true
-    if git commit --allow-empty -q -m "dev6-run[$ID]: results (run ${GITHUB_RUN_ID:-local}, job ${GITHUB_JOB:-local})" 2>/dev/null; then
+    # [skip ci]: these are data-only result commits; the exact-head CI is run
+    # separately on the source commit. Avoids N redundant full-matrix CI runs.
+    if git commit --allow-empty -q -m "dev6-run[$ID]: results (run ${GITHUB_RUN_ID:-local}, job ${GITHUB_JOB:-local}) [skip ci]" 2>/dev/null; then
       if git push -q origin "HEAD:$BRANCH" 2>/dev/null; then
         echo "results pushed to $BRANCH"
         return 0
@@ -272,6 +274,9 @@ run_match() { # name games seed engineA engineB
   [ $rc -eq 0 ] || fail "tournament $name exited $rc (see $name.stdout.log)"
 }
 
+if [ "$GAMES" = "0" ] && [ "$NULL_GAMES" = "0" ]; then
+  fail "job has neither games nor null_games"
+fi
 if [ "$NULL_GAMES" != "0" ]; then
   # Null: candidate vs the SAME candidate binary, with candidate options on both
   # sides; baseline_options are irrelevant here.
@@ -288,7 +293,9 @@ if [ "$NULL_GAMES" != "0" ]; then
   grep -E "^games|clustered|paired|sprt|naive" "$OUT/null.stdout.log" | tee "$OUT/null.report.txt" || true
   [ $rc -eq 0 ] || fail "tournament null exited $rc"
 fi
-run_match "match" "$GAMES" "$SEED" "$CAND_BIN" "$DEV5_BIN"
+if [ "$GAMES" != "0" ]; then
+  run_match "match" "$GAMES" "$SEED" "$CAND_BIN" "$DEV5_BIN"
+fi
 
 echo "=== dev6 job $ID done $(date -u +%FT%TZ) ==="
 commit_and_push
