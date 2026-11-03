@@ -120,3 +120,25 @@ vbuild-popcnt, nps.sh depth 16/20 vs dev4.
   sha256 99682ada... seed 2026110206, 2200 pairs, committed in f443472 BEFORE
   any dev6 candidate ran on it. Plan: champion commit (binary sha) then
   4400 g alone, gate LCB95 > +50.
+
+## Sandbox reset incident (2026-11-03 ~03:0x UTC) + recovery
+
+- Mid-confirmation the sandbox was reset: local branch back at 7969f8b,
+  `.venv/`, `build*/`, `vbuild-*/`, `/tmp` and untracked research-data corpora
+  (corpusA/B/C, features CSVs) wiped. All dev6 work was already pushed
+  (2d571ce), so `git reset --hard origin/arena/daa69a3b-stockbear` restored it.
+- Recovery: `.venv` recreated (pip cmake ninja chess numpy), `git fetch
+  --unshallow origin && git fetch origin --tags`, dev4 baseline rebuilt from
+  tag `v0.1.0-dev4` in a worktree -> sha256 1c5b61a7... bit-identical, bench
+  243f9a1c1ba5b36f; build-dev6 rebuilt with the pinned command -> sha256
+  15f1daa0... bit-identical to the pre-registered champion, bench identical,
+  depth-16 nodes 19229509, ctest 11/11.
+- Found+fixed: the tt32 revert had only been committed for the .cpp, not the
+  .hpp (frankenstein 32B entry at 2d571ce); 27ba7d4 restores the original
+  TTEntry layout so the tree matches the pinned binary exactly.
+- Confirmation re-run from scratch via committed `scripts/dev6_confirmation_run.sh`
+  (null 1100 g seed 2026110208, then candidate 4400 g seed 2026110207, alone).
+- Param-set triage at clean 40+4 480 g (dev4 openings, nps1+params+TTEval=true):
+  outv2: +58.0/+30.7/+30.0/+28.3/+58.7 (mean +41.2); abc: +41.6/+54.7 (mean +48.2);
+  bullet-b1: +40.7/+24.0 (mean +32.4); outv2 without tteval: +48.5.
+  Champion selected: build-dev6 + params_abc + TTEval=true.
