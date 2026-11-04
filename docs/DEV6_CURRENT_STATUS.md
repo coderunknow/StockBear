@@ -26,7 +26,7 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   experiment terminal state is a mission terminal state. No genuine blocker:
   the supported dispatch mechanism works; the earlier export-only dispatch was
   an ordinary research state, not a blocker.
-- **Exact current source SHA:** `__EXP0043_SOURCE_SHA__` (the exp-0043
+- **Exact current source SHA:** `5ea5ad21348f39dabad1da3e8cb098f798087295` (the exp-0043
   dispatch commit; also pinned by `source_sha=HEAD` in
   `benchmarks/exp-runs/tier1-dispatch.json`). Local HEAD and remote head are
   recorded in `AGENTS_LOG.md`; working tree is clean.

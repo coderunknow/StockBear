@@ -841,3 +841,9 @@ both batches >= −5 AND both null CIs include 0 AND 0 failures; CLOSE if
 UCB < +10 OR point <= 0; INCONCLUSIVE -> ONE bounded fresh confirmation,
 NEVER pooled. Gates 1 (+75/LCB>+50) and 4 remain UNMET; no strength claim,
 no bundle, no default change, no PR/merge/tag/release/deploy/dev7.
+
+exp-0043 launch commit (exact source SHA pinned by `source_sha=HEAD` in the
+`mode=benchmark` attempt-13 dispatch): `5ea5ad21348f39dabad1da3e8cb098f798087295`. LOCAL and REMOTE heads are
+identical at this SHA. The following docs-only commit records this SHA and does
+NOT relaunch the benchmark because the workflow push trigger is paths-filtered
+to `benchmarks/exp-runs/tier1-dispatch.json`.
