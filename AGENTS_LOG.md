@@ -929,3 +929,9 @@ AND clean; CLOSE if UCB < +10 OR point <= 0; INCONCLUSIVE -> ONE bounded fresh
 confirmation, NEVER pooled. Gates 1 (+75/LCB>+50) and 4 remain UNMET; no
 strength claim, no bundle, no default change, no PR/merge/tag/release/deploy/
 dev7, no reuse of closed exp0041/0042/0043 data.
+
+exp-0044 launch commit (exact source SHA pinned by `source_sha=HEAD` in the
+`mode=benchmark` attempt-15 dispatch): `2ae4e68fc882991c3484eede22a4622f713da5e2`. LOCAL and REMOTE heads are
+identical at this SHA. The following docs-only commit records this SHA and does
+NOT relaunch the benchmark (push trigger is paths-filtered to the dispatch
+file).
