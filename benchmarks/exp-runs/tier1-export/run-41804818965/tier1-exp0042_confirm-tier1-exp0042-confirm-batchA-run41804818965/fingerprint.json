@@ -1,0 +1,57 @@
+{
+  "fingerprint_sha256": "a9730f86b630053cfe727bcaf5d88367526c38403edb46eb994f442aee05fbcd",
+  "source_sha": "ec223feaaa444c24cc135aecdc8fec326d210783",
+  "prereg_sha256": "3345325ce3e4fdc98501410bd7fcea2b3b5e7e1aa6b9d6a8139e4ced6b29c62b",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0042.md",
+    "addendum": "docs/DEV6_PREREG_EXP0042_ADDENDUM.md",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "id": "tier1-exp0042-confirm-batchA",
+    "games": 1000,
+    "seed": 2026120101,
+    "openings": "benchmarks/positions/openings_exp0042confirm_batchA.txt",
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "null": false,
+    "ctest": false,
+    "a_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true",
+      "MaxGainDelta=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "engine_a": "candidate",
+    "engine_b": "candidate",
+    "note": "exp-0042 CONFIRMATION MaxGainDelta candidate vs control"
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "d4a2345149d132995a93ad707c566df1df9b54ea0426ecc77f284d8052b6b3fe",
+  "packaged_binary_sha256": "d4a2345149d132995a93ad707c566df1df9b54ea0426ecc77f284d8052b6b3fe",
+  "package_sha256": "ec54927d2dcb1a2d7aa7e8afb69391cda5178e3c6033b8ad6e4f164012b0a768",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "d0f919e8ac6a4ed5588ad0bcae1ec3fb041cd4640c89a3d5b38beb6df8aaa91b",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true",
+    "MaxGainDelta=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0042-confirm-batchA/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0042-confirm-batchA/stockbear",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}
