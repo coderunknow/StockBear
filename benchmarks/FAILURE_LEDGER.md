@@ -1262,3 +1262,20 @@ nodes) is a diagnostic, NOT a strength result and NOT a decision. This entry
 will be completed with exact source SHA, binary SHA-256, W/D/L, CR1/t CIs,
 independent recomputation, root-cause class and abandon/defer/redesign outcome
 after the preregistered Tier-1 screen. No vague "optimization unsuccessful".
+
+## exp-0039 — dead static evaluation on TT hits (ELIMINATED AT PROFILING)
+
+Exact source SHA inspected: `2aacf4a643d5066526a33dd1d0f7f504b52e87f9`.
+Hypothesis: remove a full `evaluate()` call whose result is discarded whenever
+`TTEval=true` and a TT entry is present; bit-exact NPS gain should buy depth
+at 40+4 ms. Settings: `bench --depth 16/12 --param ttEval=0|1`, pinned flags
+`-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4`, five repeats. Raw results:
+default d16 signature `a14ab62224f837e5` and 170,160,152 nodes identical
+before/after; d12 signature `2c7cea9dc3051590` and 6,449,299 nodes identical;
+ctest 11/11. Timings were noise-dominated (same old binary: 2.6273 s at
+ttEval=0 vs 2.4443 s at ttEval=1; two builds on the identical ttEval=0 path
+differed ~7 %). Why eliminated: the residual ~2.9 % is below build-layout and
+shared-vCPU noise, so there is no credible Elo upside and no defensible
+fixed-time measurement; profiling is the correct place to stop. Abandoned as a
+strength direction; source reverted, no games played, no strength claim. Next
+action remains the preregistered Tier-1 exp-0038 result and independent audit.

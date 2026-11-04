@@ -474,3 +474,25 @@ Tier-1 fixed-time screen, not by the proxy. If it closes as inert, do NOT
 retune the cache size or hash; record the mechanism diagnosis and move to a
 direction that changes which NODES are searched rather than how cheaply
 already-cheap nodes are revisited.
+
+### exp-0039 (eliminated at profiling, never benchmarked)
+
+Inspection of `negamax` found a genuine dead-computation defect: with the
+champion `TTEval=true`, `int staticEval = evaluate(pos);` runs at every node
+and is then unconditionally overwritten by `int(entry->eval)` on a TT hit
+(the `int16_t` sentinel comparison `entry->eval != VALUE_NONE` is always
+true). Selecting the source first is bit-exact by construction: the default
+`ttEval=false` path still calls `evaluate()`, the `ttEval=true` hit path still
+returns `int(entry->eval)`, and `bench` d16/d12 signatures and node counts
+stayed identical.
+
+It was NOT promoted to a strength experiment. Five-repeat `bench --depth 12`
+timings were dominated by build/code-layout and shared 2-vCPU variance: on the
+SAME old binary `ttEval=0` measured 2.6273 s and `ttEval=1` 2.4443 s with
+identical node counts, while the two builds differed by ~7 % on the identical
+`ttEval=0` path. The candidate fix measured only 2.3739 s vs 2.4443 s
+(~2.9 %), i.e. below the noise floor. A 40+4 ms Tier-1 screen for an effect
+that cannot be resolved above measurement noise is not a good use of the
+budget, so the source was reverted to the exp-0038 pinned SHA. No Elo, no
+strength claim, no result JSON. This is a profiled elimination, not a failed
+experiment, and does not close the mission.

@@ -629,3 +629,15 @@ concentrated on cheap early-return nodes. Frozen `docs/DEV6_PREREG_EXP0038.md`
 evaluation games have been played yet; no result or strength claim exists.
 Tier-1 smoke run 41778365897 remains DISCARDED. Gate status unchanged:
 Gate 1 UNMET / Gate 2 direction-supported / Gate 3 PASS / Gate 4 UNMET.
+
+### exp-0039 profiling elimination (no games played)
+
+While exp-0038's Tier-1 run executed on isolated VMs, source inspection found
+`negamax` computing and discarding a full `evaluate()` on every TT hit with
+`TTEval=true`. A bit-exact fix was implemented, validated (identical bench
+signatures/node counts, ctest 11/11) and profiled with five-repeat d12 timing;
+the ~2.9 % residual was below the ~7 % build-layout/CPU noise floor. Reverted
+the source to keep exp-0038's pinned SHA clean; recorded in DESIGN_LOG and
+FAILURE_LEDGER with exact numbers. No strength experiment, no Elo claim.
+Tier-1 run 41780333569 (exp-0038) completed all four jobs successfully;
+evidence export dispatched for independent audit.

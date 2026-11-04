@@ -50,8 +50,8 @@ Evidence base actually read: `docs/DEV6_PREREG.md` §8 (unchanged gates),
 | rank | direction | mechanism / novelty | expected Elo | P(real gain) | complexity / risk | detectability | compute | verdict |
 |---|---|---|---|---|---|---|---|---|
 | 1 | **Tier-1 infrastructure + artifact export** | dispatchable isolated-VM lane, no auto pushes, packaged binary tested, evidence retrievable via git/Contents API | 0 (enabler) | — | medium / low | — | low | **DO FIRST** — Gate 4 hard blocker |
-| 2 | **exp-0037 ProbCut** (frozen) | raised-beta reduced-depth verification cuts the whole subtree; distinct from bad-capture/razoring; default-off switch | +5..25 | 0.45 | low / TT-pollution risk | good (two batches) | ~2.4k games | **EXECUTE** (frozen prereg, not assumed best) |
-| 3 | **Qsearch TT probe** | qsearch currently has NO TT: every stand-pat recomputes full `evaluate()`; cache qsearch bounds under a depth-0 namespace | +10..30 | 0.40 | medium / mate-score & draw-context correctness | good | ~2.4k games | **NEXT** (exp-0038) |
+| 2 | **exp-0037 ProbCut** — CLOSED/ABANDONED at frozen Stage-1 rule (+3.78 [−9.34,+16.90], point < +10); do not retune | raised-beta reduced-depth verification cuts the whole subtree; distinct from bad-capture/razoring; default-off switch | +5..25 | 0.45 | low / TT-pollution risk | good (two batches) | ~2.4k games | **CLOSED** (Stage-1 rule, no Stage 2a) |
+| 3 | **exp-0038 dedicated qsearch TT** — REGISTERED, Tier-1 40+4 ms screen run 41780333569; profiling found hits concentrated on cheap early-return nodes (−0.0006 % nodes, +3.86 % time) | qsearch currently has NO TT: every stand-pat recomputes full `evaluate()`; cache qsearch bounds under a depth-0 namespace | +10..30 | 0.40 | medium / mate-score & draw-context correctness | good | ~2.4k games | **IN PROGRESS** (results pending independent audit) |
 | 4 | **Preregistered bundle** of validated switches (badCapture + ProbCut + …) | new single candidate measured FRESH with its own nulls, NOT post-hoc combining of old results | +35..60 cumulative | 0.35 | low / requires each part isolated first | full Gate-1 sample | ~13.2k games | **exp-0039**, only after 2 & 3 |
 | 5 | **Singular / tactical extensions** | re-search a move whose TT value looks singular; check extension currently capped at depth<=3, max 3 | +5..25 | 0.35 | high / search instability | medium | ~2.4k games | deferred |
 | 6 | **TT replacement / depth-preferred policy** | protect deep entries from shallow overwrites; also necessary if ProbCut writes shallow entries | +0..10 | 0.25 | low / changes node counts → bench signature risk | weak | ~2.4k games | deferred; bit-exactness first |
@@ -95,3 +95,23 @@ registered as a FRESH candidate, not as a post-hoc sum.
 `Inspect → Research → Rank → Preregister → Implement → Validate →
 Benchmark → Audit → Diagnose → Record → Continue.` Every experiment closes
 at its own frozen rule; the mission never closes on a failed experiment.
+
+## Post-exp-0037 re-ranking evidence (added before exp-0038 results)
+
+- exp-0037 confirmed a structural rule: at the 40+4 ms budget any mechanism
+  that must SPEND a verification subtree before saving one is net-negative.
+  exp-0038 (qsearch TT) was chosen because it reuses information rather than
+  buying it with a new subtree; it is still NOT assumed to work.
+- **exp-0039 (dead static evaluation on TT hits) was eliminated at profiling**,
+  not benchmarked: a bit-exact fix was built and validated, but the measurable
+  speedup (~2.9 %) sat below the ~7 % build-layout / shared-vCPU noise floor
+  measured on the identical code path. See DESIGN_LOG and FAILURE_LEDGER for
+  exact numbers. This is an explicit sample-size/precision/cost decision: no
+  Tier-1 games were spent on an unresolvable effect.
+- qsearch already prunes SEE<0 captures when `seePruning` is enabled, so
+  "qsearch losing-capture pruning" is NOT a new direction; it is shipped.
+- Ranked unexecuted directions after exp-0038: (5) singular/tactical
+  extensions, (6) TT replacement policy, (7) bit-exact eval throughput,
+  (9) larger bullet-matched eval corpus. A preregistered FRESH bundle of
+  validated mechanisms remains the only credible route to Gate 1 and must
+  never be a post-hoc sum of earlier point estimates.
