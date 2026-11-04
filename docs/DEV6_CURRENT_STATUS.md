@@ -30,7 +30,7 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   the supported dispatch mechanism works; the earlier export-only dispatch and
   two transient GitHub `Internal Server Error` push rejections were ordinary
   transient research states, both resolved by a plain retry.
-- **Exact current source SHA:** `__EXP0045_RETRY_SOURCE_SHA__` (the exp-0045 bounded retry
+- **Exact current source SHA:** `9fb2a58e20b8aab131a56ddb3d749e60fce5278b` (the exp-0045 bounded retry
   dispatch commit, pinned by `source_sha=HEAD`). The original exp-0045 run's
   source was `e41a0b18b4e522f57196e2834c8937f8c55019e8`.
 - **Exact source SHAs:** exp-0044 screen `2ae4e68fc882991c3484eede22a4622f713da5e2`,
