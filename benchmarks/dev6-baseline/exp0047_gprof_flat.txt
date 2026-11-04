@@ -1,0 +1,104 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 17.77      0.94     0.94 22582458     0.00     0.00  stockbear::(anonymous namespace)::features(stockbear::Position const&, stockbear::Color, stockbear::EvalParams const&, bool)
+ 10.40      1.49     0.55 21134089     0.00     0.00  stockbear::Search::next_move(stockbear::MoveList&, int)
+  9.45      1.99     0.50 460060962     0.00     0.00  stockbear::attacks_bb(stockbear::PieceType, stockbear::Color, stockbear::Square, unsigned long)
+  8.51      2.44     0.45  3596175     0.00     0.00  stockbear::TranspositionTable::probe(unsigned long, unsigned long, unsigned long, int) const
+  7.37      2.83     0.39 19644970     0.00     0.00  stockbear::Position::make_move_impl(unsigned short, bool)
+  7.37      3.22     0.39  7138444     0.00     0.00  stockbear::generate_moves(stockbear::Position const&, stockbear::MoveList&, stockbear::GenType)
+  5.86      3.53     0.31  5892376     0.00     0.00  stockbear::Search::score_moves(stockbear::Position const&, stockbear::MoveList&, unsigned short, int, bool)
+  5.48      3.82     0.29  9488197     0.00     0.00  stockbear::static_exchange_evaluation(stockbear::Position const&, unsigned short)
+  5.29      4.10     0.28 32734980     0.00     0.00  stockbear::slider_attacks_bb(stockbear::PieceType, stockbear::Square, unsigned long)
+  3.97      4.31     0.21    10440     0.02     0.50  stockbear::Search::negamax(stockbear::Position&, int, int, int, int, bool, int, bool)
+  3.78      4.51     0.20  4859552     0.00     0.00  stockbear::Search::quiescence(stockbear::Position&, int, int, int)
+  2.55      4.65     0.14 25029309     0.00     0.00  stockbear::Position::attackers_to(stockbear::Square, unsigned long) const
+  2.08      4.76     0.11 19802203     0.00     0.00  stockbear::Position::compute_pinned() const
+  1.61      4.84     0.09 46584958     0.00     0.00  stockbear::Position::legal_en_passant_capturers() const
+  1.61      4.93     0.09 19644970     0.00     0.00  stockbear::Position::unmake_move(unsigned short)
+  1.04      4.98     0.06 19802203     0.00     0.00  stockbear::Position::compute_checkers() const
+  0.76      5.02     0.04 11291229     0.00     0.00  stockbear::evaluate(stockbear::Position const&)
+  0.76      5.06     0.04  1910484     0.00     0.00  stockbear::TranspositionTable::store(unsigned long, unsigned long, unsigned long, int, unsigned short, int, int, stockbear::Bound, int, int)
+  0.57      5.09     0.03 39409964     0.00     0.00  stockbear::Position::move_piece(stockbear::Square, stockbear::Square)
+  0.57      5.12     0.03 11291229     0.00     0.00  stockbear::(anonymous namespace)::phase_of(stockbear::Position const&)
+  0.57      5.15     0.03   620824     0.00     0.00  stockbear::Position::has_legal_moves() const
+  0.28      5.17     0.02 12160896     0.00     0.00  stockbear::Position::insufficient_material() const
+  0.19      5.18     0.01 31093432     0.00     0.00  stockbear::nnue::active_network()
+  0.19      5.19     0.01 12397378     0.00     0.00  stockbear::Zobrist::context_seed(unsigned long)
+  0.19      5.20     0.01 12161395     0.00     0.00  stockbear::Search::visit(int)
+  0.19      5.21     0.01   531029     0.00     0.00  stockbear::Search::update_quiet_stats(stockbear::Position const&, unsigned short, int, int, int)
+  0.19      5.22     0.01      624     0.02     0.02  stockbear::nnue::forward_kernel_name()
+  0.19      5.23     0.01       25     0.40     0.40  stockbear::Position::set_check_info()
+  0.19      5.24     0.01        2     5.00     5.00  stockbear::TranspositionTable::resize(unsigned long)
+  0.19      5.25     0.01                             stockbear::eval_from_breakdown(stockbear::EvalBreakdown const&, stockbear::EvalParams const&)
+  0.19      5.26     0.01                             std::once_flag::_Prepare_execution::_Prepare_execution<std::call_once<stockbear::Zobrist::init()::{lambda()#1}>(std::once_flag&, stockbear::Zobrist::init()::{lambda()#1}&&)::{lambda()#1}>(stockbear::Zobrist::init()::{lambda()#1}&)::{lambda()#1}::_FUN()
+  0.09      5.26     0.01 19644970     0.00     0.00  stockbear::Position::make_move(unsigned short)
+  0.09      5.27     0.01 12161419     0.00     0.00  stockbear::Position::is_search_draw(int) const
+  0.09      5.27     0.01   157208     0.00     0.00  stockbear::Position::unmake_null_move()
+  0.09      5.28     0.01       25     0.20     0.20  stockbear::Position::refresh_nnue_accumulator()
+  0.09      5.28     0.01                             stockbear::move_from_uci(stockbear::Position const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.09      5.29     0.01                             stockbear::Position::remove_piece(stockbear::Square)
+  0.09      5.29     0.01                             stockbear::Position::repetition_count() const
+  0.00      5.29     0.00 11291233     0.00     0.00  stockbear::active_eval_params()
+  0.00      5.29     0.00  7404849     0.00     0.00  stockbear::Zobrist::context_next(unsigned long, unsigned long)
+  0.00      5.29     0.00  3238657     0.00     0.00  stockbear::Search::update_pv(int, unsigned short)
+  0.00      5.29     0.00   461869     0.00     0.00  stockbear::TranspositionTable::value_from_table(int, int)
+  0.00      5.29     0.00   190036     0.00     0.00  stockbear::TimeManager::hard_expired() const
+  0.00      5.29     0.00   157208     0.00     0.00  stockbear::Position::make_null_move()
+  0.00      5.29     0.00   107648     0.00     0.00  stockbear::(anonymous namespace)::ray_attacks_reference(stockbear::Square, unsigned long, bool)
+  0.00      5.29     0.00     1963     0.00     0.00  stockbear::move_to_uci[abi:cxx11](unsigned short)
+  0.00      5.29     0.00      798     0.00     0.00  stockbear::Position::put_piece(stockbear::Piece, stockbear::Square)
+  0.00      5.29     0.00      592     0.00     0.00  stockbear::(anonymous namespace)::parse_int(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, long long&)
+  0.00      5.29     0.00      447     0.00    11.68  stockbear::Search::search_root(stockbear::Position&, int, int, int, int)
+  0.00      5.29     0.00      314     0.00     0.00  stockbear::UciEngine::emit(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00      5.29     0.00      312     0.00     0.00  stockbear::TimeManager::elapsed_us() const
+  0.00      5.29     0.00      312     0.00     0.00  stockbear::TranspositionTable::hashfull() const
+  0.00      5.29     0.00      288     0.00     0.00  stockbear::(anonymous namespace)::info_text(stockbear::SearchResult const&, int, int)
+  0.00      5.29     0.00      288     0.00     0.00  stockbear::TimeManager::soft_expired() const
+  0.00      5.29     0.00      288     0.00     0.02  stockbear::Search::build_lines(stockbear::SearchResult&, int) const
+  0.00      5.29     0.00      288     0.00     0.00  std::_Function_handler<void (stockbear::SearchResult const&), stockbear::UciEngine::handle_go(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)::{lambda()#1}::operator()()::{lambda(stockbear::SearchResult const&)#1}>::_M_invoke(std::_Any_data const&, stockbear::SearchResult const&)
+  0.00      5.29     0.00      216     0.00     0.00  stockbear::(anonymous namespace)::in_range(int, stockbear::EvalParamDef const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, char const*)
+  0.00      5.29     0.00      118     0.00     0.00  void std::vector<stockbear::StateInfo, std::allocator<stockbear::StateInfo> >::_M_realloc_insert<stockbear::StateInfo const&>(__gnu_cxx::__normal_iterator<stockbear::StateInfo*, std::vector<stockbear::StateInfo, std::allocator<stockbear::StateInfo> > >, stockbear::StateInfo const&)
+  0.00      5.29     0.00      118     0.00     0.00  void std::vector<unsigned short, std::allocator<unsigned short> >::_M_realloc_insert<unsigned short const&>(__gnu_cxx::__normal_iterator<unsigned short*, std::vector<unsigned short, std::allocator<unsigned short> > >, unsigned short const&)
+  0.00      5.29     0.00       75     0.00     0.00  stockbear::init_bitboards()
+  0.00      5.29     0.00       66     0.00     0.00  stockbear::TimeManager::soft_usage_permille() const
+  0.00      5.29     0.00       40     0.00     0.00  std::_Function_handler<void (stockbear::SearchResult const&), stockbear::UciEngine::handle_go(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)::{lambda()#1}::operator()()::{lambda(stockbear::SearchResult const&)#1}>::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation)
+  0.00      5.29     0.00       25     0.00     0.00  stockbear::(anonymous namespace)::number(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long&, unsigned long) [clone .constprop.0]
+  0.00      5.29     0.00       25     0.00     0.00  stockbear::init_evaluation()
+  0.00      5.29     0.00       25     0.00     0.00  stockbear::Zobrist::init()
+  0.00      5.29     0.00       25     0.00     0.00  stockbear::Position::compute_feature_counts()
+  0.00      5.29     0.00       25     0.00     0.00  stockbear::Position::set(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)
+  0.00      5.29     0.00       25     0.00     0.60  stockbear::parse_fen(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, stockbear::Position&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)
+  0.00      5.29     0.00       25     0.00     0.00  std::vector<stockbear::nnue::Accumulator, std::allocator<stockbear::nnue::Accumulator> >::_M_fill_assign(unsigned long, stockbear::nnue::Accumulator const&)
+  0.00      5.29     0.00       25     0.00     0.00  void std::vector<stockbear::StateInfo, std::allocator<stockbear::StateInfo> >::_M_realloc_insert<stockbear::StateInfo>(__gnu_cxx::__normal_iterator<stockbear::StateInfo*, std::vector<stockbear::StateInfo, std::allocator<stockbear::StateInfo> > >, stockbear::StateInfo&&)
+  0.00      5.29     0.00       24     0.00     0.00  stockbear::TimeManager::start(stockbear::SearchLimits const&, stockbear::Color, bool)
+  0.00      5.29     0.00       24     0.00     0.00  stockbear::TranspositionTable::new_search()
+  0.00      5.29     0.00       24     0.00   217.92  stockbear::Search::run(stockbear::Position, stockbear::SearchLimits const&, std::atomic<bool>&, std::function<void (stockbear::SearchResult const&)> const&)
+  0.00      5.29     0.00       24     0.00     0.00  stockbear::Search::Search(stockbear::TranspositionTable&, stockbear::SearchParams const&)
+  0.00      5.29     0.00       24     0.00     0.00  stockbear::Position::Position(stockbear::Position const&)
+  0.00      5.29     0.00       24     0.00     0.60  stockbear::UciEngine::handle_position(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00      5.29     0.00       24     0.00     0.00  stockbear::UciEngine::handle_go(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00      5.29     0.00       24     0.00     0.00  std::thread::_State_impl<std::thread::_Invoker<std::tuple<stockbear::UciEngine::handle_go(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)::{lambda()#1}> > >::_M_run()
+  0.00      5.29     0.00       24     0.00     0.00  std::thread::_State_impl<std::thread::_Invoker<std::tuple<stockbear::UciEngine::handle_go(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)::{lambda()#1}> > >::~_State_impl()
+  0.00      5.29     0.00       24     0.00     0.00  std::vector<std::vector<unsigned short, std::allocator<unsigned short> >, std::allocator<std::vector<unsigned short, std::allocator<unsigned short> > > >::_M_fill_assign(unsigned long, std::vector<unsigned short, std::allocator<unsigned short> > const&)
+  0.00      5.29     0.00       24     0.00     0.00  stockbear::PvLine* std::__do_uninit_copy<stockbear::PvLine const*, stockbear::PvLine*>(stockbear::PvLine const*, stockbear::PvLine const*, stockbear::PvLine*)
+  0.00      5.29     0.00       24     0.00     0.00  std::vector<unsigned short, std::allocator<unsigned short> >* std::__do_uninit_fill_n<std::vector<unsigned short, std::allocator<unsigned short> >*, unsigned long, std::vector<unsigned short, std::allocator<unsigned short> > >(std::vector<unsigned short, std::allocator<unsigned short> >*, unsigned long, std::vector<unsigned short, std::allocator<unsigned short> > const&)
+  0.00      5.29     0.00       24     0.00   217.92  stockbear::UciEngine::handle_go(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)::{lambda()#1}::operator()()
+  0.00      5.29     0.00       17     0.00     0.00  stockbear::(anonymous namespace)::lower(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+  0.00      5.29     0.00        3     0.00     1.67  stockbear::UciEngine::handle_setoption(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00      5.29     0.00        2     0.00     0.00  stockbear::(anonymous namespace)::init_magics(stockbear::Magic*, unsigned long* const*, unsigned long const*, bool)
+  0.00      5.29     0.00        2     0.00     0.00  stockbear::apply_eval_params(stockbear::EvalParams const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)
+  0.00      5.29     0.00        2     0.00     0.00  stockbear::TranspositionTable::clear()
+  0.00      5.29     0.00        2     0.00     0.00  stockbear::default_eval_params()
+  0.00      5.29     0.00        2     0.00     0.00  stockbear::evaluation_rebuild_tables()
+  0.00      5.29     0.00        1     0.00     0.00  stockbear::eval_params_installed()
+  0.00      5.29     0.00        1     0.00     0.00  stockbear::load_eval_params_file(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, stockbear::EvalParams*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)
+  0.00      5.29     0.00        1     0.00     0.00  stockbear::nnue::embedded_network_available()
+  0.00      5.29     0.00        1     0.00    19.40  stockbear::UciEngine::loop()
+  0.00      5.29     0.00        1     0.00     5.60  stockbear::UciEngine::UciEngine(std::istream&, std::ostream&)
+  0.00      5.29     0.00        1     0.00     0.00  stockbear::UciEngine::~UciEngine()
+  0.00      5.29     0.00        1     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [clone .constprop.0]
+  0.00      5.29     0.00        1     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00      5.29     0.00        1     0.00     0.00  frame_dummy

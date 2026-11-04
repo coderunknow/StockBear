@@ -698,3 +698,51 @@ an independent raw-game audit.** Do NOT repeat exp-0046, exp-0045, exp-0044
 confirmation, or any recorded negative/neutral direction without genuinely
 new evidence. A normal technical failure, invalid measurement, CI failure,
 inconclusive or closed result cannot terminate the mission.
+
+---
+
+## exp-0047 investigation cycle — NO NEW EXPERIMENT LAUNCHED (2026-11-04)
+
+Source HEAD `d07294d7dbd3a88e5b673f048aeb6a7b1acc1dbf`; report
+`docs/DEV6_EXP0047_INVESTIGATION_REPORT.md`; frozen prereg
+`docs/DEV6_PREREG_EXP0047.md` (DORMANT). This is a Phase-1/2 evidence
+consolidation, NOT a strength result. No games, no implementation, no suite
+generation, no dispatch edit; `tier1-dispatch.json` remains exp0046 export
+attempt 25.
+
+Fresh profiling (gprof, 24 real suite FENs at depth 12, 12,161,395 nodes):
+`features` 17.77 %, `next_move` 10.40 %, `attacks_bb` 9.45 %, TT probe 8.51 %,
+`make_move_impl` 7.37 %, `generate_moves` 7.37 %, `score_moves` 5.86 %, SEE
+5.48 %, `slider_attacks_bb` 5.29 %. Source finding: each non-pawn piece's
+attack set is computed twice per `evaluate()` (identical arguments); a cache is
+bit-exact but bounded at ~7 % node time. Matched-toolchain `bench --depth 16`
+3-rep NPS ratio current-HEAD/dev5 = **1.0289** (inside noise), consistent with
+exp-0030's 0.9765/0.9906; no unmeasured NPS step-change.
+
+Re-ranked directions, explicitly against Gate 1 (+75 / LCB > +50), not the
+old +20 screen:
+1. **A materially stronger evaluator with a measured accuracy→strength link
+   and measured inference cost** — highest gate relevance, NOT YET TESTABLE.
+   Missing: fresh bullet-matched corpus + frozen accuracy metric (prior corpora
+   lost in the sandbox wipe), matched-toolchain inference cost (exp-0001 NNUE
+   4× slower, −650…−760 Elo), and a pre-result >= +75 effect argument.
+2. Bit-exact evaluation attack-set dedup / stable-sort move ordering —
+   NOT JUSTIFIED for games: expected ~+3–8 Elo, matrix already notes such an
+   effect is undetectable with 2,000 games; exp-0013/0039/0040 show caching or
+   skipping is not automatically a win.
+3. Decisive Tier-1 replication of `BadCapturePruning` — NOT JUSTIFIED /
+   FORBIDDEN: exp-0036 UCB +32.81 < +50 already closes Gate 1 and the ledger
+   says "do NOT re-run the whole-screen 40+4 ms confirmation this cycle" and
+   "do NOT stack … post hoc".
+
+TT replacement/depth policy remains ALREADY SHIPPED (profiled here: TT probe
+8.51 %, 16 MB table far from full); canonical singular re-search deferred on
+exp-0043's overhead; time allocation REJECT. `docs/DEV6_POWER_ANALYSIS.md`
+confirms sample size is NOT the binding constraint (~576 games reject +75), so
+another underpowered screen would be manufactured activity. exp-0045 (invalid
+run + bounded valid retry CLOSE) and exp-0046 (CLOSED AS INCONCLUSIVE) remain
+frozen; no pooling, no retune, no extension, no reinterpretation.
+
+Gates 1/4 UNMET, 2 direction-supported, 3 PASS; mission ACTIVE / NOT COMPLETE;
+no direction is claimed exhausted, no result terminates the mission, no
+strength claim made.

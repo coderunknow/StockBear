@@ -3,6 +3,10 @@
 Older reports `docs/DEV6_STATUS_REPORT.md` and
 `docs/DEV6_POST_AUTHORIZATION_REPORT.md` are superseded for this cycle; they
 remain historical records. This document is the current gate verdict.
+**LATEST (post-exp-0046): see the "LATEST (2026-11-04, post-exp-0046
+investigation)" section at the end and
+`docs/DEV6_EXP0047_INVESTIGATION_REPORT.md`; no new strength games were played
+and `docs/DEV6_PREREG_EXP0047.md` is a DORMANT frozen preregistration.**
 
 ## Verdict: MISSION ACTIVE — NOT COMPLETE
 `docs/DEV6_PREREG.md` §8 gates are **unchanged and unweakened**.
@@ -320,3 +324,77 @@ remote. All documents, plans, raw evidence and scripts were verified present;
 `.venv` rebuilt with cmake 4.4.4 / ninja 1.13.2 / numpy 2.4.6 / chess 1.11.2 /
 PyYAML 6.0.3. No force push, no shared-history rewrite, no scientific
 conclusion changed.
+
+---
+
+## LATEST (2026-11-04, post-exp-0046 investigation) — NO NEW STRENGTH GAMES
+
+Authoritative continuation report: `docs/DEV6_EXP0047_INVESTIGATION_REPORT.md`;
+complete frozen preregistration: `docs/DEV6_PREREG_EXP0047.md`
+(**DORMANT / NOT ACTIVATED**). Exact HEAD remains
+`d07294d7dbd3a88e5b673f048aeb6a7b1acc1dbf`; CI `41826927521` SUCCESS;
+`benchmarks/exp-runs/tier1-dispatch.json` unchanged (`mode=export`, exp0046,
+attempt 25); no engine source change, no plan, no suite, no benchmark run, no
+new PGN/JSONL, no invalid measurement, no pooling, no reopened decision.
+
+Phase 1 re-verified the authoritative `docs/DEV6_PREREG.md` §8 gates verbatim
+(Gate 1: combined point >= +75 Elo AND two-sided opening-clustered 95 % LCB
+strictly > +50, both batches positive, no material contradictory regression,
+reasonably consistent; Gate 4: no unresolved correctness/illegal-move/protocol/
+time-forfeit regression, no unexplained benchmarked-vs-packaged difference, and
+**the exact candidate release artifact must be the tested binary**). Older
+dev4-baseline +50 gates and the Tier-1 `+20` screen rule are NOT Gate 1.
+Documentation drift in the secondary Gate 2 wording is noted but not used to
+infer any gate pass.
+
+Phase 2 produced fresh evidence: a gprof profile of the actual source (24 real
+FENs, `go depth 12`, 12,161,395 nodes, 15.17 s): `features()` 17.77 %,
+`next_move` 10.40 %, `attacks_bb` 9.45 % (460,060,962 calls), TT probe 8.51 %,
+`make_move_impl`/`generate_moves` 7.37 % each, `score_moves` 5.86 %, SEE 5.48 %,
+`slider_attacks_bb` 5.29 %. Every non-pawn piece's attack bitboard is provably
+computed twice per `evaluate()` — a bit-exact redundancy, but bounded at ~7 %
+node time => ~+3–8 Elo. A fresh matched-toolchain `bench --depth 16` comparison
+(24,211,820 identical nodes, 3 alternating reps) gave median candidate/dev5
+NPS ratio **1.0289**, inside local noise (candidate spread 0.4289–0.4654 M),
+agreeing with exp-0030 (A2/A1 0.9765, B/A1 0.9906). No bit-exact NPS
+step-change exists; performance, search-quality, evaluation-accuracy and
+demonstrated-strength effects are kept strictly separate.
+
+Ranked hypotheses (at most three): (1) bit-exact attack-set dedup / stable-sort
+ordering — NOT JUSTIFIED (bounded ~+3–8 Elo, far below Gate 1); (2) decisive
+Tier-1 replication of `BadCapturePruning` — NOT JUSTIFIED / forbidden by the
+frozen exp-0036 closure (UCB +32.81 < +50; "do NOT re-run", "do NOT stack");
+(3) a materially stronger evaluator with a measured accuracy→strength link and
+inference cost — HIGHEST gate relevance but NOT YET TESTABLE. Missing evidence:
+a fresh bullet-matched corpus + frozen accuracy metric, matched-toolchain
+inference cost, and a pre-result argument compatible with >= +75 Elo.
+`docs/DEV6_POWER_ANALYSIS.md` explicitly says the binding constraint is the
+candidate, not sample size (~576 games reject +75; 13,200 games give ±5.2 Elo).
+
+**DECISION: no strength experiment is scientifically defensible at this HEAD;
+zero games were played.** The one selected experiment (decisive Gate-1
+measurement of a genuinely stronger evaluator) is fully preregistered in
+`docs/DEV6_PREREG_EXP0047.md` with §8 thresholds (NOT the +20 screen),
+2 x 6,600 games, fresh disjoint suites, 0-forfeit validity, invalid-run
+discard, NO authorised retry, single-run compute bound, independent raw-JSONL
+decision script and an empty Activation Record. It stays DORMANT until its four
+measurable activation conditions are committed. This is not a mission
+termination and not a manufactured progress claim.
+
+Integrity re-verification this turn (NOT new strength evidence): Release build
+from exact HEAD with portable flags — three frozen bench signatures
+`243f9a1c1ba5b36f` / `a14ab62224f837e5` / `e45fa2ec2287eb41`; `ctest` 11/11
+PASS; fresh ASan+UBSan `ctest` 11/11 PASS (`benchmarks/dev6-baseline/exp0047_asan_ctest.txt`);
+all 17 experimental UCI switches `default false` including `AdaptiveNullR`;
+exp-0045 retry decision `−8.9240 [−18.2792,+0.4182]` CLOSE and exp-0046 decision
+`+3.5096 [−5.1015,+12.1250]` CLOSED_AS_INCONCLUSIVE reproduced; generic audits
+44/0 PASS ×2; SHA256SUMS 36 OK / 0 BAD ×2 exports. Raw gprof evidence:
+`benchmarks/dev6-baseline/exp0047_gprof_flat.txt` and
+`exp0047_gprof_callgraph.txt`.
+
+Gates UNCHANGED: **1 UNMET, 2 direction-supported, 3 PASS, 4 UNMET**; mission
+ACTIVE / NOT COMPLETE; no final candidate artifact, no strength claim, no
+default change, no PR/merge/tag/release/deploy/dev7, no absolute/CCRL/FIDE Elo
+or gap-to-3000 claim. Next concrete action: regenerate a fresh bullet-matched
+corpus with a frozen accuracy metric, measure champion/candidate evaluator
+accuracy and matched-toolchain inference cost, and only then activate exp-0047.

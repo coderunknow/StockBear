@@ -1186,3 +1186,42 @@ earlier experiment. `AdaptiveNullR` stays OFF. Gates 1 and 4 UNMET,
 claim / PR / merge / tag / release / deploy / dev7. Full report
 `docs/DEV6_EXP0046_REPORT.md`; evidence
 `benchmarks/exp-runs/tier1-export/run-41825055840/`.
+
+---
+
+## 2026-11-04 — DEV6 exp-0047 evidence-driven investigation (NO GAMES)
+
+Exact HEAD `d07294d7dbd3a88e5b673f048aeb6a7b1acc1dbf`; CI `41826927521`
+SUCCESS; mission ACTIVE / NOT COMPLETE. Added
+`docs/DEV6_EXP0047_INVESTIGATION_REPORT.md` (verifiable Phase-1/2 report),
+`docs/DEV6_PREREG_EXP0047.md` (complete FROZEN preregistration, DORMANT /
+NOT ACTIVATED), and raw gprof evidence
+`benchmarks/dev6-baseline/exp0047_gprof_{flat,callgraph}.txt` +
+`exp0047_asan_ctest.txt`. Updated current status and research matrix. NO engine
+source change, NO implementation, NO opening suite, NO `tier1-dispatch.json`
+edit, NO benchmark run, NO new PGN/JSONL, NO invalid measurement, NO pooling,
+NO reopened decision.
+
+Verified: authoritative §8 Gate 1 (>= +75 Elo AND 95 % LCB > +50) and Gate 4
+(exact candidate release artifact must be the tested binary); full exp-0001…
+0046 hypothesis inventory; fresh gprof profile (24 FENs, 12,161,395 nodes:
+features 17.77 %, next_move 10.40 %, attacks_bb 9.45 %, TT probe 8.51 %);
+fresh matched-toolchain NPS ratio 1.0289 (inside noise, 3 alternating reps,
+24,211,820 identical nodes); Release 11/11 and ASan+UBSan 11/11 ctest; three
+frozen bench signatures; all 17 experimental UCI switches default false;
+reproduced exp-0045 CLOSE and exp-0046 CLOSED_AS_INCONCLUSIVE decisions;
+44/0 audits ×2 and 36/36 checksums ×2 exports.
+
+DECISION: no scientifically defensible strength experiment exists at this HEAD
+(power analysis says the candidate, not sample size, is binding; every measured
+candidate has UCB < +50). Ranked hypotheses: bit-exact attack-set dedup
+(~+3–8 Elo, NOT JUSTIFIED), exp-0036 replication (forbidden by frozen
+non-repeat), stronger evaluator with accuracy→strength link (highest relevance,
+NOT YET TESTABLE). Missing evidence: fresh bullet-matched corpus + frozen
+accuracy metric, matched-toolchain inference cost, pre-result >= +75 argument.
+The one selected experiment is preregistered with §8 thresholds, 2 x 6,600
+games, fresh disjoint suites, 0-forfeit validity, NO authorised retry, a
+single-run compute bound and an independent raw-JSONL decision script; it stays
+DORMANT until its Activation Record is committed. Gates 1/4 UNMET, 2
+direction-supported, 3 PASS; no strength claim, default change, PR, merge, tag,
+release, deploy or dev7.

@@ -1829,3 +1829,67 @@ earlier experiment. `AdaptiveNullR` stays OFF. Gates 1 and 4 UNMET,
 claim / PR / merge / tag / release / deploy / dev7. Full report
 `docs/DEV6_EXP0046_REPORT.md`; evidence
 `benchmarks/exp-runs/tier1-export/run-41825055840/`.
+
+---
+
+## exp-0047 — evidence-driven investigation; NO experiment launched (2026-11-04)
+
+- **ID / source / state:** phase-1/2 investigation only, exact HEAD
+  `d07294d7dbd3a88e5b673f048aeb6a7b1acc1dbf`, CI `41826927521` SUCCESS, clean
+  tree, `tier1-dispatch.json` UNCHANGED (exp0046 export attempt 25). Report
+  `docs/DEV6_EXP0047_INVESTIGATION_REPORT.md`; frozen prereg
+  `docs/DEV6_PREREG_EXP0047.md` (**DORMANT / NOT ACTIVATED**).
+  Report SHA-256 `03ec9a487885705f147ade749317faa85e237fccb23a5e4bcf5ccd292a9da47a` (content-hashed before this line was appended). No PGN, JSONL,
+  plan, suite, implementation or benchmark run produced. ZERO strength games.
+- **Classification / outcome:** **INSUFFICIENT EVIDENCE TO JUSTIFY A STRENGTH
+  EXPERIMENT** — deliberately NOT a failed hypothesis, NOT a gate pass, NOT a
+  mission termination. This is the Phase-2 escape clause: explain the missing
+  evidence rather than invent a promising hypothesis.
+- **Hypothesis inventory:** all exp-0001…0046 headings re-read; every frozen
+  closure preserved. exp-0045 original run INVALID (all Elo DISCARDED) + one
+  bounded valid retry `−8.9240 [−18.2792,+0.4182]` CLOSE; exp-0046
+  `+3.5096 [−5.1015,+12.1250]` CLOSED AS INCONCLUSIVE (NO further samples).
+  exp-0036 `+21.52 [+10.28,+32.81]` closed at futility (UCB < +50) with an
+  explicit "do NOT re-run / stack / tune" prohibition. exp-0030 already
+  resolved the +33 control as toolchain-induced and forbids repeating it.
+- **Fresh technical evidence:** gprof profile (24 real FENs, depth 12,
+  12,161,395 nodes, 15.17 s) — `features` 17.77 %, `next_move` 10.40 %,
+  `attacks_bb` 9.45 %/460,060,962 calls, TT probe 8.51 %, `make_move_impl` and
+  `generate_moves` 7.37 % each, `score_moves` 5.86 %, SEE 5.48 %,
+  `slider_attacks_bb` 5.29 %. Every non-pawn attack bitboard is computed TWICE
+  per `evaluate()` (identical args) — a real bit-exact redundancy but bounded
+  at ~7 % node time. Fresh matched-toolchain `bench --depth 16` (24,211,820
+  identical nodes, 3 alternating reps) median candidate/dev5 NPS **1.0289**
+  (candidate 0.4289–0.4654 M, dev5 0.4366–0.4450 M), inside noise; agrees with
+  exp-0030 E3. No bit-exact NPS step-change exists.
+- **Ranked hypotheses (3, all NOT JUSTIFIED for games):** (1) bit-exact
+  attack-set dedup / stable-sort ordering — ~+3–8 Elo ceiling, cannot reach
+  Gate 1; (2) decisive Tier-1 `BadCapturePruning` replication — foreclosed by
+  exp-0036 UCB +32.81 < +50 and an explicit frozen non-repeat rule; (3)
+  materially stronger evaluator with accuracy→strength link — highest gate
+  relevance but NOT YET TESTABLE. Missing evidence: fresh bullet-matched corpus
+  + frozen accuracy metric, matched-toolchain inference cost, and a pre-result
+  argument compatible with >= +75 Elo. `docs/DEV6_POWER_ANALYSIS.md`: the
+  binding constraint is the candidate, not sample size (~576 games reject +75).
+- **Validation / audit (integrity only, NOT strength):** Release portable build
+  from exact HEAD: `bench` `243f9a1c1ba5b36f`, depth16 `a14ab62224f837e5`,
+  depth12/params_abc `e45fa2ec2287eb41`; `ctest` 11/11 PASS; fresh ASan+UBSan
+  11/11 PASS (`benchmarks/dev6-baseline/exp0047_asan_ctest.txt`); all 17
+  experimental UCI switches `default false`; decision scripts reproduced
+  exp-0045 CLOSE and exp-0046 CLOSED_AS_INCONCLUSIVE; generic audits 44/0 PASS
+  ×2; SHA256SUMS 36 OK / 0 BAD over 4 bundles ×2 exports. Raw gprof evidence
+  `benchmarks/dev6-baseline/exp0047_gprof_{flat,callgraph}.txt`.
+- **Root cause / recurrence / audits:** the gate blocker is a >= +75 Elo
+  candidate, not infrastructure or power. Recurrence condition for launching a
+  game: a speculative switch presented as "the next hypothesis" without an
+  independently measured prior compatible with +75. REQUIRED FIX (applied):
+  a complete frozen prereg with §8 thresholds (NOT the +20 screen), 2 x 6,600
+  games, fresh disjoint suites, 0-forfeit validity, invalid-run discard, NO
+  authorised retry, single-run compute bound, independent raw-JSONL decision
+  script, and an EMPTY Activation Record that must be filled before any game.
+- **Continue / abandon / revisit:** CONTINUE the mission (ACTIVE / NOT
+  COMPLETE). Do NOT claim a gate pass, do NOT pool or reinterpret exp-0045/0046,
+  do NOT re-run exp-0036 or the +33 control, do NOT launch a strength game
+  until the four activation conditions are committed. Gates 1/4 UNMET, 2
+  direction-supported, 3 PASS. No strength claim / PR / merge / tag / release /
+  deploy / dev7.
