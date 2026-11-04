@@ -1839,7 +1839,7 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
   tree, `tier1-dispatch.json` UNCHANGED (exp0046 export attempt 25). Report
   `docs/DEV6_EXP0047_INVESTIGATION_REPORT.md`; frozen prereg
   `docs/DEV6_PREREG_EXP0047.md` (**DORMANT / NOT ACTIVATED**).
-  Report SHA-256 `03ec9a487885705f147ade749317faa85e237fccb23a5e4bcf5ccd292a9da47a` (content-hashed before this line was appended). No PGN, JSONL,
+  Report v1 SHA-256 `03ec9a487885705f147ade749317faa85e237fccb23a5e4bcf5ccd292a9da47a`; v2 (with commit/CI provenance) SHA-256 `93fb04f38786865b119c6e4995ee4bd5603126070add8e191f91244cef2c9f7c`. No PGN, JSONL,
   plan, suite, implementation or benchmark run produced. ZERO strength games.
 - **Classification / outcome:** **INSUFFICIENT EVIDENCE TO JUSTIFY A STRENGTH
   EXPERIMENT** — deliberately NOT a failed hypothesis, NOT a gate pass, NOT a

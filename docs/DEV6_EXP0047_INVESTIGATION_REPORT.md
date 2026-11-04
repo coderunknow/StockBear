@@ -1,9 +1,10 @@
 # StockBear DEV6 — Evidence-driven research and next experiment (verifiable report)
 
 **Date:** 2026-11-04 (Asia/Bangkok) · **Branch:** `arena/3e6dd5b6-stockbear`
-**Starting and ending HEAD:** `d07294d7dbd3a88e5b673f048aeb6a7b1acc1dbf` (no
-engine source change made in this turn) · **CI on that SHA:** `41826927521`
-SUCCESS · **Mission: ACTIVE / NOT COMPLETE**
+**Starting HEAD:** `d07294d7dbd3a88e5b673f048aeb6a7b1acc1dbf` · **CI on that
+SHA:** `41826927521` SUCCESS · **no engine source change in this turn** ·
+**investigation documentation commit:** `c3a612ba0020fd9074088ab879f19147d2ed3ac0`
+with CI `41834179465` SUCCESS (9/9 jobs) · **Mission: ACTIVE / NOT COMPLETE**
 
 **Headline finding:** after the full authoritative read-back, a fresh gprof
 profile of the actual source, a matched-toolchain NPS measurement, and a
@@ -447,3 +448,19 @@ preregistration. At activation, the Activation Record (its §13) must re-record
 this hash together with the activation commit SHA and the plan/suite hashes;
 any byte change to the prereg after the first benchmark game requires a new
 experiment ID.
+
+
+## 13. Commit / CI provenance (added after the investigation commit)
+
+- Investigation commit `c3a612ba0020fd9074088ab879f19147d2ed3ac0`, pushed to
+  `origin/arena/3e6dd5b6-stockbear`; contains ONLY documentation, raw gprof
+  evidence and append-only log entries (no `src/`, `scripts/`,
+  `.github/workflows/` or `tier1-dispatch.json` change). Verified with
+  `git diff --name-only d07294d..c3a612b`.
+- CI run `41834179465` on that exact commit: **completed success**, 9/9 jobs
+  (Linux Clang Release, Linux ASan+UBSan, Linux ThreadSanitizer, Minimum CMake
+  3.16, Independent reference/statistics/dead positions, ubuntu-22.04
+  Debug/Release, windows-2022 Debug/Release).
+- The frozen `docs/DEV6_PREREG_EXP0047.md` SHA-256 in §12 is unchanged and is
+  DORMANT; its Activation Record is still empty. This provenance section does
+  not authorise any game.
