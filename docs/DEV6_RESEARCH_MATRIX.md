@@ -545,3 +545,31 @@ larger bullet-matched eval corpus with an explicit accuracy-to-strength link,
 and move-ordering rules with genuinely NEW mechanisms (exp-0044's specific
 switch is abandoned). Time allocation stays REJECT. No direction is claimed
 exhausted, no result terminates the mission, no strength claim is made.
+
+
+## exp-0045 original run INVALID MEASUREMENT -> bounded valid retry
+
+Run `41817228668` / export `41818409701` / CI `41817228408` SUCCESS, source
+`e41a0b18…`, prereg `0abf66836ed0ad6d…`, 4 isolated VMs, 9/9 SHA256SUMS OK in
+each of 4 bundles, 44 stored values / 0 issues AUDIT PASS — but batchB had ONE
+`TIME_FORFEIT` (game 272, 14.1 ms move, ply 118, `remaining_white_ms=-5.01`).
+The FROZEN prereg §5 zero-forfeit rule in ANY job is ENFORCED: **INVALID
+MEASUREMENT**, all Elo DISCARDED, no strength inference, and the generic
+audit's "CLOSE" label is explicitly NOT usable (`clean=False`). Stage-0 and
+candidate nulls were clean, batchA clean, 0 illegal/engine failures. exp-0043
+and exp-0044 recorded 0 forfeits across ~4,000 games each at the same control,
+so this is a rare long-game isolated-VM timing outlier, not a mechanism effect;
+it favoured the candidate arm and could not manufacture a positive result.
+
+Per the mission's TECHNICAL FAILURE rule, `docs/DEV6_PREREG_EXP0045_RETRY.md`
+(SHA `2172063e22554df9…`) was frozen BEFORE any retry game: diagnose (done),
+no out-of-scope repair to the frozen 40+4 ms control, and ONE valid NEW run of
+the identical science with entirely fresh data — new experiment id
+`exp0045_retry`, new dispatch attempt 22, 1,400 fresh disjoint openings seed
+`2026120601` (ZERO overlap / 37,641 earlier positions in 140 files), never
+pooled with the invalid run. A BOUNDED RETRY BUDGET closes exp-0045 as
+TECHNICALLY UNRESOLVABLE if the retry also has any forfeit. No threshold was
+weakened; the zero-forfeit rule was enforced. The bit-exact dead-eval
+hypothesis remains UNRESOLVED (no Elo may be quoted from the invalid run), and
+Gates 1 and 4 remain UNMET. Mission ACTIVE / NOT COMPLETE; no direction is
+claimed exhausted.

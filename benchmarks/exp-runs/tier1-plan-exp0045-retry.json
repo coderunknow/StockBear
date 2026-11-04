@@ -1,0 +1,130 @@
+{
+  "experiment_id": "exp0045_retry",
+  "frozen_before_evaluation_games": true,
+  "retry_prereg": "docs/DEV6_PREREG_EXP0045_RETRY.md",
+  "retry_prereg_sha256": "2172063e22554df99064c54e0820b70db854e2339b0d5e87ccc321b6ca0bce60",
+  "no_pooling_with_invalid_run": "41817228668",
+  "prereg": "docs/DEV6_PREREG_EXP0045.md",
+  "control": "FIXED TIME 40+4 ms; never --nodes",
+  "jobs": [
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0045.md",
+      "retry_prereg": "docs/DEV6_PREREG_EXP0045_RETRY.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0045-retry-stage0",
+      "games": 400,
+      "seed": 2026120610,
+      "openings": "benchmarks/positions/openings_exp0045retry_stage0.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": true,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Retry Stage-0 validity null (0 forfeits required)"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0045.md",
+      "retry_prereg": "docs/DEV6_PREREG_EXP0045_RETRY.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0045-retry-batchA",
+      "games": 1000,
+      "seed": 2026120611,
+      "openings": "benchmarks/positions/openings_exp0045retry_batchA.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "SkipDeadTTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Retry batchA; never pooled with invalid run 41817228668"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0045.md",
+      "retry_prereg": "docs/DEV6_PREREG_EXP0045_RETRY.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0045-retry-batchB",
+      "games": 1000,
+      "seed": 2026120612,
+      "openings": "benchmarks/positions/openings_exp0045retry_batchB.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "SkipDeadTTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Retry batchB; independent fresh disjoint suite"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0045.md",
+      "retry_prereg": "docs/DEV6_PREREG_EXP0045_RETRY.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0045-retry-null",
+      "games": 400,
+      "seed": 2026120613,
+      "openings": "benchmarks/positions/openings_exp0045retry_null.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "SkipDeadTTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Retry candidate-options null (CI must include 0)"
+    }
+  ]
+}

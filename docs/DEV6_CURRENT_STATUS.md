@@ -19,7 +19,8 @@ gate is unmet. 3,000 Elo is a long-term strategic target only; no absolute,
 universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
 
 ## Experiment status vs mission status
-- **Experiment status: exp-0045 LAUNCHED / EXECUTING.** exp-0044 is
+- **Experiment status: exp-0045 original run INVALID MEASUREMENT;
+  bounded valid RETRY EXECUTING.** exp-0044 is
   CLOSED AS INCONCLUSIVE / ABANDONED (screen + bounded confirmation);
   exp-0043, exp-0042,
   exp-0041, exp-0038, exp-0037 and exp-0036 are CLOSED; exp-0039 and exp-0040
@@ -29,16 +30,21 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   the supported dispatch mechanism works; the earlier export-only dispatch and
   two transient GitHub `Internal Server Error` push rejections were ordinary
   transient research states, both resolved by a plain retry.
-- **Exact current source SHA:** `e41a0b18b4e522f57196e2834c8937f8c55019e8` (the exp-0045 dispatch
-  commit, pinned by `source_sha=HEAD`).
+- **Exact current source SHA:** `__EXP0045_RETRY_SOURCE_SHA__` (the exp-0045 bounded retry
+  dispatch commit, pinned by `source_sha=HEAD`). The original exp-0045 run's
+  source was `e41a0b18b4e522f57196e2834c8937f8c55019e8`.
 - **Exact source SHAs:** exp-0044 screen `2ae4e68fc882991c3484eede22a4622f713da5e2`,
   bounded confirmation `0691b9affd36006425ac23605f4a0cc8922a55bb`, exp-0043
   `5ea5ad21348f39dabad1da3e8cb098f798087295`. Current branch HEAD is recorded
   in `AGENTS_LOG.md`; all were pinned by `source_sha=HEAD` in their dispatch. Local HEAD and remote head are recorded
   in `AGENTS_LOG.md`; working tree is clean.
-- **Reproducible benchmark evidence:** exp-0045 is EXECUTING (no results
-  yet; frozen prereg `0abf66836ed0ad6d…`, plan, fresh suites and dispatch
-  attempt 20). exp-0044 screen `41812595433` /
+- **Reproducible benchmark evidence:** exp-0045 original run `41817228668` /
+  export `41818409701` / CI `41817228408` SUCCESS but **INVALID MEASUREMENT**
+  (1 TIME_FORFEIT in batchB game 272; frozen zero-forfeit rule ENFORCED, all
+  its Elo DISCARDED, audit `clean=False`, 44 stored values / 0 issues). A
+  bounded valid retry is EXECUTING (frozen
+  `DEV6_PREREG_EXP0045_RETRY.md` SHA `2172063e22554df9…`, fresh suites,
+  attempt 22); the invalid run is NEVER pooled. exp-0044 screen `41812595433` /
   export `41813751266` / CI `41812595476` SUCCESS, `+3.3140 [−7.2389,+13.8730]`
   INCONCLUSIVE; bounded confirmation `41814069967` / export (retry)
   `41815428066` / CI `41814069925` SUCCESS, `+13.5977 [+2.1746,+25.0503]`,
@@ -108,6 +114,35 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   mechanism-live diagnostic proved LIVE on 23/24 suite positions at 40+4 ms
   (a real negative, not inert); +13.9 % fixed-depth node overhead is recorded
   but is NOT strength evidence. Full report `docs/DEV6_EXP0043_REPORT.md`.
+
+## exp-0045 original run INVALID; bounded valid retry EXECUTING
+The original exp-0045 run (`41817228668`, source
+`e41a0b18b4e522f57196e2834c8937f8c55019e8`, prereg `0abf66836ed0ad6d…`, export
+`41818409701`, CI `41817228408`) completed all four isolated VMs SUCCESS,
+9/9 SHA256SUMS OK in each of 4 bundles and 44/0 AUDIT PASS, but batchB had ONE
+`TIME_FORFEIT` (game 272, 14.1 ms move at ply 118, `remaining_white_ms=-5.01`
+in a long game). The FROZEN prereg §5 requires 0 forfeits in ANY job, so the
+run is **INVALID MEASUREMENT**: all Elo/CIs/W-D-L/LLR and the generic audit's
+"CLOSE" label are DISCARDED, with NO strength inference. `clean=False` is the
+correct audit signal. Stage-0 validity null, candidate-options null, batchA and
+all illegal/engine_failure counts were clean. Diagnosis: a rare long-game clock
+exhaustion on one isolated VM (1/998 games; exp-0043/0044 had 0 forfeits at the
+same control), not a systematic mechanism effect; it benefited the candidate
+arm and so could not manufacture a positive result. NO repair to the frozen
+40+4 ms control, clocks, binary, switch, time manager or driver is authorised.
+
+`docs/DEV6_PREREG_EXP0045_RETRY.md` (SHA
+`2172063e22554df99064c54e0820b70db854e2339b0d5e87ccc321b6ca0bce60`) was frozen
+BEFORE any retry game: a valid NEW run with the IDENTICAL mechanism, switch,
+build flags, options, FIXED TIME 40+4 ms control, four isolated-VM jobs,
+statistics and decision thresholds; NEW `experiment_id=exp0045_retry`, NEW
+dispatch attempt 22, NEW seeds and 1,400 FRESH DISJOINT openings (seed
+`2026120601`, ZERO overlap with 37,641 earlier positions / 140 files).
+The invalid run is NEVER pooled or reused. Frozen ADVANCE >= +20 AND LCB > 0
+AND clean; CLOSE if UCB < +10 OR point <= 0; otherwise CLOSED AS INCONCLUSIVE
+(original single-run compute bound). BOUNDED RETRY BUDGET: exactly one retry;
+if it ALSO has any forfeit/illegal/failure, exp-0045 CLOSES AS TECHNICALLY
+UNRESOLVABLE with no strength inference. Gates 1 and 4 remain UNMET.
 
 ## Executing: exp-0045 (Tier-1 fixed-time, isolated VMs)
 - **Why selected:** exp-0044 is closed, and the next ranked unexecuted

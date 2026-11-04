@@ -824,3 +824,33 @@ AND LCB>0 AND both batches >= −5 AND both null CIs include 0 AND clean; CLOSE
 if UCB<+10 OR point<=0; otherwise CLOSED AS INCONCLUSIVE / ABANDONED. Gates 1
 and 4 remain UNMET; no strength claim, no bundle, no default change, no
 PR/merge/tag/release/deploy/dev7.
+
+## exp-0045 original run INVALID MEASUREMENT; bounded valid retry launched (2026-11-04)
+Run `41817228668` / export `41818409701` / CI `41817228408` SUCCESS on source
+`e41a0b18b4e522f57196e2834c8937f8c55019e8`, frozen prereg `0abf66836ed0ad6d…`;
+4 isolated VMs, 9/9 SHA256SUMS OK in each of 4 bundles, 44 stored values / 0
+issues AUDIT PASS. But batchB `summary.json` has `time_forfeit=1`: game 272,
+14.1 ms move at ply 118, `remaining_white_ms=-5.01`, long game, clock nearly
+exhausted. FROZEN prereg §5 requires 0 forfeits in ANY job => **INVALID
+MEASUREMENT**. ALL Elo/CIs/W-D-L/LLR and the generic audit's "CLOSE" label are
+DISCARDED; `clean=False` is the correct signal; NO strength inference. Stage-0
+validity null, candidate-options null, batchA and all illegal/engine_failure
+counts were clean. Diagnosis: rare isolated-VM long-game clock outlier (1/998;
+exp-0043/0044 had 0 forfeits at the same control), not a systematic mechanism
+effect; it favoured the candidate and could not manufacture a positive. NO
+repair to the frozen 40+4 ms control, clocks, binary, switch, time manager or
+driver is authorised.
+
+`docs/DEV6_PREREG_EXP0045_RETRY.md` (SHA
+`2172063e22554df99064c54e0820b70db854e2339b0d5e87ccc321b6ca0bce60`) frozen
+BEFORE any retry game: identical frozen science, NEW `exp0045_retry`, dispatch
+`mode=benchmark attempt=22`, `tier1-plan-exp0045-retry.json`, NEW seeds, 1,400
+fresh disjoint openings seed `2026120601` (ZERO overlap with 37,641 earlier
+positions in 140 files, generator `scripts/dev6_exp0045_retry_openings.py`).
+Invalid run `41817228668` NEVER pooled or reused. Frozen ADVANCE >= +20 AND
+LCB>0 AND clean; CLOSE if UCB<+10 OR point<=0; otherwise CLOSED AS
+INCONCLUSIVE. BOUNDED RETRY BUDGET: exactly one retry; a second forfeit closes
+exp-0045 AS TECHNICALLY UNRESOLVABLE with no strength inference. No threshold
+weakened (the zero-forfeit rule was ENFORCED). Gates 1 and 4 remain UNMET; no
+strength claim, no default change, no bundle, no PR/merge/tag/release/deploy/
+dev7. Mission ACTIVE / NOT COMPLETE.
