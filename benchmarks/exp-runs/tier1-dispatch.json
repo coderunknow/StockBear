@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0044_confirm",
   "source_sha": "HEAD",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0044-confirm.json",
-  "source_run_id": "",
-  "note": "Bounded confirmation mandated by frozen DEV6_PREREG_EXP0044.md section 6 after screen INCONCLUSIVE +3.3140 [-7.2389,+13.8730]. Fresh disjoint suites and frozen addendum committed in the SAME commit. NEVER pool with screen run 41812595433.",
-  "attempt": 17
+  "source_run_id": "41814069967",
+  "note": "Deliberate export of all four exp0044 bounded-confirmation Tier-1 artifacts from run 41814069967 for independent raw-game audit. NEVER pooled with screen 41812595433.",
+  "attempt": 18
 }
