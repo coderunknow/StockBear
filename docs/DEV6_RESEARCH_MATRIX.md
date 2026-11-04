@@ -180,3 +180,25 @@ replacement policy, bit-exact qsearch eval throughput (requires its OWN
 prereg, not a silent reuse of the abandoned exp-0038 cache), and a larger
 bullet-matched eval corpus / NNUE-with-accuracy-link. No direction is claimed
 exhausted. The mission is NOT terminated by any of these closures.
+
+## exp-0041 closure and re-ranking
+
+exp-0041 is a genuine Tier-1 40+4 ms result, not a proxy: Stage-0 validity
+PASS, null PASS, combined `−5.0635 [−15.1810, +5.0454]` on 1,995 games / 995
+clusters, independent audit 44/44 PASS with a seeded cluster bootstrap. It
+closed at the FROZEN UCB < +10 and point <= 0 rule. batchB `−12.5887` also
+fails the frozen "both batches >= −5" condition, so no ADVANCE and no bundle.
+`BadCaptureAllDepths` is ABANDONED; `BadCaptureMargin=100` stays frozen.
+
+Consequence for the ranking: three independent throughput/node-saving
+directions (portable flags, qlite, exp-0041) have now failed to convert to
+fixed-time strength. Downgrade ALL "delete more nodes" directions. Raise
+mechanisms that improve the ACCURACY of a decision at roughly the same node
+count: (1) singular/tactical extensions with a genuine re-search, (2) TT
+replacement / depth-preferred policy, (3) move-ordering accuracy
+(capture/continuation history with a fresh prereg, noting default-OFF dev4
+switches were previously negative), (4) a NEW frozen prereg for bit-exact
+qsearch `evaluate()` throughput, (5) a larger bullet-matched eval corpus with
+an explicit accuracy-to-strength link. Time allocation stays REJECT on the
+exp-0040 evidence. No direction is claimed exhausted; the mission is NOT
+terminated by any closure. Gate 1 remains UNMET.

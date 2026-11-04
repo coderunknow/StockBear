@@ -180,9 +180,11 @@ def main():
                              null_ok and clean) else
               ("CLOSE" if (ucb < close_ucb or point <= 0)
                else "INCONCLUSIVE (more samples, same frozen conditions)"))
-        print(f"  decision_inputs: {json.dumps({'advance_point': advance_point,
-              'close_ucb': close_ucb, 'batches_ok': batches_ok,
-              'clean': clean}, sort_keys=True)}")
+        decision_inputs = {"advance_point": advance_point,
+                           "close_ucb": close_ucb,
+                           "batches_ok": batches_ok,
+                           "clean": clean}
+        print("  decision_inputs: " + json.dumps(decision_inputs, sort_keys=True))
         out = {
             "source_run_id": run_id,
             "combined": {"games": len(combined_scores), "wins": cw, "draws": cd,

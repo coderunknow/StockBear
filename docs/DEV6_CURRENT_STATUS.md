@@ -49,13 +49,29 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   live soft-budget increase (4 -> 6 ms) left the tree bit-identical because the
   55 %/70 % early stops dominate at 40+4 ms. No games spent, switch stays OFF.
 
-## Currently executing (results pending)
-- **exp-0041** losing-capture pruning at ALL remaining depths. Frozen prereg
+## Closed: exp-0041 (Tier-1 fixed-time, isolated VMs)
+- **exp-0041** losing-capture pruning at ALL remaining depths: frozen prereg
   `docs/DEV6_PREREG_EXP0041.md` (SHA `2f5c1b08…`), 1,400 fresh disjoint
-  openings, Tier-1 40+4 ms Stage-0 validity + two 1,000-game batches + null
-  on isolated VMs, dispatched in the same commit as the prereg. NO evaluation
-  result exists yet; the −42.1 % fixed-depth-12 node saving is profiling, NOT
-  strength evidence. Gate verdict above is unchanged.
+  openings, Stage-0 validity PASS (0 forfeits), null PASS, frozen combined
+  `−5.0635 [−15.1810, +5.0454]` on 1,995 games / 995 clusters, independent
+  audit 44/44 PASS. Closed at frozen UCB < +10 and point <= 0; ABANDONED, no
+  bundle, no retune, switch default OFF. The −42.1 % fixed-depth-12 node
+  saving was profiling and is NOT strength evidence. Full report
+  `docs/DEV6_EXP0041_REPORT.md`. Gate verdict above is unchanged.
+
+## Exact continuation state (for the next cycle)
+Branch `arena/3e6dd5b6-stockbear`; working tree clean; all default strength
+switches OFF; immutable dev5 binary/tag, `main`, and all historical artifacts
+untouched. Tier-1 dispatch file is at `mode=export`, attempt 8 (no benchmark
+will auto-run on the next push unless it is deliberately changed). Ranked
+unexecuted directions: singular/tactical extensions, TT replacement policy, a
+NEW frozen prereg for bit-exact qsearch eval throughput (never a silent reuse
+of the abandoned exp-0038 cache), and a larger bullet-matched eval corpus /
+NNUE-with-accuracy-link. Each must be frozen before any evaluation game, with
+a Stage-0 validity gate, two independent fresh suites, a null, and the
+frozen Gate-1 criteria unchanged. Gate 1 (+75 / LCB > +50) remains far away;
+a FRESH-measured bundle of validated mechanisms is only authorised by a
+frozen ADVANCE rule, never a post-hoc sum. Mission ACTIVE, NOT COMPLETE.
 
 
 ## Exact continuation state

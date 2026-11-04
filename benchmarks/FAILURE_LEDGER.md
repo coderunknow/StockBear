@@ -1347,3 +1347,39 @@ dead end). The switch remains default OFF so the profiling is reproducible.
 Methodological rule added: any future time-allocation candidate must FIRST
 demonstrate at 40+4 ms that it changes the search tree, before a tournament is
 spent. Next action: exp-0041 (frozen prereg, mechanism confirmed live).
+
+## exp-0041 — FINAL RESULT: CLOSED / ABANDONED at frozen UCB < +10 and point <= 0
+
+Exact source SHA `87f82854db525da05c5bc5bcc746dd4cf7014698`; frozen prereg
+SHA `2f5c1b08…`; packaged/tested binary SHA-256 recorded in
+`docs/DEV6_EXP0041_REPORT.md`; dev5 baseline `391cb50e…`. Tier-1 isolated VMs
+run `41782954038`, export `41784088471`, CI `41782954037` SUCCESS; 4/4
+SHA256SUMS 0 failures. FIXED TIME 40+4 ms, Hash16/Threads1/maxplies240, NO
+`--nodes`; same binary `BadCapturePruning=true,BadCaptureAllDepths=true` vs
+validated control `BadCapturePruning=true`; 1,400 fresh disjoint openings seed
+`2026112601`.
+
+Hypothesis: SEE < −100 captures (frozen `BadCaptureMargin=100`) are refuted at
+all remaining depths, not just depth <= 3, so extending the validated
+exp-0036 mechanism buys depth. Raw/audited results: Stage-0 validity null
+399 games `+6.9846 [−11.4958,+25.5046]`, 0 forfeits/illegal/UCI failures,
+CI includes 0 -> PASS. batchA 998 games 346/313/339
+`+2.4419 [−11.4054,+16.2969]`; batchB 997 games 322/316/359
+`−12.5887 [−27.3582,+2.1355]`; null 398 games 135/128/135
+`−1.7547 [−20.3714,+16.8518]` includes 0; FROZEN COMBINED 1,995 games
+668/629/698, score 0.4924812, `−5.0635 [−15.1810,+5.0454]`, 995 clusters.
+Independent raw-JSONL audit 44 stored values, 0 issues, AUDIT PASS;
+independent Elo-from-score −5.2250; seeded cluster bootstrap
+`[−15.0242,+5.0635]`.
+
+Why failed: unsuitable hypothesis / search-eval interaction, NOT an
+implementation defect (Release/ASan ctest 11/11, exact default-off
+signatures, 0 illegal/forfeit). Profiling proved the mechanism was LIVE
+(−42.1 % fixed-depth-12 nodes), but deleting SEE<−100 captures higher in the
+tree removes sound deep sacrifices / interpositions and destabilises ordering;
+the extra depth does not pay for the lost tactical accuracy. Decision: frozen
+§5 UCB `+5.0454 < +10` and point <= 0 -> CLOSE; no ADVANCE (point < +20,
+LCB < 0, batchB < −5), no bundle, no retune of the frozen margin, switch stays
+default OFF. ABANDONED. Next action: continue ranked directions and
+independent audits; see `docs/DEV6_CURRENT_STATUS.md`. No vague "optimization
+unsuccessful".

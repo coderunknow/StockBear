@@ -453,3 +453,14 @@ signatures, and a live −42.1 % fixed-depth-12 node diagnostic. Frozen
 `2f5c1b08ebd991f84e570b90afd48adcc7694f5d355beda492e1b6b18d98d392`), 1,400
 fresh disjoint openings (seed 2026112601) and Tier-1 40+4 ms screen dispatched.
 No results yet; no strength claim.
+
+## exp-0041 CLOSED (Tier-1 fixed-time, isolated VMs)
+
+Stage-0 validity PASS (0 forfeits, CI includes 0); null PASS; batchA
+`+2.4419 [−11.4054,+16.2969]`, batchB `−12.5887 [−27.3582,+2.1355]`, frozen
+combined `−5.0635 [−15.1810,+5.0454]` over 1,995 games / 995 clusters.
+Independent raw-game audit 44/44 AUDIT PASS with seeded cluster bootstrap.
+Frozen §5 UCB < +10 and point <= 0 -> CLOSED, ABANDONED, no bundle, no retune,
+`BadCaptureAllDepths` stays default OFF. Full provenance in
+`docs/DEV6_EXP0041_REPORT.md`. Gates unchanged: 1 UNMET, 2
+direction-supported, 3 PASS, 4 UNMET for a final candidate.

@@ -525,3 +525,19 @@ was a genuine interaction, not a wiring bug. exp-0041 deliberately applies
 this rule: its fixed-depth 12 diagnostic shows 757,239 -> 438,131 nodes
 (−42.1 %), so the mechanism is live before any evaluation game. Fixed-depth
 node counts are still NOT strength evidence; the Tier-1 40+4 ms screen is.
+
+### exp-0041 closure: node savings are not strength
+
+exp-0041 satisfied the new "mechanism-live" precondition (−42.1 % fixed-depth-
+12 nodes) and still produced `−5.06 [−15.18,+5.05]` Elo at 40+4 ms. This is
+the third independent confirmation in this project that throughput proxies
+(portable flags, qlite, exp-0041) do not predict fixed-time strength. The
+architectural lesson is that extending a validated shallow pruning decision
+higher in the tree is qualitatively different from applying it shallowly:
+at depth <= 3 a SEE<−100 capture is nearly always refuted, but near the root
+it can be a sound sacrifice or a necessary interposition, and removing it also
+changes move ordering for the whole subtree. Future search work should prefer
+mechanisms that IMPROVE the accuracy of a decision at the same node count
+(e.g. better move ordering, singular verification with a genuine re-search)
+over mechanisms that simply delete more nodes. Do not tune the frozen
+`BadCaptureMargin=100` on these results.

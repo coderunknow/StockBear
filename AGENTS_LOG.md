@@ -691,3 +691,22 @@ was made generic AFTER the run but BEFORE any exp-0041 result was read; its
 frozen thresholds for exp-0041 are ADVANCE point>=+20/LCB>0/both batches>=-5
 and CLOSE UCB<+10 or point<=0, taken verbatim from
 `docs/DEV6_PREREG_EXP0041.md` §5. No exp-0041 result has been inspected yet.
+
+### exp-0041 CLOSED; continuation state
+
+Tier-1 `41782954038` on source `87f82854…` (CI `41782954037` SUCCESS) produced
+Stage-0 validity PASS, null PASS, batchA `+2.4419`, batchB `−12.5887`, frozen
+combined `−5.0635 [−15.1810,+5.0454]` over 1,995 games. Export `41784088471`
+mirrored four artifacts; local `sha256sum -c` 4/4, 0 failures. The generic
+independent audit (`scripts/dev6_exp0038_audit.py 41782954038 exp0041 20 10`)
+verified 44 stored values, AUDIT PASS, independent Elo-from-score −5.2250,
+seeded cluster bootstrap `[−15.0242,+5.0635]`. Frozen §5 UCB < +10 AND
+point <= 0 -> CLOSED, ABANDONED, no ADVANCE/bundle/retune; switch stays
+default OFF. Root cause: unsuitable hypothesis / search-eval interaction;
+−42.1 % fixed-depth node saving did not translate to fixed-time strength.
+`docs/DEV6_EXP0041_REPORT.md` is authoritative. Gates UNCHANGED: 1 UNMET /
+2 direction-supported / 3 PASS / 4 UNMET (no final candidate). Mission
+ACTIVE; no strength claim, no PR/merge/tag/release/deploy/dev7. The next
+ranked directions (singular/tactical extensions, TT replacement, a fresh
+bit-exact qsearch eval-throughput prereg, larger bullet-matched eval corpus)
+remain unexecuted and must each be frozen before any evaluation game.
