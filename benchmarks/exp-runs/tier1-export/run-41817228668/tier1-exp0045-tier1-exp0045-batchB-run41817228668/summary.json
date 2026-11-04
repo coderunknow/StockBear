@@ -1,0 +1,28 @@
+{
+  "job_id": "tier1-exp0045-batchB",
+  "experiment_id": "exp0045",
+  "games": 998,
+  "unadjudicated": 2,
+  "wins": 339,
+  "draws": 307,
+  "losses": 352,
+  "score": 0.4934869739478958,
+  "elo": -3.837296022402535,
+  "ci95": [
+    -17.588823592993233,
+    9.90221339348722
+  ],
+  "clusters": 498,
+  "terminations": {
+    "THREEFOLD_REPETITION": 281,
+    "CHECKMATE": 690,
+    "INSUFFICIENT_MATERIAL": 23,
+    "TIME_FORFEIT (StockBear 0.1.0-dev6, 14.1ms move)": 1,
+    "FIFTY_MOVES": 3,
+    "UNADJUDICATED_MAX_PLIES": 2
+  },
+  "time_forfeit": 1,
+  "illegal": 0,
+  "engine_failure": 0,
+  "independent_elo_from_score": -4.525970037355739
+}
