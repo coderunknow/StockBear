@@ -13,6 +13,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <thread>
+#include <iostream>
 
 namespace stockbear {
 namespace {
@@ -42,6 +43,15 @@ constexpr int MaxPenalisedQuiets = 24;
 constexpr int RazorMargin[4] = {0, 125, 175, 300};
 // exp-0034: frozen SEE margin for bad-capture pruning (NOT tuned).
 constexpr int BadCaptureMargin = 100;
+// exp-0043 FROZEN constants (BEFORE any result). Chosen ONLY from the pre-result mechanism-live /
+// overhead diagnostic (never from Elo); see docs/DEV6_PREREG_EXP0043.md §3.
+constexpr int SingularMinDepth = 3;        // live at the 40+4 ms depth 5-6 tree
+constexpr int SingularDepthSlack = 3;      // TT evidence up to 3 plies shallower
+constexpr int SingularMargin = 50;         // cp above beta required
+constexpr int MaxSingularExtensions = 2;   // hard per-path cap
+#ifdef SB_SINGULAR_DEBUG
+static std::uint64_t singular_triggers = 0, singular_extensions = 0;
+#endif
 // exp-0037: frozen ProbCut margin and reduced depth (NOT tuned on any suite).
 constexpr int ProbCutMargin = 200;
 constexpr int ProbCutReducedDepth = 4;
@@ -454,11 +464,36 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
     // still stored under the reduced depth.
     if (params_.iir && hashMove == MOVE_NONE && depth >= 4) --depth;
 
+    // exp-0043 (frozen before results): TT-informed singular extension. A TT
+    // lower bound found at nearly the same depth and well above beta means all
+    // alternatives failed to reach that value in the previous iteration: the
+    // hash move is singular. Because the TT cutoff above has already handled
+    // proven cutoffs, any surviving lower bound here is shallower than `depth`.
+    // Unlike ProbCut (exp-0037) this spends NO verification subtree; the only
+    // cost is the extra ply of the hash move itself. Guarded away from PV
+    // nodes, checks, mate windows and paths that already used the extension
+    // budget, and never applied to mate scores.
+    int singularExt = 0;
+    if (params_.ttSingularExtension && !pvNode && !inCheck &&
+        depth >= SingularMinDepth && hashMove != MOVE_NONE &&
+        entry != nullptr && entry->bound == Bound::Lower &&
+        entry->depth >= depth - SingularDepthSlack &&
+        singularExtensions_ < MaxSingularExtensions) {
+        const int ttValue = TranspositionTable::value_from_table(entry->value, ply);
+        if (std::abs(ttValue) < MATE_BOUND && ttValue >= beta + SingularMargin) {
+            singularExt = 1;
+#ifdef SB_SINGULAR_DEBUG
+            ++singular_triggers;
+#endif
+        }
+    }
+    const bool mateWindow = std::abs(beta) >= MATE_BOUND || std::abs(alpha) >= MATE_BOUND;
+    if (mateWindow) singularExt = 0;
+
     int staticEval = evaluate(pos);
     if (params_.ttEval && entry != nullptr && !inCheck && entry->eval != VALUE_NONE)
         staticEval = int(entry->eval);
     evalStack_[ply] = staticEval;
-    const bool mateWindow = std::abs(beta) >= MATE_BOUND || std::abs(alpha) >= MATE_BOUND;
     // "Improving": is the side to move better off than it was two plies ago?
     // Used only to widen or narrow heuristic margins, never to bound a proven
     // value, so a wrong guess costs strength at worst and never correctness.
@@ -587,9 +622,20 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
                                          : 0;
         pos.make_move(m);
         moveStack_[ply] = m;
+        // exp-0043: the hash move is always ordered first. Extend it by exactly
+        // one ply when the TT evidence above says it is singular. The counter
+        // is restored immediately so the cap is per-path, not global.
+        const int hashExt = (singularExt != 0 && isHash && moveCount == 0) ? 1 : 0;
+        if (hashExt) {
+            ++singularExtensions_;
+#ifdef SB_SINGULAR_DEBUG
+            ++singular_extensions;
+#endif
+        }
         int value;
         if (moveCount == 0) {
-            value = -negamax(pos, depth - 1, -beta, -alpha, ply + 1, pvNode, extensions, true);
+            value = -negamax(pos, depth - 1 + hashExt, -beta, -alpha, ply + 1, pvNode,
+                             extensions, true);
         } else {
             int reduction = 0;
             if (lmrCandidate && !check && params_.modernLmr) {
@@ -620,6 +666,7 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
                                  true);
         }
         pos.unmake_move(m);
+        if (hashExt) --singularExtensions_;
         if (aborted_) return 0;
         ++moveCount;
 
@@ -742,6 +789,10 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
         for (auto& b : a) std::fill(std::begin(b), std::end(b), 0);
     std::fill(std::begin(moveStack_), std::end(moveStack_), MOVE_NONE);
     std::fill_n(qcache_.get(), QCacheSlots, QCacheEntry{});
+    singularExtensions_ = 0;
+#ifdef SB_SINGULAR_DEBUG
+    singular_triggers = singular_extensions = 0;
+#endif
     pvLines_.clear();
     tt_.new_search();
     // The table context separates this search's root history from anything
@@ -896,6 +947,12 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
     result.timeMs = result.timeUs / 1000;
     result.hashfull = tt_.hashfull();
     result.interrupted = aborted_;
+#ifdef SB_SINGULAR_DEBUG
+    std::cerr << "SINGULARDEBUG switches=" << int(params_.ttSingularExtension)
+              << " triggers=" << singular_triggers
+              << " extensions=" << singular_extensions
+              << " nodes=" << nodes_ << std::endl;
+#endif
     return result;
 }
 }

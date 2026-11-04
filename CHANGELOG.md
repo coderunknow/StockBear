@@ -502,3 +502,49 @@ forbids it). Frozen rules -> CLOSED, ABANDONED, no ADVANCE/bundle/retune,
 `MaxGainDelta` stays default OFF, `deltaMargin=200` frozen. Full provenance
 in `docs/DEV6_EXP0042_REPORT.md`. Gates unchanged: 1 UNMET, 2
 direction-supported, 3 PASS, 4 UNMET for a final candidate.
+
+## exp-0043 launched — TT-evidence singular extension (2026-11-04)
+After exp-0042 CLOSED/ABANDONED (screen `+2.6110 [−7.9556,+13.1825]`
+INCONCLUSIVE, bounded confirmation `−10.8281 [−21.8567,+0.1787]` CLOSE, NEVER
+pooled), the mission remains ACTIVE/NOT COMPLETE. The post-exp-0042 rank-1
+direction is now executing WITHOUT re-running or modifying exp0042, reusing
+confirmation data, bypassing preregistration or weakening gates.
+
+Mechanism: `SearchParams::ttSingularExtension=false`; in `negamax` a
+slightly-shallower TT LOWER bound >= beta + 50 cp at depth >= 3 marks the
+always-first hash move singular, and that ONE move is searched a ply deeper.
+`MaxSingularExtensions=2` is path-scoped via a counter restored on every
+return; `SingularDepthSlack=3`. NO verification subtree (exp-0037 CLOSED at
+`+3.7766 [−9.3368,+16.9008]`), NO stand-pat rewrite, NO new qsearch pruning
+rule, NO default-ON feature disabled. The canonical genuine re-search variant
+is DEFERRED and the deviation is DECLARED IN ADVANCE in the prereg.
+
+Frozen before any evaluation game: `docs/DEV6_PREREG_EXP0043.md` (SHA
+`e9fe40f053c9f479835c05efc3bf592547024090c1a315281ec727f0096f31dc`),
+`tier1-plan-exp0043.json` (4 jobs), `scripts/dev6_exp0043_openings.py` and
+1,400 fresh disjoint openings (seed `2026120201`, ZERO overlap with 32,041
+earlier positions in 120 files, four disjoint slices), and dispatch
+`mode=benchmark experiment_id=exp0043 attempt=13`. All committed in the SAME
+commit as the dispatch. Default-off bit-exact signatures
+`243f9a1c1ba5b36f` / `a14ab62224f837e5` / `e45fa2ec2287eb41`, Release ctest
+11/11, ASan+UBSan ctest 11/11 (`exp0043_asan_ctest.log`), UCI default false.
+
+MANDATORY pre-result mechanism-live/overhead diagnostic from the FROZEN
+source (instrumented `SB_SINGULAR_DEBUG` build, real suite positions):
+fixed depth 10 over 16 positions OFF 2,655,145 nodes ON 3,024,895 nodes
+(+13.9 % overhead), 15,000 triggers / 8,072 extensions; FIXED TIME 40+4 ms
+over 24 positions x 2 repeats OFF 222,636/217,259 nodes ON 218,959/225,368
+nodes, median depth 6 both, 1,093/1,092 triggers and 548/516 extensions,
+LIVE on 23/24 positions. A startpos `go depth 12` probe found 0 triggers;
+suite positions are the preregistered probe. These are VALIDITY/overhead
+checks, NOT strength evidence.
+
+Design: FIXED TIME 40+4 ms, Hash16/Threads1/240 plies, never `--nodes`;
+Stage-0 validity null 400 games (0 forfeits required), candidate-options null
+400 games, batchA/batchB 1,000 games each on independent fresh suites;
+combined frozen before the run, independent raw-JSONL audit, 4 isolated VMs,
+exact packaged tested binary. Frozen ADVANCE >= +20 point AND LCB > 0 AND
+both batches >= −5 AND both null CIs include 0 AND 0 failures; CLOSE if
+UCB < +10 OR point <= 0; INCONCLUSIVE -> ONE bounded fresh confirmation,
+NEVER pooled. Gates 1 (+75/LCB>+50) and 4 remain UNMET; no strength claim,
+no bundle, no default change, no PR/merge/tag/release/deploy/dev7.

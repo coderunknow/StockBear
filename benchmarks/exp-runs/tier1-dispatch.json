@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0042_confirm",
+  "mode": "benchmark",
+  "experiment_id": "exp0043",
   "source_sha": "HEAD",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0042-confirm.json",
-  "source_run_id": "41804818965",
-  "note": "Deliberate export of all four exp0042 bounded-confirmation Tier-1 artifacts for independent raw-game audit.",
-  "attempt": 12
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0043.json",
+  "source_run_id": "",
+  "note": "Launch exp-0043 TT-evidence singular extension: frozen prereg, plan, fresh disjoint suites and mechanism-live/overhead diagnostic committed in the SAME commit as this dispatch. Do not reuse or modify closed exp0042.",
+  "attempt": 13
 }

@@ -256,3 +256,69 @@ sized from the power analysis (a +3-8 Elo NPS effect is NOT detectable with
 accuracy-to-strength link. Gate 1 (+75 / LCB > +50) remains far away; no
 direction is claimed exhausted, no result terminates the mission, and no
 strength claim is made.
+
+
+## exp-0043 is the executing direction (post-exp-0042 rank 1)
+
+exp-0042 CLOSED/ABANDONED after a screen `+2.6110 [−7.9556,+13.1825]` and an
+independent bounded confirmation `−10.8281 [−21.8567,+0.1787]` (NEVER pooled).
+With exp-0041 and exp-0042 both failing, the family "delete or re-decide
+quiescence nodes" is DOWNGRADED: stand-pat values are load-bearing (consistent
+with the qlite rejection). The first ranked unexecuted direction is therefore
+now executing: **singular/tactical extensions**, with the mandatory
+mechanism-live and overhead diagnostic demanded after exp-0037.
+
+`docs/DEV6_PREREG_EXP0043.md` (SHA `e9fe40f053c9f4798…`) freezes a
+**TT-evidence singular extension with NO verification subtree**. Canonical
+singular extensions verify singularity by re-searching alternatives; exp-0037
+(ProbCut) spent a verification subtree per candidate node and CLOSED at
+`+3.7766 [−9.3368,+16.9008]`, so repeating it unchanged would repeat a
+recorded negative direction. exp-0043 instead uses evidence ALREADY in the TT:
+a slightly-shallower lower bound well above beta implies every alternative
+failed on the previous iteration, so the (always first-ordered) hash move is
+searched one ply deeper. The deviation from the matrix's "genuine re-search"
+wording is DECLARED IN ADVANCE in the prereg; the canonical re-search variant
+is deferred, not abandoned. This changes WHICH MAIN-SEARCH moves get an extra
+ply: it rewrites no stand-pat value, adds no lossy qsearch rule and disables
+no default-ON pruning/extension. Genuinely new mechanism, not a parameter
+change.
+
+Mandatory pre-result diagnostics from the FROZEN source (instrumented
+`SB_SINGULAR_DEBUG` build, real exp-0043 suite positions):
+- fixed depth 10, 16 positions: OFF 2,655,145 nodes, ON 3,024,895 nodes
+  (**+13.9 % overhead**), 15,000 triggers / 8,072 applied extensions;
+- FIXED TIME 40+4 ms, 24 positions × 2 repeats: OFF 222,636 / 217,259 nodes,
+  ON 218,959 / 225,368 nodes, median completed depth 6 for both,
+  1,093 / 1,092 triggers and 548 / 516 extensions, LIVE on 23/24 positions.
+
+So the switch demonstrably changes the tree at the EXACT Tier-1 control, at a
+bounded cost and without losing completed depth. The earlier `go depth 12`
+startpos probe found 0 triggers; suite positions are the preregistered probe.
+Fixed-depth/node proxies are recorded three times as MISLEADING here, so these
+numbers are a VALIDITY and overhead check only — a real 40+4 ms Tier-1 screen
+decides. Frozen constants (chosen from liveness/overhead, NEVER from Elo):
+`SingularMinDepth=3`, `SingularDepthSlack=3`, `SingularMargin=50`,
+`MaxSingularExtensions=2`; no retuning after results. 1,400 fresh openings,
+seed `2026120201`, ZERO overlap with 32,041 earlier positions in 120 files,
+four disjoint slices; Stage-0 validity null, candidate-options null, two
+independent 1,000-game batches, isolated VMs, independent raw-JSONL audit.
+
+Expected upside +5..30 Elo; complexity medium (per-path extension counter
+restored on every return); regression risk medium (stale TT evidence, extra
+plies consuming the 4 ms increment, ordering/TT-replacement interactions);
+statistical detectability good with 2,000 paired games. Gate 1 (+75 / LCB > +50)
+remains far away; a FRESH-measured bundle of validated mechanisms, never a
+post-hoc sum, is still the only credible route and is authorised only by a
+frozen ADVANCE rule.
+
+Remaining ranked unexecuted directions: canonical singular extension with a
+genuine (carefully budgeted) re-search — only after exp-0043 closes and the
+overhead budget is re-measured; move-ordering accuracy that does NOT rewrite
+stand-pat values; TT replacement/depth policy — PROFILE FIRST, a 16 MB TT is
+far from full at ~10k-30k nodes/move and is likely inert at 40+4 ms; a NEW
+frozen prereg for bit-exact qsearch `evaluate()` throughput sized from the
+power analysis (+3-8 Elo is NOT detectable with 2,000 games; never a silent
+reuse of the abandoned exp-0038 cache); a larger bullet-matched eval corpus
+with an explicit accuracy-to-strength link. Time allocation stays REJECT.
+No direction is claimed exhausted, no result terminates the mission, and no
+strength claim is made.

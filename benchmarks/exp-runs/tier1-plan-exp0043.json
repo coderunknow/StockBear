@@ -1,0 +1,125 @@
+{
+  "experiment_id": "exp0043",
+  "frozen_before_evaluation_games": true,
+  "prereg": "docs/DEV6_PREREG_EXP0043.md",
+  "prereg_sha256": "e9fe40f053c9f479835c05efc3bf592547024090c1a315281ec727f0096f31dc",
+  "control": "FIXED TIME 40+4 ms; never --nodes",
+  "jobs": [
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0043.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0043-stage0",
+      "games": 400,
+      "seed": 2026120200,
+      "openings": "benchmarks/positions/openings_exp0043_stage0.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": true,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Stage-0 validity null (0 forfeits required)"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0043.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0043-batchA",
+      "games": 1000,
+      "seed": 2026120201,
+      "openings": "benchmarks/positions/openings_exp0043_batchA.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "TTSingularExtension=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Frozen batchA; single default-off switch"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0043.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0043-batchB",
+      "games": 1000,
+      "seed": 2026120202,
+      "openings": "benchmarks/positions/openings_exp0043_batchB.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "TTSingularExtension=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Frozen batchB; independent fresh disjoint suite"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0043.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0043-null",
+      "games": 400,
+      "seed": 2026120203,
+      "openings": "benchmarks/positions/openings_exp0043_null.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "TTSingularExtension=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "TTSingularExtension=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Null with candidate options on both sides (CI must include 0)"
+    }
+  ]
+}

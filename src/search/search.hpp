@@ -118,6 +118,13 @@ struct SearchParams {
     // than the fixed "assume a queen" bound. Frozen deltaMargin=200 unchanged,
     // original conservative check retained. See docs/DEV6_PREREG_EXP0042.md.
     bool maxGainDelta = false;
+    // --- dev6 exp-0043 (default off; isolated same-binary ablation) ---------
+    // TT-informed singular extension: a slightly-shallower TT lower bound far
+    // above beta is evidence that the hash move alone beat beta in the previous
+    // iteration, so search that move one ply deeper. NO verification subtree
+    // (exp-0037 measured verification overhead is fatal at 40+4 ms).
+    // Frozen in docs/DEV6_PREREG_EXP0043.md.
+    bool ttSingularExtension = false;
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control
@@ -169,6 +176,10 @@ private:
     TimeManager timer_;
     std::atomic<bool>* stop_ = nullptr;
     bool aborted_ = false;
+    // exp-0043: number of singular extensions active on the CURRENT path.
+    // Incremented around the extended child and decremented on return, so the
+    // cap is path-scoped without changing negamax's signature or TT context.
+    int singularExtensions_ = 0;
     std::uint64_t nodes_ = 0;
     int selDepth_ = 0;
     Key rootContextSalt_ = 0;
