@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0045_retry",
   "source_sha": "HEAD",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0045-retry.json",
-  "source_run_id": "",
-  "note": "Valid NEW run retrying exp-0045 after run 41817228668 was INVALID MEASUREMENT (1 TIME_FORFEIT, frozen zero-forfeit rule enforced). Identical frozen science, fresh disjoint suites, bounded retry budget. Invalid run NEVER pooled or reused.",
-  "attempt": 22
+  "source_run_id": "41818958001",
+  "note": "Deliberate export of all four exp-0045 bounded-valid-retry Tier-1 artifacts for independent raw-game audit; never pooled with INVALID run 41817228668.",
+  "attempt": 23
 }
