@@ -19,8 +19,8 @@ gate is unmet. 3,000 Elo is a long-term strategic target only; no absolute,
 universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
 
 ## Experiment status vs mission status
-- **Experiment status: exp-0044 screen INCONCLUSIVE; bounded
-  confirmation EXECUTING.** exp-0043, exp-0042,
+- **Experiment status: exp-0044 CLOSED AS INCONCLUSIVE / ABANDONED**
+  (screen + bounded confirmation). exp-0043, exp-0042,
   exp-0041, exp-0038, exp-0037 and exp-0036 are CLOSED; exp-0039 and exp-0040
   were eliminated at profiling.
 - **Mission status: ACTIVE, NOT COMPLETE.** Gates 1 and 4 remain UNMET. No
@@ -28,16 +28,19 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   the supported dispatch mechanism works; the earlier export-only dispatch and
   two transient GitHub `Internal Server Error` push rejections were ordinary
   transient research states, both resolved by a plain retry.
-- **Exact current source SHA:** `0691b9affd36006425ac23605f4a0cc8922a55bb` (the exp-0044 bounded-
-  confirmation dispatch commit, pinned by `source_sha=HEAD`). The exp-0044
-  SCREEN source was `2ae4e68fc882991c3484eede22a4622f713da5e2`; exp-0043's
-  source was `5ea5ad21348f39dabad1da3e8cb098f798087295`. Local HEAD and remote head are recorded
+- **Exact source SHAs:** exp-0044 screen `2ae4e68fc882991c3484eede22a4622f713da5e2`,
+  bounded confirmation `0691b9affd36006425ac23605f4a0cc8922a55bb`, exp-0043
+  `5ea5ad21348f39dabad1da3e8cb098f798087295`. Current branch HEAD is recorded
+  in `AGENTS_LOG.md`; all were pinned by `source_sha=HEAD` in their dispatch. Local HEAD and remote head are recorded
   in `AGENTS_LOG.md`; working tree is clean.
 - **Reproducible benchmark evidence:** exp-0044 screen `41812595433` /
-  export `41813751266` / CI `41812595476` SUCCESS, combined
-  `+3.3140 [−7.2389,+13.8730]` on 1,996 games / 996 clusters, 44/0 AUDIT
-  PASS, 9/9 SHA256SUMS OK in each of 4 bundles, INCONCLUSIVE -> frozen
-  bounded confirmation launched, NEVER pooled. exp-0043 `41809643084` / export
+  export `41813751266` / CI `41812595476` SUCCESS, `+3.3140 [−7.2389,+13.8730]`
+  INCONCLUSIVE; bounded confirmation `41814069967` / export (retry)
+  `41815428066` / CI `41814069925` SUCCESS, `+13.5977 [+2.1746,+25.0503]`,
+  FROZEN ADDENDUM compute bound => CLOSED AS INCONCLUSIVE / ABANDONED,
+  NEVER pooled. Both 4 isolated VMs, 9/9 SHA256SUMS OK per bundle, 44/0
+  audits PASS, 0 forfeits/illegal/failures. Full report
+  `docs/DEV6_EXP0044_REPORT.md`. exp-0043 `41809643084` / export
   `41810711486` / CI `41809642415` SUCCESS, combined
   `−10.3142 [−20.8915,+0.2440]` CLOSE. exp-0042 screen `41802986830` /
   export `41804342869` / CI `41802986854` and confirmation `41804818965` /
@@ -101,7 +104,7 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   (a real negative, not inert); +13.9 % fixed-depth node overhead is recorded
   but is NOT strength evidence. Full report `docs/DEV6_EXP0043_REPORT.md`.
 
-## exp-0044 screen INCONCLUSIVE; bounded confirmation EXECUTING
+## exp-0044 CLOSED AS INCONCLUSIVE (screen + bounded confirmation)
 The exp-0044 screen ran on source `2ae4e68fc882991c3484eede22a4622f713da5e2`,
 prereg `73ae460981a09bbf5…`, run `41812595433`, export `41813751266`, CI
 `41812595476` SUCCESS; 4 isolated VMs, 9/9 SHA256SUMS OK in each of 4
@@ -117,17 +120,22 @@ point > 0) => **INCONCLUSIVE**, which the frozen prereg maps to exactly ONE
 bounded fresh confirmation.
 
 `docs/DEV6_PREREG_EXP0044_ADDENDUM.md` (SHA
-`17d90a790697bb05de108d4b5fb5f7cf745fdb611899c5237c7ccce2b73af835`) freezes
-that confirmation BEFORE any confirmation game: a SEPARATE Tier-1 run,
-`mode=benchmark experiment_id=exp0044_confirm attempt=17`, FIXED TIME 40+4 ms,
-SAME single switch, 1,400 fresh disjoint openings seed `2026120401` (ZERO
-overlap with 34,841 earlier positions / 130 files), its own Stage-0 and
-candidate-options nulls, two independent 1,000-game batches, independent
-raw-JSONL audit. **Screen and confirmation are NEVER pooled.** Decision uses
-ONLY the new batches: ADVANCE >= +20 AND LCB > 0 AND clean; CLOSE if
-UCB < +10 OR point <= 0; otherwise exp-0044 CLOSED AS INCONCLUSIVE and the
-direction abandoned (a conservative COMPUTE BOUND, not a threshold change).
-Gates 1 and 4 remain UNMET; no strength claim, no default change, no bundle.
+`17d90a790697bb05…`) was frozen BEFORE any confirmation game. Confirmation
+source `0691b9affd36006425ac23605f4a0cc8922a55bb`, run `41814069967`, export
+attempt 18 `41815187170` FAILED only at a transient evidence push (download +
+checksums succeeded, nothing reached the remote); the workflow export push was
+repaired with a bounded retry and re-dispatched as NEW valid run
+`41815428066` SUCCESS. Confirmation Stage-0 `−9.5569 [−32.6787,+13.4804]`,
+candidate null `+6.1422 [−14.8210,+27.1502]`, batchA
+`+17.0722 [+0.6984,+33.5222]`, batchB `+10.1190 [−5.8209,+26.1015]`;
+FROZEN combined 1,997 games 699/676/622, `+13.5977 [+2.1746,+25.0503]`, 997
+clusters, 44/0 AUDIT PASS, 0 forfeits/illegal/failures. ADVANCE false
+(point < +20), CLOSE false (UCB >= +10, point > 0) => the frozen addendum's
+COMPUTE BOUND applies: **CLOSED AS INCONCLUSIVE**, `BadCaptureOrdering`
+abandoned, no retune, no bundle, no third run. The generic audit CLI's
+"more samples" default is the prereg §6 branch that the addendum explicitly
+overrides; `scripts/dev6_exp0044_confirm_decision.py` reproduces the override
+from raw games. Screen and confirmation are NEVER pooled; no strength claim.
 
 ## exp-0044 screen design (archived)
 
@@ -175,11 +183,10 @@ only credible route and is authorised only by a frozen ADVANCE rule. No final
 candidate artifact exists. Remaining ranked directions are in
 `docs/DEV6_RESEARCH_MATRIX.md`; note that TT replacement/depth policy is
 ALREADY SHIPPED (generation- and depth-preferred) and must be profiled before
-any games. After the exp-0044 result: ADVANCE -> continue validation/subsequent
-gates; INCONCLUSIVE -> preregistered bounded confirmation; CLOSE -> document,
-update matrix and launch the next hypothesis; TECHNICAL FAILURE -> diagnose,
-repair within scope, validate and retry with a valid new run. No closure
-terminates the mission.
+any games. exp-0044 is closed; the next hypothesis must be frozen with its OWN prereg,
+fresh disjoint suites, Stage-0 validity, null, isolated VMs and independent
+raw-game audit, and must NOT reuse exp-0044 data. No closure terminates the
+mission.
 
 ## Workspace reconciliation (earlier this cycle)
 A fresh sandbox presented a clone at the original base commit with a stale

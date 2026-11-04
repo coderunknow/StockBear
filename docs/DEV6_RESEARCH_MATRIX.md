@@ -462,3 +462,36 @@ canonical singular extension with genuine re-search (deferred), TT replacement
 (ALREADY SHIPPED generation/depth-preferred; profile before games), a NEW
 properly powered frozen prereg for bit-exact qsearch `evaluate()` throughput,
 and a larger bullet-matched eval corpus. Mission ACTIVE / NOT COMPLETE.
+
+
+## exp-0044 bounded confirmation -> CLOSED AS INCONCLUSIVE (compute bound)
+
+Confirmation `41814069967` / export (retry) `41815428066` / CI `41814069925`
+SUCCESS, source `0691b9a…`, addendum `17d90a790697bb05…`, 4 isolated VMs,
+9/9 SHA256SUMS OK in each of 4 bundles, 0 forfeits/illegal/engine failures,
+44/0 AUDIT PASS. Stage-0 `−9.5569 [−32.6787,+13.4804]`, candidate null
+`+6.1422 [−14.8210,+27.1502]`, batchA `+17.0722 [+0.6984,+33.5222]`, batchB
+`+10.1190 [−5.8209,+26.1015]`; FROZEN combined `+13.5977 [+2.1746,+25.0503]`
+on 1,997 games / 997 clusters, independent bootstrap `[+2.4394,+24.9592]`.
+ADVANCE false (point +13.5977 < +20), CLOSE false (UCB +25.0503 >= +10,
+point > 0) => the FROZEN ADDENDUM compute bound gives **CLOSED AS
+INCONCLUSIVE / ABANDONED**: no third run, no retune, no bundle, no default
+change, no strength claim. Screen and confirmation CIs overlap and were NEVER
+pooled. `scripts/dev6_exp0044_confirm_decision.py` reproduces the override
+from raw games (the generic audit CLI prints the prereg §6 "more samples"
+default, which the addendum explicitly overrides).
+
+Technical repair, no scientific change: export attempt 18 failed ONLY at a
+transient GitHub `Internal Server Error` evidence push; the workflow export
+step now has a bounded 4-attempt retry and the export was re-dispatched as a
+new valid run. Report `docs/DEV6_EXP0044_REPORT.md`.
+
+Learning: exp-0044 is the first direction since exp-0038 to produce two
+consecutive non-negative frozen combined points (+3.31, +13.60), and it did so
+with ZERO added per-node work — unlike exp-0041/0042/0043, all of which lost
+while changing which nodes are searched or adding a ply. But neither point
+reached the frozen +20 ADVANCE threshold, and Gate 1 (+75 / LCB > +50) is
+still far away. The specific `BadCaptureOrdering` mechanism and any retune are
+ABANDONED; a genuinely DIFFERENT mechanism requires its own frozen prereg and
+fresh suites and may not reuse exp-0044 data. Ranked alternatives unchanged.
+Mission ACTIVE / NOT COMPLETE; no direction is claimed exhausted.

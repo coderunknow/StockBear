@@ -1619,3 +1619,33 @@ point<=0; otherwise CLOSED AS INCONCLUSIVE and direction abandoned
 (conservative compute bound, NOT a threshold change). No strength claim, no
 default change, no bundle, no retune, no pooling. Gates 1 and 4 remain UNMET;
 mission ACTIVE / NOT COMPLETE.
+
+## exp-0044 CLOSED AS INCONCLUSIVE / ABANDONED (2026-11-04)
+Confirmation run `41814069967`, export attempt 18 `41815187170` FAILED only at
+a transient GitHub Internal Server Error evidence push (download + checksums
+succeeded; nothing reached remote). TECHNICAL FAILURE diagnosed and repaired
+within scope: workflow export step gained a bounded 4-attempt push retry, and
+the export was re-dispatched as NEW valid run `41815428066` SUCCESS. 9/9
+SHA256SUMS OK in each of 4 bundles, 0 failures. No scientific change.
+
+Confirmation source `0691b9affd36006425ac23605f4a0cc8922a55bb`, addendum
+`17d90a790697bb05de108d4b5fb5f7cf745fdb611899c5237c7ccce2b73af835`, CI
+`41814069925` SUCCESS. Stage-0 400 games 123/143/134
+`−9.5569 [−32.6787,+13.4804]`; candidate null 398 games 142/123/133
+`+6.1422 [−14.8210,+27.1502]`; batchA 999 games 360/328/311
+`+17.0722 [+0.6984,+33.5222]`; batchB 998 games 339/348/311
+`+10.1190 [−5.8209,+26.1015]`; FROZEN combined 1,997 games 699/676/622,
+score 0.5192789, 997 clusters, `+13.5977 [+2.1746,+25.0503]`, independent
+Elo-from-score +13.4030, seeded bootstrap `[+2.4394,+24.9592]`, 44/0 AUDIT
+PASS, 0 forfeits/illegal/failures.
+
+ADVANCE false (point < +20); CLOSE false (UCB >= +10, point > 0). The FROZEN
+ADDENDUM explicitly overrides the prereg §6 "more samples" default with an
+experiment-level COMPUTE BOUND => **CLOSED AS INCONCLUSIVE / ABANDONED**.
+`scripts/dev6_exp0044_confirm_decision.py` reproduces the override from raw
+games. Screen `+3.3140 [−7.2389,+13.8730]` and confirmation CIs overlap and
+were **NEVER pooled**. No strength claim, no third run, no retune, no bundle,
+no default change, no PR/merge/tag/release/deploy/dev7. Full report
+`docs/DEV6_EXP0044_REPORT.md`. Gates 1 and 4 remain UNMET; mission ACTIVE /
+NOT COMPLETE; the next hypothesis must have its OWN frozen prereg, fresh
+disjoint suites and dispatch, and may not reuse exp-0044 data.

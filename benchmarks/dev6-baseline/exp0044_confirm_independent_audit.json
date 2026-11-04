@@ -1,0 +1,115 @@
+{
+  "source_run_id": "41814069967",
+  "combined": {
+    "games": 1997,
+    "wins": 699,
+    "draws": 676,
+    "losses": 622,
+    "score": 0.5192789183775663,
+    "elo": 13.597698532267922,
+    "ci95": [
+      2.1746140321349494,
+      25.050252192413897
+    ],
+    "clusters": 997,
+    "independent_elo_from_score": 13.403009339789016,
+    "cluster_bootstrap_ci95": [
+      2.4394072845802044,
+      24.95924136446614
+    ]
+  },
+  "per_job": {
+    "tier1-exp0044_confirm-tier1-exp0044-confirm-batchA-run41814069967": {
+      "games": 999,
+      "wins": 360,
+      "draws": 328,
+      "losses": 311,
+      "score": 0.5245245245245245,
+      "elo": 17.07218770061991,
+      "ci95": [
+        0.6983794111938882,
+        33.522179260608866
+      ],
+      "clusters": 499,
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0,
+      "terminations": {
+        "CHECKMATE": 671,
+        "INSUFFICIENT_MATERIAL": 22,
+        "STALEMATE": 1,
+        "THREEFOLD_REPETITION": 305,
+        "UNADJUDICATED_MAX_PLIES": 1
+      }
+    },
+    "tier1-exp0044_confirm-tier1-exp0044-confirm-batchB-run41814069967": {
+      "games": 998,
+      "wins": 339,
+      "draws": 348,
+      "losses": 311,
+      "score": 0.5140280561122245,
+      "elo": 10.11895652350855,
+      "ci95": [
+        -5.82088155504836,
+        26.101524348986622
+      ],
+      "clusters": 498,
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0,
+      "terminations": {
+        "CHECKMATE": 650,
+        "FIFTY_MOVES": 2,
+        "INSUFFICIENT_MATERIAL": 20,
+        "STALEMATE": 1,
+        "THREEFOLD_REPETITION": 325,
+        "UNADJUDICATED_MAX_PLIES": 2
+      }
+    },
+    "tier1-exp0044_confirm-tier1-exp0044-confirm-null-run41814069967": {
+      "games": 398,
+      "wins": 142,
+      "draws": 123,
+      "losses": 133,
+      "score": 0.5113065326633166,
+      "elo": 6.142177926160707,
+      "ci95": [
+        -14.820958959940242,
+        27.150181880870853
+      ],
+      "clusters": 198,
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0,
+      "terminations": {
+        "CHECKMATE": 275,
+        "FIFTY_MOVES": 2,
+        "INSUFFICIENT_MATERIAL": 10,
+        "THREEFOLD_REPETITION": 111,
+        "UNADJUDICATED_MAX_PLIES": 2
+      }
+    },
+    "tier1-exp0044_confirm-tier1-exp0044-confirm-stage0-run41814069967": {
+      "games": 400,
+      "wins": 123,
+      "draws": 143,
+      "losses": 134,
+      "score": 0.48625,
+      "elo": -9.556888220144554,
+      "ci95": [
+        -32.678667717176914,
+        13.480444989520088
+      ],
+      "clusters": 200,
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0,
+      "terminations": {
+        "CHECKMATE": 257,
+        "FIFTY_MOVES": 2,
+        "INSUFFICIENT_MATERIAL": 19,
+        "THREEFOLD_REPETITION": 122
+      }
+    }
+  }
+}
