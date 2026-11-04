@@ -1077,3 +1077,36 @@ exp-0045 AS TECHNICALLY UNRESOLVABLE with no strength inference. No threshold
 weakened (the zero-forfeit rule was ENFORCED). Gates 1 and 4 remain UNMET; no
 strength claim, no default change, no bundle, no PR/merge/tag/release/deploy/
 dev7. Mission ACTIVE / NOT COMPLETE.
+
+## exp-0045 FINAL CLOSE / ABANDONED (2026-11-04)
+Original run `41817228668` / export `41818409701` / CI `41817228408` SUCCESS but
+INVALID MEASUREMENT (1 TIME_FORFEIT in batchB game 272, 14.1 ms move, ply 118,
+`remaining_white_ms=-5.01`). Frozen prereg §5 zero-forfeit rule ENFORCED; ALL
+Elo/CIs/W-D-L/LLR and the generic audit's "CLOSE" label DISCARDED, no strength
+inference, `clean=False`. Diagnosed as a rare isolated-VM long-game clock
+outlier; no repair to the frozen 40+4 ms control authorised.
+
+One bounded valid retry (frozen `DEV6_PREREG_EXP0045_RETRY.md` SHA
+`2172063e22554df9…`, attempt 22, 1,400 fresh disjoint openings seed
+`2026120601`, ZERO overlap / 37,641 earlier positions in 140 files): run
+`41818958001` / export `41821624068` / CI `41818958003` SUCCESS. Pinned source
+`9fb2a58…`, dev5 baseline VERIFIED, built==packaged binary `b839fae82b54…`,
+UCI `SkipDeadTTEval default false`. 9/9 SHA256SUMS OK in each of 4 bundles,
+0 forfeits/illegal/failures in ALL four jobs, 44/0 AUDIT PASS `clean=True`.
+Stage0 399 `118/155/126` −6.1113 [−23.3656,+11.1129]; candidate null 400
+`152/111/137` +13.0349 [−6.3155,+32.4666]; batchA 994 `327/320/347`
+−6.6823 [−19.7471,+6.3636]; batchB 999 `324/320/355`
+−11.1440 [−24.5596,+2.2383]. FROZEN COMBINED batchA+batchB ONLY 1,993 games
+`651/640/702`, score 0.4872052, 993 clusters,
+−8.9240 [−18.2792,+0.4182], Elo-from-score −8.8927, bootstrap
+[−18.2107,+0.1749]; both null CIs include 0, both batches < −5.
+ADVANCE False; CLOSE True (UCB<+10 AND point<=0). Reproduced by
+`scripts/dev6_exp0038_audit.py 41818958001 exp0045_retry 20 10` and
+`scripts/dev6_exp0045_retry_decision.py`: VERDICT CLOSE (mechanism rejected /
+abandoned; NO strength claim). No confirmation / third run / post-hoc sample
+increase / pooling / retune / default change / bundle. Switch stays OFF. This
+is NOT a proven strength regression (~13 Elo half-width). Gates 1 and 4 UNMET,
+2 direction-supported, 3 PASS; mission ACTIVE / NOT COMPLETE; no strength
+claim, no PR/merge/tag/release/deploy/dev7. Full report
+`docs/DEV6_EXP0045_REPORT.md`; evidence
+`benchmarks/exp-runs/tier1-export/run-41818958001/`.

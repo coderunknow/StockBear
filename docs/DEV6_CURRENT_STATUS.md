@@ -19,8 +19,8 @@ gate is unmet. 3,000 Elo is a long-term strategic target only; no absolute,
 universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
 
 ## Experiment status vs mission status
-- **Experiment status: exp-0045 original run INVALID MEASUREMENT;
-  bounded valid RETRY EXECUTING.** exp-0044 is
+- **Experiment status: exp-0045 CLOSED / ABANDONED** (original run INVALID
+  MEASUREMENT, ONE bounded valid retry, FINAL CLOSE). exp-0044 is
   CLOSED AS INCONCLUSIVE / ABANDONED (screen + bounded confirmation);
   exp-0043, exp-0042,
   exp-0041, exp-0038, exp-0037 and exp-0036 are CLOSED; exp-0039 and exp-0040
@@ -40,11 +40,14 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   in `AGENTS_LOG.md`; working tree is clean.
 - **Reproducible benchmark evidence:** exp-0045 original run `41817228668` /
   export `41818409701` / CI `41817228408` SUCCESS but **INVALID MEASUREMENT**
-  (1 TIME_FORFEIT in batchB game 272; frozen zero-forfeit rule ENFORCED, all
-  its Elo DISCARDED, audit `clean=False`, 44 stored values / 0 issues). A
-  bounded valid retry is EXECUTING (frozen
-  `DEV6_PREREG_EXP0045_RETRY.md` SHA `2172063e22554df9…`, fresh suites,
-  attempt 22); the invalid run is NEVER pooled. exp-0044 screen `41812595433` /
+  (1 TIME_FORFEIT in batchB game 272; frozen zero-forfeit rule ENFORCED, ALL
+  its Elo DISCARDED, audit `clean=False`, 44 stored values / 0 issues). One
+  bounded valid retry `41818958001` / export `41821624068` / CI
+  `41818958003` SUCCESS: 4 isolated VMs, 9/9 SHA256SUMS OK per bundle, 0
+  forfeits/illegal/failures, 44/0 AUDIT PASS, frozen combined
+  `−8.9240 [−18.2792,+0.4182]` on 1,993 games => **CLOSE / ABANDONED**
+  (reproduced by `scripts/dev6_exp0045_retry_decision.py`). Invalid run NEVER
+  pooled. Full report `docs/DEV6_EXP0045_REPORT.md`. exp-0044 screen `41812595433` /
   export `41813751266` / CI `41812595476` SUCCESS, `+3.3140 [−7.2389,+13.8730]`
   INCONCLUSIVE; bounded confirmation `41814069967` / export (retry)
   `41815428066` / CI `41814069925` SUCCESS, `+13.5977 [+2.1746,+25.0503]`,
@@ -62,7 +65,8 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   `41782954038` / export `41784088471` `−5.0635 [−15.1810,+5.0454]`;
   exp-0038 `41780333569` / export `41781546677`
   `+7.6755 [−1.0670,+16.4278]`. Full provenance in
-  `docs/DEV6_EXP0043_REPORT.md`, `docs/DEV6_EXP0042_REPORT.md`,
+  `docs/DEV6_EXP0045_REPORT.md`, `docs/DEV6_EXP0043_REPORT.md`,
+  `docs/DEV6_EXP0042_REPORT.md`,
   `docs/DEV6_EXP0041_REPORT.md`, `docs/DEV6_EXP0038_REPORT.md` and
   `benchmarks/exp-runs/tier1-export/`.
 
@@ -114,8 +118,20 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   mechanism-live diagnostic proved LIVE on 23/24 suite positions at 40+4 ms
   (a real negative, not inert); +13.9 % fixed-depth node overhead is recorded
   but is NOT strength evidence. Full report `docs/DEV6_EXP0043_REPORT.md`.
+- **exp-0044** SEE<0 capture demotion in MAIN search only: screen
+  `+3.3140 [−7.2389,+13.8730]` INCONCLUSIVE, bounded confirmation
+  `+13.5977 [+2.1746,+25.0503]`; frozen addendum COMPUTE BOUND => CLOSED AS
+  INCONCLUSIVE / ABANDONED, **NEVER pooled**, no third run. Default OFF.
+  Full report `docs/DEV6_EXP0044_REPORT.md`.
+- **exp-0045** bit-exact dead `evaluate()` elimination (`SkipDeadTTEval`,
+  default OFF): original run `41817228668` INVALID MEASUREMENT (1 forfeit),
+  ALL Elo DISCARDED; ONE bounded valid retry `41818958001` frozen combined
+  `−8.9240 [−18.2792,+0.4182]` on 1,993 games => CLOSE / ABANDONED, 0
+  forfeits/illegal/failures, 44/0 AUDIT PASS, NEVER pooled with the invalid
+  run. No strength claim. Full report `docs/DEV6_EXP0045_REPORT.md`.
 
-## exp-0045 original run INVALID; bounded valid retry EXECUTING
+## exp-0045 CLOSED / ABANDONED (INVALID run + ONE bounded valid retry)
+
 The original exp-0045 run (`41817228668`, source
 `e41a0b18b4e522f57196e2834c8937f8c55019e8`, prereg `0abf66836ed0ad6d…`, export
 `41818409701`, CI `41817228408`) completed all four isolated VMs SUCCESS,
@@ -124,69 +140,44 @@ The original exp-0045 run (`41817228668`, source
 in a long game). The FROZEN prereg §5 requires 0 forfeits in ANY job, so the
 run is **INVALID MEASUREMENT**: all Elo/CIs/W-D-L/LLR and the generic audit's
 "CLOSE" label are DISCARDED, with NO strength inference. `clean=False` is the
-correct audit signal. Stage-0 validity null, candidate-options null, batchA and
-all illegal/engine_failure counts were clean. Diagnosis: a rare long-game clock
-exhaustion on one isolated VM (1/998 games; exp-0043/0044 had 0 forfeits at the
-same control), not a systematic mechanism effect; it benefited the candidate
-arm and so could not manufacture a positive result. NO repair to the frozen
-40+4 ms control, clocks, binary, switch, time manager or driver is authorised.
+correct audit signal. Diagnosis: a rare long-game clock exhaustion on one
+isolated VM (1/998; exp-0043/0044 had 0 forfeits at the same control), not a
+systematic mechanism effect; it benefited the candidate arm and could not
+manufacture a positive result. NO repair to the frozen 40+4 ms control, clocks,
+binary, switch, time manager or driver was authorised; the zero-forfeit rule
+was ENFORCED, not weakened.
 
 `docs/DEV6_PREREG_EXP0045_RETRY.md` (SHA
 `2172063e22554df99064c54e0820b70db854e2339b0d5e87ccc321b6ca0bce60`) was frozen
-BEFORE any retry game: a valid NEW run with the IDENTICAL mechanism, switch,
-build flags, options, FIXED TIME 40+4 ms control, four isolated-VM jobs,
-statistics and decision thresholds; NEW `experiment_id=exp0045_retry`, NEW
-dispatch attempt 22, NEW seeds and 1,400 FRESH DISJOINT openings (seed
-`2026120601`, ZERO overlap with 37,641 earlier positions / 140 files).
-The invalid run is NEVER pooled or reused. Frozen ADVANCE >= +20 AND LCB > 0
-AND clean; CLOSE if UCB < +10 OR point <= 0; otherwise CLOSED AS INCONCLUSIVE
-(original single-run compute bound). BOUNDED RETRY BUDGET: exactly one retry;
-if it ALSO has any forfeit/illegal/failure, exp-0045 CLOSES AS TECHNICALLY
-UNRESOLVABLE with no strength inference. Gates 1 and 4 remain UNMET.
+BEFORE any retry game: a valid NEW run with IDENTICAL mechanism, switch, build
+flags, options, FIXED TIME 40+4 ms control, four isolated-VM jobs, statistics
+and decision thresholds; NEW `exp0045_retry`, dispatch attempt 22, NEW seeds,
+1,400 FRESH DISJOINT openings (seed `2026120601`, ZERO overlap with 37,641
+earlier positions / 140 files). Invalid run `41817228668` NEVER pooled or
+reused. Bounded retry budget: exactly one retry; a second forfeit would have
+closed exp-0045 AS TECHNICALLY UNRESOLVABLE.
 
-## Executing: exp-0045 (Tier-1 fixed-time, isolated VMs)
-- **Why selected:** exp-0044 is closed, and the next ranked unexecuted
-  direction that changes NO search decision is bit-exact `evaluate()`
-  throughput. exp-0039 built this exact fix, verified it bit-exact, measured
-  ~2.9 % locally against a ~7 % noise floor, REVERTED it and spent NO games.
-  That was a precision/cost decision, not a negative strength result.
-  exp-0045 is the FIRST Elo measurement of the hypothesis, on isolated VMs at
-  FIXED TIME 40+4 ms. Not a repeat of exp-0039's profiling, not a parameter
-  change of a failed idea, and no exp-0041..0044 data reused.
-- **Mechanism:** `SkipDeadTTEval` (default OFF) skips the `evaluate(pos)`
-  whose result is immediately overwritten when a main-TT hit supplies a valid
-  static eval. Values are BIT-IDENTICAL at any fixed node count; only time per
-  node can change. No TT/move/score/stand-pat/pruning/extension/ordering
-  decision changes, no added per-node work, no new forfeit mechanism.
-- **Mandatory diagnostics (pre-result):** node counts OFF/ON IDENTICAL at
-  depths 8/10/12 (e.g. depth 12 `[72604, 497628, 311669, 559024]`); ON
-  skipped 40,187 of 379,656 `evaluate()` calls (10.6 %) so the mechanism is
-  LIVE; local 12-repeat timing OFF 804.0 ms / ON 823.5 ms (−2.37 % "speedup",
-  noise-dominated, reported verbatim, NO local speedup claim). Only ~10.6 % of
-  evaluations are skippable => the theoretical speedup is ~2-3 %.
-- **Power, explicitly:** a 2,000-game screen has ~13 Elo half-width and CANNOT
-  resolve a +2-3 Elo effect; full-sized confirmation is reserved by the
-  preregistered scheduler for screen point >= +55. exp-0045 is powered for
-  the +20 ADVANCE threshold and to rule out a material regression only. A
-  SINGLE-RUN COMPUTE BOUND closes it as INCONCLUSIVE if neither frozen
-  condition holds. No post-hoc sample increase.
-- **Frozen before games:** `docs/DEV6_PREREG_EXP0045.md` (SHA
-  `0abf66836ed0ad6d979a26a3d4ca8616416bfb88b8ca069875f1e7d4e7bb2863`),
-  `tier1-plan-exp0045.json` (4 jobs), dispatch `mode=benchmark attempt=20`,
-  source (default OFF, bit-exact signatures `243f9a1c1ba5b36f` /
-  `a14ab62224f837e5` / `e45fa2ec2287eb41`, d16 with `ttEval=1` identical
-  OFF/ON, Release 11/11, ASan+UBSan 11/11, UCI default false), and 1,400
-  fresh disjoint openings (seed `2026120501`, ZERO overlap with 36,241 earlier
-  positions / 135 files).
-- **Design:** FIXED TIME 40+4 ms, Hash16/Threads1/240 plies, never `--nodes`;
-  ONE binary, single switch `SkipDeadTTEval=true` vs `false`; Stage-0 validity
-  null (0 forfeits required), candidate-options null, batchA 1,000 and
-  batchB 1,000 games on independent fresh suites, combined frozen before the
-  run, independent raw-JSONL audit. Frozen ADVANCE >= +20 AND LCB > 0 AND
-  both batches >= −5 AND both null CIs include 0 AND clean; CLOSE if
-  UCB < +10 OR point <= 0; otherwise CLOSED AS INCONCLUSIVE / ABANDONED
-  (single-run compute bound, no confirmation). ADVANCE alone does NOT satisfy
-  Gate 1.
+Retry `41818958001` / export `41821624068` / CI `41818958003` all SUCCESS:
+provenance pinned `source_sha=9fb2a58…` verified, dev5 baseline VERIFIED,
+built binary SHA == packaged binary SHA `b839fae82b54…`, UCI
+`SkipDeadTTEval default false`. 9/9 SHA256SUMS OK in each of 4 bundles,
+**0 TIME_FORFEIT / 0 ILLEGAL / 0 ENGINE_FAILURE in ALL four jobs**, 44/0
+AUDIT PASS with `clean=True`. Stage-0 validity null 399 `118/155/126`
+`−6.1113 [−23.3656,+11.1129]`; candidate null 400 `152/111/137`
+`+13.0349 [−6.3155,+32.4666]`; batchA 994 `327/320/347`
+`−6.6823 [−19.7471,+6.3636]`; batchB 999 `324/320/355`
+`−11.1440 [−24.5596,+2.2383]`; both null CIs include 0. FROZEN COMBINED
+batchA+batchB ONLY 1,993 games `651/640/702`, score `0.4872052`, 993 clusters,
+**`−8.9240 [−18.2792,+0.4182]`**, independent Elo-from-score `−8.8927`,
+bootstrap `[−18.2107,+0.1749]`. ADVANCE False (point<+20, LCB<0, both batches
+<−5); CLOSE True (UCB<+10 AND point<=0). `scripts/dev6_exp0038_audit.py
+41818958001 exp0045_retry 20 10` and `scripts/dev6_exp0045_retry_decision.py`
+independently reproduce **VERDICT: CLOSE (mechanism rejected / abandoned; NO
+strength claim)**. No confirmation, no third run, no post-hoc sample increase,
+no pooling, no retune, no default change, no bundle. The switch stays OFF;
+this is NOT a proven strength regression (a ~13 Elo half-width cannot resolve
+a few Elo). Gates 1 and 4 remain UNMET. Full report `docs/DEV6_EXP0045_REPORT.md`,
+evidence `benchmarks/exp-runs/tier1-export/run-41818958001/`.
 
 ## exp-0044 CLOSED AS INCONCLUSIVE (screen + bounded confirmation)
 The exp-0044 screen ran on source `2ae4e68fc882991c3484eede22a4622f713da5e2`,

@@ -573,3 +573,43 @@ weakened; the zero-forfeit rule was enforced. The bit-exact dead-eval
 hypothesis remains UNRESOLVED (no Elo may be quoted from the invalid run), and
 Gates 1 and 4 remain UNMET. Mission ACTIVE / NOT COMPLETE; no direction is
 claimed exhausted.
+
+
+## exp-0045 FINAL: CLOSE / ABANDONED (INVALID run + one bounded valid retry)
+
+The first Elo measurement of the bit-exact dead `evaluate()` elimination
+(`SkipDeadTTEval`, default OFF; exp-0039 eliminated it at profiling). Original
+run `41817228668` (source `e41a0b18…`, prereg `0abf66836ed0ad6d…`, export
+`41818409701`, CI `41817228408`) had ONE `TIME_FORFEIT` (batchB game 272,
+14.1 ms move, ply 118, `remaining_white_ms=-5.01`) => **INVALID MEASUREMENT**
+under frozen prereg §5's zero-forfeit rule; ALL Elo DISCARDED, no strength
+inference, generic audit `clean=False` / "CLOSE" label NOT usable. exp-0043 and
+exp-0044 had 0 forfeits across ~4,000 games at the same control: a rare
+isolated-VM long-game clock outlier, not a mechanism effect, favouring the
+candidate arm. No threshold weakened; the rule was ENFORCED.
+
+`docs/DEV6_PREREG_EXP0045_RETRY.md` (SHA
+`2172063e22554df99064c54e0820b70db854e2339b0d5e87ccc321b6ca0bce60`), frozen
+BEFORE any retry game, authorised exactly ONE valid new run of identical
+science with fresh disjoint data (seed `2026120601`, ZERO overlap with 37,641
+earlier positions / 140 files), NEVER pooled, and a bounded retry budget.
+Run `41818958001` / export `41821624068` / CI `41818958003` SUCCESS: 9/9
+SHA256SUMS OK ×4 bundles, 0 forfeits/illegal/failures in ALL jobs, 44/0 AUDIT
+PASS `clean=True`, built==packaged binary `b839fae82b54…`. FROZEN COMBINED
+batchA+batchB ONLY: 1,993 games `651/640/702`, score 0.4872052,
+**−8.9240 [−18.2792,+0.4182]**, Elo-from-score −8.8927, bootstrap
+[−18.2107,+0.1749], 993 clusters; both null CIs include 0; both batches < −5.
+ADVANCE False; CLOSE True (UCB<+10 AND point<=0). Independent reproduction:
+`scripts/dev6_exp0045_retry_decision.py`. **exp-0045 CLOSED / ABANDONED**,
+switch OFF, no strength claim / default change / retune / bundle / pooling /
+confirmation / post-hoc sample increase. NOT a proven regression at ~13 Elo
+half-width. Gates 1 and 4 UNMET; mission ACTIVE / NOT COMPLETE. Report
+`docs/DEV6_EXP0045_REPORT.md`; evidence
+`benchmarks/exp-runs/tier1-export/run-41818958001/`.
+
+**Next hypothesis must be selected with its OWN frozen prereg, fresh disjoint
+suites, Stage-0 validity null, candidate null, isolated VMs and independent
+raw-game audit.** Do NOT repeat exp-0045 (the direction is closed), exp-0044
+confirmation, or any recorded negative/neutral direction without genuinely new
+evidence. A normal technical failure, invalid measurement, CI failure,
+inconclusive or closed result cannot terminate the mission.

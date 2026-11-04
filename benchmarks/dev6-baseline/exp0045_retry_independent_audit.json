@@ -1,0 +1,114 @@
+{
+  "source_run_id": "41818958001",
+  "combined": {
+    "games": 1993,
+    "wins": 651,
+    "draws": 640,
+    "losses": 702,
+    "score": 0.4872052182639237,
+    "elo": -8.924023858093532,
+    "ci95": [
+      -18.279216265972885,
+      0.4182457516194422
+    ],
+    "clusters": 993,
+    "independent_elo_from_score": -8.892666356275654,
+    "cluster_bootstrap_ci95": [
+      -18.21066680792638,
+      0.17494240427253094
+    ]
+  },
+  "per_job": {
+    "tier1-exp0045_retry-tier1-exp0045-retry-batchA-run41818958001": {
+      "games": 994,
+      "wins": 327,
+      "draws": 320,
+      "losses": 347,
+      "score": 0.48993963782696176,
+      "elo": -6.68227740114107,
+      "ci95": [
+        -19.74707314391384,
+        6.363641295326709
+      ],
+      "clusters": 494,
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0,
+      "terminations": {
+        "CHECKMATE": 674,
+        "FIFTY_MOVES": 1,
+        "INSUFFICIENT_MATERIAL": 22,
+        "STALEMATE": 2,
+        "THREEFOLD_REPETITION": 295,
+        "UNADJUDICATED_MAX_PLIES": 6
+      }
+    },
+    "tier1-exp0045_retry-tier1-exp0045-retry-batchB-run41818958001": {
+      "games": 999,
+      "wins": 324,
+      "draws": 320,
+      "losses": 355,
+      "score": 0.4844844844844845,
+      "elo": -11.14403931587155,
+      "ci95": [
+        -24.55957352271233,
+        2.2383412083767875
+      ],
+      "clusters": 499,
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0,
+      "terminations": {
+        "CHECKMATE": 679,
+        "FIFTY_MOVES": 1,
+        "INSUFFICIENT_MATERIAL": 20,
+        "STALEMATE": 2,
+        "THREEFOLD_REPETITION": 297,
+        "UNADJUDICATED_MAX_PLIES": 1
+      }
+    },
+    "tier1-exp0045_retry-tier1-exp0045-retry-null-run41818958001": {
+      "games": 400,
+      "wins": 152,
+      "draws": 111,
+      "losses": 137,
+      "score": 0.51875,
+      "elo": 13.034946881436854,
+      "ci95": [
+        -6.315478656740209,
+        32.466625285691606
+      ],
+      "clusters": 200,
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0,
+      "terminations": {
+        "CHECKMATE": 289,
+        "INSUFFICIENT_MATERIAL": 4,
+        "THREEFOLD_REPETITION": 107
+      }
+    },
+    "tier1-exp0045_retry-tier1-exp0045-retry-stage0-run41818958001": {
+      "games": 399,
+      "wins": 118,
+      "draws": 155,
+      "losses": 126,
+      "score": 0.4899749373433584,
+      "elo": -6.111306327520735,
+      "ci95": [
+        -23.3656024943095,
+        11.112876222825363
+      ],
+      "clusters": 199,
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0,
+      "terminations": {
+        "CHECKMATE": 244,
+        "INSUFFICIENT_MATERIAL": 12,
+        "THREEFOLD_REPETITION": 143,
+        "UNADJUDICATED_MAX_PLIES": 1
+      }
+    }
+  }
+}
