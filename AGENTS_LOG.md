@@ -559,3 +559,30 @@ confirmation of exp-0035 with unchanged Gates 1-4.
    direction; NOT executed (authorization exhausted).
 8. All post-push local commits are documentation/results ONLY; `src/` unchanged
    from `03868da`, so the CI-tested source SHA stays exact.
+
+### 2026-11-04 — continuation: Tier-1 repair, ranked matrix, exp-0037
+1. Verified `a6cba07` is a clean descendant of `03868da`, contains only
+   docs/raw evidence (35 files, no `src/`), dev5 tags/immutable binary
+   `391cb50e...` intact, remote `03868da`, clean tree, CI `41770918367` 9/9.
+2. Confirmed BOTH the job-logs and artifact-zip API endpoints redirect to
+   `productionresultssa6.blob.core.windows.net` (EOF / outside allow-list).
+   Confirmed the GitHub Contents API is reachable via `api.github.com` — this
+   is the permitted alternative evidence channel.
+3. Built `docs/DEV6_RESEARCH_MATRIX.md` (13 ranked directions, evidence,
+   compute trade-off) and `docs/DEV6_TIER1_INFRASTRUCTURE.md`.
+4. Created `.github/workflows/dev6-tier1.yml` (`workflow_dispatch` only,
+   `mode=benchmark|export`, pinned `source_sha`, `plan_path`, isolated VMs,
+   no benchmark pushes, artifact bundles, concurrency guard) and
+   `scripts/dev6_tier1_job.py` (pinned build, exact dev5 SHA check, exact
+   bench signature, PACKAGE then test the EXTRACTED binary, CR1 audit,
+   fingerprint/manifest/SHA256SUMS). Neutralized the legacy `dev6-lane.yml`.
+5. Implemented exp-0037 ProbCut: `SearchParams::probCut` default off, UCI
+   `ProbCut`, `bench --param probCut=0|1`, frozen 200 cp / depth-4 / depth>=5
+   block. Validated 11/11 Release + 11/11 ASan+UBSan, exact bench signatures,
+   3x determinism, UCI default false, switch live.
+6. Generated 2,020 fresh disjoint openings (seed 2026112001) and froze
+   `docs/DEV6_PREREG_EXP0037_ADDENDUM.md` + two Tier-1 plans BEFORE any
+   evaluation game. Smoke (40 games) is explicitly DISCARDED.
+7. Authorization used: pushes to `arena/3e6dd5b6-stockbear`, workflow
+   dispatch, artifact download. No force-push, no `main` change, no
+   merge/tag/release/deploy/dev7.

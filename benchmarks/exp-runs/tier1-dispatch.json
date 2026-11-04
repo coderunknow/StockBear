@@ -1,0 +1,8 @@
+{
+  "mode": "benchmark",
+  "experiment_id": "exp0037",
+  "source_sha": "HEAD",
+  "plan_path": "benchmarks/exp-runs/tier1-plan.json",
+  "source_run_id": "",
+  "note": "DISCARDED 40-game infrastructure smoke (null self-match). Frozen before any strength evaluation."
+}

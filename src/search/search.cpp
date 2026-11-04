@@ -42,6 +42,9 @@ constexpr int MaxPenalisedQuiets = 24;
 constexpr int RazorMargin[4] = {0, 125, 175, 300};
 // exp-0034: frozen SEE margin for bad-capture pruning (NOT tuned).
 constexpr int BadCaptureMargin = 100;
+// exp-0037: frozen ProbCut margin and reduced depth (NOT tuned on any suite).
+constexpr int ProbCutMargin = 200;
+constexpr int ProbCutReducedDepth = 4;
 
 // Integer-only reduction schedule; keeps results bit-identical across
 // platforms and compilers (a floating-point logarithm does not guarantee that).
@@ -414,6 +417,22 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
                         : inCheck ? false
                         : ply >= 2 ? staticEval > evalStack_[ply - 2] - 10
                         : true;
+
+    // exp-0037 ProbCut (frozen in docs/DEV6_PREREG_EXP0037.md BEFORE results):
+    // at non-PV nodes with remaining depth >= 5, run a reduced-depth
+    // null-window search at a raised beta (beta + frozen 200 cp margin). A
+    // fail-high there predicts a full-depth fail-high, so the whole move loop
+    // can be skipped. Guarded away from PV nodes and mate windows so a proven
+    // mate value can never be replaced. Default off => bit-identical shipped
+    // search (bench 243f9a1c1ba5b36f). No tuning on any test suite.
+    if (params_.probCut && !pvNode && !mateWindow && depth >= 5) {
+        const int raisedBeta = std::min(beta + ProbCutMargin, VALUE_INFINITE - 1);
+        const int probValue = negamax(pos, depth - ProbCutReducedDepth,
+                                      raisedBeta - 1, raisedBeta, ply,
+                                      false, extensions, false);
+        if (aborted_) return 0;
+        if (probValue >= raisedBeta) return probValue;
+    }
 
     // exp-0033 razoring: at shallow depth a node whose static evaluation is far
     // below alpha almost certainly fails low. Confirm with a cheap null-window

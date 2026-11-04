@@ -357,3 +357,37 @@ push. No PR/merge/tag/release/dev7; gates UNMET; mission ACTIVE.
   no PR/merge/tag/release. See `docs/DEV6_EXP0036_REPORT.md`.
 - exp-0037 (ProbCut) preregistered as the next isolated direction, NOT run.
 - Independent audit `scripts/dev6_audit.py`: 201 values, AUDIT PASS.
+
+## dev6 continuation cycle (2026-11-04) — Tier-1 infrastructure + exp-0037
+
+- Pushed the previously local-only `a6cba07` evidence commit (verified clean
+  descendant of `03868da`, docs/raw evidence only, no `src/` change).
+- **Tier-1 infrastructure repaired** (`.github/workflows/dev6-tier1.yml`):
+  manually dispatchable `workflow_dispatch` only, one dedicated
+  `ubuntu-latest` VM per matrix job, NO automatic result pushes, SHA-256
+  fingerprint/manifest, raw PGN/JSONL/CSV/summary/audit/log/binary/package
+  artifacts, `concurrency` guard against duplicates, pinned `source_sha`.
+  A deliberate `mode=export` job downloads artifacts from a pinned run via
+  `actions/download-artifact(run-id)` and makes ONE explicit evidence commit,
+  so evidence is retrievable through git + the GitHub Contents API despite the
+  blocked `productionresultssa*.blob.core.windows.net` CDN. See
+  `docs/DEV6_TIER1_INFRASTRUCTURE.md`.
+- Retired legacy `dev6-lane.yml`: removed its automatic `push: paths` trigger
+  (duplicate-run and auto-push hazard) and added an explicit confirmation
+  guard; `scripts/actions_dev6_lane.sh` retained read-only for provenance and
+  is no longer invoked.
+- `scripts/dev6_tier1_job.py` builds from the pinned source, verifies the exact
+  dev5 baseline SHA and shipped bench signature, PACKAGES the candidate, then
+  tests the EXTRACTED packaged binary (Gate 4 binary identity).
+- `docs/DEV6_RESEARCH_MATRIX.md`: evidence-driven ranking of 13 directions;
+  ProbCut (exp-0037) executed first, qsearch-TT next, bundle candidate last;
+  time management, default-off dev4 switches, NNUE, PGO and param best-of-N
+  explicitly rejected from recorded evidence.
+- exp-0037 `ProbCut` implemented as a default-OFF UCI switch with frozen
+  margin 200 cp / reduced depth 4 / `depth >= 5`, exactly as
+  `docs/DEV6_PREREG_EXP0037.md`. Validation BEFORE results: ctest 11/11
+  Release + 11/11 ASan+UBSan, UCI integration/fuzz, perft, dead-position,
+  exact bench `243f9a1c1ba5b36f` / `a14ab62224f837e5`, 3x determinism
+  `e45fa2ec2287eb41`. Full frozen design in
+  `docs/DEV6_PREREG_EXP0037_ADDENDUM.md` before any evaluation game.
+- No gate claim. Gates 1/2/4 remain UNMET; mission ACTIVE.

@@ -166,6 +166,7 @@ bool apply_param(SearchParams& params, const std::string& key, const std::string
     else if (key == "ttEval") params.ttEval = on;
     else if (key == "razoring") params.razoring = on;
     else if (key == "badCapturePruning") params.badCapturePruning = on;
+    else if (key == "probCut") params.probCut = on;
     else return false;
     return true;
 }
@@ -190,7 +191,8 @@ std::string params_text(const SearchParams& params) {
         << ",improving=" << int(params.improving)
         << ",ttEval=" << int(params.ttEval)
         << ",razoring=" << int(params.razoring)
-        << ",badCapturePruning=" << int(params.badCapturePruning);
+        << ",badCapturePruning=" << int(params.badCapturePruning)
+        << ",probCut=" << int(params.probCut);
     return out.str();
 }
 }

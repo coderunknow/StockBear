@@ -44,3 +44,7 @@ data/
 
 # dev5 NNUE training workspaces (large local artifacts; reports/hashes in docs)
 nnue-work/
+
+# Tier-1 local package staging (evidence is written under benchmarks/exp-runs/)
+package-tier1-*/
+downloaded/

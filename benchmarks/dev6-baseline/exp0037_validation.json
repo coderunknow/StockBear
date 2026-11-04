@@ -1,0 +1,32 @@
+{
+  "experiment": "exp-0037",
+  "phase": "pre-result validation",
+  "source_note": "exact pinned commit in Tier-1 manifests",
+  "candidate_binary_sha256": "58c4597657341c6be3391eefb9c016ee27ca4b66d5630380390229e65ea1de8c",
+  "dev5_binary_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "bench_default": "243f9a1c1ba5b36f",
+  "bench_depth16": "a14ab62224f837e5",
+  "bench_depth12_params": "e45fa2ec2287eb41",
+  "determinism_runs": 3,
+  "ctest_release": "11/11 PASS",
+  "ctest_asan_ubsan": "11/11 PASS",
+  "uci_integration_fuzz": "PASS",
+  "perft_full": "PASS",
+  "deadpos": "PASS",
+  "uci_defaults": {
+    "ProbCut": "false",
+    "BadCapturePruning": "false",
+    "Razoring": "false"
+  },
+  "switch_live_node_diagnostic": {
+    "startpos_depth12_off_nodes": 543800,
+    "startpos_depth12_on_nodes": 888947,
+    "bench12_depth16_off_nodes": 170160152,
+    "bench12_depth16_on_nodes": 156640123,
+    "note": "ambiguous: shallow overhead dominates, deeper cutoffs pay off; NOT a strength result"
+  },
+  "prereg_sha256": {
+    "docs/DEV6_PREREG_EXP0037.md": "008102223b3beea2e4ed21eaf1392c6c86c28630aeb930a441e692fa35c6bb76",
+    "docs/DEV6_PREREG_EXP0037_ADDENDUM.md": "02994f214b561c228ba67904a881dadc2b195fac2a8ef16ddb14c3567aaa5e70"
+  }
+}

@@ -1152,3 +1152,62 @@ pruning/ordering, best-of-N param selection, fixed-node-only conclusions).
   unchanged. NOT executed: requires new explicit authorization for the
   additional push. Ranked ahead of qsearch-TT, endgame eval knowledge, NNUE
   with an accuracy→strength link, and any stacking.
+
+---
+
+## Tier-1 infrastructure — repaired (2026-11-04)
+
+- **Classification:** infrastructure fix, NOT a strength experiment.
+- **Root cause of the previous blocker:** `dev6-lane.yml` was triggered only by
+  a push to `benchmarks/exp-runs/dev6-trigger.json`, had no
+  `workflow_dispatch`, and `scripts/actions_dev6_lane.sh:commit_and_push()`
+  pushed result commits. A new experiment therefore needed a second remote
+  write AND generated further automatic ones. Both the job-logs endpoint and
+  the artifact `/zip` endpoint 302 to
+  `productionresultssa6.blob.core.windows.net`, which is outside the sandbox
+  allow-list (EOF), so artifacts could not be downloaded locally.
+- **Repair:** `.github/workflows/dev6-tier1.yml` (`workflow_dispatch` only,
+  pinned `source_sha`, `mode=benchmark|export`, isolated `ubuntu-latest` VM
+  per matrix job, `concurrency` guard, no benchmark-time pushes, full artifact
+  bundles) + `scripts/dev6_tier1_job.py` (pinned build, exact dev5 SHA, exact
+  bench signature, packaged-and-extracted binary identity for Gate 4,
+  CR1/t independent recomputation, fingerprint/manifest/SHA256SUMS).
+- **Artifact contingency:** a deliberate, separately dispatched `mode=export`
+  job downloads artifacts from the pinned run via
+  `actions/download-artifact(run-id)` (server-side, supported interface),
+  verifies every `SHA256SUMS.txt`, and makes ONE explicit evidence commit.
+  Evidence then becomes retrievable via `git` and the GitHub Contents API
+  (`api.github.com`), both reachable. No bypass, no fabricated hashes.
+- **Legacy lane:** `dev6-lane.yml` automatic `push: paths` trigger removed and
+  an explicit `legacy_confirm == 'yes'` guard added; the old script is kept
+  read-only for provenance and is not invoked. No duplicate executions.
+- **Verification:** to be recorded in `docs/DEV6_TIER1_INFRASTRUCTURE.md`
+  from the actual dispatched smoke run + exported artifact.
+
+## exp-0037 — ProbCut (REGISTERED, results pending)
+
+- **Status:** preregistered and implemented; NO evaluation game has been used
+  for a strength claim yet. This entry is the pre-result record; the closing
+  entry (classification, root cause, decision, next action) is appended after
+  the frozen Stage-1 screen.
+- **Preregs:** `docs/DEV6_PREREG_EXP0037.md` (primary, unchanged) +
+  `docs/DEV6_PREREG_EXP0037_ADDENDUM.md` (full frozen design before results).
+- **Hypothesis / mechanism:** raised-beta (`beta + 200 cp`, frozen) reduced
+  depth (`depth - 4`, frozen) null-window search at non-PV `depth >= 5`
+  predicts a full-depth fail-high; cutting saves the move loop.
+- **Source / binary:** exact pinned source SHA in Tier-1 manifests; local
+  `build-exp0037/stockbear`
+  `95c31ab6d214928fe7c5cd68f3aa031abc9f926d29c90d639811ae249e61afb9`; pinned
+  flags `-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4`; default OFF.
+- **Correctness (before results):** ctest 11/11 Release, 11/11 ASan+UBSan,
+  UCI integration/fuzz, perft, dead-position, exact bench
+  `243f9a1c1ba5b36f` / `a14ab62224f837e5`, 3x determinism
+  `e45fa2ec2287eb41`, `ProbCut` UCI default false.
+- **Pre-result diagnostics (recorded, not used as a decision):** startpos
+  depth 12 ON 888,947 nodes vs OFF 543,800 (+63 %); 12-position depth-16
+  bench ON 156,640,123 vs OFF 170,160,152 (-7.96 %). Shallow overhead vs
+  deep cutoffs — the preregistered screen settles it.
+- **Frozen rules:** Stage 1 fixed-node 2x600 games, ADVANCE only if combined
+  >= +10, LCB > -10, both batches >= -5, null includes 0, clean correctness.
+  Stage 2a only on Tier-1 fixed-time 40+4 ms; futility UCB < +50 closes.
+  Gates 1-4 UNCHANGED. No default change, no PR/merge/tag/release.

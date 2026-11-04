@@ -1,3 +1,8 @@
+> **SUPERSEDED by the 2026-11-04 continuation cycle** — see
+> `docs/DEV6_RESEARCH_MATRIX.md`, `docs/DEV6_TIER1_INFRASTRUCTURE.md` and
+> `docs/DEV6_PREREG_EXP0037_ADDENDUM.md`. This report remains the record
+> of the one-push authorization cycle (CI `41770918367`, exp-0036).
+
 # StockBear dev6 — post-authorization status (AUTHORITATIVE, 2026-11-04)
 
 **Status: BLOCKED — NOT COMPLETE. Mission ACTIVE. All authorized work is

@@ -93,6 +93,10 @@ struct SearchParams {
     // Skip losing captures in the main search at shallow depth using the SEE
     // already computed by score_moves(). See docs/DEV6_PREREG_EXP0034.md.
     bool badCapturePruning = false;
+    // --- dev6 exp-0037 (default off; isolated same-binary ablation) ---------
+    // ProbCut: a raised-beta reduced-depth null-window search predicts a
+    // full-depth fail-high. Frozen margin/depth in docs/DEV6_PREREG_EXP0037.md.
+    bool probCut = false;
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control

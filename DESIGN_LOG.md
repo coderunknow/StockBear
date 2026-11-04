@@ -411,3 +411,33 @@ require a fresh artifact/CI cycle. No gate weakened.
   would be required. No second push was made.
 - Next isolated direction ranked: ProbCut > quiescence TT probe > endgame eval
   knowledge > NNUE-with-accuracy-link > stacking (separate prereg only).
+
+### Tier-1 lane redesign (2026-11-04)
+Root cause of the previous blocker: `dev6-lane.yml` was push-triggered via a
+`dev6-trigger.json` path filter, had no `workflow_dispatch`, and its shell
+script called `commit_and_push()` — so every experiment required an extra
+remote write AND produced further automatic remote writes, while the results
+channel was git because the artifact blob CDN is unreachable from the sandbox.
+Redesign: a separate `workflow_dispatch`-only workflow with a pinned
+`source_sha` input, one isolated `ubuntu-latest` VM per matrix job, zero
+benchmark-time pushes, complete artifact bundles with SHA-256 manifests, and
+a DELIBERATE opt-in `mode=export` job that mirrors the artifacts into one git
+commit. The latter is the artifact-access contingency: both the job-logs and
+artifact-zip API endpoints 302 to the blocked blob host, but `git` and the
+`api.github.com` Contents endpoint are reachable, so exporting artifacts to
+the branch makes them independently downloadable and verifiable. Retries are
+safe because every condition derives from the pinned source SHA and the frozen
+plan inside that commit; a fingerprint hash is written per job.
+
+### exp-0037 ProbCut (design, before results)
+Implemented exactly to the frozen prereg: single default-off UCI switch,
+raised-beta (`beta + 200 cp`) null-window search at `depth - 4` for non-PV
+nodes with `depth >= 5`, no mate window; on a fail-high the whole move loop is
+skipped. Kept the TT replacement policy unchanged (it is depth-preferred, so
+shallower ProbCut stores cannot evict much deeper current-search entries), and
+guarded PV/mate so proven values are untouched. Pre-result diagnostics are
+deliberately ambiguous and recorded: startpos depth 12 `ProbCut=true` used
+888,947 nodes vs 543,800 OFF (+63 %, overhead dominates shallow), while the
+12-position depth-16 bench used 156,640,123 vs 170,160,152 (-7.96 %, cutoffs
+pay off deeper). That conflict is exactly why the preregistered screen is run
+instead of assuming the direction works. No margin/depth tuning on results.

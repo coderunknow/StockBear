@@ -1,0 +1,32 @@
+{
+  "experiment_id": "exp0037",
+  "plan_sha_note": "frozen before any evaluation game",
+  "jobs": [
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0037_ADDENDUM.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-smoke",
+      "games": 40,
+      "seed": 2026112200,
+      "openings": "benchmarks/positions/openings_exp0037_smoke.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": true,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "note": "DISCARDED infrastructure smoke: null self-match, no strength inference"
+    }
+  ]
+}

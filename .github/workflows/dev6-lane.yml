@@ -10,12 +10,19 @@ name: Dev6 research lane
 # benchmarks/exp-runs/<id>/ and benchmarks/dev6-baseline/ back to the branch
 # (the sandbox cannot reach the release-asset CDN, so the runner + branch are
 # the provenance/results channel).
+# RETIRED: superseded by .github/workflows/dev6-tier1.yml. This legacy lane
+# had an automatic push trigger and committed its own results back to the
+# branch; both are unsafe for preregistered validation. It is kept for
+# historical provenance only and can no longer run automatically. A manual
+# dispatch additionally requires the explicit confirmation input below.
 on:
-  push:
-    paths:
-      - 'benchmarks/exp-runs/dev6-trigger.json'
-      - 'scripts/actions_dev6_lane.sh'
-      - '.github/workflows/dev6-lane.yml'
+  workflow_dispatch:
+    inputs:
+      legacy_confirm:
+        description: 'Type yes to deliberately run the retired legacy lane'
+        required: true
+        default: 'no'
+        type: string
 
 permissions:
   contents: write
@@ -23,6 +30,7 @@ permissions:
 
 jobs:
   trigger:
+    if: github.event.inputs.legacy_confirm == 'yes'
     name: Read dev6 trigger
     runs-on: ubuntu-latest
     outputs:
@@ -46,6 +54,7 @@ jobs:
           echo "jobs=$(python3 -c 'import json; print(json.dumps(json.load(open("benchmarks/exp-runs/dev6-trigger.json"))["jobs"]))')" >> "$GITHUB_OUTPUT"
 
   run:
+    if: github.event.inputs.legacy_confirm == 'yes'
     name: ${{ matrix.job.id }}
     needs: trigger
     timeout-minutes: 420
