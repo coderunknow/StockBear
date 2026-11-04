@@ -496,3 +496,18 @@ that cannot be resolved above measurement noise is not a good use of the
 budget, so the source was reverted to the exp-0038 pinned SHA. No Elo, no
 strength claim, no result JSON. This is a profiled elimination, not a failed
 experiment, and does not close the mission.
+
+### exp-0038 closure: what the profiling actually taught us
+
+The instrumented counter result (millions of hits, ~0 node savings) is the
+important architectural lesson, not just a failure report: a transposition
+cache is only worth its probe/store overhead when the cached node would
+otherwise search a SUBTREE. In this engine qsearch already returns at stand-pat,
+delta pruning, or SEE<0 capture pruning for most nodes, so the expensive nodes
+are rare and their windows rarely repeat across iterative deepening. A qsearch
+TT is therefore structurally weak here. Future directions should either (a)
+change WHICH nodes are searched (extensions / pruning decisions), or (b) make
+the expensive `evaluate()` call itself cheaper in a bit-exact way. exp-0039
+showed option (b) at the negamax layer is below the noise floor; the qsearch
+layer remains unmeasured but must not be reached by silently retuning the
+abandoned exp-0038 cache — it requires its own frozen preregistration.

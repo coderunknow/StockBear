@@ -73,3 +73,17 @@ PASS, no Tier-1 result is claimed.
 - Defect found and fixed: `.gitignore`'s `*.log` excluded `run.log` from the
   git mirror (the Actions artifact always had it). The export job now
   force-adds logs; this fix applies to all future exports.
+
+## Second full evidence run: exp-0038 (run 41780333569)
+
+Four isolated-VM matrix jobs (Stage-0 validity null, batchA, batchB, null)
+all completed SUCCESS on source `2aacf4a…` with `built == packaged == tested`
+binary `30874fbc1e6c7da03b4571d1c316fb082b0b151350d1d7ea86e5a7abb18931f0`.
+Export run `41781546677` used `actions/download-artifact(run-id)`, verified all
+four `SHA256SUMS.txt`, force-added `run.log` files, and made ONE `[skip ci]`
+evidence commit `6540d6e…`; local `sha256sum -c` re-verification reported 4/4
+files with 0 failures. CI `41780333461` on the exact candidate source was
+SUCCESS. Raw games were independently re-parsed by
+`scripts/dev6_exp0038_audit.py` (44 stored values, AUDIT PASS). This confirms
+the infrastructure supports a full preregistered experiment, not just the
+discarded 40-game smoke.

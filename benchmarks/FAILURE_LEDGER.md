@@ -1279,3 +1279,41 @@ shared-vCPU noise, so there is no credible Elo upside and no defensible
 fixed-time measurement; profiling is the correct place to stop. Abandoned as a
 strength direction; source reverted, no games played, no strength claim. Next
 action remains the preregistered Tier-1 exp-0038 result and independent audit.
+
+## exp-0038 — FINAL RESULT: CLOSED / ABANDONED at frozen UCB < +20
+
+Exact source SHA `2aacf4a643d5066526a33dd1d0f7f504b52e87f9`; packaged and
+tested candidate binary SHA-256
+`30874fbc1e6c7da03b4571d1c316fb082b0b151350d1d7ea86e5a7abb18931f0` (built ==
+packaged == tested); dev5 baseline `391cb50e…`. Pinned flags
+`-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4`. Tier-1 isolated VMs, run
+`41780333569`, export `41781546677`, CI `41780333461` SUCCESS, artifacts
+`13298354527`,`13298614709`,`13299405640`,`13299640420`; 4/4 SHA256SUMS 0
+failures. FIXED TIME 40+4 ms, Hash16/Threads1/maxplies240, NO `--nodes`;
+same binary `QSearchTT=true` vs `false`; fresh disjoint suites seed
+`2026112101` (1,400 openings).
+
+Hypothesis: a dedicated 2^16 qsearch bound cache should let repeated
+quiescence positions cut without re-searching, buying depth at 40+4 ms.
+Raw/audited results: Stage-0 validity null 399 games `−8.7314 [−27.2458,
++9.7335]`, 0 forfeits/illegal/UCI failures, CI includes 0 -> PASS. batchA 999
+games 351/330/318 `+11.1440 [−0.9681,+23.2833]`; batchB 997 games
+347/314/336 `+4.1946 [−8.4247,+16.8249]`; null 397 games 132/133/132
+`+0.8818 [−15.6419,+17.4096]` includes 0; FROZEN COMBINED 1,996 games
+698/644/654, score 0.5110220, `+7.6755 [−1.0670,+16.4278]`, 996 clusters.
+Independent raw-JSONL audit `scripts/dev6_exp0038_audit.py`: 44 stored values,
+0 issues, AUDIT PASS; independent Elo-from-score +7.6601; seeded cluster
+bootstrap `[−1.0465,+16.4072]`.
+
+Why failed: unsuitable hypothesis / search interaction. Instrumented profiling
+showed millions of hits concentrated on stand-pat, delta and no-capture nodes
+that already return immediately, so the cache pays a probe+store at EVERY
+qsearch node and saves almost no subtree work (d16 −0.0006 % nodes, +3.86 %
+time). At the ~4 ms effective increment the overhead cancels the small reuse
+benefit. Not an implementation defect: Release ctest 11/11, ASan+UBSan 11/11,
+exact default-off bench/d16/d12 signatures, 3x determinism, 0 illegal/forfeit.
+Decision: frozen §6 UCB `+16.4278 < +20` -> CLOSE; no ADVANCE (point < +20,
+LCB < 0), no Stage 2a, no retune of cache size/hash/margin, no repeat, no
+bundle containing qsearchTT, `QSearchTT` stays default OFF. ABANDONED.
+Next action: continue ranked directions and independent audits; see
+`docs/DEV6_CURRENT_STATUS.md`. No vague "optimization unsuccessful".

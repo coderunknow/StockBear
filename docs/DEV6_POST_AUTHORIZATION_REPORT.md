@@ -1,3 +1,6 @@
+> **CURRENT STATUS (2026-11-04 continuation): `docs/DEV6_CURRENT_STATUS.md`**
+> (Tier-1 infrastructure operational; exp-0037, exp-0038 and exp-0039 closed.)
+>
 > **SUPERSEDED by the 2026-11-04 continuation cycle** — see
 > `docs/DEV6_RESEARCH_MATRIX.md`, `docs/DEV6_TIER1_INFRASTRUCTURE.md` and
 > `docs/DEV6_PREREG_EXP0037_ADDENDUM.md`. This report remains the record

@@ -60,18 +60,15 @@ def cluster_bootstrap(pair_scores, pair_openings, reps=20000, seed=2026112501):
     for s, o in zip(pair_scores, pair_openings):
         groups[o].append(s)
     labels = sorted(groups)
-    vals = [np.asarray(groups[k], dtype=float) for k in labels]
+    sums = np.asarray([sum(groups[k]) for k in labels], dtype=float)
+    counts = np.asarray([len(groups[k]) for k in labels], dtype=float)
     rng = np.random.default_rng(seed)
     n = len(labels)
     out = np.empty(reps, dtype=float)
     for i in range(reps):
         idx = rng.integers(0, n, size=n)
-        total = np.concatenate([vals[j] for j in idx])
-        s = total.mean() / 2.0
-        if s <= 0 or s >= 1:
-            out[i] = np.nan
-        else:
-            out[i] = -400 * math.log10(1.0 / s - 1.0)
+        s = sums[idx].sum() / (2.0 * counts[idx].sum())
+        out[i] = -400 * math.log10(1.0 / s - 1.0) if 0 < s < 1 else np.nan
     out = out[~np.isnan(out)]
     return float(np.percentile(out, 2.5)), float(np.percentile(out, 97.5))
 

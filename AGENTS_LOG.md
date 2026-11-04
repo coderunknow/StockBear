@@ -641,3 +641,20 @@ the source to keep exp-0038's pinned SHA clean; recorded in DESIGN_LOG and
 FAILURE_LEDGER with exact numbers. No strength experiment, no Elo claim.
 Tier-1 run 41780333569 (exp-0038) completed all four jobs successfully;
 evidence export dispatched for independent audit.
+
+### exp-0038 CLOSED; current authoritative status
+
+Tier-1 run `41780333569` (source `2aacf4a…`, packaged binary `30874fbc…`,
+CI `41780333461` SUCCESS) produced Stage-0 validity PASS, null PASS, and
+frozen combined `+7.6755 [−1.0670,+16.4278]` over 1,996 games. Export run
+`41781546677` mirrored all four artifacts; local `sha256sum -c` 4/4 with 0
+failures. `scripts/dev6_exp0038_audit.py` re-parsed all raw JSONL, verified
+44 stored values (AUDIT PASS), recomputed independent Elo-from-score +7.6601
+and a seeded opening-cluster bootstrap `[−1.0465,+16.4072]`. Frozen §6 UCB
+< +20 -> CLOSED, ABANDONED, no Stage 2a, no retune, no bundle, switch stays
+default OFF. Root cause recorded as unsuitable hypothesis / search
+interaction. `docs/DEV6_EXP0038_REPORT.md` and
+`docs/DEV6_CURRENT_STATUS.md` are now the authoritative experiment and gate
+verdicts; older status reports carry pointers. Gate verdict UNCHANGED:
+1 UNMET / 2 direction-supported / 3 PASS / 4 UNMET (no final candidate).
+Mission ACTIVE; no strength claim, no PR/merge/tag/release/deploy/dev7.

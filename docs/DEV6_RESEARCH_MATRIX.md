@@ -51,7 +51,7 @@ Evidence base actually read: `docs/DEV6_PREREG.md` §8 (unchanged gates),
 |---|---|---|---|---|---|---|---|---|
 | 1 | **Tier-1 infrastructure + artifact export** | dispatchable isolated-VM lane, no auto pushes, packaged binary tested, evidence retrievable via git/Contents API | 0 (enabler) | — | medium / low | — | low | **DO FIRST** — Gate 4 hard blocker |
 | 2 | **exp-0037 ProbCut** — CLOSED/ABANDONED at frozen Stage-1 rule (+3.78 [−9.34,+16.90], point < +10); do not retune | raised-beta reduced-depth verification cuts the whole subtree; distinct from bad-capture/razoring; default-off switch | +5..25 | 0.45 | low / TT-pollution risk | good (two batches) | ~2.4k games | **CLOSED** (Stage-1 rule, no Stage 2a) |
-| 3 | **exp-0038 dedicated qsearch TT** — REGISTERED, Tier-1 40+4 ms screen run 41780333569; profiling found hits concentrated on cheap early-return nodes (−0.0006 % nodes, +3.86 % time) | qsearch currently has NO TT: every stand-pat recomputes full `evaluate()`; cache qsearch bounds under a depth-0 namespace | +10..30 | 0.40 | medium / mate-score & draw-context correctness | good | ~2.4k games | **IN PROGRESS** (results pending independent audit) |
+| 3 | **exp-0038 dedicated qsearch TT** — REGISTERED, Tier-1 40+4 ms screen run 41780333569; profiling found hits concentrated on cheap early-return nodes (−0.0006 % nodes, +3.86 % time) | qsearch currently has NO TT: every stand-pat recomputes full `evaluate()`; cache qsearch bounds under a depth-0 namespace | +10..30 | 0.40 | medium / mate-score & draw-context correctness | good | ~2.4k games | **CLOSED** (Tier-1 +7.68 [−1.07,+16.43]; frozen UCB<+20; abandoned) |
 | 4 | **Preregistered bundle** of validated switches (badCapture + ProbCut + …) | new single candidate measured FRESH with its own nulls, NOT post-hoc combining of old results | +35..60 cumulative | 0.35 | low / requires each part isolated first | full Gate-1 sample | ~13.2k games | **exp-0039**, only after 2 & 3 |
 | 5 | **Singular / tactical extensions** | re-search a move whose TT value looks singular; check extension currently capped at depth<=3, max 3 | +5..25 | 0.35 | high / search instability | medium | ~2.4k games | deferred |
 | 6 | **TT replacement / depth-preferred policy** | protect deep entries from shallow overwrites; also necessary if ProbCut writes shallow entries | +0..10 | 0.25 | low / changes node counts → bench signature risk | weak | ~2.4k games | deferred; bit-exactness first |
@@ -115,3 +115,34 @@ at its own frozen rule; the mission never closes on a failed experiment.
   (9) larger bullet-matched eval corpus. A preregistered FRESH bundle of
   validated mechanisms remains the only credible route to Gate 1 and must
   never be a post-hoc sum of earlier point estimates.
+
+## exp-0038 closure and evidence-driven re-ranking (2026-11-04)
+
+exp-0038 was a genuine Tier-1 40+4 ms isolated-VM experiment, not a proxy:
+Stage-0 validity PASS (0 forfeits), null PASS, both batches positive, combined
+`+7.6755 [−1.0670, +16.4278]` on 1,996 games / 996 clusters, independent audit
+44/44 PASS. It closed at the FROZEN UCB < +20 rule; see
+`docs/DEV6_EXP0038_REPORT.md`. Consequently no bundle including qsearchTT may
+be proposed from these results (the frozen ADVANCE condition was not met).
+
+New structural evidence now changes the ranking of time allocation. Reading
+`TimeManager::start` with the actual 40+4 ms tournament clock shows
+`usable = remaining - 10`, `slice = remaining/30`, `target = slice +
+3*increment/4` (~4 ms at remaining=40 ms), `hard = min(usable, remaining/3,
+target*4)` (~13 ms), plus early stops at 55-70 % of that soft budget. Both
+engine arms therefore think roughly the 4 ms increment and leave the 40 ms
+banked clock almost untouched for the whole game. exp-0004's `FullSoftBudget`
+only removed early stops at that SAME tiny soft budget and caused forfeits on a
+shared 2-vCPU host; it did NOT test the SIZE of the soft budget. exp-0038 has
+now demonstrated 0 forfeits on isolated Tier-1 VMs. A self-correcting banked-
+time allocation that spends part of the initial clock in the opening and
+converges back to the increment is therefore a DIFFERENT, still-unexecuted
+mechanism with the largest remaining expected upside (roughly +1-2 plies of
+depth in the first ~10 moves). It is re-ranked from REJECT to NEXT (exp-0040),
+but only with a preregistered Stage-0 forfeit-safety gate, identical 40+4 ms
+clocks for both arms, and no per-move movetime injection. This is a re-ranking
+on new code/measurement evidence, not a repeat of exp-0004.
+
+All other rankings are unchanged; singular/tactical extensions, TT replacement
+and bit-exact eval throughput remain deferred. No direction is claimed
+exhausted, and no experiment result can terminate the mission.

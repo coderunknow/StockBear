@@ -1,3 +1,6 @@
+> **CURRENT STATUS (2026-11-04 continuation): `docs/DEV6_CURRENT_STATUS.md`**
+> (Tier-1 infrastructure operational; exp-0037, exp-0038 and exp-0039 closed.)
+>
 > **SUPERSEDED for the post-authorization cycle** — see
 > `docs/DEV6_POST_AUTHORIZATION_REPORT.md` (final-source CI on `03868da`,
 > exp-0036 fixed-time confirmation and current gate verdict). This report

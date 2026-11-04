@@ -424,3 +424,16 @@ push. No PR/merge/tag/release/dev7; gates UNMET; mission ACTIVE.
   disjoint openings (seed 2026112101); Tier-1 40+4 ms Stage-0 validity null,
   two independent 1,000-game batches and a 400-game null, all on dedicated
   isolated VMs with the exact packaged binary tested. No strength claim yet.
+
+## exp-0038 CLOSED (Tier-1 fixed-time, isolated VMs)
+
+Stage-0 validity PASS (0 forfeits, CI includes 0); null PASS; batchA
+`+11.1440 [−0.9681,+23.2833]`, batchB `+4.1946 [−8.4247,+16.8249]`, frozen
+combined `+7.6755 [−1.0670,+16.4278]` over 1,996 games / 996 clusters.
+Independent raw-game audit 44/44 values AUDIT PASS with a seeded cluster
+bootstrap cross-check. Frozen §6 UCB < +20 -> CLOSED, ABANDONED, no Stage 2a,
+no retune, `QSearchTT` stays default OFF. Full provenance (source
+`2aacf4a…`, binary `30874fbc…`, runs `41780333569`/`41781546677`, CI
+`41780333461`, four artifact IDs, 4/4 SHA256SUMS) in
+`docs/DEV6_EXP0038_REPORT.md`. Gates unchanged: 1 UNMET, 2
+direction-supported, 3 PASS, 4 UNMET for a final candidate.
