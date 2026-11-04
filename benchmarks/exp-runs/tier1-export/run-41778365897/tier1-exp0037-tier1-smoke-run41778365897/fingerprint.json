@@ -1,0 +1,52 @@
+{
+  "fingerprint_sha256": "30c3e82d67bad111ccee39a44e8ee3f2686793ccda0c6dcda342468a2639c64f",
+  "source_sha": "ddb689adc089e326506e7075f80f68e9e10b5433",
+  "prereg_sha256": "02994f214b561c228ba67904a881dadc2b195fac2a8ef16ddb14c3567aaa5e70",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0037_ADDENDUM.md",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "id": "tier1-smoke",
+    "games": 40,
+    "seed": 2026112200,
+    "openings": "benchmarks/positions/openings_exp0037_smoke.txt",
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "null": true,
+    "ctest": true,
+    "a_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "note": "DISCARDED infrastructure smoke: null self-match, no strength inference"
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "df6d9c28e6a49317ab47ef2927b91736bdea84d55aeeb0edfc9047a4c79174ee",
+  "packaged_binary_sha256": "df6d9c28e6a49317ab47ef2927b91736bdea84d55aeeb0edfc9047a4c79174ee",
+  "package_sha256": "a2dbfd8fd88c913fc8025123a944739cc394db991ce76bdb01ecc6085109dd6d",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "13e8d4c776de3dedcd942605363a209393bc25f02ce6d56afaba44e98e1d1c58",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-smoke/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-smoke/stockbear",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}

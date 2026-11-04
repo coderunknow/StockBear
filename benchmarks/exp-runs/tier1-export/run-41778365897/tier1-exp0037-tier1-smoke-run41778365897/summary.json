@@ -1,0 +1,26 @@
+{
+  "job_id": "tier1-smoke",
+  "experiment_id": "exp0037",
+  "games": 39,
+  "unadjudicated": 1,
+  "wins": 14,
+  "draws": 10,
+  "losses": 15,
+  "score": 0.48717948717948717,
+  "elo": -9.14515318380165,
+  "ci95": [
+    -69.07329491236506,
+    50.23856860572403
+  ],
+  "clusters": 19,
+  "terminations": {
+    "INSUFFICIENT_MATERIAL": 1,
+    "THREEFOLD_REPETITION": 9,
+    "CHECKMATE": 29,
+    "UNADJUDICATED_MAX_PLIES": 1
+  },
+  "time_forfeit": 0,
+  "illegal": 0,
+  "engine_failure": 0,
+  "independent_elo_from_score": -8.91055788446088
+}
