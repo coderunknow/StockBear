@@ -464,3 +464,16 @@ Frozen §5 UCB < +10 and point <= 0 -> CLOSED, ABANDONED, no bundle, no retune,
 `BadCaptureAllDepths` stays default OFF. Full provenance in
 `docs/DEV6_EXP0041_REPORT.md`. Gates unchanged: 1 UNMET, 2
 direction-supported, 3 PASS, 4 UNMET for a final candidate.
+
+## Workspace reconciliation + exp-0042 registered
+
+Local checkout was realigned from a stale base-commit overlay to remote head
+`b71d989…` (overlay preserved in a git stash); `.venv` rebuilt; all committed
+evidence verified PRESENT. exp-0042 `MaxGainDelta` (default OFF) uses the
+actual largest legal capture/promotion gain plus frozen `deltaMargin=200` for a
+tighter, more accurate quiescence delta decision; original conservative check
+unchanged. Release/ASan ctest 11/11, exact default-off signatures, live
++13.8 % fixed-depth node diagnostic (a tree-change proxy, NOT strength).
+Frozen prereg SHA `3345325ce3…`, 1,400 disjoint openings (seed 2026112801,
+zero overlap with 29,202 earlier openings), Tier-1 40+4 ms screen dispatched.
+No results yet; no strength claim.

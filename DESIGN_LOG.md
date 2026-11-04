@@ -541,3 +541,24 @@ mechanisms that IMPROVE the accuracy of a decision at the same node count
 (e.g. better move ordering, singular verification with a genuine re-search)
 over mechanisms that simply delete more nodes. Do not tune the frozen
 `BadCaptureMargin=100` on these results.
+
+### exp-0042 design: improve decision accuracy, not node deletion
+
+exp-0041 closed with `−5.06 [−15.18,+5.05]` Elo despite a 42 % fixed-depth
+node saving. The next mechanism therefore does NOT try to delete more nodes:
+it makes an EXISTING pruning decision more accurate. The shipped qsearch delta
+check must assume a queen capture (975 cp) because it runs before movegen; once
+the legal captures exist, their real maximum gain (SEE gain[0], promotion-safe)
+is known and usually much smaller. The original conservative check is kept
+first and unchanged, and `deltaMargin=200` stays frozen, so the new check can
+only prune nodes whose actual available material cannot reach alpha plus the
+same safety margin.
+
+Profiling showed total fixed-depth nodes INCREASE 13.8 % with the switch on.
+That is not a contradiction: pruning returns stand-pat values instead of
+searched capture values, which changes upstream alpha-beta decisions and
+history/ordering. It is recorded as proof the mechanism is LIVE, and as one
+more example of why fixed-depth node counts are not strength evidence. If
+exp-0042 closes negative, do NOT retune `deltaMargin` or the gain formula; the
+conclusion would be that this engine's quiescence stand-pat decisions are
+load-bearing, consistent with the earlier qlite rejection.

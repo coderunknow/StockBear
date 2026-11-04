@@ -710,3 +710,39 @@ ACTIVE; no strength claim, no PR/merge/tag/release/deploy/dev7. The next
 ranked directions (singular/tactical extensions, TT replacement, a fresh
 bit-exact qsearch eval-throughput prereg, larger bullet-matched eval corpus)
 remain unexecuted and must each be frozen before any evaluation game.
+
+### Workspace reconciliation (2026-11-04, this continuation)
+
+A fresh sandbox presented a clone at the ORIGINAL base commit
+`6e7c2e02881faf93a84990a8345c41ad28bcae11` with a STALE cumulative turn-end
+patchset overlay (exp-0037 era, dispatch attempt 4, 272 modified/untracked
+files) and no `.venv`. The remote branch head was
+`b71d98917d0deec1b46b99f74dcc2fa09ab23775` (all committed work, CI success).
+The overlay was preserved as a recoverable
+`git stash` (`workspace-overlay-backup-20261104`), then `git fetch` +
+`git reset --hard FETCH_HEAD` aligned the local branch to the remote head with
+a clean tree; every key document, plan, raw evidence tree and script was
+verified PRESENT, dispatch attempt 8, immutable dev5 SHA unchanged. Nothing was
+deleted, no force push and no shared-history rewrite. `.venv` was rebuilt with
+cmake 4.4.4 / ninja 1.13.2 / numpy 2.4.6 / chess 1.11.2 / PyYAML 6.0.3 and
+the Tier-1 workflow YAML re-parsed. This reconciliation is a workspace-only
+operation; it changes no scientific conclusion.
+
+### exp-0042 registration (before any evaluation game)
+
+Re-ranked after exp-0041: prefer improving the ACCURACY of a decision over
+deleting more nodes. exp-0042 adds `MaxGainDelta` (default OFF): after legal
+quiescence captures are generated, use their ACTUAL largest gain (SEE gain[0],
+including promotion bonus) plus the FROZEN `deltaMargin=200` for a second,
+tighter delta check; the original conservative queen-based check still runs
+first and unchanged. Validation: Release ctest 11/11, ASan+UBSan ctest 11/11,
+exact default-off bench/d16/d12 signatures, UCI default false. Live diagnostic:
+`go depth 12` startpos 543,800 nodes / 269 ms OFF vs 618,920 nodes / 309 ms ON
+(+13.8 % nodes); recorded as a non-decisive tree-change proxy, NOT strength.
+Frozen `docs/DEV6_PREREG_EXP0042.md` (SHA
+`3345325ce3e4fdc98501410bd7fcea2b3b5e7e1aa6b9d6a8139e4ced6b29c62b`), 1,400
+fresh openings seed 2026112801 with programmatic ZERO overlap against 29,202
+earlier openings, Stage-0 validity + two 1,000-game batches + null Tier-1
+40+4 ms plan, dispatch attempt 9. NO evaluation games yet.
+Gate verdict UNCHANGED: 1 UNMET / 2 direction-supported / 3 PASS / 4 UNMET
+(no final candidate). Mission ACTIVE.

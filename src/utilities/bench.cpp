@@ -170,6 +170,7 @@ bool apply_param(SearchParams& params, const std::string& key, const std::string
     else if (key == "qsearchTT") params.qsearchTT = on;
     else if (key == "bankedTime") params.bankedTime = on;
     else if (key == "badCaptureAllDepths") params.badCaptureAllDepths = on;
+    else if (key == "maxGainDelta") params.maxGainDelta = on;
     else return false;
     return true;
 }
@@ -198,7 +199,8 @@ std::string params_text(const SearchParams& params) {
         << ",probCut=" << int(params.probCut)
         << ",qsearchTT=" << int(params.qsearchTT)
         << ",bankedTime=" << int(params.bankedTime)
-        << ",badCaptureAllDepths=" << int(params.badCaptureAllDepths);
+        << ",badCaptureAllDepths=" << int(params.badCaptureAllDepths)
+        << ",maxGainDelta=" << int(params.maxGainDelta);
     return out.str();
 }
 }

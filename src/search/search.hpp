@@ -112,6 +112,12 @@ struct SearchParams {
     // depths with the frozen BadCaptureMargin=100. Frozen design in
     // docs/DEV6_PREREG_EXP0041.md.
     bool badCaptureAllDepths = false;
+    // --- dev6 exp-0042 (default off; isolated same-binary ablation) ---------
+    // Max-gain delta pruning in quiescence: after generating legal captures,
+    // use the ACTUAL largest available gain (including promotion bonus) rather
+    // than the fixed "assume a queen" bound. Frozen deltaMargin=200 unchanged,
+    // original conservative check retained. See docs/DEV6_PREREG_EXP0042.md.
+    bool maxGainDelta = false;
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control

@@ -59,11 +59,21 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   saving was profiling and is NOT strength evidence. Full report
   `docs/DEV6_EXP0041_REPORT.md`. Gate verdict above is unchanged.
 
+## Currently executing (results pending)
+- **exp-0042** max-gain delta pruning in quiescence: frozen prereg
+  `docs/DEV6_PREREG_EXP0042.md` (SHA `3345325ce3…`), 1,400 fresh disjoint
+  openings with a programmatic ZERO-overlap proof, Tier-1 40+4 ms Stage-0
+  validity + two 1,000-game batches + null on isolated VMs, dispatched in the
+  same commit as the prereg. NO evaluation result exists yet; the +13.8 %
+  fixed-depth node change is profiling, NOT strength evidence. The gate
+  verdict above is unchanged.
+
 ## Exact continuation state (for the next cycle)
 Branch `arena/3e6dd5b6-stockbear`; working tree clean; all default strength
 switches OFF; immutable dev5 binary/tag, `main`, and all historical artifacts
-untouched. Tier-1 dispatch file is at `mode=export`, attempt 8 (no benchmark
-will auto-run on the next push unless it is deliberately changed). Ranked
+untouched. Tier-1 dispatch file is at `mode=benchmark`, attempt 9 (exp-0042 screen);
+the NEXT push will trigger a new benchmark run unless the dispatch is
+deliberately changed, so edit it in the same commit as any follow-up. Ranked
 unexecuted directions: singular/tactical extensions, TT replacement policy, a
 NEW frozen prereg for bit-exact qsearch eval throughput (never a silent reuse
 of the abandoned exp-0038 cache), and a larger bullet-matched eval corpus /

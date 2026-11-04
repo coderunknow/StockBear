@@ -202,3 +202,30 @@ qsearch `evaluate()` throughput, (5) a larger bullet-matched eval corpus with
 an explicit accuracy-to-strength link. Time allocation stays REJECT on the
 exp-0040 evidence. No direction is claimed exhausted; the mission is NOT
 terminated by any closure. Gate 1 remains UNMET.
+
+## exp-0042 is the executing direction; ranked alternatives after exp-0041
+
+exp-0042 (`MaxGainDelta`) is the first direction chosen under the post-exp-0041
+ranking rule "improve decision accuracy rather than delete nodes". It reuses
+the already-generated legal quiescence captures to replace a worst-case queen
+constant with the position's ACTUAL maximum gain (SEE gain[0], promotion-safe),
+keeping the original conservative check and the frozen `deltaMargin=200`. It
+is a scope-free algorithmic change, not best-of-N parameter selection. Frozen
+prereg, programmatic zero-overlap opening suites (1,400 vs 29,202 earlier
+openings), ASan/UBSan validation and a Tier-1 40+4 ms screen are in place
+before any evaluation game. Expected upside +5..25 Elo; complexity low;
+regression risk medium (stand-pat decisions are load-bearing, cf. qlite);
+statistical detectability good with two 1,000-game batches; architecture
+compatibility high.
+
+Remaining ranked unexecuted directions: singular/tactical extensions (note the
+exp-0037 warning that verification subtrees are expensive at 4 ms — any such
+prereg MUST include a mechanism-live and overhead diagnostic), TT replacement
+policy (likely INERT at 40+4 ms because a 16 MB TT is far from full at ~10k-30k
+nodes/move, so profile before spending a tournament), a NEW frozen prereg for
+bit-exact qsearch `evaluate()` throughput (never a silent reuse of the
+abandoned exp-0038 cache; note a +3-8 Elo bit-exact NPS effect is NOT
+detectable with 2,000 games, so it needs a much larger sample), and a larger
+bullet-matched eval corpus with an explicit accuracy-to-strength link. Gate 1
+(+75 / LCB > +50) remains far away; no direction is claimed exhausted and the
+mission is NOT terminated by any closure.

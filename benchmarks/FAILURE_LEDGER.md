@@ -1383,3 +1383,19 @@ LCB < 0, batchB < −5), no bundle, no retune of the frozen margin, switch stays
 default OFF. ABANDONED. Next action: continue ranked directions and
 independent audits; see `docs/DEV6_CURRENT_STATUS.md`. No vague "optimization
 unsuccessful".
+
+## exp-0042 — max-gain delta pruning (REGISTERED; results pending)
+
+Frozen before any evaluation game: `docs/DEV6_PREREG_EXP0042.md`, SHA
+`3345325ce3e4fdc98501410bd7fcea2b3b5e7e1aa6b9d6a8139e4ced6b29c62b`.
+Hypothesis, exact code change (`MaxGainDelta`, default OFF), pinned flags,
+40+4 ms control, Stage-0 validity gate, two independent 1,000-game batches,
+400-game null, frozen ADVANCE/CLOSE rules and expected failure modes are all in
+the prereg. Pre-result validation: Release ctest 11/11, ASan+UBSan ctest 11/11,
+exact default-off bench/d16/d12 signatures, UCI default false. Pre-result
+profiling (NOT a result): `go depth 12` startpos 543,800 nodes / 269 ms OFF vs
+618,920 nodes / 309 ms ON; the mechanism is LIVE but node counts are a
+misleading proxy. This entry will be completed with exact source SHA, binary
+SHA-256, W/D/L, CR1/t CIs, independent recomputation, root-cause class and
+abandon/defer/redesign outcome after the preregistered Tier-1 screen. No vague
+"optimization unsuccessful".

@@ -367,6 +367,27 @@ int Search::quiescence(Position& pos, int alpha, int beta, int ply) {
             if (!pos.has_legal_moves()) return finish(VALUE_DRAW);
             return finish(best);
         }
+        // exp-0042 (frozen before results): the shipped delta check above has
+        // to assume the best possible capture is a queen (975 cp) because the
+        // move list does not exist yet. Now that the legal captures ARE known,
+        // use their ACTUAL largest material gain plus the SAME frozen margin.
+        // gain_of() plus the SEE-form promotion bonus is exactly SEE's gain[0],
+        // so a capture-promotion can never be under-counted. This is a more
+        // ACCURATE decision at the same node, not a new lossy pruning rule:
+        // the original conservative check still runs first and unchanged, and
+        // this extra check can only prune nodes where no available move can
+        // plausibly lift the score to alpha. Guarded away from check evasions.
+        if (params_.maxGainDelta) {
+            int maxGain = 0;
+            for (int i = 0; i < moves.size(); ++i) {
+                const Move m = moves[i].move;
+                int g = gain_of(pos, m);
+                if (move_type(m) == PromotionMove)
+                    g += SeeValue[promotion_type(m)] - SeeValue[Pawn];
+                if (g > maxGain) maxGain = g;
+            }
+            if (best + maxGain + params_.deltaMargin <= alpha) return finish(best);
+        }
     }
 
     score_moves(pos, moves, MOVE_NONE, ply);
