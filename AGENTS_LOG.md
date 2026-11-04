@@ -965,3 +965,8 @@ point<=0; otherwise CLOSED AS INCONCLUSIVE and direction abandoned
 (conservative compute bound, NOT a threshold change). No strength claim, no
 default change, no bundle, no retune, no pooling. Gates 1 and 4 remain UNMET;
 mission ACTIVE / NOT COMPLETE.
+
+exp-0044 bounded-confirmation dispatch commit (exact source SHA pinned by
+`source_sha=HEAD` in the `mode=benchmark` attempt-17 dispatch): `0691b9affd36006425ac23605f4a0cc8922a55bb`.
+LOCAL and REMOTE heads identical. The following docs-only commit records this
+SHA and does NOT relaunch the benchmark (paths-filtered push trigger).
