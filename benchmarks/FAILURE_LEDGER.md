@@ -1507,3 +1507,39 @@ both batches >= −5 AND both null CIs include 0 AND 0 failures; CLOSE if
 UCB < +10 OR point <= 0; INCONCLUSIVE -> ONE bounded fresh confirmation,
 NEVER pooled. Gates 1 (+75/LCB>+50) and 4 remain UNMET; no strength claim,
 no bundle, no default change, no PR/merge/tag/release/deploy/dev7.
+
+## exp-0043 CLOSED / ABANDONED (2026-11-04)
+Tier-1 run `41809643084` (4 isolated VMs SUCCESS), export `41810711486`
+SUCCESS, CI `41809642415` SUCCESS on exact source
+`5ea5ad21348f39dabad1da3e8cb098f798087295`. Frozen prereg
+`e9fe40f053c9f479835c05efc3bf592547024090c1a315281ec727f0096f31dc`, plan
+`3141fb1f487184459b52d644d3187f201dbd70216455469768613e0aebff2e70`,
+packaged=tested binary
+`c2ef506c5c6ebf9c3197c52903f61ccbf5326f16221c3c96a5bb3a8dc4420409`,
+1,400 fresh disjoint openings seed `2026120201` (0 overlap / 32,041 earlier).
+FIXED TIME 40+4 ms, Hash16/Threads1/240 plies, no `--nodes`; one binary,
+single switch `TTSingularExtension=true` vs `false`. All 4 bundles 9/9
+SHA256SUMS OK, 0 failures.
+
+Mandatory mechanism-live diagnostic: LIVE on 23/24 suite positions at the
+exact 40+4 ms control (548/516 extensions across 24 positions x 2 repeats),
+median depth 6 unchanged, +13.9 % fixed-depth-10 node overhead. VALID
+negative, not an inert experiment.
+
+Stage-0 validity null 399 games 128/129/142 `−13.1005 [−29.9568,+3.6943]`,
+0 forfeits/illegal/UCI failures, CI includes 0 -> PASS. Candidate-options
+null 400 games 145/123/132 `+11.2956 [−7.4505,+30.1078]`, includes 0.
+batchA 997 games 333/302/362 `−9.7895 [−25.2667,+5.6489]`; batchB 997 games
+321/325/351 `−10.8390 [−25.2969,+3.5814]`. FROZEN combined 1,994 games
+654/627/713, score 0.4852056, `−10.3142 [−20.8915,+0.2440]`, 994 clusters,
+independent Elo-from-score −10.2832, seeded cluster bootstrap
+`[−20.6467,+0.1748]`. `dev6_exp0038_audit.py 41809643084 exp0043 20 10`
+-> 44 stored values, 0 issues, AUDIT PASS.
+
+FROZEN RULE: ADVANCE false (point < +20, LCB < 0, both batches < −5);
+CLOSE true (UCB +0.2440 < +10 AND point <= 0). => CLOSE / ABANDONED. Not
+INCONCLUSIVE, so no confirmation run and no fresh suites spent.
+`TTSingularExtension` stays OFF; frozen constants NOT retuned; no bundle, no
+strength claim, no default change, no PR/merge/tag/release/deploy/dev7.
+Full report `docs/DEV6_EXP0043_REPORT.md`. Gates 1 and 4 remain UNMET;
+mission ACTIVE / NOT COMPLETE; next hypothesis is being selected and launched.

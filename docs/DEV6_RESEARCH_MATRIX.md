@@ -322,3 +322,46 @@ reuse of the abandoned exp-0038 cache); a larger bullet-matched eval corpus
 with an explicit accuracy-to-strength link. Time allocation stays REJECT.
 No direction is claimed exhausted, no result terminates the mission, and no
 strength claim is made.
+
+
+## exp-0043 CLOSED (Tier-1 40+4 ms, no pooling, 44/0 audit PASS)
+
+exp-0043 (TT-evidence singular extension, NO verification subtree) is a genuine
+Tier-1 result, not a proxy: run `41809643084` / export `41810711486` / CI
+`41809642415` SUCCESS, source `5ea5ad2…`, prereg
+`e9fe40f053c9f4798…`, packaged=tested binary `c2ef506c5c6e…`, 4 isolated VMs,
+9/9 SHA256SUMS OK in each of 4 bundles, 0 forfeits/illegal/engine failures,
+both nulls including zero. Stage-0 `−13.1005 [−29.9568,+3.6943]`, null
+`+11.2956 [−7.4505,+30.1078]`, batchA `−9.7895 [−25.2667,+5.6489]`, batchB
+`−10.8390 [−25.2969,+3.5814]`, FROZEN combined `−10.3142 [−20.8915,+0.2440]`
+on 1,994 games / 994 clusters, independent bootstrap `[−20.6467,+0.1748]`,
+44/0 AUDIT PASS. CLOSE at the frozen `UCB < +10 OR point <= 0` rule; no
+ADVANCE, no bundle, no retune, no confirmation run, switch stays OFF. Report
+`docs/DEV6_EXP0043_REPORT.md`.
+
+The mandatory mechanism-live/overhead diagnostic DID its job: the switch was
+LIVE on 23/24 suite positions at the exact 40+4 ms control, so this is a real
+negative result for the mechanism, not an inert experiment. Cost was +13.9 %
+fixed-depth-10 nodes with median completed depth unchanged.
+
+New structural evidence: exp-0041, exp-0042 and exp-0043 are THREE consecutive
+losses for mechanisms that change WHICH nodes are searched or ADD a ply at
+non-PV nodes at 40+4 ms. The only positive fixed-time directions remain
+exp-0036 (shallow losing-capture pruning) and exp-0038 (qsearch information
+reuse), both of which change decisions without buying a new subtree. The
+canonical singular extension with a genuine re-search is now DEFERRED again:
+exp-0043's measured overhead budget says a verification subtree is even less
+affordable than a single extra ply, so it must not be screened unchanged.
+
+Re-ranked unexecuted directions: (1) move-ordering ACCURACY changes with
+measured ZERO or near-zero per-node overhead (pure ordering, no stand-pat
+rewrite, no new pruning/extension decision, no best-of-N parameter selection);
+(2) TT replacement / depth-preferred policy — PROFILE FIRST, 16 MB TT likely
+inert at ~10k-30k nodes/move; (3) a NEW frozen prereg for bit-exact qsearch
+`evaluate()` throughput, sized from the power analysis (+3-8 Elo is NOT
+detectable with 2,000 games; never a silent reuse of the abandoned exp-0038
+cache); (4) a larger bullet-matched eval corpus with an explicit
+accuracy-to-strength link. Time allocation stays REJECT. Gate 1 (+75 / LCB >
++50) remains far away; a FRESH-measured bundle validated by a frozen ADVANCE
+rule, never a post-hoc sum, is still the only credible route. No direction is
+claimed exhausted, no result terminates the mission, no strength claim.

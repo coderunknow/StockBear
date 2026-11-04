@@ -19,9 +19,10 @@ gate is unmet. 3,000 Elo is a long-term strategic target only; no absolute,
 universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
 
 ## Experiment status vs mission status
-- **Experiment status: exp-0043 LAUNCHED / EXECUTING.** exp-0042 is
-  CLOSED/ABANDONED; exp-0041, exp-0038, exp-0037, exp-0036 are CLOSED;
-  exp-0039 and exp-0040 were eliminated at profiling.
+- **Experiment status: exp-0043 CLOSED / ABANDONED.** exp-0042, exp-0041,
+  exp-0038, exp-0037, exp-0036 are CLOSED; exp-0039 and exp-0040 were
+  eliminated at profiling. The next hypothesis is being selected and
+  launched; no experiment terminal state is a mission terminal state.
 - **Mission status: ACTIVE, NOT COMPLETE.** Gates 1 and 4 remain UNMET. No
   experiment terminal state is a mission terminal state. No genuine blocker:
   the supported dispatch mechanism works; the earlier export-only dispatch was
@@ -30,7 +31,10 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   dispatch commit; also pinned by `source_sha=HEAD` in
   `benchmarks/exp-runs/tier1-dispatch.json`). Local HEAD and remote head are
   recorded in `AGENTS_LOG.md`; working tree is clean.
-- **Reproducible benchmark evidence:** exp-0042 screen `41802986830` / export
+- **Reproducible benchmark evidence:** exp-0043 `41809643084` / export
+  `41810711486` / CI `41809642415` SUCCESS; 4 isolated VMs, 9/9 SHA256SUMS OK
+  per bundle, 44/0 audit PASS, FROZEN combined
+  `−10.3142 [−20.8915,+0.2440]` on 1,994 games, CLOSE/ABANDONED. exp-0042 screen `41802986830` / export
   `41804342869` / CI `41802986854` and confirmation `41804818965` / export
   `41806227744` / CI `41804818984`; both four isolated-VM jobs SUCCESS, 4/4
   SHA256SUMS with 0 failures, independent raw-JSONL audits 44/0 PASS. Screen
@@ -76,46 +80,37 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   `−5.0635 [−15.1810, +5.0454]` on 1,995 games, 44/44 audit PASS. CLOSED at
   frozen UCB < +10 and point <= 0; ABANDONED, no bundle, no retune. The
   −42.1 % fixed-depth-12 node saving was profiling, NOT strength evidence.
+- **exp-0043** TT-evidence singular extension: run `41809643084`,
+  source `5ea5ad21348f39dabad1da3e8cb098f798087295`, prereg
+  `e9fe40f053c9f4798…`, packaged=tested binary `c2ef506c5c6e…`; Stage-0 and
+  candidate-options nulls both include 0, 0 forfeits/illegal/failures;
+  batchA `−9.7895 [−25.2667,+5.6489]`, batchB
+  `−10.8390 [−25.2969,+3.5814]`, FROZEN combined
+  `−10.3142 [−20.8915,+0.2440]` on 1,994 games / 994 clusters, independent
+  bootstrap `[−20.6467,+0.1748]`, 44/0 AUDIT PASS. CLOSE/ABANDONED at frozen
+  `UCB < +10 OR point <= 0`; switch OFF, no retune, no bundle. The mandatory
+  mechanism-live diagnostic proved LIVE on 23/24 suite positions at 40+4 ms
+  (so this is a real negative, not inert); +13.9 % fixed-depth-10 node
+  overhead is recorded but is NOT strength evidence. Full report
+  `docs/DEV6_EXP0043_REPORT.md`.
 - **exp-0042** max-gain delta pruning: screen `+2.6110 [−7.9556,+13.1825]`
   INCONCLUSIVE, bounded confirmation `−10.8281 [−21.8567,+0.1787]` CLOSE /
   ABANDONED. Two Tier-1 runs, each with Stage-0 validity PASS, null PASS and
   44/0 audit PASS; CIs overlap and were **NEVER pooled**. `MaxGainDelta` stays
   OFF, `deltaMargin=200` frozen. Full report `docs/DEV6_EXP0042_REPORT.md`.
 
-## Executing: exp-0043 (Tier-1 fixed-time, isolated VMs)
-- **Why this experiment:** after exp-0042 the ranked matrix puts
-  singular/tactical extensions FIRST and demands a mechanism-live plus
-  overhead diagnostic (exp-0037 showed verification subtrees are expensive at
-  4 ms). exp-0041/0042 closed the whole "delete or re-decide quiescence
-  nodes" family; stand-pat values are load-bearing.
-- **Next experiment and why:** exp-0043 freezes a **TT-evidence singular
-  extension with NO verification subtree**. The canonical re-search variant is
-  DEFERRED, not abandoned — the deviation from the matrix wording is declared
-  in advance in `docs/DEV6_PREREG_EXP0043.md` (SHA
-  `e9fe40f053c9f479835c05efc3bf592547024090c1a315281ec727f0096f31dc`) so a
-  null result cannot be misattributed to a mechanism that was never tested.
-  It changes WHICH MAIN-SEARCH moves get an extra ply: no stand-pat rewrite,
-  no new lossy qsearch rule, no default-ON feature disabled.
-- **Frozen before games:** prereg, `tier1-plan-exp0043.json`, the dispatch
-  (`mode=benchmark`, attempt 13), source (default OFF, bit-exact signatures
-  `243f9a1c1ba5b36f` / `a14ab62224f837e5` / `e45fa2ec2287eb41`, Release 11/11,
-  ASan+UBSan 11/11, UCI default false), and 1,400 fresh disjoint openings
-  (seed `2026120201`, ZERO overlap with 32,041 earlier positions / 120 files,
-  generator `scripts/dev6_exp0043_openings.py`).
-- **Mandatory diagnostics (pre-result, NOT strength):** fixed depth 10 =>
-  +13.9 % nodes (2,655,145 -> 3,024,895), 8,072 extensions; at the EXACT
-  40+4 ms control the switch is LIVE on 23/24 suite positions (~22 extensions
-  per search), median completed depth unchanged (6), node totals within fixed-
-  time noise. Fixed-depth/node proxies are NOT strength evidence.
-- **Design:** FIXED TIME 40+4 ms, Hash16/Threads1/240 plies, never `--nodes`;
-  ONE binary, single switch `TTSingularExtension=true` vs `false`; Stage-0
-  validity null (0 forfeits required), candidate-options null, batchA 1,000
-  and batchB 1,000 games on independent fresh suites, combined frozen before
-  the run, independent raw-JSONL audit. Frozen decision rules: ADVANCE only if
-  combined point >= +20 AND LCB > 0 AND both batches >= −5 AND both null CIs
-  include 0 AND 0 forfeits/illegal/UCI failures; CLOSE if UCB < +10 OR point
-  <= 0; INCONCLUSIVE -> exactly ONE bounded fresh confirmation under a new
-  frozen addendum, NEVER pooled. ADVANCE alone does NOT satisfy Gate 1.
+## exp-0043 closed; next cycle selection
+exp-0043 is fully closed in `docs/DEV6_EXP0043_REPORT.md`; its evidence, SHA
+chain and independent audit are recorded above. Three consecutive mechanisms
+that change which nodes are searched or add a ply at non-PV nodes (exp-0041,
+exp-0042, exp-0043) have lost at 40+4 ms, while exp-0036 and exp-0038 (both
+decision/information-reuse changes with no new subtree) remain the only
+positive fixed-time directions. The next experiment therefore targets a pure
+ordering / information-reuse change with measured ZERO or near-zero per-node
+overhead, frozen before any evaluation game, with its own Stage-0 validity
+gate, two independent fresh disjoint suites, a null, isolated VMs and an
+independent raw-game audit. The ranked alternatives are in
+`docs/DEV6_RESEARCH_MATRIX.md`; no direction is claimed exhausted.
 
 ## Remaining work / gates
 Gates 1 (+75 / LCB > +50 on two independent preregistered FIXED-TIME batches)
