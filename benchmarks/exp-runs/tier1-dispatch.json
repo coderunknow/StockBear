@@ -4,6 +4,6 @@
   "source_sha": "HEAD",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0044-confirm.json",
   "source_run_id": "41814069967",
-  "note": "Deliberate export of all four exp0044 bounded-confirmation Tier-1 artifacts from run 41814069967 for independent raw-game audit. NEVER pooled with screen 41812595433.",
-  "attempt": 18
+  "note": "Retry export of all four exp0044 confirmation artifacts from run 41814069967 after export attempt 18 failed ONLY at the transient evidence push (run 41815187170; download + checksums succeeded, no evidence commit reached remote). Workflow export push now has a bounded retry. NEVER pooled with screen 41812595433.",
+  "attempt": 19
 }
