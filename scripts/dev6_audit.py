@@ -59,10 +59,12 @@ for r in pb["pairings"]:
     cmp(f"{Path(r['dir']).name} score",s,r["score_a"],1e-6)
     cmp(f"{Path(r['dir']).name} wins",w,r["wins"])
 # exp-0033 / exp-0034
-for name,path,tags in (("exp0033",BASE/"exp0033_results.json",("batchA","batchB","context-vs-dev5")),
-                       ("exp0034",BASE/"exp0034_results.json",("batchA","batchB")),
-                       ("exp0035",BASE/"exp0035_results.json",("batchA","batchB","trackA")),
-                       ("exp0036",BASE/"exp0036_results.json",("stage0","batchA","batchB","null","trackA"))):
+for name,path,tags,batch_tags in (
+                       ("exp0033",BASE/"exp0033_results.json",("batchA","batchB","context-vs-dev5"),("batchA","batchB")),
+                       ("exp0034",BASE/"exp0034_results.json",("batchA","batchB"),("batchA","batchB")),
+                       ("exp0035",BASE/"exp0035_results.json",("batchA","batchB","trackA"),("batchA","batchB")),
+                       ("exp0036",BASE/"exp0036_results.json",("stage0","batchA","batchB","null","trackA"),("batchA","batchB")),
+                       ("exp0037",BASE/"exp0037_results.json",("stage1A","stage1B","null"),("stage1A","stage1B"))):
     if not path.exists(): print(f"{name}: results file not present yet (NOT RUN)"); continue
     o=json.loads(path.read_text())
     for t in tags:
@@ -71,14 +73,10 @@ for name,path,tags in (("exp0033",BASE/"exp0033_results.json",("batchA","batchB"
         if stored is None or "error" in stored: continue
         cmp(f"{name}-{t} wins",w,stored["wins"]); cmp(f"{name}-{t} draws",dr,stored["draws"])
         cmp(f"{name}-{t} losses",l,stored["losses"]); cmp(f"{name}-{t} score",s,stored["score"])
-        ce=o.get("combined")
-        if ce and t.startswith("batch"):
-            pass
     ce=o.get("combined")
     if ce:
         v=[]
-        for t in tags:
-            if not t.startswith("batch"): continue
+        for t in batch_tags:
             v+=games(f"{name}-{t}")[1]
         w,dr,l,s=wdl(v)
         cmp(f"{name} combined games",len(v),ce["games"])

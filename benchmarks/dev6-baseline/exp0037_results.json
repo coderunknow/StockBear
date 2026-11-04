@@ -1,0 +1,159 @@
+{
+  "experiment": "exp-0037",
+  "stage": "Stage 1 fixed-node screen",
+  "prereg": [
+    "docs/DEV6_PREREG_EXP0037.md",
+    "docs/DEV6_PREREG_EXP0037_ADDENDUM.md"
+  ],
+  "prereg_sha256": {
+    "docs/DEV6_PREREG_EXP0037.md": "008102223b3beea2e4ed21eaf1392c6c86c28630aeb930a441e692fa35c6bb76",
+    "docs/DEV6_PREREG_EXP0037_ADDENDUM.md": "02994f214b561c228ba67904a881dadc2b195fac2a8ef16ddb14c3567aaa5e70"
+  },
+  "binary_sha256": "58c4597657341c6be3391eefb9c016ee27ca4b66d5630380390229e65ea1de8c",
+  "runner": "LOCAL Tier-2 (fixed-node screen; NOT gate evidence)",
+  "control": "FIXED NODE 6000 +-15% jitter; NEVER fixed-time evidence",
+  "frozen_advance_rule": "combined point >= +10 AND LCB > -10 AND both batches >= -5 AND null includes 0 AND clean correctness",
+  "results": [
+    {
+      "games": 598,
+      "unadjudicated": 2,
+      "wins": 211,
+      "draws": 187,
+      "losses": 200,
+      "score": 0.5091973244147158,
+      "elo": 6.413129997230866,
+      "ci95": [
+        -12.256705312324168,
+        25.120107285638742
+      ],
+      "clusters": 298,
+      "terminations": {
+        "THREEFOLD_REPETITION": 172,
+        "CHECKMATE": 411,
+        "INSUFFICIENT_MATERIAL": 15,
+        "UNADJUDICATED_MAX_PLIES": 2
+      },
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0,
+      "independent_elo_from_score": 6.391676554104395,
+      "tag": "stage1A",
+      "null": false,
+      "seed": 2026112100,
+      "games_requested": 600,
+      "control": "FIXED NODE go nodes 6000 --nodes-jitter 0.15 (NOT fixed-time)",
+      "openings": "benchmarks/positions/openings_exp0037_stage1A.txt",
+      "openings_sha256": "dcda0e617da6714b9be0afa670bd37790e043187eaf42b0be67f4107ea1c68d1",
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "ProbCut=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "binary_sha256": "58c4597657341c6be3391eefb9c016ee27ca4b66d5630380390229e65ea1de8c",
+      "command": "/home/user/StockBear/.venv/bin/python /home/user/StockBear/scripts/tournament.py --engine-a /home/user/StockBear/build-exp0037/stockbear --engine-b /home/user/StockBear/build-exp0037/stockbear --games 600 --nodes 6000 --nodes-jitter 0.15 --hash 16 --threads 1 --max-plies 240 --openings /home/user/StockBear/benchmarks/positions/openings_exp0037_stage1A.txt --seed 2026112100 --a-option EvalParams=research-data/params_abc.txt --a-option TTEval=true --a-option ProbCut=true --b-option EvalParams=research-data/params_abc.txt --b-option TTEval=true --pgn /home/user/StockBear/benchmarks/exp-runs/exp0037-stage1A/match.pgn --jsonl /home/user/StockBear/benchmarks/exp-runs/exp0037-stage1A/match.jsonl --csv /home/user/StockBear/benchmarks/exp-runs/exp0037-stage1A/match.csv"
+    },
+    {
+      "games": 600,
+      "unadjudicated": 0,
+      "wins": 205,
+      "draws": 192,
+      "losses": 203,
+      "score": 0.5016666666666667,
+      "elo": 1.158122907765521,
+      "ci95": [
+        -17.302583285052336,
+        19.625376877694976
+      ],
+      "clusters": 300,
+      "terminations": {
+        "THREEFOLD_REPETITION": 174,
+        "CHECKMATE": 408,
+        "INSUFFICIENT_MATERIAL": 17,
+        "FIFTY_MOVES": 1
+      },
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0,
+      "independent_elo_from_score": 1.158122907765521,
+      "tag": "stage1B",
+      "null": false,
+      "seed": 2026112101,
+      "games_requested": 600,
+      "control": "FIXED NODE go nodes 6000 --nodes-jitter 0.15 (NOT fixed-time)",
+      "openings": "benchmarks/positions/openings_exp0037_stage1B.txt",
+      "openings_sha256": "7d3e8f80b8eed1761123861d93b7297bc58f040a28be7dea05b43147acb6b65e",
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "ProbCut=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "binary_sha256": "58c4597657341c6be3391eefb9c016ee27ca4b66d5630380390229e65ea1de8c",
+      "command": "/home/user/StockBear/.venv/bin/python /home/user/StockBear/scripts/tournament.py --engine-a /home/user/StockBear/build-exp0037/stockbear --engine-b /home/user/StockBear/build-exp0037/stockbear --games 600 --nodes 6000 --nodes-jitter 0.15 --hash 16 --threads 1 --max-plies 240 --openings /home/user/StockBear/benchmarks/positions/openings_exp0037_stage1B.txt --seed 2026112101 --a-option EvalParams=research-data/params_abc.txt --a-option TTEval=true --a-option ProbCut=true --b-option EvalParams=research-data/params_abc.txt --b-option TTEval=true --pgn /home/user/StockBear/benchmarks/exp-runs/exp0037-stage1B/match.pgn --jsonl /home/user/StockBear/benchmarks/exp-runs/exp0037-stage1B/match.jsonl --csv /home/user/StockBear/benchmarks/exp-runs/exp0037-stage1B/match.csv"
+    },
+    {
+      "games": 400,
+      "unadjudicated": 0,
+      "wins": 149,
+      "draws": 114,
+      "losses": 137,
+      "score": 0.515,
+      "elo": 10.426196175570942,
+      "ci95": [
+        -12.01386229802219,
+        32.953676444020914
+      ],
+      "clusters": 200,
+      "terminations": {
+        "THREEFOLD_REPETITION": 104,
+        "CHECKMATE": 286,
+        "INSUFFICIENT_MATERIAL": 8,
+        "FIFTY_MOVES": 2
+      },
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0,
+      "independent_elo_from_score": 10.426196175570942,
+      "tag": "null",
+      "null": true,
+      "seed": 2026112102,
+      "games_requested": 400,
+      "control": "FIXED NODE go nodes 6000 --nodes-jitter 0.15 (NOT fixed-time)",
+      "openings": "benchmarks/positions/openings_exp0037_null.txt",
+      "openings_sha256": "133ac343331410df999c3707b1115c1edbc9a1ccbc6c6d2936b824e873da512c",
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "binary_sha256": "58c4597657341c6be3391eefb9c016ee27ca4b66d5630380390229e65ea1de8c",
+      "command": "/home/user/StockBear/.venv/bin/python /home/user/StockBear/scripts/tournament.py --engine-a /home/user/StockBear/build-exp0037/stockbear --engine-b /home/user/StockBear/build-exp0037/stockbear --games 400 --nodes 6000 --nodes-jitter 0.15 --hash 16 --threads 1 --max-plies 240 --openings /home/user/StockBear/benchmarks/positions/openings_exp0037_null.txt --seed 2026112102 --a-option EvalParams=research-data/params_abc.txt --a-option TTEval=true --b-option EvalParams=research-data/params_abc.txt --b-option TTEval=true --pgn /home/user/StockBear/benchmarks/exp-runs/exp0037-null/match.pgn --jsonl /home/user/StockBear/benchmarks/exp-runs/exp0037-null/match.jsonl --csv /home/user/StockBear/benchmarks/exp-runs/exp0037-null/match.csv"
+    }
+  ],
+  "combined": {
+    "games": 1198,
+    "wins": 416,
+    "draws": 379,
+    "losses": 403,
+    "score": 0.5054257095158597,
+    "elo": 3.7766224931366312,
+    "ci95": [
+      -9.336813156410505,
+      16.90083181830677
+    ],
+    "clusters": 598
+  },
+  "gate3_null_includes_zero": true,
+  "advance": false,
+  "decision": "CLOSED at frozen Stage-1 rule (no advance)"
+}

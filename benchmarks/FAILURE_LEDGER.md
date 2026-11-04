@@ -1211,3 +1211,43 @@ pruning/ordering, best-of-N param selection, fixed-node-only conclusions).
   >= +10, LCB > -10, both batches >= -5, null includes 0, clean correctness.
   Stage 2a only on Tier-1 fixed-time 40+4 ms; futility UCB < +50 closes.
   Gates 1-4 UNCHANGED. No default change, no PR/merge/tag/release.
+
+### exp-0037 CLOSING ENTRY (2026-11-04, fixed-node screen)
+
+- **Classification:** **CLOSED at the frozen Stage-1 rule / direction ABANDONED**
+  (weak positive, far below the advance threshold). NOT an invalid measurement
+  and NOT a strength claim. Fixed-node only.
+- **Source SHA:** the pinned source commit `e982e6f` (ProbCut implementation);
+  local binary `build-exp0037/stockbear`
+  `95c31ab6d214928fe7c5cd68f3aa031abc9f926d29c90d639811ae249e61afb9`.
+- **Settings:** ONE binary, single switch `ProbCut=true` vs `ProbCut=false`,
+  `go nodes 6000 --nodes-jitter 0.15`, hash 16, threads 1, max-plies 240,
+  fresh disjoint suites seed `2026112001` (300+300+200 openings), seeds
+  `2026112100..02`. Raw `benchmarks/exp-runs/exp0037-{stage1A,stage1B,null}/`.
+- **Results (two-sided opening-clustered CR1 95 % CI):** batch A
+  **+6.41 [-12.26,+25.12]** (600 g), batch B **+1.16 [-17.30,+19.63]**
+  (598 g), **combined +3.78 [-9.34,+16.90]** (1,198 g,
+  `+416=379-403`, score 0.5054, 598 clusters); null **+10.43
+  [-12.01,+32.95]** (400 g) includes 0; 0 TIME_FORFEIT / illegal / crash /
+  UCI failures; 2 UNADJUDICATED_MAX_PLIES exclusions.
+- **Independent audit:** `scripts/dev6_audit.py` re-parses all raw JSONL;
+  combined independent Elo-from-score +3.76 vs stored CR1 +3.78; AUDIT PASS.
+- **Frozen rule:** combined >= +10 AND LCB > -10 AND both batches >= -5 AND
+  null includes 0 AND clean. LCB -9.34 > -10 PASS; point +3.78 < +10 FAIL ->
+  **CLOSED, no Stage 2a**. No threshold changed after results.
+- **Root cause (evidence-backed, not intuition):** the pre-result depth-12
+  diagnostic (+63 % nodes with ProbCut ON at startpos) was the correct
+  predictor. At the 40+4 ms control the steady-state per-move budget is the
+  4 ms increment, so reachable depths are shallow (~6-8); a `depth - 4`
+  verification search at `beta + 200 cp` is then mostly pure overhead and
+  rarely produces a cutoff. The deeper -7.96 % node saving at depth 16 is
+  irrelevant at bullet TC. TT entries at reduced depth also perturb ordering.
+  The mechanism's economics at this time control are structurally unfavourable.
+- **Decision:** ABANDONED, not deferred for a margin/depth retune. Retuning
+  the frozen 200 cp margin or the depth-4 reduction on these results would be
+  superficial parameter change, and the recorded dead ends already show
+  best-of-N knob selection does not produce gate-sized gains. Do NOT repeat
+  ProbCut this cycle. `ProbCut` stays default OFF.
+- **Next action:** exp-0038 (rank 1 after this closure) — qsearch
+  transposition-table integration with bit-exact static-eval reuse, isolated
+  default-off switch, preregistered before any evaluation game. Mission ACTIVE.

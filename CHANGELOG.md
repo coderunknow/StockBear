@@ -391,3 +391,19 @@ push. No PR/merge/tag/release/dev7; gates UNMET; mission ACTIVE.
   `e45fa2ec2287eb41`. Full frozen design in
   `docs/DEV6_PREREG_EXP0037_ADDENDUM.md` before any evaluation game.
 - No gate claim. Gates 1/2/4 remain UNMET; mission ACTIVE.
+
+### exp-0037 result (2026-11-04)
+- Tier-1 smoke run `41778365897` on `ddb689a`: **SUCCESS** on a dedicated
+  GitHub-hosted `ubuntu-latest` VM; artifact `13298122481` (629,705 bytes)
+  contains packaged binary, raw PGN/JSONL/CSV, audit, log, fingerprint,
+  manifest and SHA256SUMS. `prepare` + `tier1-smoke` both green. `ctest` 11/11,
+  exact bench signature, packaged-binary identity verified on the runner.
+- `workflow_dispatch` via the sandbox token returned HTTP 403 (integration
+  permission); the deliberate push-triggered `tier1-dispatch.json` mechanism
+  is the operative manual dispatch. Recorded in
+  `docs/DEV6_TIER1_INFRASTRUCTURE.md`.
+- exp-0037 ProbCut Stage-1 fixed-node screen: combined **+3.78
+  [-9.34,+16.90]** (1,198 games), batches +6.41 / +1.16, null +10.43
+  [-12.01,+32.95], 0 forfeits, independent audit PASS. **CLOSED** at the frozen
+  rule (point < +10); direction ABANDONED. No Stage 2a, no gate claim.
+- Gates 1/2/4 remain UNMET; mission ACTIVE; next direction exp-0038.

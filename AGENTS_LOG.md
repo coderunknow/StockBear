@@ -586,3 +586,20 @@ confirmation of exp-0035 with unchanged Gates 1-4.
 7. Authorization used: pushes to `arena/3e6dd5b6-stockbear`, workflow
    dispatch, artifact download. No force-push, no `main` change, no
    merge/tag/release/deploy/dev7.
+
+### 2026-11-04 — Tier-1 verified, exp-0037 closed
+8. Fixed two Tier-1 driver defects found by reproducing on the local sandbox
+   (`cmake -E chdir ... ctest` could not resolve ctest; summary dict
+   self-reference). Local smoke then passed end-to-end.
+9. `gh workflow run dev6-tier1.yml --ref ...` -> HTTP 403 "Resource not
+   accessible by integration" (token cannot create dispatch events). Used the
+   push-triggered `tier1-dispatch.json` fallback as designed.
+10. **Tier-1 smoke run `41778365897` on `ddb689a`: SUCCESS** (prepare +
+    tier1-smoke green, artifact `13298122481`, 629,705 bytes). CI on
+    `7b6a395` success. This is the first real isolated-VM Tier-1 evidence.
+11. exp-0037 Stage-1 fixed-node screen (local Tier 2): combined +3.78
+    [-9.34,+16.90], 1,198 games, both batches positive, null includes 0,
+    0 forfeits, independent audit PASS. Frozen advance rule not met -> CLOSED,
+    direction ABANDONED. Root cause: verification probe is overhead at the
+    shallow depths reachable in 4 ms (predicted by the +63 % depth-12 node
+    diagnostic). No Stage 2a. Mission ACTIVE -> exp-0038.

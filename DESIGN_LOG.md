@@ -441,3 +441,14 @@ deliberately ambiguous and recorded: startpos depth 12 `ProbCut=true` used
 12-position depth-16 bench used 156,640,123 vs 170,160,152 (-7.96 %, cutoffs
 pay off deeper). That conflict is exactly why the preregistered screen is run
 instead of assuming the direction works. No margin/depth tuning on results.
+
+### exp-0037 closed — diagnosis that informs exp-0038
+The decisive variable at 40+4 ms is nodes-per-move, not nominal depth. Any
+mechanism that must spend a subtree-sized verification search before it can
+save a subtree is net-negative when the whole move budget is ~4 ms. That
+generalises: NPS / per-node cost reductions and pruning that fires on CHEAP
+information (SEE already computed, TT already probed) are the viable family;
+expensive predictive probes are not. This is why exp-0038 targets qsearch TT
+integration (reuse of information already resident in the table) rather than
+another predictive search. Also confirmed: a frozen futility/advance rule
+closed a weak-positive direction cheaply without weakening any gate.
