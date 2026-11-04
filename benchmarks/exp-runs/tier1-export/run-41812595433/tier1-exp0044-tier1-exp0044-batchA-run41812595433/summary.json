@@ -1,0 +1,27 @@
+{
+  "job_id": "tier1-exp0044-batchA",
+  "experiment_id": "exp0044",
+  "games": 997,
+  "unadjudicated": 3,
+  "wins": 341,
+  "draws": 336,
+  "losses": 320,
+  "score": 0.5105315947843531,
+  "elo": 6.641931864697481,
+  "ci95": [
+    -8.125894892451962,
+    21.433809157543845
+  ],
+  "clusters": 497,
+  "terminations": {
+    "CHECKMATE": 661,
+    "THREEFOLD_REPETITION": 302,
+    "INSUFFICIENT_MATERIAL": 33,
+    "FIFTY_MOVES": 1,
+    "UNADJUDICATED_MAX_PLIES": 3
+  },
+  "time_forfeit": 0,
+  "illegal": 0,
+  "engine_failure": 0,
+  "independent_elo_from_score": 7.319184133619236
+}

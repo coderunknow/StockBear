@@ -1,0 +1,56 @@
+{
+  "fingerprint_sha256": "382f449a1eca369fe8a64bccb7da1b4249bceb52ce520515d83616d356a88019",
+  "source_sha": "2ae4e68fc882991c3484eede22a4622f713da5e2",
+  "prereg_sha256": "73ae460981a09bbf5d605205f8b77bf799b6d92a0fed4dc4abaa3a4ebc3820a5",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0044.md",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "id": "tier1-exp0044-batchA",
+    "games": 1000,
+    "seed": 2026120311,
+    "openings": "benchmarks/positions/openings_exp0044_batchA.txt",
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "null": false,
+    "ctest": false,
+    "a_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true",
+      "BadCaptureOrdering=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "engine_a": "candidate",
+    "engine_b": "candidate",
+    "note": "Frozen batchA; single default-off switch"
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "1ea31331a95013087ff92e3f3b6011f3aba24cdefea893759e49517a51812377",
+  "packaged_binary_sha256": "1ea31331a95013087ff92e3f3b6011f3aba24cdefea893759e49517a51812377",
+  "package_sha256": "437d0f80c1ef5b8dee3815e30e8d13fa06aa7da0894bc5c9a0658b6906349ce6",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "c31f207f90d503ed600609722101a7e3eff24d4492fe0a5726710a1fc4e901e8",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true",
+    "BadCaptureOrdering=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0044-batchA/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0044-batchA/stockbear",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}

@@ -1,0 +1,7 @@
+INDEPENDENT RECOMPUTATION FROM RAW match.jsonl
+records=400 adjudicated=400 pairs=200 clusters=200
+W/D/L = 138/124/138 score=0.500000
+CR1/t opening-clustered Elo = 0.0 95% CI = [-17.93350965425771, 17.933509654257783]
+independent Elo-from-score  = 0.0
+terminations = {"CHECKMATE": 276, "INSUFFICIENT_MATERIAL": 13, "THREEFOLD_REPETITION": 111}
+TIME_FORFEIT=0 ILLEGAL=0 ENGINE_FAILURE=0
