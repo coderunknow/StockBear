@@ -42,7 +42,7 @@ def run(tag, games, seed, slice_name, null):
     for o in a: cmd+=['--a-option',o]
     for o in b: cmd+=['--b-option',o]
     cmd+=['--pgn',str(d/'match.pgn'),'--jsonl',str(d/'match.jsonl'),'--csv',str(d/'match.csv')]
-    r=subprocess.run(cmd,cwd=ROOT,capture_output=True,text=True)
+    r=subprocess.run([str(c) for c in cmd],cwd=ROOT,capture_output=True,text=True)
     if r.returncode: raise RuntimeError(f'{tag}: {r.stderr[-800:]}')
     recs=[json.loads(l) for l in (d/'match.jsonl').read_text().splitlines() if '"game"' in l]
     s=summarise(recs); s.update({'tag':tag,'null':null,'seed':seed,'games_requested':games,

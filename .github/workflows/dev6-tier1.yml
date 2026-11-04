@@ -78,28 +78,30 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            mode='${{ inputs.mode }}'
-            exp='${{ inputs.experiment_id }}'
-            sha='${{ inputs.source_sha }}'
-            plan='${{ inputs.plan_path }}'
-            srid='${{ inputs.source_run_id }}'
+            MODE='${{ inputs.mode }}'
+            EXP='${{ inputs.experiment_id }}'
+            SHA='${{ inputs.source_sha }}'
+            PLAN='${{ inputs.plan_path }}'
+            SRID='${{ inputs.source_run_id }}'
           else
             python3 -c 'import json;d=json.load(open("benchmarks/exp-runs/tier1-dispatch.json"));[print(k+"="+str(d.get(k,""))) for k in ("mode","experiment_id","source_sha","plan_path","source_run_id")]' > /tmp/cfg.env
             cat /tmp/cfg.env
             . /tmp/cfg.env
+            MODE="$mode"; EXP="$experiment_id"; SHA="$source_sha"
+            PLAN="$plan_path"; SRID="$source_run_id"
           fi
-          if [ -z "$sha" ] || [ "$sha" = "HEAD" ]; then sha="$(git rev-parse HEAD)"; fi
-          git cat-file -e "$sha^{commit}" || { echo "unknown source_sha $sha" >&2; exit 1; }
-          echo "event=${{ github.event_name }} mode=$mode experiment=$exp source_sha=$sha plan=$plan source_run_id=$srid"
-          git show "$sha:$plan" > /tmp/plan.json
+          if [ -z "$SHA" ] || [ "$SHA" = "HEAD" ]; then SHA="$(git rev-parse HEAD)"; fi
+          git cat-file -e "$SHA^{commit}" || { echo "unknown source_sha $SHA" >&2; exit 1; }
+          echo "event=${{ github.event_name }} mode=$MODE experiment=$EXP source_sha=$SHA plan=$PLAN source_run_id=$SRID"
+          git show "$SHA:$PLAN" > /tmp/plan.json
           sha256sum /tmp/plan.json
-          python3 -c 'import json,sys;d=json.load(open("/tmp/plan.json"));assert isinstance(d["jobs"],list) and d["jobs"];print("frozen plan jobs:",len(d["jobs"]));[print(" -",j["id"]) for j in d["jobs"]]'
+          python3 -c 'import json;d=json.load(open("/tmp/plan.json"));assert isinstance(d["jobs"],list) and d["jobs"];print("frozen plan jobs:",len(d["jobs"]));[print(" -",j["id"]) for j in d["jobs"]]'
           {
-            echo "mode=$mode"
-            echo "experiment_id=$exp"
-            echo "source_sha=$sha"
-            echo "plan_path=$plan"
-            echo "source_run_id=$srid"
+            echo "mode=$MODE"
+            echo "experiment_id=$EXP"
+            echo "source_sha=$SHA"
+            echo "plan_path=$PLAN"
+            echo "source_run_id=$SRID"
             echo "jobs=$(python3 -c 'import json;print(json.dumps(json.load(open("/tmp/plan.json"))["jobs"]))')"
           } >> "$GITHUB_OUTPUT"
 
