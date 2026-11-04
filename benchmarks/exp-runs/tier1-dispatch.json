@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0045_retry",
+  "mode": "benchmark",
+  "experiment_id": "exp0046",
   "source_sha": "HEAD",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0045-retry.json",
-  "source_run_id": "41818958001",
-  "note": "Deliberate export of all four exp-0045 bounded-valid-retry Tier-1 artifacts for independent raw-game audit; never pooled with INVALID run 41817228668.",
-  "attempt": 23
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0046.json",
+  "source_run_id": "",
+  "note": "Launch exp-0046 margin-adaptive null-move reduction, frozen prereg/plan/code/suites in this commit. exp-0045 CLOSED; no pooling, no retune.",
+  "attempt": 24
 }

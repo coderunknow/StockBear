@@ -139,6 +139,15 @@ struct SearchParams {
     // IDENTICAL; only time per node changes. Frozen in
     // docs/DEV6_PREREG_EXP0045.md.
     bool skipDeadTTEval = false;
+    // --- dev6 exp-0046 (default off; isolated same-binary ablation) ---------
+    // Margin-adaptive null-move reduction: the shipped null-move reduction is
+    // a fixed SB_NULLMOVE_R + depth/5. When staticEval is far above beta the
+    // null-move verification subtree can be shallower; when the margin is
+    // small it must stay at the shipped depth. This is a NEW decision RULE,
+    // not a constant retune: it uses only the already-computed staticEval and
+    // beta, adds NO evaluate/SEE/movegen call, NO extra ply and NO per-node
+    // work. Frozen in docs/DEV6_PREREG_EXP0046.md.
+    bool adaptiveNullR = false;
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control

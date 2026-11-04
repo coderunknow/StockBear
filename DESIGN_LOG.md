@@ -887,3 +887,48 @@ is NOT a proven strength regression (~13 Elo half-width). Gates 1 and 4 UNMET,
 claim, no PR/merge/tag/release/deploy/dev7. Full report
 `docs/DEV6_EXP0045_REPORT.md`; evidence
 `benchmarks/exp-runs/tier1-export/run-41818958001/`.
+
+
+## exp-0046 LAUNCHED — margin-adaptive null-move reduction (2026-11-04)
+exp-0045 is CLOSED / ABANDONED (INVALID original run, ONE bounded valid retry
+`41818958001` frozen combined `-8.9240 [-18.2792,+0.4182]` => CLOSE). New
+ranked direction: shipped null-move verification uses a FIXED
+`SB_NULLMOVE_R + depth/5` and discards the SIZE of `staticEval - beta` already
+computed for the guard. exp-0046 makes ONLY that existing subtree shallower
+when staticEval is far above beta, with ZERO added per-node work, no extra
+ply, no constant retune of a closed switch and no earlier data reused.
+
+Default-OFF switch `AdaptiveNullR` in `src/search/search.hpp/cpp`,
+`src/uci/uci.cpp`, `src/utilities/bench.cpp`; frozen constants
+`AdaptiveNullMarginDivisor=200`, `AdaptiveNullExtraCap=2` chosen BEFORE any
+game from theory only. OFF bit-identical: default bench
+`243f9a1c1ba5b36f`, d16 ttEval=1 `a14ab62224f837e5`, d12 params
+`e45fa2ec2287eb41`; Release ctest 11/11, ASan+UBSan ctest 11/11
+(`benchmarks/dev6-baseline/exp0046_asan_ctest.log`), UCI default false.
+
+PRE-RESULT diagnostics (`scripts/dev6_exp0046_diag.py`, instrumented
+`SB_ADAPTIVE_NULL_DEBUG` build, 24 REAL exp-0046 suite positions): FIXED DEPTH
+10 OFF 4,311,394 nodes / ON 4,252,622 (−1.36 % tree change), 44,789 null
+nodes, 4,133 changed, 4,721 extra plies, LIVE 23/24; 40 ms fixed-time PROBE
+OFF 1,006,703 / ON 974,327 (−3.22 %), LIVE 22/24, median depth 8 both.
+Diagnostics are liveness/overhead evidence ONLY, NOT strength; no local
+speedup claim.
+
+FROZEN BEFORE ANY exp-0046 GAME: `docs/DEV6_PREREG_EXP0046.md` SHA
+`dda54084d2acffddcb7cd5d1134f8734858e9bf0c69d3ab2eb59d3aeab15dd61`, `benchmarks/exp-runs/tier1-plan-exp0046.json` SHA
+`557d51fc07ad18eb828e94b2cb273e7225956ca4e6cd55b2279216fb8ebaa18a` (4 jobs), `scripts/dev6_exp0046_openings.py`, 1,400 fresh disjoint
+openings seed `2026120701` (ZERO overlap with 39,041 earlier positions in
+145 files, ZERO duplicates, four disjoint slices; SHAs in
+`benchmarks/dev6-baseline/exp0046_suites.json`). Dispatch
+`mode=benchmark experiment_id=exp0046 attempt=24`, `source_sha=HEAD`, all in
+the SAME commit. FIXED TIME 40+4 ms, Hash16/Threads1/240 plies, never
+`--nodes`; champion options BOTH arms, A adds ONLY `AdaptiveNullR=true`;
+Stage-0 control/control validity null, candidate-options null, batchA/batchB
+1,000 games each; frozen combined = batchA+batchB ONLY; independent raw-JSONL
+audit. ADVANCE >= +20 AND LCB>0 AND both batches >= −5 AND both null CIs
+include 0 AND clean; CLOSE if UCB<+10 OR point<=0; otherwise CLOSED AS
+INCONCLUSIVE (single-run compute bound). Validity gate enforces 0 forfeits /
+illegal / UCI / engine failures in ANY job (exp-0045 lesson, NOT weakened);
+at most ONE bounded valid retry. Gates 1 and 4 UNMET; no strength claim, no
+default change, no retune, no bundle, no PR/merge/tag/release/deploy/dev7.
+Mission ACTIVE / NOT COMPLETE; no result may terminate it.

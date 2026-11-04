@@ -306,6 +306,7 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     else if (key == "ttsingularextension") flag = &params_.ttSingularExtension;
     else if (key == "badcaptureordering") flag = &params_.badCaptureOrdering;
     else if (key == "skipdeadtteval") flag = &params_.skipDeadTTEval;
+    else if (key == "adaptivenullr") flag = &params_.adaptiveNullR;
     if (flag == nullptr) {
         emit("info string setoption: unknown option " + name); return;
     }
@@ -499,6 +500,9 @@ void UciEngine::loop() {
             // exp-0045: default off; bit-exact throughput ablation.
             emit(std::string("option name SkipDeadTTEval type check default ") +
                  check(params_.skipDeadTTEval));
+            // exp-0046: default off; isolated same-binary ablation.
+            emit(std::string("option name AdaptiveNullR type check default ") +
+                 check(params_.adaptiveNullR));
             // exp-0019: cp-denominated margins and the aspiration half-window as
             // integer options so they can be screened without rebuilding.
             emit("option name AspirationWindow type spin default 16 min 1 max 1200");

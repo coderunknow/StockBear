@@ -52,6 +52,14 @@ constexpr int MaxSingularExtensions = 2;   // hard per-path cap
 // exp-0044 FROZEN ordering constant (chosen BEFORE any result, never tuned):
 // demoted SEE-losing captures are placed below every quiet/killer move.
 constexpr int BadCaptureOrderScore = -2000000;
+// exp-0046 FROZEN constants (chosen BEFORE any game, from theory only; NEVER
+// tuned on a test suite or Elo result). See docs/DEV6_PREREG_EXP0046.md §3.
+constexpr int AdaptiveNullMarginDivisor = 200; // cp per extra reduction ply
+constexpr int AdaptiveNullExtraCap = 2;        // hard cap on extra plies
+#ifdef SB_ADAPTIVE_NULL_DEBUG
+static std::uint64_t adaptive_null_nodes = 0, adaptive_null_extra = 0,
+                     adaptive_null_changed = 0;
+#endif
 #ifdef SB_DEADEVAL_DEBUG
 static std::uint64_t deadeval_skipped = 0, deadeval_evaluated = 0;
 #endif
@@ -585,7 +593,23 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
     // material (zugzwang risk) and directly after another null move.
     if (params_.nullMove && allowNull && !pvNode && !inCheck && !mateWindow && depth >= 3 &&
         staticEval >= beta && has_non_pawn_material(pos)) {
-        const int reduction = SB_NULLMOVE_R + depth / 5;
+        int reduction = SB_NULLMOVE_R + depth / 5;
+        // exp-0046 (frozen before results): adapt the null-move verification
+        // depth to how far staticEval exceeds beta. With the switch OFF this
+        // line is unreachable and the shipped formula above is unchanged, so
+        // the default build is BIT-IDENTICAL. No new search work is added: the
+        // margin uses values already computed for the null-move guard.
+        if (params_.adaptiveNullR) {
+            const int margin = staticEval - beta;
+            const int extra = std::min(AdaptiveNullExtraCap,
+                                       margin / AdaptiveNullMarginDivisor);
+            reduction += extra;
+#ifdef SB_ADAPTIVE_NULL_DEBUG
+            ++adaptive_null_nodes;
+            adaptive_null_extra += extra;
+            if (extra > 0) ++adaptive_null_changed;
+#endif
+        }
         // A null move is not a move: clear the slot so the child does not read
         // a stale previous move from a sibling branch or an earlier iteration.
         const Move savedPrevious = moveStack_[ply];
@@ -838,6 +862,9 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
     badcap_demotions = 0;
     badcap_nodes_with_demotion = 0;
 #endif
+#ifdef SB_ADAPTIVE_NULL_DEBUG
+    adaptive_null_nodes = adaptive_null_extra = adaptive_null_changed = 0;
+#endif
 #ifdef SB_DEADEVAL_DEBUG
     deadeval_skipped = deadeval_evaluated = 0;
 #endif
@@ -998,6 +1025,13 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
     result.timeMs = result.timeUs / 1000;
     result.hashfull = tt_.hashfull();
     result.interrupted = aborted_;
+#ifdef SB_ADAPTIVE_NULL_DEBUG
+    std::cerr << "ADAPTIVENULLDEBUG switches=" << int(params_.adaptiveNullR)
+              << " null_nodes=" << adaptive_null_nodes
+              << " changed=" << adaptive_null_changed
+              << " extra_plies=" << adaptive_null_extra
+              << " nodes=" << nodes_ << std::endl;
+#endif
 #ifdef SB_DEADEVAL_DEBUG
     std::cerr << "DEADEVALDEBUG switches=" << int(params_.skipDeadTTEval)
               << " skipped=" << deadeval_skipped

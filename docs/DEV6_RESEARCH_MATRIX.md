@@ -613,3 +613,56 @@ raw-game audit.** Do NOT repeat exp-0045 (the direction is closed), exp-0044
 confirmation, or any recorded negative/neutral direction without genuinely new
 evidence. A normal technical failure, invalid measurement, CI failure,
 inconclusive or closed result cannot terminate the mission.
+
+
+## exp-0046 is the executing direction (post-exp-0045 rank change)
+
+exp-0045 FINAL CLOSE / ABANDONED: INVALID original run `41817228668` (all Elo
+DISCARDED) + ONE bounded valid retry `41818958001` frozen combined
+`-8.9240 [-18.2792,+0.4182]` on 1,993 games, CLOSE at `UCB<+10 OR point<=0`,
+NEVER pooled. The bit-exact dead-`evaluate()` direction is abandoned; no
+strength claim, no default change, no retune, no bundle.
+
+Next ranked direction: **margin-adaptive null-move reduction**. exp-0041/0042/
+0043 lost while changing which nodes are searched or adding a ply; exp-0044
+added ZERO per-node work and was the only non-negative direction of that group
+(CLOSED AS INCONCLUSIVE at its compute bound). The shipped null-move
+verification subtree uses a FIXED `SB_NULLMOVE_R + depth/5`; the guard already
+computes `staticEval >= beta` but discards the SIZE of the margin. exp-0046
+makes ONLY that existing subtree shallower when staticEval is far above beta
+(frozen 200 cp per extra ply, hard cap 2), keeping the shipped depth when the
+margin is marginal. This is a NEW decision RULE with ZERO added per-node work:
+no new evaluate/SEE/movegen call, no extra ply, no retune of a closed switch,
+no earlier data reused or pooled. Not "delete more nodes", not a constant
+retune, not exp-0041/0042/0043/0044/0045.
+
+Pre-result diagnostics from the FROZEN default-OFF source: signatures
+`243f9a1c1ba5b36f` / `a14ab62224f837e5` / `e45fa2ec2287eb41`, Release 11/11,
+ASan+UBSan 11/11, UCI default false; instrumented `SB_ADAPTIVE_NULL_DEBUG`
+over 24 REAL suite positions at FIXED DEPTH 10 OFF 4,311,394 / ON 4,252,622
+nodes (−1.36 % tree change), 44,789 null nodes, 4,133 changed, 4,721 extra
+plies, LIVE 23/24; 40 ms fixed-time PROBE OFF 1,006,703 / ON 974,327
+(−3.22 %), LIVE 22/24, median depth 8 both. Diagnostics are NOT strength and
+imply NO local speedup claim.
+
+`docs/DEV6_PREREG_EXP0046.md` (SHA `dda54084d2acffddcb7cd5d1134f8734858e9bf0c69d3ab2eb59d3aeab15dd61`) and
+`tier1-plan-exp0046.json` (SHA `557d51fc07ad18eb828e94b2cb273e7225956ca4e6cd55b2279216fb8ebaa18a`) FROZEN BEFORE ANY exp-0046 GAME.
+1,400 fresh openings seed `2026120701`, ZERO overlap with 39,041 earlier
+positions in 145 files; Stage-0 validity null, candidate-options null, two
+independent 1,000-game batches, isolated VMs, independent raw-JSONL audit,
+FIXED TIME 40+4 ms, never `--nodes`. Validity gate enforces 0
+forfeits/illegal/UCI/engine failures in ANY job (exp-0045 lesson, NOT
+weakened); at most ONE bounded valid retry with its own frozen prereg.
+Expected upside modest, regression risk real (null move is load-bearing),
+statistical detectability ~13 Elo half-width. ADVANCE >= +20 AND LCB>0 AND
+both batches >= −5 AND both null CIs include 0 AND clean; CLOSE if UCB<+10
+OR point<=0; otherwise CLOSED AS INCONCLUSIVE by the single-run compute
+bound. ADVANCE alone does NOT satisfy Gate 1.
+
+Remaining ranked alternatives: canonical singular extension with a genuine
+re-search (deferred on exp-0043 overhead), TT replacement/depth policy
+(ALREADY SHIPPED generation/depth-preferred; profile before games), a larger
+bullet-matched eval corpus with an explicit accuracy-to-strength link, and
+move-ordering rules with genuinely NEW mechanisms. Time allocation stays
+REJECT. No direction is claimed exhausted, no result terminates the mission,
+no strength claim is made; Gates 1 and 4 remain UNMET.

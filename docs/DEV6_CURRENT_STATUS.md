@@ -19,8 +19,9 @@ gate is unmet. 3,000 Elo is a long-term strategic target only; no absolute,
 universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
 
 ## Experiment status vs mission status
-- **Experiment status: exp-0045 CLOSED / ABANDONED** (original run INVALID
-  MEASUREMENT, ONE bounded valid retry, FINAL CLOSE). exp-0044 is
+- **Experiment status: exp-0046 LAUNCHED / EXECUTING.** exp-0045 is CLOSED /
+  ABANDONED (original run INVALID MEASUREMENT, ONE bounded valid retry, FINAL
+  CLOSE). exp-0044 is
   CLOSED AS INCONCLUSIVE / ABANDONED (screen + bounded confirmation);
   exp-0043, exp-0042,
   exp-0041, exp-0038, exp-0037 and exp-0036 are CLOSED; exp-0039 and exp-0040
@@ -30,9 +31,10 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   the supported dispatch mechanism works; the earlier export-only dispatch and
   two transient GitHub `Internal Server Error` push rejections were ordinary
   transient research states, both resolved by a plain retry.
-- **Exact current source SHA:** `9fb2a58e20b8aab131a56ddb3d749e60fce5278b` (the exp-0045 bounded retry
-  dispatch commit, pinned by `source_sha=HEAD`). The original exp-0045 run's
-  source was `e41a0b18b4e522f57196e2834c8937f8c55019e8`.
+- **Exact current source SHA:** `__EXP0046_SOURCE_SHA__` (the exp-0046 launch dispatch
+  commit, pinned by `source_sha=HEAD`). Earlier exact sources: exp-0045 retry
+  `9fb2a58e20b8aab131a56ddb3d749e60fce5278b`, exp-0045 original
+  `e41a0b18b4e522f57196e2834c8937f8c55019e8`.
 - **Exact source SHAs:** exp-0044 screen `2ae4e68fc882991c3484eede22a4622f713da5e2`,
   bounded confirmation `0691b9affd36006425ac23605f4a0cc8922a55bb`, exp-0043
   `5ea5ad21348f39dabad1da3e8cb098f798087295`. Current branch HEAD is recorded
@@ -47,7 +49,9 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   forfeits/illegal/failures, 44/0 AUDIT PASS, frozen combined
   `−8.9240 [−18.2792,+0.4182]` on 1,993 games => **CLOSE / ABANDONED**
   (reproduced by `scripts/dev6_exp0045_retry_decision.py`). Invalid run NEVER
-  pooled. Full report `docs/DEV6_EXP0045_REPORT.md`. exp-0044 screen `41812595433` /
+  pooled. Full report `docs/DEV6_EXP0045_REPORT.md`. exp-0046 is EXECUTING
+  (no results yet; frozen `DEV6_PREREG_EXP0046.md` SHA `dda54084d2acffdd…`,
+  plan `557d51fc07ad18eb…`, fresh suites, dispatch attempt 24). exp-0044 screen `41812595433` /
   export `41813751266` / CI `41812595476` SUCCESS, `+3.3140 [−7.2389,+13.8730]`
   INCONCLUSIVE; bounded confirmation `41814069967` / export (retry)
   `41815428066` / CI `41814069925` SUCCESS, `+13.5977 [+2.1746,+25.0503]`,
@@ -129,6 +133,50 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   `−8.9240 [−18.2792,+0.4182]` on 1,993 games => CLOSE / ABANDONED, 0
   forfeits/illegal/failures, 44/0 AUDIT PASS, NEVER pooled with the invalid
   run. No strength claim. Full report `docs/DEV6_EXP0045_REPORT.md`.
+
+## Executing: exp-0046 (margin-adaptive null-move reduction)
+- **Why selected:** exp-0045 is CLOSED. exp-0041/0042/0043 lost while changing
+  which nodes are searched or adding a ply; exp-0044 added ZERO per-node work
+  and was the only non-negative direction in that group (CLOSED AS
+  INCONCLUSIVE at its compute bound). The next ranked direction is a **NEW
+  decision rule with ZERO added per-node work**: the shipped null-move
+  verification subtree uses a FIXED `SB_NULLMOVE_R + depth/5`, throwing away
+  the SIZE of `staticEval - beta` already computed for the guard. exp-0046
+  makes that verification shallower (by at most 2 plies, 200 cp per ply) when
+  staticEval is far above beta, and keeps the shipped depth when the margin is
+  marginal. Not a constant retune, not "delete more nodes", not any closed
+  switch, no earlier data reused or pooled.
+- **Mechanism:** default-OFF `AdaptiveNullR` (UCI / bench param). OFF is
+  bit-identical to the shipped default (`243f9a1c1ba5b36f`, d16 with
+  `ttEval=1` `a14ab62224f837e5`, d12 params `e45fa2ec2287eb41`). Frozen
+  constants `AdaptiveNullMarginDivisor=200`, `AdaptiveNullExtraCap=2`, chosen
+  BEFORE any game from theory only, NEVER tuned on Elo. No added evaluate /
+  SEE / movegen call, no extra ply, no TT/move/score/stand-pat/ordering/time
+  decision change beyond the existing null subtree's depth.
+- **Mandatory pre-result diagnostics (NOT strength evidence):** Release ctest
+  11/11, ASan+UBSan ctest 11/11, UCI default false. Instrumented
+  `SB_ADAPTIVE_NULL_DEBUG` build over 24 REAL exp-0046 suite positions at
+  FIXED DEPTH 10: OFF 4,311,394 nodes, ON 4,252,622 (−1.36 % tree change),
+  44,789 null nodes, 4,133 changed, 4,721 extra plies, LIVE 23/24. A 40 ms
+  fixed-time PROBE (not a strength measurement): OFF 1,006,703, ON 974,327
+  (−3.22 %), LIVE 22/24, median depth 8 both. NO local speedup claim.
+- **Frozen before games:** `docs/DEV6_PREREG_EXP0046.md` SHA
+  `dda54084d2acffddcb7cd5d1134f8734858e9bf0c69d3ab2eb59d3aeab15dd61`,
+  `tier1-plan-exp0046.json` SHA
+  `557d51fc07ad18eb828e94b2cb273e7225956ca4e6cd55b2279216fb8ebaa18a` (4 jobs),
+  dispatch `mode=benchmark attempt=24`, and 1,400 FRESH DISJOINT openings
+  seed `2026120701` (ZERO overlap with 39,041 earlier positions / 145 files).
+- **Design:** FIXED TIME 40+4 ms, Hash16/Threads1/240 plies, never `--nodes`;
+  ONE packaged binary, single switch `AdaptiveNullR=true` vs default OFF;
+  Stage-0 control/control validity null (0 forfeits required),
+  candidate-options null, two independent 1,000-game batches, frozen combined
+  = batchA+batchB ONLY, independent raw-JSONL audit. Frozen ADVANCE >= +20
+  AND LCB>0 AND both batches >= −5 AND both null CIs include 0 AND clean;
+  CLOSE if UCB<+10 OR point<=0; otherwise CLOSED AS INCONCLUSIVE (single-run
+  compute bound, no confirmation). Validity gate: ANY forfeit/illegal/UCI/
+  engine failure in ANY job => INVALID MEASUREMENT, all Elo discarded; at most
+  ONE bounded valid retry with its own frozen prereg and fresh suites. ADVANCE
+  alone does NOT satisfy Gate 1. Gates 1 and 4 remain UNMET.
 
 ## exp-0045 CLOSED / ABANDONED (INVALID run + ONE bounded valid retry)
 
