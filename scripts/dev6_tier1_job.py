@@ -40,7 +40,8 @@ def tool(name):
 
 def run(cmd, **kw):
     print("+ " + " ".join(str(x) for x in cmd), flush=True)
-    return subprocess.run([str(x) for x in cmd], cwd=ROOT, **kw)
+    kw.setdefault("cwd", ROOT)
+    return subprocess.run([str(x) for x in cmd], **kw)
 
 
 def main():
@@ -166,11 +167,11 @@ def main():
         assert r.returncode == 0
         r = run([cmake, "--build", tb, "-j", "2"], stdout=log, stderr=subprocess.STDOUT)
         assert r.returncode == 0
-        r = run([cmake, "-E", "chdir", tb, "ctest", "--output-on-failure"],
+        r = run([tool("ctest"), "--output-on-failure"], cwd=tb,
                 stdout=log, stderr=subprocess.STDOUT)
         assert r.returncode == 0, "ctest failed"
         say("ctest PASS")
-    uci = subprocess.run([str(candidate), "uci"], cwd=ROOT, input="uci\nquit\n",
+    uci = subprocess.run([str(candidate)], cwd=ROOT, input="uci\nquit\n",
                          capture_output=True, text=True, timeout=30)
     (out / "uci.txt").write_text(uci.stdout)
     say("candidate UCI default switches:",
@@ -228,17 +229,19 @@ def main():
     for x in recs:
         t = x.get("termination", "?")
         terms[t] = terms.get(t, 0) + 1
+    score = (s["wins"] + 0.5 * s["draws"]) / max(1, len(game_scores))
+    independent_elo = match_stats.finite_or_none(match_stats.score_to_elo(score))
     summary = {
         "job_id": job_id, "experiment_id": a.experiment_id, "games": len(game_scores),
         "unadjudicated": len(recs) - len(game_scores),
         "wins": s["wins"], "draws": s["draws"], "losses": s["losses"],
-        "score": (s["wins"] + 0.5 * s["draws"]) / max(1, len(game_scores)),
+        "score": score,
         "elo": cl.get("elo_difference"), "ci95": cl.get("elo_ci95"),
         "clusters": cl.get("clusters"), "terminations": terms,
         "time_forfeit": sum(v for k, v in terms.items() if "FORFEIT" in k.upper()),
         "illegal": sum(v for k, v in terms.items() if "ILLEGAL" in k.upper()),
         "engine_failure": sum(v for k, v in terms.items() if "FAILURE" in k.upper()),
-        "independent_elo_from_score": match_stats.score_to_elo(summary["score"]),
+        "independent_elo_from_score": independent_elo,
     }
     (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     with open(out / "audit.txt", "w") as fh:
@@ -248,7 +251,7 @@ def main():
         fh.write(f"W/D/L = {s['wins']}/{s['draws']}/{s['losses']} score={summary['score']:.6f}\n")
         fh.write(f"CR1/t opening-clustered Elo = {cl.get('elo_difference')} "
                  f"95% CI = {cl.get('elo_ci95')}\n")
-        fh.write(f"independent Elo-from-score  = {summary['independent_elo_from_score']:.4f}\n")
+        fh.write(f"independent Elo-from-score  = {independent_elo}\n")
         fh.write(f"terminations = {json.dumps(terms, sort_keys=True)}\n")
         fh.write(f"TIME_FORFEIT={summary['time_forfeit']} ILLEGAL={summary['illegal']} "
                  f"ENGINE_FAILURE={summary['engine_failure']}\n")
