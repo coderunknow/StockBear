@@ -365,3 +365,66 @@ accuracy-to-strength link. Time allocation stays REJECT. Gate 1 (+75 / LCB >
 +50) remains far away; a FRESH-measured bundle validated by a frozen ADVANCE
 rule, never a post-hoc sum, is still the only credible route. No direction is
 claimed exhausted, no result terminates the mission, no strength claim.
+
+
+## exp-0044 is the executing direction (post-exp-0043 rank 1)
+
+exp-0043 CLOSED/ABANDONED at `−10.3142 [−20.8915,+0.2440]` with a mechanism
+PROVEN live at 40+4 ms (23/24 suite positions) and +13.9 % fixed-depth node
+overhead. exp-0041, exp-0042 and exp-0043 are three consecutive losses for
+mechanisms that change WHICH nodes are searched or ADD a ply at non-PV nodes.
+The positive directions remain exp-0036 (shallow SEE-losing-capture PRUNING,
++21.52) and exp-0038 (qsearch information reuse, +7.68). Rank 1 is now
+**move-ordering ACCURACY with ZERO added per-node work**.
+
+Reading `Search::score_moves` found a concrete, previously untested
+deficiency: a capture with SEE < 0 scores ~2,000,000, which is ABOVE killers
+(1,500,000), countermoves (1,485,000) and every quiet history move
+(|history| <= 60,000). Losing captures are therefore searched immediately
+after winning captures at EVERY main-search node. Strong engines order bad
+captures LAST. `docs/DEV6_PREREG_EXP0044.md` (SHA
+`73ae460981a09bbf5d605205f8b77bf799b6d92a0fed4dc4abaa3a4ebc3820a5`) freezes a
+pure ordering change: demote SEE-losing non-promotion captures to the tail in
+the MAIN search ONLY. NO move is removed (exp-0036 removed them at depth <= 3;
+exp-0041 extended that removal and lost), NO SEE/eval call is added, NO stand-
+pat value or pruning/extension decision changes, and QUIESCENCE is excluded
+(it already skips SEE<0 captures). Frozen `BadCaptureOrderScore = -2000000`,
+frozen threshold SEE < 0 — no tunable margin, so this is NOT best-of-N
+parameter selection and NOT a repeat of exp-0036/0041.
+
+Mandatory pre-result diagnostics from the FROZEN source (instrumented
+`SB_BADCAP_DEBUG`): fixed depth 10 over 16 suite positions OFF 2,655,145
+nodes, ON 2,961,866 nodes (**+11.6 % tree change, ZERO added per-node work**),
+424,155 demotions, LIVE 16/16; FIXED TIME 40+4 ms over 24 positions x 2
+repeats OFF 228,643/236,838 nodes, ON 203,245/214,462 nodes, median completed
+depth 6 for both, 22,024/24,413 demotions, LIVE 24/24. The fixed-depth node
+INCREASE is disclosed as a risk (bad captures sometimes give check or refute
+quickly) and is NOT spun as a positive; fixed-depth/node proxies are recorded
+three times as MISLEADING here. A real 40+4 ms Tier-1 screen decides.
+
+1,400 fresh openings, seed `2026120301`, ZERO overlap with 33,441 earlier
+positions in 125 files, four disjoint slices; Stage-0 validity null,
+candidate-options null, two independent 1,000-game batches, isolated VMs,
+independent raw-JSONL audit. Strict validity rule: ANY time forfeit, illegal
+move or engine failure in ANY of the four jobs => INVALID MEASUREMENT.
+
+Expected upside +5..30 Elo; complexity LOW (one score constant plus an
+explicit mainSearch flag); regression risk MEDIUM (sacrifices, check-giving
+losing captures, moveCount/LMR interactions); statistical detectability good
+with 2,000 paired games; architecture compatibility high. Gate 1 (+75 / LCB >
++50) remains far away; a FRESH-measured bundle validated by a frozen ADVANCE
+rule, never a post-hoc sum, is still the only credible route.
+
+Remaining ranked unexecuted directions: canonical singular extension with a
+genuine re-search (DEFERRED again — exp-0043's measured overhead budget says
+a verification subtree is even less affordable than one extra ply); TT
+replacement/depth policy — CODE INSPECTION shows generation- and
+depth-preferred replacement is ALREADY SHIPPED in
+`src/search/transposition_table.cpp`, and a 16 MB TT is far from full at
+~10k-30k nodes/move, so this direction is likely already inert at 40+4 ms and
+must be profiled before any games; a NEW frozen prereg for bit-exact qsearch
+`evaluate()` throughput sized from the power analysis (+3-8 Elo is NOT
+detectable with 2,000 games); a larger bullet-matched eval corpus with an
+explicit accuracy-to-strength link. Time allocation stays REJECT (exp-0004
+forfeit-driven, exp-0040 inert). No direction is claimed exhausted, no result
+terminates the mission, no strength claim is made.

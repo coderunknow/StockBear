@@ -49,6 +49,12 @@ constexpr int SingularMinDepth = 3;        // live at the 40+4 ms depth 5-6 tree
 constexpr int SingularDepthSlack = 3;      // TT evidence up to 3 plies shallower
 constexpr int SingularMargin = 50;         // cp above beta required
 constexpr int MaxSingularExtensions = 2;   // hard per-path cap
+// exp-0044 FROZEN ordering constant (chosen BEFORE any result, never tuned):
+// demoted SEE-losing captures are placed below every quiet/killer move.
+constexpr int BadCaptureOrderScore = -2000000;
+#ifdef SB_BADCAP_DEBUG
+static std::uint64_t badcap_demotions = 0, badcap_nodes_with_demotion = 0;
+#endif
 #ifdef SB_SINGULAR_DEBUG
 static std::uint64_t singular_triggers = 0, singular_extensions = 0;
 #endif
@@ -201,7 +207,8 @@ bool Search::visit(int ply) {
     return true;
 }
 
-void Search::score_moves(const Position& pos, MoveList& moves, Move hashMove, int ply) {
+void Search::score_moves(const Position& pos, MoveList& moves, Move hashMove, int ply,
+                          bool mainSearch) {
     const Color us = pos.side_to_move();
     const Move previous = previous_move(ply);
     // The piece that played the previous move is standing on its destination.
@@ -229,6 +236,22 @@ void Search::score_moves(const Position& pos, MoveList& moves, Move hashMove, in
 #endif
             // Winning and equal captures first, losing captures after quiets.
             score = 2000000 + (seeScore >= 0 ? 1000000 : 0) + 32 * gain + seeScore;
+            // exp-0044 (frozen before results): a capture whose SEE is
+            // negative is a material concession. In the MAIN search it is
+            // currently ranked at ~2,000,000, i.e. ABOVE killers (1,500,000)
+            // and above every quiet/history move. Demote it to the very tail
+            // so good moves raise alpha first. Promotions and the TT hash move
+            // are never demoted (they are handled by earlier branches). This
+            // changes ONLY the ordering: no move is skipped, no SEE or eval
+            // call is added, and no stand-pat value is rewritten. Qsearch is
+            // explicitly excluded because it already skips SEE<0 captures.
+            if (params_.badCaptureOrdering && mainSearch && seeScore < 0 &&
+                move_type(m) != PromotionMove) {
+                score = BadCaptureOrderScore + 32 * gain + seeScore;
+#ifdef SB_BADCAP_DEBUG
+                ++badcap_demotions;
+#endif
+            }
             if (move_type(m) == PromotionMove)
                 score += 900000 + SeeValue[promotion_type(m)];
             if (params_.captureHistory) {
@@ -400,7 +423,7 @@ int Search::quiescence(Position& pos, int alpha, int beta, int ply) {
         }
     }
 
-    score_moves(pos, moves, MOVE_NONE, ply);
+    score_moves(pos, moves, MOVE_NONE, ply, false);
     for (int i = 0; i < moves.size(); ++i) {
         next_move(moves, i);
         const Move m = moves[i].move;
@@ -559,7 +582,7 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
     generate_moves(pos, moves, GenType::All);
     if (moves.empty()) return inCheck ? -VALUE_MATE + ply : VALUE_DRAW;
 
-    score_moves(pos, moves, hashMove, ply);
+    score_moves(pos, moves, hashMove, ply, true);
     const int futilityBase = staticEval + SB_FUTILITY_MARGIN * depth;
     const int originalAlpha = alpha;
     int best = -VALUE_INFINITE;
@@ -790,6 +813,10 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
     std::fill(std::begin(moveStack_), std::end(moveStack_), MOVE_NONE);
     std::fill_n(qcache_.get(), QCacheSlots, QCacheEntry{});
     singularExtensions_ = 0;
+#ifdef SB_BADCAP_DEBUG
+    badcap_demotions = 0;
+    badcap_nodes_with_demotion = 0;
+#endif
 #ifdef SB_SINGULAR_DEBUG
     singular_triggers = singular_extensions = 0;
 #endif
@@ -947,6 +974,11 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
     result.timeMs = result.timeUs / 1000;
     result.hashfull = tt_.hashfull();
     result.interrupted = aborted_;
+#ifdef SB_BADCAP_DEBUG
+    std::cerr << "BADCAPDEBUG switches=" << int(params_.badCaptureOrdering)
+              << " demotions=" << badcap_demotions
+              << " nodes=" << nodes_ << std::endl;
+#endif
 #ifdef SB_SINGULAR_DEBUG
     std::cerr << "SINGULARDEBUG switches=" << int(params_.ttSingularExtension)
               << " triggers=" << singular_triggers

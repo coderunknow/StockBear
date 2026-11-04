@@ -125,6 +125,13 @@ struct SearchParams {
     // (exp-0037 measured verification overhead is fatal at 40+4 ms).
     // Frozen in docs/DEV6_PREREG_EXP0043.md.
     bool ttSingularExtension = false;
+    // --- dev6 exp-0044 (default off; isolated same-binary ablation) ---------
+    // Pure move-ordering accuracy: in the MAIN search only, order SEE-losing
+    // captures BELOW killers/history quiets instead of immediately after
+    // winning captures. No move is removed, no per-node work is added, no
+    // stand-pat value or pruning/extension decision is changed.
+    // Frozen in docs/DEV6_PREREG_EXP0044.md.
+    bool badCaptureOrdering = false;
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control
@@ -149,7 +156,8 @@ private:
                 bool pvNode, int extensions, bool allowNull);
     int quiescence(Position& pos, int alpha, int beta, int ply);
     int search_root(Position& pos, int depth, int alpha, int beta, int pvIndex);
-    void score_moves(const Position& pos, MoveList& moves, Move hashMove, int ply);
+    void score_moves(const Position& pos, MoveList& moves, Move hashMove, int ply,
+                   bool mainSearch);
     int next_move(MoveList& moves, int index);
     void update_pv(int ply, Move move);
     bool quiet(const Position& pos, Move move) const;

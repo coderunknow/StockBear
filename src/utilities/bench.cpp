@@ -172,6 +172,7 @@ bool apply_param(SearchParams& params, const std::string& key, const std::string
     else if (key == "badCaptureAllDepths") params.badCaptureAllDepths = on;
     else if (key == "maxGainDelta") params.maxGainDelta = on;
     else if (key == "ttSingularExtension") params.ttSingularExtension = on;
+    else if (key == "badCaptureOrdering") params.badCaptureOrdering = on;
     else return false;
     return true;
 }
@@ -202,7 +203,8 @@ std::string params_text(const SearchParams& params) {
         << ",bankedTime=" << int(params.bankedTime)
         << ",badCaptureAllDepths=" << int(params.badCaptureAllDepths)
         << ",maxGainDelta=" << int(params.maxGainDelta)
-        << ",ttSingularExtension=" << int(params.ttSingularExtension);
+        << ",ttSingularExtension=" << int(params.ttSingularExtension)
+        << ",badCaptureOrdering=" << int(params.badCaptureOrdering);
     return out.str();
 }
 }

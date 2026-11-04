@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0043",
+  "mode": "benchmark",
+  "experiment_id": "exp0044",
   "source_sha": "HEAD",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0043.json",
-  "source_run_id": "41809643084",
-  "note": "Deliberate export of all four exp0043 Tier-1 artifacts from run 41809643084 for independent raw-game audit.",
-  "attempt": 14
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0044.json",
+  "source_run_id": "",
+  "note": "Launch exp-0044 SEE-losing-capture ordering: frozen prereg, plan, fresh disjoint suites and mechanism-live/zero-overhead diagnostic committed in the SAME commit as this dispatch. No reuse of closed exp0041/0042/0043 data.",
+  "attempt": 15
 }

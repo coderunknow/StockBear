@@ -584,3 +584,49 @@ INCONCLUSIVE, so no confirmation run and no fresh suites spent.
 strength claim, no default change, no PR/merge/tag/release/deploy/dev7.
 Full report `docs/DEV6_EXP0043_REPORT.md`. Gates 1 and 4 remain UNMET;
 mission ACTIVE / NOT COMPLETE; next hypothesis is being selected and launched.
+
+## exp-0044 launched — SEE-losing-capture ordering (2026-11-04)
+Post-exp-0043 re-ranking: exp-0041, exp-0042 and exp-0043 are three
+consecutive fixed-time losses for mechanisms that change WHICH nodes are
+searched or ADD a ply at non-PV nodes; exp-0036 (+21.52, shallow SEE-losing
+capture PRUNING) and exp-0038 (+7.68, qsearch information reuse) remain the
+only positive directions. Rank 1 is now move-ordering ACCURACY with ZERO added
+per-node work.
+
+Code inspection found a concrete deficiency: in `Search::score_moves` a
+capture with SEE < 0 scores ~2,000,000, ABOVE killers (1,500,000),
+countermoves (1,485,000) and every quiet history move (|h| <= 60,000), so
+losing captures are searched immediately after winning captures at EVERY
+main-search node. exp-0044 demotes them to the tail in the MAIN search ONLY.
+NO move is removed (unlike exp-0036/0041), NO SEE/eval call is added, NO
+stand-pat value or pruning/extension decision changes, quiescence excluded.
+Frozen `BadCaptureOrderScore=-2000000`, threshold SEE<0, no tunable margin —
+NOT best-of-N parameter selection, NOT a repeat of exp-0036/0041.
+
+Frozen before any evaluation game: `docs/DEV6_PREREG_EXP0044.md` (SHA
+`73ae460981a09bbf5d605205f8b77bf799b6d92a0fed4dc4abaa3a4ebc3820a5`),
+`tier1-plan-exp0044.json` (4 jobs), `scripts/dev6_exp0044_openings.py` and
+1,400 fresh disjoint openings (seed `2026120301`, ZERO overlap with 33,441
+earlier positions in 125 files, four disjoint slices), dispatch
+`mode=benchmark experiment_id=exp0044 attempt=15`. All in the SAME commit as
+the dispatch. Default-off bit-exact signatures `243f9a1c1ba5b36f` /
+`a14ab62224f837e5` / `e45fa2ec2287eb41`, Release ctest 11/11, ASan+UBSan
+ctest 11/11 (`exp0044_asan_ctest.log`), UCI default false.
+
+MANDATORY pre-result mechanism-live/overhead diagnostic from the FROZEN source
+(`SB_BADCAP_DEBUG`): fixed depth 10 over 16 suite positions OFF 2,655,145
+nodes, ON 2,961,866 nodes (+11.6 % TREE change, ZERO added per-node work),
+424,155 demotions, live 16/16; FIXED TIME 40+4 ms over 24 positions x 2
+repeats OFF 228,643/236,838 nodes, ON 203,245/214,462 nodes, median depth 6
+for both, 22,024/24,413 demotions, LIVE 24/24. The node INCREASE is disclosed
+as a risk and is NOT strength evidence.
+
+Design: FIXED TIME 40+4 ms, Hash16/Threads1/240 plies, never `--nodes`;
+Stage-0 validity null 400 games, candidate-options null 400 games,
+batchA/batchB 1,000 games each on independent fresh suites; ANY time
+forfeit/illegal/engine failure in ANY job => INVALID MEASUREMENT. Frozen
+ADVANCE >= +20 AND LCB > 0 AND both batches >= −5 AND both null CIs include 0
+AND clean; CLOSE if UCB < +10 OR point <= 0; INCONCLUSIVE -> ONE bounded fresh
+confirmation, NEVER pooled. Gates 1 (+75/LCB>+50) and 4 remain UNMET; no
+strength claim, no bundle, no default change, no PR/merge/tag/release/deploy/
+dev7, no reuse of closed exp0041/0042/0043 data.

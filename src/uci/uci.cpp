@@ -304,6 +304,7 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     else if (key == "badcapturealldepths") flag = &params_.badCaptureAllDepths;
     else if (key == "maxgaindelta") flag = &params_.maxGainDelta;
     else if (key == "ttsingularextension") flag = &params_.ttSingularExtension;
+    else if (key == "badcaptureordering") flag = &params_.badCaptureOrdering;
     if (flag == nullptr) {
         emit("info string setoption: unknown option " + name); return;
     }
@@ -491,6 +492,9 @@ void UciEngine::loop() {
             // exp-0043: default off; isolated same-binary ablation.
             emit(std::string("option name TTSingularExtension type check default ") +
                  check(params_.ttSingularExtension));
+            // exp-0044: default off; isolated same-binary ablation.
+            emit(std::string("option name BadCaptureOrdering type check default ") +
+                 check(params_.badCaptureOrdering));
             // exp-0019: cp-denominated margins and the aspiration half-window as
             // integer options so they can be screened without rebuilding.
             emit("option name AspirationWindow type spin default 16 min 1 max 1200");
