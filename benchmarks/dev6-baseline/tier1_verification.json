@@ -1,0 +1,57 @@
+{
+  "status": "PASS",
+  "meaning": "Tier-1 isolated-VM benchmark pipeline + artifact export + independent retrieval VERIFIED. This is an infrastructure gate, NOT a strength result.",
+  "smoke_workflow_run_id": 41778365897,
+  "smoke_source_sha": "ddb689adc089e326506e7075f80f68e9e10b5433",
+  "smoke_job": "tier1-smoke",
+  "smoke_conclusion": "success",
+  "smoke_jobs_all_success": true,
+  "smoke_artifact": {
+    "id": 13298122481,
+    "name": "tier1-exp0037-tier1-smoke-run41778365897",
+    "size_in_bytes": 629705
+  },
+  "export_workflow_run_id": 41778833297,
+  "export_commit": "5c0aad4269e970e05ede003cbbd57448f6bbb413",
+  "export_manifest": {
+    "exported_at_utc": "2026-11-04T05:22:42.006697+00:00",
+    "source_run_id": "41778365897",
+    "experiment_id": "exp0037",
+    "export_workflow_run_id": "41778833297",
+    "artifacts": [
+      {
+        "id": 13298122481,
+        "name": "tier1-exp0037-tier1-smoke-run41778365897",
+        "size_in_bytes": 629705
+      }
+    ],
+    "channel": "git + GitHub Contents API (blob CDN unreachable from sandbox)"
+  },
+  "retrieval": {
+    "git_archive": "PASS",
+    "sha256sum_checks": "9/9 OK",
+    "contents_api": "PASS (api.github.com/.../contents/.../export_manifest.json)",
+    "blob_cdn": "blocked (productionresultssa6.blob.core.windows.net EOF); not used"
+  },
+  "packaged_binary_sha256": "df6d9c28e6a49317ab47ef2927b91736bdea84d55aeeb0edfc9047a4c79174ee",
+  "built_binary_sha256": "df6d9c28e6a49317ab47ef2927b91736bdea84d55aeeb0edfc9047a4c79174ee",
+  "package_sha256": "a2dbfd8fd88c913fc8025123a944739cc394db991ce76bdb01ecc6085109dd6d",
+  "fingerprint_sha256": "30c3e82d67bad111ccee39a44e8ee3f2686793ccda0c6dcda342468a2639c64f",
+  "runner": {
+    "os": "Linux",
+    "nproc": 4,
+    "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39"
+  },
+  "toolchain": {
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "cmake": "cmake version 4.4.4"
+  },
+  "pinned_source_sha": "ddb689adc089e326506e7075f80f68e9e10b5433",
+  "gate4_binary_identity": "built == packaged == tested binary (asserted in driver)",
+  "smoke_games_discarded": 40,
+  "ci": {
+    "run_41777439766": "success on 7b6a395",
+    "run_41778365776": "success on ddb689a"
+  },
+  "known_defect_fixed": "git mirror initially omitted *.log due to .gitignore; export job now force-adds logs (applies to future runs)."
+}

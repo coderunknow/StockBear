@@ -603,3 +603,13 @@ confirmation of exp-0035 with unchanged Gates 1-4.
     direction ABANDONED. Root cause: verification probe is overhead at the
     shallow depths reachable in 4 ms (predicted by the +63 % depth-12 node
     diagnostic). No Stage 2a. Mission ACTIVE -> exp-0038.
+
+### 2026-11-04 — Tier-1 artifact retrieval VERIFIED
+12. Export run `41778833297` SUCCESS -> commit `5c0aad4` on the branch.
+    `git archive` + `sha256sum -c` = 9/9 OK; GitHub Contents API returned
+    `export_manifest.json` verbatim (api.github.com is reachable while the
+    blob CDN is not). Machine-readable record in
+    `benchmarks/dev6-baseline/tier1_verification.json`.
+13. Found the git mirror omitted `*.log`; patched the export job to force-add
+    logs. Gate 4 binary identity (built == packaged == tested SHA-256) is
+    asserted by the Tier-1 driver and pinned in `fingerprint.json`.

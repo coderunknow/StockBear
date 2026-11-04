@@ -189,7 +189,10 @@ jobs:
           cp export_manifest.json artifacts.json "$dest"/
           git config user.email "dev6-tier1@stockbear.local"
           git config user.name "dev6-tier1-exporter"
+          # .gitignore excludes *.log; force-add so raw logs are preserved in
+          # the git mirror as well as in the Actions artifact.
           git add -A "$dest"
+          git add -f $(find "$dest" -name '*.log' -type f)
           git commit -q -m "dev6-tier1[$EXPERIMENT_ID]: export evidence from run $SOURCE_RUN_ID [skip ci]"
           git push origin HEAD:arena/3e6dd5b6-stockbear
           echo "exported to $dest at $(git rev-parse HEAD)"

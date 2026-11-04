@@ -54,3 +54,22 @@ control is bypassed.
 Filled in from the actual dispatched smoke run and exported artifact; see
 `benchmarks/dev6-baseline/tier1_verification.json`. Until that file records a
 PASS, no Tier-1 result is claimed.
+
+## VERIFICATION: PASS (2026-11-04)
+- Smoke workflow run `41778365897` on source `ddb689a`: `prepare` + `tier1-smoke`
+  both **success** on a dedicated `ubuntu-latest` VM. Artifact
+  `13298122481` (`tier1-exp0037-tier1-smoke-run41778365897`, 629,705 bytes).
+- Export workflow run `41778833297` **success**, evidence commit `5c0aad4`
+  under `benchmarks/exp-runs/tier1-export/run-41778365897/`.
+- Independent retrieval: `git archive origin/... | tar -x` + `sha256sum -c`
+  → **9/9 OK**; GitHub Contents API (`api.github.com`) returned
+  `export_manifest.json` verbatim. The blocked blob CDN was not used.
+- Gate 4 binary identity asserted on the runner: built == packaged == tested
+  SHA-256; `fingerprint.json` pins source SHA, build flags, package SHA,
+  opening SHA, seeds, options and control.
+- Full machine-readable record:
+  `benchmarks/dev6-baseline/tier1_verification.json`.
+- The 40 smoke games are DISCARDED (null self-match, no strength inference).
+- Defect found and fixed: `.gitignore`'s `*.log` excluded `run.log` from the
+  git mirror (the Actions artifact always had it). The export job now
+  force-adds logs; this fix applies to all future exports.
