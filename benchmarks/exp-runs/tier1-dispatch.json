@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0041",
   "source_sha": "HEAD",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0041.json",
-  "source_run_id": "",
-  "note": "Deliberate Tier-1 exp0041 40+4 ms screen; frozen prereg, validation and 1400 fresh openings are in this same commit.",
-  "attempt": 7
+  "source_run_id": "41782954038",
+  "note": "Deliberate export of all four Tier-1 exp0041 isolated-VM artifacts for independent raw-game audit under frozen prereg thresholds.",
+  "attempt": 8
 }

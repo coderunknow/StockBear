@@ -9,7 +9,12 @@ then computes the FROZEN combined batchA+batchB decision quantities with:
   * an independent seeded cluster bootstrap cross-check (no shared code path
     with match_stats.lmr_step / opening_clustered).
 
-Usage: .venv/bin/python scripts/dev6_exp0038_audit.py <source_run_id>
+Usage: .venv/bin/python scripts/dev6_exp0038_audit.py \
+           <source_run_id> [label] [advance_point] [close_ucb]
+
+Generic to any Tier-1 experiment with batchA/batchB/null/stage0 artifacts.
+Thresholds are passed explicitly from the FROZEN preregistration and default
+to exp-0038's frozen rules; they are never inferred from results.
 """
 import json
 import math
@@ -74,10 +79,14 @@ def cluster_bootstrap(pair_scores, pair_openings, reps=20000, seed=2026112501):
 
 
 def main():
-    if len(sys.argv) != 2:
-        print("usage: dev6_exp0038_audit.py <source_run_id>", file=sys.stderr)
+    if len(sys.argv) < 2:
+        print("usage: dev6_exp0038_audit.py <source_run_id> [label] [advance_point] [close_ucb]",
+              file=sys.stderr)
         return 2
     run_id = sys.argv[1]
+    label = sys.argv[2] if len(sys.argv) > 2 else "exp0038"
+    advance_point = float(sys.argv[3]) if len(sys.argv) > 3 else 20.0
+    close_ucb = float(sys.argv[4]) if len(sys.argv) > 4 else 20.0
     root = EXPO / f"run-{run_id}"
     if not root.is_dir():
         print(f"no exported evidence at {root}", file=sys.stderr)
@@ -93,7 +102,9 @@ def main():
             issues.append(f"{tag}: recomputed {got} != stored {expected}")
 
     jobs = sorted(p for p in root.iterdir() if p.is_dir())
-    print(f"exp-0038 independent audit, run {run_id}, {len(jobs)} artifacts")
+    print(f"{label} independent audit, run {run_id}, {len(jobs)} artifacts")
+    print(f"  FROZEN thresholds from prereg: ADVANCE point>=+{advance_point:g} "
+          f"and LCB>0; CLOSE UCB<+{close_ucb:g} or point<=0")
     combined_pairs, combined_openings, combined_scores = [], [], []
     per_job = {}
     for d in jobs:
@@ -156,11 +167,22 @@ def main():
         print(f"  independent cluster bootstrap 95% = [{lo:.4f}, {hi:.4f}]")
         point = cl["elo_difference"]
         lcb, ucb = cl["elo_ci95"]
-        print(f"  FROZEN RULE: point>=+20 {point >= 20}, LCB>0 {lcb > 0}, "
-              f"UCB<+20 {ucb < 20}, point<=0 {point <= 0}")
-        print("  ADVANCE" if (point >= 20 and lcb > 0) else
-              ("CLOSE (inert/overhead)" if (ucb < 20 or point <= 0)
+        batches_ok = all(v["elo"] >= -5 for k, v in per_job.items()
+                         if "batchA" in k or "batchB" in k)
+        null_ok = any("null" in k for k in per_job)
+        clean = all(v["time_forfeit"] == 0 and v["illegal"] == 0 and
+                    v["engine_failure"] == 0 for v in per_job.values())
+        print(f"  FROZEN RULE: point>=+{advance_point:g} {point >= advance_point}, "
+              f"LCB>0 {lcb > 0}, both_batches>=-5 {batches_ok}, null present {null_ok}, "
+              f"clean {clean}; CLOSE UCB<+{close_ucb:g} {ucb < close_ucb} "
+              f"or point<=0 {point <= 0}")
+        print("  ADVANCE" if (point >= advance_point and lcb > 0 and batches_ok and
+                             null_ok and clean) else
+              ("CLOSE" if (ucb < close_ucb or point <= 0)
                else "INCONCLUSIVE (more samples, same frozen conditions)"))
+        print(f"  decision_inputs: {json.dumps({'advance_point': advance_point,
+              'close_ucb': close_ucb, 'batches_ok': batches_ok,
+              'clean': clean}, sort_keys=True)}")
         out = {
             "source_run_id": run_id,
             "combined": {"games": len(combined_scores), "wins": cw, "draws": cd,
@@ -171,7 +193,7 @@ def main():
                          "cluster_bootstrap_ci95": [lo, hi]},
             "per_job": per_job,
         }
-        (ROOT / "benchmarks/dev6-baseline/exp0038_independent_audit.json").write_text(
+        (ROOT / f"benchmarks/dev6-baseline/{label}_independent_audit.json").write_text(
             json.dumps(out, indent=2) + "\n")
 
     print(f"\nchecked {checked} stored values; {len(issues)} issues")

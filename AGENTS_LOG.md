@@ -681,3 +681,13 @@ signatures, UCI default false. Live diagnostic: `go depth 12` startpos with
 batchB + null Tier-1 plan, dispatch attempt 7. NO evaluation games yet.
 Gate verdict UNCHANGED: 1 UNMET / 2 direction-supported / 3 PASS / 4 UNMET
 (no final candidate). Mission ACTIVE.
+
+### exp-0041 Tier-1 screen completed; export dispatched
+
+Run `41782954038` on source `87f82854…`: prepare + all four isolated-VM
+40+4 ms jobs SUCCESS; CI `41782954037` SUCCESS. Evidence export dispatched
+(attempt 8) via the deliberate `mode=export` job. The independent audit script
+was made generic AFTER the run but BEFORE any exp-0041 result was read; its
+frozen thresholds for exp-0041 are ADVANCE point>=+20/LCB>0/both batches>=-5
+and CLOSE UCB<+10 or point<=0, taken verbatim from
+`docs/DEV6_PREREG_EXP0041.md` §5. No exp-0041 result has been inspected yet.
