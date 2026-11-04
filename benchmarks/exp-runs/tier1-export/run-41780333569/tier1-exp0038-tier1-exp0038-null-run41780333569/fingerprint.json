@@ -1,0 +1,57 @@
+{
+  "fingerprint_sha256": "8fd81c391e55559baa4a8fc90e8f6ce0803330cdd903dbc3e7f10b107fe6d39f",
+  "source_sha": "2aacf4a643d5066526a33dd1d0f7f504b52e87f9",
+  "prereg_sha256": "6161061783d745e10eb5c54017a344d4eb54730778c4f64684b88da3c2cf12dc",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0038.md",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "id": "tier1-exp0038-null",
+    "games": 400,
+    "seed": 2026112403,
+    "openings": "benchmarks/positions/openings_exp0038_null.txt",
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "null": true,
+    "ctest": false,
+    "a_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true",
+      "QSearchTT=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "engine_a": "candidate",
+    "engine_b": "candidate",
+    "note": "exp-0038 null arm"
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "30874fbc1e6c7da03b4571d1c316fb082b0b151350d1d7ea86e5a7abb18931f0",
+  "packaged_binary_sha256": "30874fbc1e6c7da03b4571d1c316fb082b0b151350d1d7ea86e5a7abb18931f0",
+  "package_sha256": "09da456ae83ccf2de0ef9773616877b78227cd8bff64be716648250d898460c9",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "823174de6b1564429c0c22287274c2cb03413f88c733caedff7763df78bd47f8",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true",
+    "QSearchTT=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true",
+    "QSearchTT=true"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0038-null/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0038-null/stockbear",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}
