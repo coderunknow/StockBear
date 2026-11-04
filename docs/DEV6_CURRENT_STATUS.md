@@ -45,6 +45,18 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
 - **exp-0039** dead static evaluation on TT hits: eliminated at profiling
   (bit-exact fix measured <= 2.9 % against a ~7 % build/CPU noise floor),
   source reverted, no games played.
+- **exp-0040** banked-time allocation: eliminated at profiling; the confirmed
+  live soft-budget increase (4 -> 6 ms) left the tree bit-identical because the
+  55 %/70 % early stops dominate at 40+4 ms. No games spent, switch stays OFF.
+
+## Currently executing (results pending)
+- **exp-0041** losing-capture pruning at ALL remaining depths. Frozen prereg
+  `docs/DEV6_PREREG_EXP0041.md` (SHA `2f5c1b08…`), 1,400 fresh disjoint
+  openings, Tier-1 40+4 ms Stage-0 validity + two 1,000-game batches + null
+  on isolated VMs, dispatched in the same commit as the prereg. NO evaluation
+  result exists yet; the −42.1 % fixed-depth-12 node saving is profiling, NOT
+  strength evidence. Gate verdict above is unchanged.
+
 
 ## Exact continuation state
 Branch `arena/3e6dd5b6-stockbear`; local HEAD and remote head are recorded in

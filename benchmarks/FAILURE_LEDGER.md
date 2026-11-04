@@ -1317,3 +1317,33 @@ LCB < 0), no Stage 2a, no retune of cache size/hash/margin, no repeat, no
 bundle containing qsearchTT, `QSearchTT` stays default OFF. ABANDONED.
 Next action: continue ranked directions and independent audits; see
 `docs/DEV6_CURRENT_STATUS.md`. No vague "optimization unsuccessful".
+
+## exp-0040 — banked-time allocation (ELIMINATED AT PROFILING, no games played)
+
+Exact source state: local implementation of `SearchParams::bankedTime`,
+UCI `BankedTime`, `bench --param bankedTime=0|1`,
+`TimeManager::start(limits, side, bankedTime)` with
+`target = increment + remaining/20` (versus shipped
+`remaining/30 + 3*increment/4`). Hypothesis: at 40+4 ms both arms currently
+think only ~4 ms and leave the 40 ms banked clock unused; spending part of it
+early should buy depth. This is NOT exp-0004 `FullSoftBudget` (both early stops
+remain, hard budget still reserves the 10 ms overhead, identical clocks).
+
+Validation: Release ctest 11/11, ASan+UBSan ctest 11/11, exact default-off
+bench/d16/d12 signatures, UCI default false. A temporary instrumented build
+confirmed the switch is LIVE: `go wtime 40 btime 40 winc 4 binc 4` reported
+`bankedTime=0 remaining=40 increment=4 target=4 soft=4 hard=13` and
+`bankedTime=1 ... target=6 soft=6 hard=13`. Raw profiling on startpos and a
+middlegame FEN, 5 repetitions each: OFF and ON both produced **depth 6,
+12,539 nodes, engine time 5 ms** — bit-identical trees. Why failed: the
+`SB_EARLY_PERMILLE=550` stable-move stop and `SB_CLOCK_PERMILLE=700` clock stop
+dominate at this control; at 5 ms elapsed the usage is 1250 per mille of a
+4 ms soft budget and 833 per mille of a 6 ms budget, so both break after the
+same iteration and the soft-budget size is irrelevant. Root-cause class:
+**search-interaction / unsuitable hypothesis**, not an implementation defect.
+Decision: ABANDONED at profiling, no Tier-1 games spent, no strength claim, no
+retune of the divisor (that would be best-of-N parameter selection, a recorded
+dead end). The switch remains default OFF so the profiling is reproducible.
+Methodological rule added: any future time-allocation candidate must FIRST
+demonstrate at 40+4 ms that it changes the search tree, before a tournament is
+spent. Next action: exp-0041 (frozen prereg, mechanism confirmed live).

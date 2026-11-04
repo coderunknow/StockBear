@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0038",
+  "mode": "benchmark",
+  "experiment_id": "exp0041",
   "source_sha": "HEAD",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0038.json",
-  "source_run_id": "41780333569",
-  "note": "Deliberate export of all four Tier-1 exp0038 isolated-VM artifacts for independent raw-game audit; checksum-verified git/Contents-API mirror.",
-  "attempt": 6
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0041.json",
+  "source_run_id": "",
+  "note": "Deliberate Tier-1 exp0041 40+4 ms screen; frozen prereg, validation and 1400 fresh openings are in this same commit.",
+  "attempt": 7
 }

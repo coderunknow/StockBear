@@ -1,0 +1,130 @@
+{
+  "experiment_id": "exp0041",
+  "frozen_before_evaluation_games": true,
+  "control": "FIXED TIME 40+4 ms; never --nodes",
+  "jobs": [
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0041.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0041-stage0",
+      "games": 400,
+      "seed": 2026112700,
+      "openings": "benchmarks/positions/openings_exp0041_stage0.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": true,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "BadCapturePruning=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "BadCapturePruning=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Stage-0 validity null on control options (0 forfeits required)"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0041.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0041-batchA",
+      "games": 1000,
+      "seed": 2026112701,
+      "openings": "benchmarks/positions/openings_exp0041_batchA.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "BadCapturePruning=true",
+        "BadCaptureAllDepths=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "BadCapturePruning=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "exp-0041 scope extension CANDIDATE vs validated CONTROL"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0041.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0041-batchB",
+      "games": 1000,
+      "seed": 2026112702,
+      "openings": "benchmarks/positions/openings_exp0041_batchB.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "BadCapturePruning=true",
+        "BadCaptureAllDepths=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "BadCapturePruning=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "exp-0041 scope extension CANDIDATE vs validated CONTROL"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0041.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0041-null",
+      "games": 400,
+      "seed": 2026112703,
+      "openings": "benchmarks/positions/openings_exp0041_null.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "BadCapturePruning=true",
+        "BadCaptureAllDepths=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "BadCapturePruning=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "exp-0041 null arm (candidate vs candidate)"
+    }
+  ]
+}

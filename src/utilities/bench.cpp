@@ -168,6 +168,8 @@ bool apply_param(SearchParams& params, const std::string& key, const std::string
     else if (key == "badCapturePruning") params.badCapturePruning = on;
     else if (key == "probCut") params.probCut = on;
     else if (key == "qsearchTT") params.qsearchTT = on;
+    else if (key == "bankedTime") params.bankedTime = on;
+    else if (key == "badCaptureAllDepths") params.badCaptureAllDepths = on;
     else return false;
     return true;
 }
@@ -194,7 +196,9 @@ std::string params_text(const SearchParams& params) {
         << ",razoring=" << int(params.razoring)
         << ",badCapturePruning=" << int(params.badCapturePruning)
         << ",probCut=" << int(params.probCut)
-        << ",qsearchTT=" << int(params.qsearchTT);
+        << ",qsearchTT=" << int(params.qsearchTT)
+        << ",bankedTime=" << int(params.bankedTime)
+        << ",badCaptureAllDepths=" << int(params.badCaptureAllDepths);
     return out.str();
 }
 }

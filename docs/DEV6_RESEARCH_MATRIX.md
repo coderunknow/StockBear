@@ -146,3 +146,37 @@ on new code/measurement evidence, not a repeat of exp-0004.
 All other rankings are unchanged; singular/tactical extensions, TT replacement
 and bit-exact eval throughput remain deferred. No direction is claimed
 exhausted, and no experiment result can terminate the mission.
+
+## exp-0040 closed at profiling; exp-0041 is the new ranked top direction
+
+exp-0040 is NOT a repeat of exp-0004: it changed the SIZE of the soft budget
+(`increment + remaining/20`) while keeping both early stops and the hard-budget
+reserve. It was eliminated at profiling with an instrumented confirmation that
+the switch is live (soft 4 -> 6 ms, hard 13 ms) but the search tree is
+bit-identical (depth 6, 12,539 nodes, 5 ms) because `SB_EARLY_PERMILLE=550`
+and `SB_CLOCK_PERMILLE=700` dominate at 40+4 ms. Time allocation is therefore
+**REJECT again, on new evidence**, and any future candidate in this family must
+first prove it changes the search tree at 40+4 ms. No Tier-1 games spent.
+
+**exp-0041** (extend validated losing-capture pruning to all remaining depths
+with the frozen `BadCaptureMargin=100`) is re-ranked to **NEXT / EXECUTING**.
+Rationale: exp-0036 is the only mechanism with positive fixed-time evidence;
+exp-0037/0038 failed by spending work before saving it; exp-0040 failed by
+changing a budget that another gate absorbs. Extending WHERE a validated
+mechanism applies is the remaining direction that demonstrably changes the
+search tree (−42.1 % fixed-depth-12 nodes) without adding per-node overhead.
+It is a scope hypothesis, not best-of-N parameter selection: margin, SEE,
+PV/mate/check/hash guards and all other parameters are frozen. Frozen prereg,
+fresh suites, Stage-0 validity gate and Tier-1 40+4 ms screen are registered
+before any evaluation game. Expected upside +10..30 Elo; complexity low;
+regression risk medium (deep sacrifices / ordering instability); statistical
+detectability good with two 1,000-game batches; architecture compatibility
+high. Gate 1 (+75 / LCB > +50) is still far away; a fresh FRESH-measured
+bundle of validated mechanisms, never a post-hoc sum, remains the only
+credible route and is only authorised by a frozen ADVANCE rule.
+
+Unexecuted ranked alternatives remain singular/tactical extensions, TT
+replacement policy, bit-exact qsearch eval throughput (requires its OWN
+prereg, not a silent reuse of the abandoned exp-0038 cache), and a larger
+bullet-matched eval corpus / NNUE-with-accuracy-link. No direction is claimed
+exhausted. The mission is NOT terminated by any of these closures.

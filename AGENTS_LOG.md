@@ -658,3 +658,26 @@ interaction. `docs/DEV6_EXP0038_REPORT.md` and
 verdicts; older status reports carry pointers. Gate verdict UNCHANGED:
 1 UNMET / 2 direction-supported / 3 PASS / 4 UNMET (no final candidate).
 Mission ACTIVE; no strength claim, no PR/merge/tag/release/deploy/dev7.
+
+### exp-0040 profiling elimination + exp-0041 registration (before results)
+
+exp-0040 (banked-time allocation, distinct from exp-0004 FullSoftBudget) was
+implemented and validated. A temporary `TMDEBUG` build confirmed the switch is
+live (`soft=4 -> 6 ms`, `hard=13 ms`), yet 5-repeat 40+4 ms probes on two
+positions gave identical depth 6 / 12,539 nodes / 5 ms: the 55 %/70 % early
+stops absorb the larger soft budget. Eliminated at profiling, no games spent,
+no retune; recorded in FAILURE_LEDGER/DESIGN_LOG. New methodological rule: a
+candidate must demonstrably change the search tree at 40+4 ms before a
+tournament is spent.
+
+exp-0041 extends validated `BadCapturePruning` to all remaining depths with
+the frozen margin 100 (`BadCaptureAllDepths`, default OFF). Validation:
+Release ctest 11/11, ASan+UBSan ctest 11/11, exact default-off bench/d16/d12
+signatures, UCI default false. Live diagnostic: `go depth 12` startpos with
+`BadCapturePruning=true` gives 757,239 nodes / 400 ms OFF and 438,131 nodes /
+236 ms ON (−42.1 %). Frozen prereg SHA
+`2f5c1b08ebd991f84e570b90afd48adcc7694f5d355beda492e1b6b18d98d392`,
+1,400 fresh disjoint openings seed 2026112601, Stage-0 validity + batchA +
+batchB + null Tier-1 plan, dispatch attempt 7. NO evaluation games yet.
+Gate verdict UNCHANGED: 1 UNMET / 2 direction-supported / 3 PASS / 4 UNMET
+(no final candidate). Mission ACTIVE.

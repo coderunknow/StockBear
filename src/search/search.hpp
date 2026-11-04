@@ -103,6 +103,15 @@ struct SearchParams {
     // without re-searching. Never touches the main TT. Frozen design in
     // docs/DEV6_PREREG_EXP0038.md.
     bool qsearchTT = false;
+    // --- dev6 exp-0040 (default off; isolated same-binary ablation) ---------
+    // Banked-time allocation: spend part of the initial clock early and
+    // converge back to the increment. Frozen in docs/DEV6_PREREG_EXP0040.md.
+    bool bankedTime = false;
+    // --- dev6 exp-0041 (default off; isolated same-binary ablation) ---------
+    // Extend the validated shallow losing-capture pruning to ALL remaining
+    // depths with the frozen BadCaptureMargin=100. Frozen design in
+    // docs/DEV6_PREREG_EXP0041.md.
+    bool badCaptureAllDepths = false;
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control

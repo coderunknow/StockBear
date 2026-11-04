@@ -30,7 +30,9 @@ struct SearchLimits {
 // process scheduling, protocol output and the opponent's reply.
 class TimeManager {
 public:
-    void start(const SearchLimits& limits, Color side);
+    // bankedTime = exp-0040 (default off): spend a controlled part of the
+    // banked clock early and converge back to the increment as it drains.
+    void start(const SearchLimits& limits, Color side, bool bankedTime = false);
     bool hard_expired() const;
     bool soft_expired() const;
     std::int64_t elapsed_ms() const;

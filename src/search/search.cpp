@@ -524,8 +524,12 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
         // shallow depth. SEE was computed by score_moves(); the fallback
         // keeps correctness in builds without SB_SEE_CACHE. Guarded away
         // from PV nodes, mate windows, checks and the hash move.
+        // exp-0041: with the switch off the guard is bit-identical to the
+        // validated exp-0034/0035/0036 implementation (depth <= 3). With it
+        // on, the SAME frozen SEE < -100 test also applies higher in the tree.
         if (params_.badCapturePruning && !isQuiet && !isHash && !pvNode &&
-            !inCheck && !mateWindow && depth <= 3) {
+            !inCheck && !mateWindow &&
+            (depth <= 3 || params_.badCaptureAllDepths)) {
 #if SB_SEE_CACHE
             const int capSee = moves[i].seeScore;
 #else
@@ -724,7 +728,7 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
     // never be confused with prior game history.
     rootContextSalt_ = Zobrist::context_seed(root.history_context() ^ root.key() ^
                                              (root.rule50() * 0x9E3779B97F4A7C15ULL));
-    timer_.start(limits, root.side_to_move());
+    timer_.start(limits, root.side_to_move(), params_.bankedTime);
 
     SearchResult result;
     MoveList legal;

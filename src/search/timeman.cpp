@@ -8,7 +8,7 @@ namespace {
 constexpr std::int64_t MoveOverheadMs = 10;
 }
 
-void TimeManager::start(const SearchLimits& limits, Color side) {
+void TimeManager::start(const SearchLimits& limits, Color side, bool bankedTime) {
     start_ = Clock::now();
     hardBudget_ = softBudget_ = -1;
     hasClock_ = false;
@@ -36,7 +36,17 @@ void TimeManager::start(const SearchLimits& limits, Color side) {
     // Allocate the remaining time in roughly equal slices, keeping part of the
     // increment for later moves and never planning to use the whole clock.
     const std::int64_t slice = remaining / moves;
-    const std::int64_t target = std::max<std::int64_t>(1, slice + increment * 3 / 4);
+    // exp-0040 (frozen before results): with 40+4 ms the shipped formula gives
+    // slice=1, target=1+3=4 ms, so the engine only ever thinks ~4 ms and leaves
+    // the 40 ms banked clock unused. The alternative target is
+    // `increment + remaining/20`: it spends the bank over roughly the first
+    // 20 moves, then self-corrects back to exactly the increment as the clock
+    // drains (at remaining=0 target == increment). It is NOT FullSoftBudget:
+    // both early stops remain active, the hard budget still reserves the
+    // 10 ms overhead, and both arms receive identical 40+4 ms clocks.
+    const std::int64_t target = bankedTime
+        ? std::max<std::int64_t>(1, increment + remaining / 20)
+        : std::max<std::int64_t>(1, slice + increment * 3 / 4);
     softBudget_ = std::min(usable, target);
     hardBudget_ = std::min(usable, std::max<std::int64_t>(1, std::min(remaining / 3, target * 4)));
     // Never let the soft budget exceed the hard budget.

@@ -511,3 +511,17 @@ the expensive `evaluate()` call itself cheaper in a bit-exact way. exp-0039
 showed option (b) at the negamax layer is below the noise floor; the qsearch
 layer remains unmeasured but must not be reached by silently retuning the
 abandoned exp-0038 cache — it requires its own frozen preregistration.
+
+### exp-0040 elimination and the "mechanism-live" precondition
+
+exp-0040 is the second profiling-only elimination this cycle (after exp-0039).
+It produced a reusable design rule: a candidate must be shown to CHANGE THE
+SEARCH TREE at the actual 40+4 ms control before a fixed-time tournament is
+spent on it. Merely changing a budget, a cache size, or a formula is not
+enough when another gate (here the 55 %/70 % early stops) absorbs the change.
+The instrumented `TMDEBUG` check was important: it proved the switch reached
+`TimeManager` (soft 4 -> 6 ms, hard 13 ms) so the identical depth/nodes/time
+was a genuine interaction, not a wiring bug. exp-0041 deliberately applies
+this rule: its fixed-depth 12 diagnostic shows 757,239 -> 438,131 nodes
+(−42.1 %), so the mechanism is live before any evaluation game. Fixed-depth
+node counts are still NOT strength evidence; the Tier-1 40+4 ms screen is.

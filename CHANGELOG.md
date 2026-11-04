@@ -437,3 +437,19 @@ no retune, `QSearchTT` stays default OFF. Full provenance (source
 `41780333461`, four artifact IDs, 4/4 SHA256SUMS) in
 `docs/DEV6_EXP0038_REPORT.md`. Gates unchanged: 1 UNMET, 2
 direction-supported, 3 PASS, 4 UNMET for a final candidate.
+
+## exp-0040 eliminated at profiling; exp-0041 registered
+
+exp-0040 banked-time allocation was implemented, validated (Release/ASan ctest
+11/11, exact default-off signatures) and instrumented: the switch reaches
+`TimeManager` (soft 4 -> 6 ms, hard 13 ms) but OFF and ON produced identical
+depth 6 / 12,539 nodes / 5 ms because the 55 %/70 % early stops dominate at
+40+4 ms. ABANDONED at profiling, no games, no strength claim; switch stays
+default OFF. exp-0041 extends the validated losing-capture pruning to all
+remaining depths with the FROZEN `BadCaptureMargin=100` (default-off
+`BadCaptureAllDepths`); Release/ASan ctest 11/11, exact default-off bench
+signatures, and a live −42.1 % fixed-depth-12 node diagnostic. Frozen
+`docs/DEV6_PREREG_EXP0041.md` (SHA
+`2f5c1b08ebd991f84e570b90afd48adcc7694f5d355beda492e1b6b18d98d392`), 1,400
+fresh disjoint openings (seed 2026112601) and Tier-1 40+4 ms screen dispatched.
+No results yet; no strength claim.
