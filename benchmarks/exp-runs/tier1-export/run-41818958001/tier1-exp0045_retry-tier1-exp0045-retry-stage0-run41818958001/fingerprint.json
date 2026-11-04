@@ -1,0 +1,55 @@
+{
+  "fingerprint_sha256": "7b295481354eede18196183b4105fbec32e59f9b9cd358695bc676fd1cf7aa18",
+  "source_sha": "9fb2a58e20b8aab131a56ddb3d749e60fce5278b",
+  "prereg_sha256": "0abf66836ed0ad6d979a26a3d4ca8616416bfb88b8ca069875f1e7d4e7bb2863",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0045.md",
+    "retry_prereg": "docs/DEV6_PREREG_EXP0045_RETRY.md",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "id": "tier1-exp0045-retry-stage0",
+    "games": 400,
+    "seed": 2026120610,
+    "openings": "benchmarks/positions/openings_exp0045retry_stage0.txt",
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "null": true,
+    "ctest": true,
+    "a_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "engine_a": "candidate",
+    "engine_b": "candidate",
+    "note": "Retry Stage-0 validity null (0 forfeits required)"
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "b839fae82b54ff8341abf350e07a6994f2cf1637dfbd4039373d95e2f37a8151",
+  "packaged_binary_sha256": "b839fae82b54ff8341abf350e07a6994f2cf1637dfbd4039373d95e2f37a8151",
+  "package_sha256": "7e94c456151e42543cde2a9f3125493342ce096c0b56c25e4b488e740df75e03",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "5e36e2f56a1269b7a457f239e8510798ae964470ee9efd26ea7cd27b39f9d011",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0045-retry-stage0/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0045-retry-stage0/stockbear",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}

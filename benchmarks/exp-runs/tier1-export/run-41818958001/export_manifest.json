@@ -1,0 +1,29 @@
+{
+  "exported_at_utc": "2026-11-04T11:32:25.968834+00:00",
+  "source_run_id": "41818958001",
+  "experiment_id": "exp0045_retry",
+  "export_workflow_run_id": "41821624068",
+  "artifacts": [
+    {
+      "id": 13316835345,
+      "name": "tier1-exp0045_retry-tier1-exp0045-retry-null-run41818958001",
+      "size_in_bytes": 728794
+    },
+    {
+      "id": 13316412306,
+      "name": "tier1-exp0045_retry-tier1-exp0045-retry-batchB-run41818958001",
+      "size_in_bytes": 923576
+    },
+    {
+      "id": 13316401575,
+      "name": "tier1-exp0045_retry-tier1-exp0045-retry-stage0-run41818958001",
+      "size_in_bytes": 735173
+    },
+    {
+      "id": 13316287626,
+      "name": "tier1-exp0045_retry-tier1-exp0045-retry-batchA-run41818958001",
+      "size_in_bytes": 919429
+    }
+  ],
+  "channel": "git + GitHub Contents API (blob CDN unreachable from sandbox)"
+}

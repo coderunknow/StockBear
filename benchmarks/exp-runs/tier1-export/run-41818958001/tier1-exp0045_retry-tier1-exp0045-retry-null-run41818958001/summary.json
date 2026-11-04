@@ -1,0 +1,25 @@
+{
+  "job_id": "tier1-exp0045-retry-null",
+  "experiment_id": "exp0045_retry",
+  "games": 400,
+  "unadjudicated": 0,
+  "wins": 152,
+  "draws": 111,
+  "losses": 137,
+  "score": 0.51875,
+  "elo": 13.034946881436854,
+  "ci95": [
+    -6.315478656740209,
+    32.466625285691606
+  ],
+  "clusters": 200,
+  "terminations": {
+    "CHECKMATE": 289,
+    "THREEFOLD_REPETITION": 107,
+    "INSUFFICIENT_MATERIAL": 4
+  },
+  "time_forfeit": 0,
+  "illegal": 0,
+  "engine_failure": 0,
+  "independent_elo_from_score": 13.034946881436854
+}
