@@ -666,3 +666,35 @@ bullet-matched eval corpus with an explicit accuracy-to-strength link, and
 move-ordering rules with genuinely NEW mechanisms. Time allocation stays
 REJECT. No direction is claimed exhausted, no result terminates the mission,
 no strength claim is made; Gates 1 and 4 remain UNMET.
+
+
+## exp-0046 FINAL: CLOSED AS INCONCLUSIVE / ABANDONED
+
+Run `41825055840` / export `41826460428` / CI `41825055708` SUCCESS, exact
+source `0792555ddd155b2426d926cccc5a16975f77682b`, prereg
+`dda54084d2acffdd…`, plan `557d51fc07ad18eb…`. 4 isolated VMs, 9/9
+SHA256SUMS OK ×4 bundles, 0 forfeits/illegal/failures in ALL jobs, 44/0
+AUDIT PASS `clean=True`, built==packaged binary `18b9366edcaf…`, UCI
+`AdaptiveNullR default false`. Stage0 399 +11.3524 [−5.1046,+27.8606];
+candidate null 399 −8.7314 [−28.0469,+10.5303]; batchA 995
++3.1586 [−8.7463,+15.0709]; batchB 995 +3.8606 [−8.5988,+16.3299]; both
+null CIs include 0, both batches >= −5. FROZEN COMBINED batchA+batchB ONLY
+1,990 games `683/642/665`, score 0.5045226,
+**+3.5096 [−5.1015,+12.1250]**, Elo-from-score +3.1427, bootstrap
+[−4.9136,+12.1125], 990 clusters. ADVANCE False; CLOSE False (UCB>=+10,
+point>0). Generic audit "more samples" is its §6 DEFAULT, OVERRIDDEN by the
+FROZEN single-run COMPUTE BOUND; `scripts/dev6_exp0046_decision.py`
+reproduces **CLOSED_AS_INCONCLUSIVE (NO further samples)**. No strength claim
+(the CI includes zero), no default change, no retune, no bundle, no
+confirmation, no post-hoc sample increase, no pooling. `AdaptiveNullR` stays
+OFF; the margin-adaptive null-move reduction direction is abandoned. Gates 1
+and 4 UNMET, 2 direction-supported, 3 PASS; mission ACTIVE / NOT COMPLETE.
+Report `docs/DEV6_EXP0046_REPORT.md`; evidence
+`benchmarks/exp-runs/tier1-export/run-41825055840/`.
+
+**Next hypothesis must have its OWN frozen prereg, fresh disjoint suites,
+Stage-0 validity null, candidate null, isolated VMs, FIXED TIME 40+4 ms and
+an independent raw-game audit.** Do NOT repeat exp-0046, exp-0045, exp-0044
+confirmation, or any recorded negative/neutral direction without genuinely
+new evidence. A normal technical failure, invalid measurement, CI failure,
+inconclusive or closed result cannot terminate the mission.

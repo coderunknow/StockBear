@@ -839,3 +839,34 @@ illegal / UCI / engine failures in ANY job (exp-0045 lesson, NOT weakened);
 at most ONE bounded valid retry. Gates 1 and 4 UNMET; no strength claim, no
 default change, no retune, no bundle, no PR/merge/tag/release/deploy/dev7.
 Mission ACTIVE / NOT COMPLETE; no result may terminate it.
+
+## exp-0046 CLOSED AS INCONCLUSIVE / ABANDONED (2026-11-04)
+Run `41825055840` / export `41826460428` / CI `41825055708` SUCCESS, exact
+source `0792555ddd155b2426d926cccc5a16975f77682b`, prereg SHA
+`dda54084d2acffdd…`, plan SHA `557d51fc07ad18eb…`, dispatch attempt 24.
+4 isolated VMs, 9/9 SHA256SUMS OK in each of 4 bundles, 0 TIME_FORFEIT /
+ILLEGAL / ENGINE_FAILURE in ALL four jobs, 44 stored values / 0 issues AUDIT
+PASS `clean=True`. Provenance: dev5 baseline VERIFIED, built==packaged binary
+`18b9366edcaf…`, default bench `243f9a1c1ba5b36f`, UCI
+`AdaptiveNullR default false`. 1,400 fresh disjoint openings seed
+`2026120701` (ZERO overlap / 39,041 earlier positions in 145 files), FIXED
+TIME 40+4 ms, Hash16/Threads1/240 plies, never `--nodes`.
+
+Stage0 399 `149/113/137` +11.3524 [−5.1046,+27.8606]; candidate null 399
+`122/146/131` −8.7314 [−28.0469,+10.5303]; batchA 995 `333/337/325`
++3.1586 [−8.7463,+15.0709]; batchB 995 `350/305/340`
++3.8606 [−8.5988,+16.3299]; both null CIs include 0, both batches >= −5.
+FROZEN COMBINED batchA+batchB ONLY 1,990 games `683/642/665`, score
+0.5045226, 990 clusters, +3.5096 [−5.1015,+12.1250], Elo-from-score
++3.1427, bootstrap [−4.9136,+12.1125]. ADVANCE False; CLOSE False
+(UCB>=+10, point>0). Generic audit's "more samples" is its §6 DEFAULT,
+OVERRIDDEN by the frozen SINGLE-RUN COMPUTE BOUND;
+`scripts/dev6_exp0046_decision.py` independently reproduces VERDICT
+CLOSED_AS_INCONCLUSIVE (frozen single-run compute bound; NO further samples).
+No strength claim (CI includes 0), no default change, no retune, no bundle,
+no confirmation, no post-hoc sample increase, no pooling with exp-0045 or any
+earlier experiment. `AdaptiveNullR` stays OFF. Gates 1 and 4 UNMET,
+2 direction-supported, 3 PASS; mission ACTIVE / NOT COMPLETE; no strength
+claim / PR / merge / tag / release / deploy / dev7. Full report
+`docs/DEV6_EXP0046_REPORT.md`; evidence
+`benchmarks/exp-runs/tier1-export/run-41825055840/`.
