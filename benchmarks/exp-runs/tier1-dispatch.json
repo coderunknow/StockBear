@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0045",
   "source_sha": "HEAD",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0045.json",
-  "source_run_id": "",
-  "note": "Launch exp-0045 bit-exact dead evaluate() elimination: frozen prereg, plan, fresh disjoint suites and mandatory mechanism-live/bit-exactness/overhead diagnostic committed in the SAME commit. First Elo measurement of the direction exp-0039 eliminated at profiling. No reuse of closed exp0041-0044 data.",
-  "attempt": 20
+  "source_run_id": "41817228668",
+  "note": "Deliberate export of all four exp0045 Tier-1 artifacts from run 41817228668 for independent raw-game audit.",
+  "attempt": 21
 }
