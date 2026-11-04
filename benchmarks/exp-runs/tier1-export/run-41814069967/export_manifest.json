@@ -1,0 +1,29 @@
+{
+  "exported_at_utc": "2026-11-04T10:38:12.012235+00:00",
+  "source_run_id": "41814069967",
+  "experiment_id": "exp0044_confirm",
+  "export_workflow_run_id": "41815428066",
+  "artifacts": [
+    {
+      "id": 13314605517,
+      "name": "tier1-exp0044_confirm-tier1-exp0044-confirm-batchB-run41814069967",
+      "size_in_bytes": 957689
+    },
+    {
+      "id": 13314485541,
+      "name": "tier1-exp0044_confirm-tier1-exp0044-confirm-stage0-run41814069967",
+      "size_in_bytes": 744764
+    },
+    {
+      "id": 13314013419,
+      "name": "tier1-exp0044_confirm-tier1-exp0044-confirm-batchA-run41814069967",
+      "size_in_bytes": 954442
+    },
+    {
+      "id": 13313847851,
+      "name": "tier1-exp0044_confirm-tier1-exp0044-confirm-null-run41814069967",
+      "size_in_bytes": 742198
+    }
+  ],
+  "channel": "git + GitHub Contents API (blob CDN unreachable from sandbox)"
+}
