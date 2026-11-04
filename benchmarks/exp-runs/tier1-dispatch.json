@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0042_confirm",
   "source_sha": "HEAD",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0042-confirm.json",
-  "source_run_id": "",
-  "note": "Bounded preregistered additional-sample confirmation for exp-0042 INCONCLUSIVE screen; addendum frozen in this same commit; no pooling with screen.",
-  "attempt": 11
+  "source_run_id": "41804818965",
+  "note": "Deliberate export of all four exp0042 bounded-confirmation Tier-1 artifacts for independent raw-game audit.",
+  "attempt": 12
 }
