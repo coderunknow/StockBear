@@ -1251,3 +1251,14 @@ pruning/ordering, best-of-N param selection, fixed-node-only conclusions).
 - **Next action:** exp-0038 (rank 1 after this closure) — qsearch
   transposition-table integration with bit-exact static-eval reuse, isolated
   default-off switch, preregistered before any evaluation game. Mission ACTIVE.
+
+## exp-0038 — dedicated qsearch transposition table (IN PROGRESS, not a result)
+
+Registered before any evaluation game. Hypothesis, exact code change, pinned
+suites/plan, 40+4 ms control, Stage-0 validity gate and frozen decision rules
+are in `docs/DEV6_PREREG_EXP0038.md`. Pre-result profiling (d16 -0.0006 %
+nodes / +3.86 % time; instrumented hits concentrated on cheap early-return
+nodes) is a diagnostic, NOT a strength result and NOT a decision. This entry
+will be completed with exact source SHA, binary SHA-256, W/D/L, CR1/t CIs,
+independent recomputation, root-cause class and abandon/defer/redesign outcome
+after the preregistered Tier-1 screen. No vague "optimization unsuccessful".

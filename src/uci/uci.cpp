@@ -299,6 +299,7 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     else if (key == "razoring") flag = &params_.razoring;
     else if (key == "badcapturepruning") flag = &params_.badCapturePruning;
     else if (key == "probcut") flag = &params_.probCut;
+    else if (key == "qsearchtt") flag = &params_.qsearchTT;
     if (flag == nullptr) {
         emit("info string setoption: unknown option " + name); return;
     }
@@ -471,6 +472,9 @@ void UciEngine::loop() {
             // exp-0037: default off; isolated same-binary ablation.
             emit(std::string("option name ProbCut type check default ") +
                  check(params_.probCut));
+            // exp-0038: default off; isolated same-binary ablation.
+            emit(std::string("option name QSearchTT type check default ") +
+                 check(params_.qsearchTT));
             // exp-0019: cp-denominated margins and the aspiration half-window as
             // integer options so they can be screened without rebuilding.
             emit("option name AspirationWindow type spin default 16 min 1 max 1200");

@@ -452,3 +452,25 @@ expensive predictive probes are not. This is why exp-0038 targets qsearch TT
 integration (reuse of information already resident in the table) rather than
 another predictive search. Also confirmed: a frozen futility/advance rule
 closed a weak-positive direction cheaply without weakening any gate.
+
+### exp-0038 design decision (registered before results)
+
+exp-0037's root cause was that a verification subtree must be SPENT before
+any saving can be realised, which is fatal at a 4 ms increment. The next
+direction therefore reuses already-computed information instead: a qsearch
+transposition table. To avoid the known TT-eval sentinel hazard (`VALUE_NONE`
+cast into `int16_t`, and `store`'s stale-eval branch) the qsearch cache is a
+separate structure, never the main TT. Bounds are stored against the original
+window; only lower>=beta and upper<=alpha cuts are allowed; mate values are
+excluded. The 2 MB direct-mapped cache is cleared once per `go`, not per
+iteration, so hits can accumulate across iterative deepening.
+
+Instrumented profiling found the surprising failure mode: the cache hits a
+lot, but almost exclusively at nodes that would already have returned at
+stand-pat or delta pruning, so it buys almost no nodes and costs a probe plus
+a store at every qsearch node. Fixed-node proxies are explicitly recorded as
+misleading in this project's ledger; therefore exp-0038 is decided by a real
+Tier-1 fixed-time screen, not by the proxy. If it closes as inert, do NOT
+retune the cache size or hash; record the mechanism diagnosis and move to a
+direction that changes which NODES are searched rather than how cheaply
+already-cheap nodes are revisited.

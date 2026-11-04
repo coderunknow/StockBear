@@ -1,0 +1,122 @@
+{
+  "experiment_id": "exp0038",
+  "plan_sha_note": "frozen before any evaluation game",
+  "control": "FIXED TIME 40+4 ms; never --nodes",
+  "jobs": [
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0038.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0038-stage0",
+      "games": 400,
+      "seed": 2026112400,
+      "openings": "benchmarks/positions/openings_exp0038_stage0.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": true,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Stage-0 validity null (0 forfeits required)"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0038.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0038-batchA",
+      "games": 1000,
+      "seed": 2026112401,
+      "openings": "benchmarks/positions/openings_exp0038_batchA.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "QSearchTT=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "exp-0038 isolated QSearchTT ON vs OFF"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0038.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0038-batchB",
+      "games": 1000,
+      "seed": 2026112402,
+      "openings": "benchmarks/positions/openings_exp0038_batchB.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "QSearchTT=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "exp-0038 isolated QSearchTT ON vs OFF"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0038.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0038-null",
+      "games": 400,
+      "seed": 2026112403,
+      "openings": "benchmarks/positions/openings_exp0038_null.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "QSearchTT=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "exp-0038 null arm"
+    }
+  ]
+}

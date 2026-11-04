@@ -97,6 +97,12 @@ struct SearchParams {
     // ProbCut: a raised-beta reduced-depth null-window search predicts a
     // full-depth fail-high. Frozen margin/depth in docs/DEV6_PREREG_EXP0037.md.
     bool probCut = false;
+    // --- dev6 exp-0038 (default off; isolated same-binary ablation) ---------
+    // Dedicated qsearch transposition table: cache qsearch bounds by
+    // (key, rule50, history context) so repeated quiescence positions can cut
+    // without re-searching. Never touches the main TT. Frozen design in
+    // docs/DEV6_PREREG_EXP0038.md.
+    bool qsearchTT = false;
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control
@@ -175,6 +181,27 @@ private:
     // move without threading an extra parameter through every call.
     Move moveStack_[MAX_PLY + 2] = {};
     std::vector<std::vector<Move>> pvLines_;
+
+    // exp-0038: a small dedicated direct-mapped qsearch transposition table.
+    // Kept separate from the main TT so shallow qsearch entries can never
+    // evict deep main-search entries or leak a VALUE_NONE static eval into
+    // `ttEval` reuse. Mate scores are normalised by ply and never stored.
+    struct QCacheEntry {
+        Key key = 0;
+        std::uint64_t rule50 = 0;
+        Key context = 0;
+        std::int16_t value = 0;
+        std::int8_t bound = 0;  // 0 none, 1 exact, 2 lower, 3 upper
+    };
+    static constexpr std::size_t QCacheSlots = std::size_t(1) << 16;
+    std::unique_ptr<QCacheEntry[]> qcache_{new QCacheEntry[QCacheSlots]()};
+    QCacheEntry* qslot(Key key, std::uint64_t rule50, Key context) {
+        Key h = key ^ context ^ (Key(rule50) * 0x9E3779B97F4A7C15ULL);
+        h ^= h >> 33;
+        h *= 0xFF51AFD7ED558CCDULL;
+        h ^= h >> 29;
+        return &qcache_[std::size_t(h) & (QCacheSlots - 1)];
+    }
 
     struct RootMove {
         Move move = MOVE_NONE;

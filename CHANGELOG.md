@@ -407,3 +407,20 @@ push. No PR/merge/tag/release/dev7; gates UNMET; mission ACTIVE.
   [-12.01,+32.95], 0 forfeits, independent audit PASS. **CLOSED** at the frozen
   rule (point < +10); direction ABANDONED. No Stage 2a, no gate claim.
 - Gates 1/2/4 remain UNMET; mission ACTIVE; next direction exp-0038.
+
+## exp-0038 — dedicated qsearch transposition table (REGISTERED; results pending)
+
+- `qsearchTT` is a new default-off `SearchParams` switch with UCI `QSearchTT`
+  and `bench --param qsearchTT=0|1`. A dedicated 2^16-slot direct-mapped
+  qsearch bound cache is kept entirely separate from the main TT; exact key +
+  rule50 + history-context matching, ply-normalised bound semantics, no mate
+  score storage. Default-off build remains bit-identical:
+  bench `243f9a1c1ba5b36f`, d16 `a14ab62224f837e5`, 3x `e45fa2ec2287eb41`.
+- Release ctest 11/11; ASan+UBSan ctest 11/11; UCI default false.
+- Pre-result profiling: d16 -0.0006 % nodes but +3.86 % time; instrumented
+  build showed millions of hits concentrated on already-cheap stand-pat/delta
+  nodes. Recorded as non-decisive profiling, not strength evidence.
+- `docs/DEV6_PREREG_EXP0038.md` frozen BEFORE any evaluation game; 1,400 fresh
+  disjoint openings (seed 2026112101); Tier-1 40+4 ms Stage-0 validity null,
+  two independent 1,000-game batches and a 400-game null, all on dedicated
+  isolated VMs with the exact packaged binary tested. No strength claim yet.

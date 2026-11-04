@@ -319,25 +319,53 @@ int Search::quiescence(Position& pos, int alpha, int beta, int ply) {
     if (ply >= MAX_PLY - 2) return QSEARCH_EVAL(pos);
     if (pos.is_search_draw(ply)) return VALUE_DRAW;
 
+    // exp-0038 (frozen before results): dedicated qsearch transposition table.
+    const int originalAlpha = alpha;
+    const Key qContext = pos.history_context() ^ rootContextSalt_;
+    QCacheEntry* qEntry = params_.qsearchTT
+        ? qslot(pos.key(), pos.rule50(), qContext) : nullptr;
+    if (qEntry != nullptr && qEntry->bound != 0 &&
+        qEntry->key == pos.key() && qEntry->rule50 == pos.rule50() &&
+        qEntry->context == qContext) {
+        const int value = TranspositionTable::value_from_table(qEntry->value, ply);
+        if (qEntry->bound == 1 ||
+            (qEntry->bound == 2 && value >= beta) ||
+            (qEntry->bound == 3 && value <= alpha))
+            return value;
+    }
+    // Store the completed qsearch value under its ORIGINAL window. Mate scores
+    // are excluded: their ply normalisation is exact here but a reused bound
+    // could still mask a shorter mate found at a different ply.
+    auto finish = [&](int value) {
+        if (qEntry != nullptr && !aborted_ && std::abs(value) < MATE_BOUND) {
+            qEntry->key = pos.key();
+            qEntry->rule50 = pos.rule50();
+            qEntry->context = qContext;
+            qEntry->value = std::int16_t(TranspositionTable::value_to_table(value, ply));
+            qEntry->bound = value >= beta ? 2 : (value <= originalAlpha ? 3 : 1);
+        }
+        return value;
+    };
+
     const bool inCheck = pos.in_check();
     MoveList moves;
     int best;
     if (inCheck) {
         generate_moves(pos, moves, GenType::All);
-        if (moves.empty()) return -VALUE_MATE + ply;
+        if (moves.empty()) return finish(-VALUE_MATE + ply);
         best = -VALUE_INFINITE;
     } else {
         best = QSEARCH_EVAL(pos);
-        if (best >= beta) return best;
+        if (best >= beta) return finish(best);
         alpha = std::max(alpha, best);
         // Delta pruning: if no single capture can lift the score to alpha, the
         // static evaluation is already the best this node can offer.
-        if (best + SeeValue[Queen] + params_.deltaMargin <= alpha) return best;
+        if (best + SeeValue[Queen] + params_.deltaMargin <= alpha) return finish(best);
         generate_moves(pos, moves, GenType::QSearch);
         if (moves.empty()) {
             // No capture and no promotion: only stalemate can change the score.
-            if (!pos.has_legal_moves()) return VALUE_DRAW;
-            return best;
+            if (!pos.has_legal_moves()) return finish(VALUE_DRAW);
+            return finish(best);
         }
     }
 
@@ -688,6 +716,7 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
     for (auto& a : captureHistory_)
         for (auto& b : a) std::fill(std::begin(b), std::end(b), 0);
     std::fill(std::begin(moveStack_), std::end(moveStack_), MOVE_NONE);
+    std::fill_n(qcache_.get(), QCacheSlots, QCacheEntry{});
     pvLines_.clear();
     tt_.new_search();
     // The table context separates this search's root history from anything

@@ -613,3 +613,19 @@ confirmation of exp-0035 with unchanged Gates 1-4.
 13. Found the git mirror omitted `*.log`; patched the export job to force-add
     logs. Gate 4 binary identity (built == packaged == tested SHA-256) is
     asserted by the Tier-1 driver and pinned in `fingerprint.json`.
+
+### exp-0038 registration (before any evaluation game)
+
+Re-ranked after exp-0037 closed: qsearch TT is the highest remaining unexecuted
+direction. Implemented `qsearchTT` as a default-off isolated switch with a
+dedicated 2^16 qsearch bound cache (no main-TT pollution). Validation: Release
+ctest 11/11, ASan+UBSan ctest 11/11, exact default-off bench/d16/d12
+signatures, 3x determinism, UCI default false. Profiling: d16 -0.0006 % nodes,
++3.86 % time; instrumented hits ~2.7 M / 99 M probes on one position but
+concentrated on cheap early-return nodes. Frozen `docs/DEV6_PREREG_EXP0038.md`
+(SHA 6161061783d745e10eb5c54017a344d4eb54730778c4f64684b88da3c2cf12dc),
+1,400 fresh disjoint openings, `benchmarks/exp-runs/tier1-plan-exp0038.json`
+(Stage-0 validity null + batchA + batchB + null), and Tier-1 dispatch. No
+evaluation games have been played yet; no result or strength claim exists.
+Tier-1 smoke run 41778365897 remains DISCARDED. Gate status unchanged:
+Gate 1 UNMET / Gate 2 direction-supported / Gate 3 PASS / Gate 4 UNMET.

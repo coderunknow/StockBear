@@ -1,0 +1,11 @@
+{
+  "seed": 2026112101,
+  "count": 1400,
+  "master_sha256": "45774b21c1df3ce1975de371287e7fe1f2d99d2f86fcea3c5e15f1561fb4248f",
+  "slices": {
+    "batchA": "3852e7008791d39d42b3f29dcab682c97dc0f2f603a8d04c8dc89bd7864250b8",
+    "batchB": "bbae88a2ddb888424dde13b387ab147316914514d9fbb58be7e6af4c3232211f",
+    "null": "823174de6b1564429c0c22287274c2cb03413f88c733caedff7763df78bd47f8",
+    "stage0": "e456d1d92d3b1e5792875be9d100c682b5aecda7dfbf4f52b08477fae3ca6853"
+  }
+}
