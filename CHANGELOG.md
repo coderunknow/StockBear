@@ -490,3 +490,15 @@ clause is triggered. `docs/DEV6_PREREG_EXP0042_ADDENDUM.md` freezes a bounded,
 separate 2×1,000-game confirmation with a new null and Stage-0 re-check, NO
 pooling with the screen, identical thresholds, and a conservative
 experiment-level compute bound. No strength claim; gates unchanged.
+
+## exp-0042 CLOSED (bounded confirmation, Tier-1 40+4 ms)
+
+Confirmation run `41804818965` (source `ec223fe…`, CI SUCCESS): Stage-0
+validity PASS, null includes 0, batchA `−4.1862`, batchB `−17.4914`, frozen
+combined `−10.8281 [−21.8567,+0.1787]` over 1,995 games / 995 clusters;
+independent raw-game audit 44/44 AUDIT PASS with seeded cluster bootstrap.
+Screen and confirmation CIs overlap and were NEVER pooled (frozen addendum
+forbids it). Frozen rules -> CLOSED, ABANDONED, no ADVANCE/bundle/retune,
+`MaxGainDelta` stays default OFF, `deltaMargin=200` frozen. Full provenance
+in `docs/DEV6_EXP0042_REPORT.md`. Gates unchanged: 1 UNMET, 2
+direction-supported, 3 PASS, 4 UNMET for a final candidate.

@@ -59,31 +59,42 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   saving was profiling and is NOT strength evidence. Full report
   `docs/DEV6_EXP0041_REPORT.md`. Gate verdict above is unchanged.
 
-## Currently executing: exp-0042 bounded confirmation
-- **exp-0042 screen** (Tier-1 run `41802986830`, source `efd2f22…`) is
-  **INCONCLUSIVE**, not a failure: Stage-0 validity PASS, nulls include zero,
-  frozen combined `+2.6110 [−7.9556, +13.1825]` on 1,998 games / 998
-  clusters, independent audit 44/44 PASS. ADVANCE needs point >= +20 and
-  LCB > 0; CLOSE needs UCB < +10 or point <= 0 — neither holds. The frozen
-  §5 "more samples" clause therefore applies.
-- **exp-0042 bounded confirmation** is dispatched: `docs/DEV6_PREREG_EXP0042_ADDENDUM.md`
-  (SHA `21b0b1e6…`) freezes two fresh 1,000-game batches + null + Stage-0,
-  separate Tier-1 run, NO pooling with the screen, identical 40+4 ms
-  conditions and identical thresholds, plus a conservative experiment-level
-  compute bound. NO confirmation result exists yet. The +13.8 % fixed-depth
-  node change is profiling, NOT strength evidence. Gate verdict unchanged.
+## Closed: exp-0042 (two Tier-1 runs)
+- **exp-0042 screen** (run `41802986830`) was **INCONCLUSIVE**:
+  `+2.6110 [−7.9556, +13.1825]` on 1,998 games, Stage-0 validity PASS,
+  independent audit 44/44 PASS. The frozen §5 "more samples" clause applied.
+- **exp-0042 bounded confirmation** (run `41804818965`, addendum SHA
+  `21b0b1e6…`) gave `−10.8281 [−21.8567, +0.1787]` on 1,995 games, Stage-0
+  validity PASS, null PASS, independent audit 44/44 PASS. Frozen rules ->
+  **CLOSED / ABANDONED**, no ADVANCE, no bundle, no retune; `MaxGainDelta`
+  stays default OFF and `deltaMargin=200` frozen. Screen and confirmation
+  CIs overlap and were **NEVER pooled**. The +13.8 % fixed-depth node change
+  was profiling, NOT strength evidence. Full report
+  `docs/DEV6_EXP0042_REPORT.md`. Gate verdict unchanged.
+
+## Workspace reconciliation (this cycle)
+A fresh sandbox presented a clone at the original base commit with a stale
+turn-end patchset overlay and no `.venv`. The overlay was preserved in a git
+stash; `git fetch` + `git reset --hard FETCH_HEAD` aligned the local branch to
+remote `b71d989…`; all documents, plans, raw evidence and scripts were
+verified present; `.venv` rebuilt with cmake 4.4.4 / ninja 1.13.2 / numpy
+2.4.6 / chess 1.11.2 / PyYAML 6.0.3. No force push, no shared-history
+rewrite, no scientific conclusion changed.
 
 ## Exact continuation state (for the next cycle)
 Branch `arena/3e6dd5b6-stockbear`; working tree clean; all default strength
 switches OFF; immutable dev5 binary/tag, `main`, and all historical artifacts
-untouched. Tier-1 dispatch file is at `mode=benchmark`, attempt 11 (exp-0042 bounded
-confirmation); the NEXT push will trigger a new benchmark run unless the
-dispatch is deliberately changed, so edit it in the same commit as any
-follow-up. Ranked
-unexecuted directions: singular/tactical extensions, TT replacement policy, a
-NEW frozen prereg for bit-exact qsearch eval throughput (never a silent reuse
-of the abandoned exp-0038 cache), and a larger bullet-matched eval corpus /
-NNUE-with-accuracy-link. Each must be frozen before any evaluation game, with
+untouched. Tier-1 dispatch file is at `mode=export`, attempt 12 (no benchmark will
+auto-run on the next push unless it is deliberately changed). Ranked
+unexecuted directions: singular/tactical extensions (MUST include a
+mechanism-live and verification-overhead diagnostic first, per exp-0037), TT
+replacement policy (profile first: a 16 MB TT is far from full at 40+4 ms),
+a NEW frozen prereg for bit-exact qsearch eval throughput (never a silent
+reuse of the abandoned exp-0038 cache; a +3-8 Elo bit-exact NPS effect is not
+detectable with 2,000 games), and a larger bullet-matched eval corpus /
+NNUE-with-accuracy-link. exp-0042 adds the design rule that quiescence
+stand-pat values are load-bearing: neither deleting nodes nor tightening a
+qsearch pruning decision has converted to fixed-time strength. Each must be frozen before any evaluation game, with
 a Stage-0 validity gate, two independent fresh suites, a null, and the
 frozen Gate-1 criteria unchanged. Gate 1 (+75 / LCB > +50) remains far away;
 a FRESH-measured bundle of validated mechanisms is only authorised by a

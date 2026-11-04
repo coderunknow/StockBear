@@ -229,3 +229,30 @@ detectable with 2,000 games, so it needs a much larger sample), and a larger
 bullet-matched eval corpus with an explicit accuracy-to-strength link. Gate 1
 (+75 / LCB > +50) remains far away; no direction is claimed exhausted and the
 mission is NOT terminated by any closure.
+
+## exp-0042 closure (two Tier-1 runs, no pooling)
+
+exp-0042 screen: `+2.6110 [−7.9556,+13.1825]` on 1,998 games -> INCONCLUSIVE
+under frozen rules, which triggered the preregistered "more samples" clause.
+Bounded confirmation on 1,995 fresh games: `−10.8281 [−21.8567,+0.1787]` ->
+CLOSE / ABANDONED. Both runs had Stage-0 validity PASS (0 forfeits), nulls
+including zero, 44/44 independent AUDIT PASS and seeded cluster bootstrap
+agreement. Screen and confirmation CIs overlap; they were NEVER pooled, per the
+frozen addendum. `MaxGainDelta` stays OFF; `deltaMargin=200` frozen.
+
+Consequence: exp-0041 (delete more nodes) and exp-0042 (make a qsearch pruning
+decision more accurate) have both failed. Quiescence stand-pat values are
+load-bearing in this engine, consistent with the earlier qlite rejection.
+Downgrade the entire family of "change which qsearch nodes are searched".
+Re-rank the remaining unexecuted directions: (1) singular/tactical extensions
+with a genuine re-search — but exp-0037 proved verification subtrees are
+expensive at 4 ms, so any prereg MUST first show the mechanism is live and
+quantify its overhead; (2) move-ordering accuracy improvements that do NOT
+rewrite stand-pat values; (3) TT replacement policy — profile first, since a
+16 MB TT is far from full at ~10k-30k nodes/move and is likely inert at 40+4
+ms; (4) a NEW frozen prereg for bit-exact qsearch `evaluate()` throughput,
+sized from the power analysis (a +3-8 Elo NPS effect is NOT detectable with
+2,000 games); (5) a larger bullet-matched eval corpus with an explicit
+accuracy-to-strength link. Gate 1 (+75 / LCB > +50) remains far away; no
+direction is claimed exhausted, no result terminates the mission, and no
+strength claim is made.

@@ -772,3 +772,26 @@ with the screen), the SAME thresholds, and a conservative experiment-level
 compute bound justified by the preregistered scheduler. Dispatch attempt 11.
 Gate verdict UNCHANGED: 1 UNMET / 2 direction-supported / 3 PASS / 4 UNMET.
 Mission ACTIVE; no strength claim.
+
+### exp-0042 CLOSED; final continuation state for this cycle
+
+Confirmation run `41804818965` on `ec223fe…` (CI `41804818984` SUCCESS)
+produced Stage-0 validity PASS, null PASS, batchA `−4.1862`, batchB
+`−17.4914`, frozen combined `−10.8281 [−21.8567,+0.1787]` over 1,995 games.
+Export `41806227744` mirrored four artifacts; local `sha256sum -c` 4/4, 0
+failures. Independent audit
+(`scripts/dev6_exp0038_audit.py 41804818965 exp0042_confirm 20 10`) verified
+44 stored values AUDIT PASS, independent Elo-from-score −10.9753, seeded
+cluster bootstrap `[−21.8526,+0.0000]`. Frozen rules -> CLOSED (UCB < +10 AND
+point <= 0), ABANDONED, no ADVANCE/bundle/retune; switch stays default OFF.
+Screen and confirmation CIs overlap and were NEVER pooled. Root cause:
+unsuitable hypothesis / search-eval interaction; quiescence stand-pat values
+are load-bearing. `docs/DEV6_EXP0042_REPORT.md` is authoritative.
+
+Workspace reconciliation this cycle: local checkout was realigned from a stale
+base-commit overlay to remote `b71d989…` (overlay preserved in a git stash),
+`.venv` rebuilt, all evidence verified. Gates UNCHANGED: 1 UNMET / 2
+direction-supported / 3 PASS / 4 UNMET (no final candidate). Mission ACTIVE;
+no strength claim, no PR/merge/tag/release/deploy/dev7. Dispatch file is at
+`mode=export`, attempt 12, so no benchmark auto-runs on the next push unless
+deliberately changed.

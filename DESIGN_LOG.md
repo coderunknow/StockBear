@@ -578,3 +578,20 @@ compute bound is added for the residual-inconclusive case; it can only PREVENT
 a claim, never create one, and changes no Gate and no threshold. The
 confirmation null is required partly because the screen null arm showed a
 noisy +17.47 point estimate (CI still includes zero).
+
+### exp-0042 closure: accurate pruning is still a search decision
+
+exp-0042 deliberately avoided exp-0041's failure mode (deleting more nodes):
+it made an EXISTING delta decision more accurate using the real legal capture
+gains, with the original conservative check and frozen margin untouched. It
+still closed at `−10.8281 [−21.8567,+0.1787]` Elo. The mechanism increases
+fixed-depth nodes by 13.8 %, so the loss is not from raw throughput but from
+changed stand-pat values propagating into upstream alpha-beta decisions and
+ordering. Conclusion for future search work: in this engine the quiescence
+stand-pat value is load-bearing (also shown by the qlite rejection). Neither
+"delete nodes" nor "tighten a qsearch pruning decision" has converted to
+fixed-time strength. The next credible family is one that improves MOVE
+ORDERING or adds accurate tactical verification without rewriting stand-pat
+values — singular/tactical extensions — but exp-0037's warning about
+verification-subtree overhead at 4 ms must be profiled first. Do not retune
+`deltaMargin=200` on these results.

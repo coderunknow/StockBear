@@ -1429,3 +1429,35 @@ separate Tier-1 run, NO pooling with this screen) with the SAME thresholds and
 a conservative experiment-level compute bound. Root-cause class is deliberately
 NOT assigned yet: the observed effect is statistically indistinguishable from
 zero. This entry will be completed after the confirmation.
+
+## exp-0042 CONFIRMATION — FINAL RESULT: CLOSED / ABANDONED
+
+Exact source SHA `ec223feaaa444c24cc135aecdc8fec326d210783`; addendum SHA
+`21b0b1e6b425c8a7083f674d5019f6329dbe57286efcdbc1dedc8c719669bf74`;
+packaged/tested binary SHA-256 in `docs/DEV6_EXP0042_REPORT.md`; dev5 baseline
+`391cb50e…`. Tier-1 isolated VMs run `41804818965`, export `41806227744`, CI
+`41804818984` SUCCESS; 4/4 SHA256SUMS 0 failures. FIXED TIME 40+4 ms,
+Hash16/Threads1/maxplies240, NO `--nodes`; same binary `MaxGainDelta=true` vs
+`false`; 1,400 fresh disjoint confirmation openings seed `2026113001`.
+
+Raw/audited results: Stage-0 validity null 400 games 147/116/134
+`+10.5851 [−8.5366,+29.7711]`, 0 forfeits/illegal/UCI failures, CI includes
+0 -> PASS; batchA 998 games 340/306/352 `−4.1862 [−19.7858,+11.3966]`;
+batchB 997 games 300/346/351 `−17.4914 [−33.1133,−1.9399]`; null 399 games
+127/138/134 `−6.1113 [−24.7147,+12.4570]` includes 0; FROZEN COMBINED 1,995
+games 640/652/703, score 0.4842105, `−10.8281 [−21.8567,+0.1787]`,
+995 clusters. Independent raw-JSONL audit 44 stored values, 0 issues, AUDIT
+PASS; independent Elo-from-score −10.9753; seeded cluster bootstrap
+`[−21.8526,+0.0000]`. Screen (`+2.6110 [−7.9556,+13.1825]`) and confirmation
+CIs overlap; they were NEVER pooled per the frozen addendum.
+
+Why failed: unsuitable hypothesis / search-eval interaction, NOT an
+implementation defect. Making the quiescence delta decision more accurate
+relative to actual capture gains still returns stand-pat values instead of
+searched capture values, which changes upstream alpha-beta decisions and
+ordering (profiling: +13.8 % fixed-depth nodes) and loses tactical accuracy.
+Decision: frozen §5/addendum UCB `+0.1787 < +10` and point <= 0 -> CLOSE; no
+ADVANCE (point < +20, LCB < 0, batchB < −5), no bundle, no retune of the
+frozen `deltaMargin=200`, `MaxGainDelta` stays default OFF. ABANDONED. Next
+action: continue ranked directions and independent audits; see
+`docs/DEV6_CURRENT_STATUS.md`. No vague "optimization unsuccessful".
