@@ -40,6 +40,16 @@ only and is never reported as Tier 1. Fixed-time 40+4 ms matches always use
 `--base-ms/--inc-ms`; `--nodes` is only used for explicitly labelled
 fixed-node screens, never for gate evidence.
 
+## Verified integration limitation (2026-11-04)
+`gh workflow run dev6-tier1.yml --ref arena/3e6dd5b6-stockbear ...` returned
+`HTTP 403: Resource not accessible by integration` on the sandbox's GitHub App
+token: the token can read runs/artifacts and push commits but cannot create
+workflow dispatch events. Combined with the default-branch registration rule,
+this makes the deliberate `tier1-dispatch.json` commit the operative
+(push-triggered) manual dispatch mechanism. Both mechanisms remain in the
+workflow for environments where the token permits dispatch. No security
+control is bypassed.
+
 ## Verification status
 Filled in from the actual dispatched smoke run and exported artifact; see
 `benchmarks/dev6-baseline/tier1_verification.json`. Until that file records a

@@ -4,6 +4,6 @@
   "source_sha": "HEAD",
   "plan_path": "benchmarks/exp-runs/tier1-plan.json",
   "source_run_id": "",
-  "note": "DISCARDED 40-game infrastructure smoke (null self-match). Frozen before any strength evaluation. Re-dispatch after prepare-step fix.",
-  "attempt": 2
+  "note": "DISCARDED 40-game infrastructure smoke (null self-match). Frozen before any strength evaluation. Re-dispatch with fixed ctest/summary driver.",
+  "attempt": 3
 }
