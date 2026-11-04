@@ -132,6 +132,13 @@ struct SearchParams {
     // stand-pat value or pruning/extension decision is changed.
     // Frozen in docs/DEV6_PREREG_EXP0044.md.
     bool badCaptureOrdering = false;
+    // --- dev6 exp-0045 (default off; isolated same-binary ablation) ---------
+    // Bit-exact throughput: when a main-TT hit already supplies the static
+    // evaluation (ttEval=true), the unconditional evaluate(pos) below is dead
+    // work whose result is immediately overwritten. Skip it. Values are
+    // IDENTICAL; only time per node changes. Frozen in
+    // docs/DEV6_PREREG_EXP0045.md.
+    bool skipDeadTTEval = false;
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control

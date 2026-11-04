@@ -19,8 +19,9 @@ gate is unmet. 3,000 Elo is a long-term strategic target only; no absolute,
 universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
 
 ## Experiment status vs mission status
-- **Experiment status: exp-0044 CLOSED AS INCONCLUSIVE / ABANDONED**
-  (screen + bounded confirmation). exp-0043, exp-0042,
+- **Experiment status: exp-0045 LAUNCHED / EXECUTING.** exp-0044 is
+  CLOSED AS INCONCLUSIVE / ABANDONED (screen + bounded confirmation);
+  exp-0043, exp-0042,
   exp-0041, exp-0038, exp-0037 and exp-0036 are CLOSED; exp-0039 and exp-0040
   were eliminated at profiling.
 - **Mission status: ACTIVE, NOT COMPLETE.** Gates 1 and 4 remain UNMET. No
@@ -28,12 +29,16 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   the supported dispatch mechanism works; the earlier export-only dispatch and
   two transient GitHub `Internal Server Error` push rejections were ordinary
   transient research states, both resolved by a plain retry.
+- **Exact current source SHA:** `__EXP0045_SOURCE_SHA__` (the exp-0045 dispatch
+  commit, pinned by `source_sha=HEAD`).
 - **Exact source SHAs:** exp-0044 screen `2ae4e68fc882991c3484eede22a4622f713da5e2`,
   bounded confirmation `0691b9affd36006425ac23605f4a0cc8922a55bb`, exp-0043
   `5ea5ad21348f39dabad1da3e8cb098f798087295`. Current branch HEAD is recorded
   in `AGENTS_LOG.md`; all were pinned by `source_sha=HEAD` in their dispatch. Local HEAD and remote head are recorded
   in `AGENTS_LOG.md`; working tree is clean.
-- **Reproducible benchmark evidence:** exp-0044 screen `41812595433` /
+- **Reproducible benchmark evidence:** exp-0045 is EXECUTING (no results
+  yet; frozen prereg `0abf66836ed0ad6d…`, plan, fresh suites and dispatch
+  attempt 20). exp-0044 screen `41812595433` /
   export `41813751266` / CI `41812595476` SUCCESS, `+3.3140 [−7.2389,+13.8730]`
   INCONCLUSIVE; bounded confirmation `41814069967` / export (retry)
   `41815428066` / CI `41814069925` SUCCESS, `+13.5977 [+2.1746,+25.0503]`,
@@ -103,6 +108,50 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   mechanism-live diagnostic proved LIVE on 23/24 suite positions at 40+4 ms
   (a real negative, not inert); +13.9 % fixed-depth node overhead is recorded
   but is NOT strength evidence. Full report `docs/DEV6_EXP0043_REPORT.md`.
+
+## Executing: exp-0045 (Tier-1 fixed-time, isolated VMs)
+- **Why selected:** exp-0044 is closed, and the next ranked unexecuted
+  direction that changes NO search decision is bit-exact `evaluate()`
+  throughput. exp-0039 built this exact fix, verified it bit-exact, measured
+  ~2.9 % locally against a ~7 % noise floor, REVERTED it and spent NO games.
+  That was a precision/cost decision, not a negative strength result.
+  exp-0045 is the FIRST Elo measurement of the hypothesis, on isolated VMs at
+  FIXED TIME 40+4 ms. Not a repeat of exp-0039's profiling, not a parameter
+  change of a failed idea, and no exp-0041..0044 data reused.
+- **Mechanism:** `SkipDeadTTEval` (default OFF) skips the `evaluate(pos)`
+  whose result is immediately overwritten when a main-TT hit supplies a valid
+  static eval. Values are BIT-IDENTICAL at any fixed node count; only time per
+  node can change. No TT/move/score/stand-pat/pruning/extension/ordering
+  decision changes, no added per-node work, no new forfeit mechanism.
+- **Mandatory diagnostics (pre-result):** node counts OFF/ON IDENTICAL at
+  depths 8/10/12 (e.g. depth 12 `[72604, 497628, 311669, 559024]`); ON
+  skipped 40,187 of 379,656 `evaluate()` calls (10.6 %) so the mechanism is
+  LIVE; local 12-repeat timing OFF 804.0 ms / ON 823.5 ms (−2.37 % "speedup",
+  noise-dominated, reported verbatim, NO local speedup claim). Only ~10.6 % of
+  evaluations are skippable => the theoretical speedup is ~2-3 %.
+- **Power, explicitly:** a 2,000-game screen has ~13 Elo half-width and CANNOT
+  resolve a +2-3 Elo effect; full-sized confirmation is reserved by the
+  preregistered scheduler for screen point >= +55. exp-0045 is powered for
+  the +20 ADVANCE threshold and to rule out a material regression only. A
+  SINGLE-RUN COMPUTE BOUND closes it as INCONCLUSIVE if neither frozen
+  condition holds. No post-hoc sample increase.
+- **Frozen before games:** `docs/DEV6_PREREG_EXP0045.md` (SHA
+  `0abf66836ed0ad6d979a26a3d4ca8616416bfb88b8ca069875f1e7d4e7bb2863`),
+  `tier1-plan-exp0045.json` (4 jobs), dispatch `mode=benchmark attempt=20`,
+  source (default OFF, bit-exact signatures `243f9a1c1ba5b36f` /
+  `a14ab62224f837e5` / `e45fa2ec2287eb41`, d16 with `ttEval=1` identical
+  OFF/ON, Release 11/11, ASan+UBSan 11/11, UCI default false), and 1,400
+  fresh disjoint openings (seed `2026120501`, ZERO overlap with 36,241 earlier
+  positions / 135 files).
+- **Design:** FIXED TIME 40+4 ms, Hash16/Threads1/240 plies, never `--nodes`;
+  ONE binary, single switch `SkipDeadTTEval=true` vs `false`; Stage-0 validity
+  null (0 forfeits required), candidate-options null, batchA 1,000 and
+  batchB 1,000 games on independent fresh suites, combined frozen before the
+  run, independent raw-JSONL audit. Frozen ADVANCE >= +20 AND LCB > 0 AND
+  both batches >= −5 AND both null CIs include 0 AND clean; CLOSE if
+  UCB < +10 OR point <= 0; otherwise CLOSED AS INCONCLUSIVE / ABANDONED
+  (single-run compute bound, no confirmation). ADVANCE alone does NOT satisfy
+  Gate 1.
 
 ## exp-0044 CLOSED AS INCONCLUSIVE (screen + bounded confirmation)
 The exp-0044 screen ran on source `2ae4e68fc882991c3484eede22a4622f713da5e2`,
@@ -183,10 +232,12 @@ only credible route and is authorised only by a frozen ADVANCE rule. No final
 candidate artifact exists. Remaining ranked directions are in
 `docs/DEV6_RESEARCH_MATRIX.md`; note that TT replacement/depth policy is
 ALREADY SHIPPED (generation- and depth-preferred) and must be profiled before
-any games. exp-0044 is closed; the next hypothesis must be frozen with its OWN prereg,
-fresh disjoint suites, Stage-0 validity, null, isolated VMs and independent
-raw-game audit, and must NOT reuse exp-0044 data. No closure terminates the
-mission.
+any games. After exp-0045: ADVANCE -> continue validation/subsequent gates; CLOSE or
+CLOSED-AS-INCONCLUSIVE -> document, update matrix and launch the next
+hypothesis with its OWN frozen prereg, fresh disjoint suites, Stage-0 validity,
+null, isolated VMs and independent raw-game audit; TECHNICAL FAILURE ->
+diagnose, repair within scope, validate and retry with a valid new run. No
+experiment outcome terminates the mission.
 
 ## Workspace reconciliation (earlier this cycle)
 A fresh sandbox presented a clone at the original base commit with a stale

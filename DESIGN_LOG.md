@@ -783,3 +783,44 @@ no default change, no PR/merge/tag/release/deploy/dev7. Full report
 `docs/DEV6_EXP0044_REPORT.md`. Gates 1 and 4 remain UNMET; mission ACTIVE /
 NOT COMPLETE; the next hypothesis must have its OWN frozen prereg, fresh
 disjoint suites and dispatch, and may not reuse exp-0044 data.
+
+## exp-0045 launched — bit-exact dead evaluate() elimination (2026-11-04)
+Post-exp-0044 rank change: exp-0044 CLOSED AS INCONCLUSIVE / ABANDONED at its
+frozen addendum compute bound; the next ranked direction that changes NO
+search decision is bit-exact evaluate() throughput. exp-0039 built this exact
+fix, verified it bit-exact, measured ~2.9 % against a ~7 % local noise floor,
+REVERTED it and spent NO games. exp-0045 is the FIRST Elo measurement of that
+hypothesis on isolated VMs at FIXED TIME 40+4 ms — not a repeat of exp-0039's
+profiling, not a parameter change, no exp-0041..0044 data reused.
+
+Frozen before any evaluation game: `docs/DEV6_PREREG_EXP0045.md` (SHA
+`0abf66836ed0ad6d979a26a3d4ca8616416bfb88b8ca069875f1e7d4e7bb2863`),
+`tier1-plan-exp0045.json` (4 jobs), `scripts/dev6_exp0045_openings.py` and
+1,400 fresh disjoint openings (seed `2026120501`, ZERO overlap with 36,241
+earlier positions in 135 files, four disjoint slices), dispatch
+`mode=benchmark experiment_id=exp0045 attempt=20`. All in the SAME commit as
+the dispatch. Default-off bit-exact signatures `243f9a1c1ba5b36f` /
+`a14ab62224f837e5` / `e45fa2ec2287eb41`, d16 with `ttEval=1` identical
+OFF/ON, Release ctest 11/11, ASan+UBSan ctest 11/11
+(`exp0045_asan_ctest.log`), UCI default false.
+
+MANDATORY pre-result diagnostics from the FROZEN source (`SB_DEADEVAL_DEBUG`):
+node counts OFF/ON IDENTICAL at depths 8/10/12 (depth 12 `[72604, 497628,
+311669, 559024]` for both); ON skipped 40,187 of 379,656 evaluate() calls
+(10.6 %) => mechanism LIVE; local 12 alternating repeats at depth 12 OFF
+median 804.0 ms / ON 823.5 ms (−2.37 % "speedup", noise-dominated, reported
+VERBATIM, NO local speedup claim). Theoretical speedup ~2-3 % because only
+10.6 % of evaluations can be saved. Honest power statement: a 2,800-game
+screen has ~13 Elo half-width and CANNOT resolve a +2-3 Elo effect; it is
+powered for the +20 ADVANCE threshold and to rule out a material regression.
+SINGLE-RUN compute bound closes exp-0045 AS INCONCLUSIVE if neither frozen
+condition holds; no post-hoc sample increase, no confirmation.
+
+Design: FIXED TIME 40+4 ms, Hash16/Threads1/240 plies, never `--nodes`;
+Stage-0 validity null 400 games, candidate-options null 400 games,
+batchA/batchB 1,000 games each on independent fresh suites; ANY time
+forfeit/illegal/engine failure => INVALID MEASUREMENT. Frozen ADVANCE >= +20
+AND LCB>0 AND both batches >= −5 AND both null CIs include 0 AND clean; CLOSE
+if UCB<+10 OR point<=0; otherwise CLOSED AS INCONCLUSIVE / ABANDONED. Gates 1
+and 4 remain UNMET; no strength claim, no bundle, no default change, no
+PR/merge/tag/release/deploy/dev7.

@@ -52,6 +52,9 @@ constexpr int MaxSingularExtensions = 2;   // hard per-path cap
 // exp-0044 FROZEN ordering constant (chosen BEFORE any result, never tuned):
 // demoted SEE-losing captures are placed below every quiet/killer move.
 constexpr int BadCaptureOrderScore = -2000000;
+#ifdef SB_DEADEVAL_DEBUG
+static std::uint64_t deadeval_skipped = 0, deadeval_evaluated = 0;
+#endif
 #ifdef SB_BADCAP_DEBUG
 static std::uint64_t badcap_demotions = 0, badcap_nodes_with_demotion = 0;
 #endif
@@ -513,9 +516,27 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
     const bool mateWindow = std::abs(beta) >= MATE_BOUND || std::abs(alpha) >= MATE_BOUND;
     if (mateWindow) singularExt = 0;
 
-    int staticEval = evaluate(pos);
-    if (params_.ttEval && entry != nullptr && !inCheck && entry->eval != VALUE_NONE)
+    // exp-0045 (frozen before results): with ttEval a TT hit can supply the
+    // static evaluation directly. The shipped code nevertheless calls
+    // evaluate(pos) first and then overwrites it -- a full tapered evaluation
+    // (25-30 % of node time) thrown away. When the switch is ON, skip that
+    // dead call. The returned VALUE is bit-identical; only time changes.
+    // No TT entry, move, bound, stand-pat value or search decision changes.
+    const bool ttEvalUsable = params_.ttEval && entry != nullptr && !inCheck &&
+                              entry->eval != VALUE_NONE;
+    int staticEval;
+    if (ttEvalUsable && params_.skipDeadTTEval) {
         staticEval = int(entry->eval);
+#ifdef SB_DEADEVAL_DEBUG
+        ++deadeval_skipped;
+#endif
+    } else {
+        staticEval = evaluate(pos);
+#ifdef SB_DEADEVAL_DEBUG
+        ++deadeval_evaluated;
+#endif
+        if (ttEvalUsable) staticEval = int(entry->eval);
+    }
     evalStack_[ply] = staticEval;
     // "Improving": is the side to move better off than it was two plies ago?
     // Used only to widen or narrow heuristic margins, never to bound a proven
@@ -817,6 +838,9 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
     badcap_demotions = 0;
     badcap_nodes_with_demotion = 0;
 #endif
+#ifdef SB_DEADEVAL_DEBUG
+    deadeval_skipped = deadeval_evaluated = 0;
+#endif
 #ifdef SB_SINGULAR_DEBUG
     singular_triggers = singular_extensions = 0;
 #endif
@@ -974,6 +998,12 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
     result.timeMs = result.timeUs / 1000;
     result.hashfull = tt_.hashfull();
     result.interrupted = aborted_;
+#ifdef SB_DEADEVAL_DEBUG
+    std::cerr << "DEADEVALDEBUG switches=" << int(params_.skipDeadTTEval)
+              << " skipped=" << deadeval_skipped
+              << " evaluated=" << deadeval_evaluated
+              << " nodes=" << nodes_ << std::endl;
+#endif
 #ifdef SB_BADCAP_DEBUG
     std::cerr << "BADCAPDEBUG switches=" << int(params_.badCaptureOrdering)
               << " demotions=" << badcap_demotions

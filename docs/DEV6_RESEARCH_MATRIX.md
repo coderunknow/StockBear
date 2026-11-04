@@ -495,3 +495,53 @@ still far away. The specific `BadCaptureOrdering` mechanism and any retune are
 ABANDONED; a genuinely DIFFERENT mechanism requires its own frozen prereg and
 fresh suites and may not reuse exp-0044 data. Ranked alternatives unchanged.
 Mission ACTIVE / NOT COMPLETE; no direction is claimed exhausted.
+
+
+## exp-0045 is the executing direction (post-exp-0044 rank change)
+
+exp-0044 CLOSED AS INCONCLUSIVE / ABANDONED at its frozen addendum compute
+bound (screen `+3.3140 [−7.2389,+13.8730]`, confirmation
+`+13.5977 [+2.1746,+25.0503]`, NEVER pooled). Its specific mechanism and any
+retune are abandoned. exp-0041/0042/0043 all lost while changing which nodes
+are searched or adding a ply; exp-0044 was the first non-negative result since
+exp-0038 and added ZERO per-node work.
+
+The next ranked unexecuted direction that changes NO search decision is
+**bit-exact `evaluate()` throughput**, explicitly requested as a NEW properly
+powered frozen prereg. exp-0039 built exactly this fix (dead static evaluation
+on TT hits), verified it bit-exact, measured ~2.9 % locally against a ~7 %
+shared-vCPU noise floor, REVERTED it, and spent NO games / made NO Elo or
+speedup claim. That was a precision/cost decision, not a negative strength
+result. `docs/DEV6_PREREG_EXP0045.md` (SHA
+`0abf66836ed0ad6d9…`) therefore freezes the FIRST Elo measurement of the
+hypothesis, on isolated VMs at FIXED TIME 40+4 ms, with a single default-off
+switch `SkipDeadTTEval`.
+
+Mandatory pre-result diagnostics from the FROZEN source: node counts OFF/ON
+IDENTICAL at depths 8/10/12; ON skips 40,187 of 379,656 `evaluate()` calls
+(10.6 %) so the mechanism is LIVE; local 12-repeat timing OFF 804.0 ms / ON
+823.5 ms (−2.37 %, noise-dominated, reported verbatim, NO speedup claim).
+Only ~10.6 % of evaluations are skippable, so the theoretical speedup is
+~2-3 %. Honest POWER STATEMENT: a 2,800-game screen has ~13 Elo half-width
+and cannot resolve a +2-3 Elo effect; it is powered only for the +20 ADVANCE
+threshold and to rule out a material regression. A SINGLE-RUN compute bound
+closes exp-0045 AS INCONCLUSIVE if neither frozen condition holds; no
+post-hoc sample increase, no confirmation.
+
+1,400 fresh openings seed `2026120501`, ZERO overlap with 36,241 earlier
+positions in 135 files, four disjoint slices; Stage-0 validity null,
+candidate-options null, two independent 1,000-game batches, isolated VMs,
+independent raw-JSONL audit. Expected upside +0..5 Elo (below resolution);
+complexity LOW (one dead call removed); regression risk LOW (bit-exact values,
+no added work); statistical detectability WEAK for the expected effect, which
+is exactly why the compute bound is preregistered. Gate 1 (+75 / LCB > +50)
+remains far away; a FRESH-measured bundle validated by a frozen ADVANCE rule,
+never a post-hoc sum, is still the only credible route.
+
+Remaining ranked alternatives: canonical singular extension with a genuine
+re-search (deferred on exp-0043 measured overhead), TT replacement/depth
+policy (ALREADY SHIPPED generation/depth-preferred; profile before games), a
+larger bullet-matched eval corpus with an explicit accuracy-to-strength link,
+and move-ordering rules with genuinely NEW mechanisms (exp-0044's specific
+switch is abandoned). Time allocation stays REJECT. No direction is claimed
+exhausted, no result terminates the mission, no strength claim is made.
