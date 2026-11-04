@@ -1,0 +1,57 @@
+{
+  "fingerprint_sha256": "263c03914ba044d72e7e99ee5f59b5687c649c1381821cab71934be3fbddd8f9",
+  "source_sha": "efd2f22ddf327c8462c8839a2f5bbbcebfd92609",
+  "prereg_sha256": "3345325ce3e4fdc98501410bd7fcea2b3b5e7e1aa6b9d6a8139e4ced6b29c62b",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0042.md",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "id": "tier1-exp0042-null",
+    "games": 400,
+    "seed": 2026112903,
+    "openings": "benchmarks/positions/openings_exp0042_null.txt",
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "null": true,
+    "ctest": false,
+    "a_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true",
+      "MaxGainDelta=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "engine_a": "candidate",
+    "engine_b": "candidate",
+    "note": "exp-0042 null arm (candidate vs candidate)"
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "d4a2345149d132995a93ad707c566df1df9b54ea0426ecc77f284d8052b6b3fe",
+  "packaged_binary_sha256": "d4a2345149d132995a93ad707c566df1df9b54ea0426ecc77f284d8052b6b3fe",
+  "package_sha256": "4f63f1966023870275f1a55eae750cd3ff904753996d0508926fc85eb0e29465",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "18b4cf3d317a9fecc9745e197d780bf644651ad42a90599b5da53ff4c1ed708d",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true",
+    "MaxGainDelta=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true",
+    "MaxGainDelta=true"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0042-null/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0042-null/stockbear",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}
