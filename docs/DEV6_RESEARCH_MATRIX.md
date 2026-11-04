@@ -428,3 +428,37 @@ detectable with 2,000 games); a larger bullet-matched eval corpus with an
 explicit accuracy-to-strength link. Time allocation stays REJECT (exp-0004
 forfeit-driven, exp-0040 inert). No direction is claimed exhausted, no result
 terminates the mission, no strength claim is made.
+
+
+## exp-0044 screen INCONCLUSIVE -> frozen bounded confirmation
+
+exp-0044 (demote SEE-losing captures to the tail in the main search only) is a
+genuine Tier-1 40+4 ms result: run `41812595433` / export `41813751266` / CI
+`41812595476` SUCCESS, source `2ae4e68…`, prereg `73ae460981a09bbf5…`,
+packaged=tested binary, 4 isolated VMs, 9/9 SHA256SUMS OK in each of 4
+bundles, 0 forfeits/illegal/engine failures, both nulls including zero.
+Stage-0 `+9.5569 [−6.6563,+25.8118]`, candidate null `0.0000
+[−17.9335,+17.9335]`, batchA `+6.6419 [−8.1259,+21.4338]`, batchB `0.0000
+[−15.0949,+15.0949]`, FROZEN combined `+3.3140 [−7.2389,+13.8730]` on 1,996
+games / 996 clusters, independent bootstrap `[−7.1520,+13.7861]`, 44/0 AUDIT
+PASS. ADVANCE false, CLOSE false => **INCONCLUSIVE** under the frozen §6 rule.
+
+This is the FIRST non-negative combined point since exp-0038, and both batches
+met the frozen ">= −5" condition, but the LCB is still negative and the point
+is far below +20. Per the frozen prereg this triggers exactly ONE bounded
+confirmation run, registered BEFORE any additional game in
+`docs/DEV6_PREREG_EXP0044_ADDENDUM.md` (SHA `17d90a790697bb05…`) with 1,400
+fresh disjoint openings (seed `2026120401`, ZERO overlap / 34,841 earlier),
+its own nulls, and a strict NO-POOLING rule. If the confirmation is neither
+ADVANCE nor CLOSE, exp-0044 closes AS INCONCLUSIVE and the direction is
+abandoned as low expected value — a conservative compute bound, not a
+threshold change.
+
+Learning so far: a pure ordering change with ZERO added per-node work is the
+first of the four recent directions not to lose outright, but its screen point
+(+3.31) is within noise. Even an ADVANCE would not approach Gate 1 (+75 /
+LCB > +50). No strength claim is made. Ranked alternatives remain unchanged:
+canonical singular extension with genuine re-search (deferred), TT replacement
+(ALREADY SHIPPED generation/depth-preferred; profile before games), a NEW
+properly powered frozen prereg for bit-exact qsearch `evaluate()` throughput,
+and a larger bullet-matched eval corpus. Mission ACTIVE / NOT COMPLETE.

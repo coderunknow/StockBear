@@ -630,3 +630,33 @@ AND clean; CLOSE if UCB < +10 OR point <= 0; INCONCLUSIVE -> ONE bounded fresh
 confirmation, NEVER pooled. Gates 1 (+75/LCB>+50) and 4 remain UNMET; no
 strength claim, no bundle, no default change, no PR/merge/tag/release/deploy/
 dev7, no reuse of closed exp0041/0042/0043 data.
+
+## exp-0044 screen INCONCLUSIVE; bounded confirmation launched (2026-11-04)
+Tier-1 run `41812595433` / export `41813751266` / CI `41812595476` SUCCESS on
+exact source `2ae4e68fc882991c3484eede22a4622f713da5e2`; frozen prereg
+`73ae460981a09bbf5d605205f8b77bf799b6d92a0fed4dc4abaa3a4ebc3820a5`; 4
+isolated VMs, 9/9 SHA256SUMS OK in each of 4 bundles, 0
+forfeits/illegal/engine failures. Stage-0 validity null 400 games 133/145/122
+`+9.5569 [−6.6563,+25.8118]`; candidate-options null 400 games 138/124/138
+`0.0000 [−17.9335,+17.9335]`; batchA 1,000 games 341/336/320
+`+6.6419 [−8.1259,+21.4338]`; batchB 996 games 335/328/336
+`0.0000 [−15.0949,+15.0949]`; FROZEN combined 1,996 games 676/664/656,
+score 0.5050100, 996 clusters, `+3.3140 [−7.2389,+13.8730]`, independent
+Elo-from-score +3.4814, seeded bootstrap `[−7.1520,+13.7861]`, 44/0 AUDIT
+PASS. ADVANCE false (point<+20, LCB<0); CLOSE false (UCB +13.8730 >= +10,
+point>0) => INCONCLUSIVE. Frozen §6 mandates exactly ONE bounded fresh
+confirmation, NEVER pooled with the screen.
+
+`docs/DEV6_PREREG_EXP0044_ADDENDUM.md` (SHA
+`17d90a790697bb05de108d4b5fb5f7cf745fdb611899c5237c7ccce2b73af835`) freezes
+the confirmation BEFORE any confirmation game: separate Tier-1 run, dispatch
+`mode=benchmark experiment_id=exp0044_confirm attempt=17`, FIXED TIME 40+4 ms,
+SAME single switch `BadCaptureOrdering=true` vs false, 1,400 fresh disjoint
+openings seed `2026120401` (ZERO overlap with 34,841 earlier positions in 130
+files), generator `scripts/dev6_exp0044_confirm_openings.py`, its own Stage-0
+and candidate-options nulls, two independent 1,000-game batches. Decision uses
+ONLY new batches: ADVANCE >= +20 AND LCB>0 AND clean; CLOSE if UCB<+10 OR
+point<=0; otherwise CLOSED AS INCONCLUSIVE and direction abandoned
+(conservative compute bound, NOT a threshold change). No strength claim, no
+default change, no bundle, no retune, no pooling. Gates 1 and 4 remain UNMET;
+mission ACTIVE / NOT COMPLETE.

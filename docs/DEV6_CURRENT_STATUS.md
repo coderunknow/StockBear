@@ -19,7 +19,8 @@ gate is unmet. 3,000 Elo is a long-term strategic target only; no absolute,
 universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
 
 ## Experiment status vs mission status
-- **Experiment status: exp-0044 LAUNCHED / EXECUTING.** exp-0043, exp-0042,
+- **Experiment status: exp-0044 screen INCONCLUSIVE; bounded
+  confirmation EXECUTING.** exp-0043, exp-0042,
   exp-0041, exp-0038, exp-0037 and exp-0036 are CLOSED; exp-0039 and exp-0040
   were eliminated at profiling.
 - **Mission status: ACTIVE, NOT COMPLETE.** Gates 1 and 4 remain UNMET. No
@@ -27,10 +28,16 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   the supported dispatch mechanism works; the earlier export-only dispatch and
   two transient GitHub `Internal Server Error` push rejections were ordinary
   transient research states, both resolved by a plain retry.
-- **Exact current source SHA:** `2ae4e68fc882991c3484eede22a4622f713da5e2` (the exp-0044 dispatch
-  commit, pinned by `source_sha=HEAD`). Local HEAD and remote head are recorded
+- **Exact current source SHA:** `__EXP0044_CONFIRM_SOURCE_SHA__` (the exp-0044 bounded-
+  confirmation dispatch commit, pinned by `source_sha=HEAD`). The exp-0044
+  SCREEN source was `2ae4e68fc882991c3484eede22a4622f713da5e2`; exp-0043's
+  source was `5ea5ad21348f39dabad1da3e8cb098f798087295`. Local HEAD and remote head are recorded
   in `AGENTS_LOG.md`; working tree is clean.
-- **Reproducible benchmark evidence:** exp-0043 `41809643084` / export
+- **Reproducible benchmark evidence:** exp-0044 screen `41812595433` /
+  export `41813751266` / CI `41812595476` SUCCESS, combined
+  `+3.3140 [−7.2389,+13.8730]` on 1,996 games / 996 clusters, 44/0 AUDIT
+  PASS, 9/9 SHA256SUMS OK in each of 4 bundles, INCONCLUSIVE -> frozen
+  bounded confirmation launched, NEVER pooled. exp-0043 `41809643084` / export
   `41810711486` / CI `41809642415` SUCCESS, combined
   `−10.3142 [−20.8915,+0.2440]` CLOSE. exp-0042 screen `41802986830` /
   export `41804342869` / CI `41802986854` and confirmation `41804818965` /
@@ -94,7 +101,36 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   (a real negative, not inert); +13.9 % fixed-depth node overhead is recorded
   but is NOT strength evidence. Full report `docs/DEV6_EXP0043_REPORT.md`.
 
-## Executing: exp-0044 (Tier-1 fixed-time, isolated VMs)
+## exp-0044 screen INCONCLUSIVE; bounded confirmation EXECUTING
+The exp-0044 screen ran on source `2ae4e68fc882991c3484eede22a4622f713da5e2`,
+prereg `73ae460981a09bbf5…`, run `41812595433`, export `41813751266`, CI
+`41812595476` SUCCESS; 4 isolated VMs, 9/9 SHA256SUMS OK in each of 4
+bundles, 0 forfeits/illegal/engine failures. Stage-0 validity null 400 games
+133/145/122 `+9.5569 [−6.6563,+25.8118]`, candidate-options null 400 games
+138/124/138 `0.0000 [−17.9335,+17.9335]`, batchA 1,000 games 341/336/320
+`+6.6419 [−8.1259,+21.4338]`, batchB 996 games 335/328/336
+`0.0000 [−15.0949,+15.0949]`; FROZEN combined 1,996 games 676/664/656,
+score 0.5050100, `+3.3140 [−7.2389,+13.8730]`, 996 clusters, independent
+Elo-from-score +3.4814, seeded bootstrap `[−7.1520,+13.7861]`, 44/0 AUDIT
+PASS. ADVANCE false (point < +20, LCB < 0); CLOSE false (UCB +13.8730 >= +10,
+point > 0) => **INCONCLUSIVE**, which the frozen prereg maps to exactly ONE
+bounded fresh confirmation.
+
+`docs/DEV6_PREREG_EXP0044_ADDENDUM.md` (SHA
+`17d90a790697bb05de108d4b5fb5f7cf745fdb611899c5237c7ccce2b73af835`) freezes
+that confirmation BEFORE any confirmation game: a SEPARATE Tier-1 run,
+`mode=benchmark experiment_id=exp0044_confirm attempt=17`, FIXED TIME 40+4 ms,
+SAME single switch, 1,400 fresh disjoint openings seed `2026120401` (ZERO
+overlap with 34,841 earlier positions / 130 files), its own Stage-0 and
+candidate-options nulls, two independent 1,000-game batches, independent
+raw-JSONL audit. **Screen and confirmation are NEVER pooled.** Decision uses
+ONLY the new batches: ADVANCE >= +20 AND LCB > 0 AND clean; CLOSE if
+UCB < +10 OR point <= 0; otherwise exp-0044 CLOSED AS INCONCLUSIVE and the
+direction abandoned (a conservative COMPUTE BOUND, not a threshold change).
+Gates 1 and 4 remain UNMET; no strength claim, no default change, no bundle.
+
+## exp-0044 screen design (archived)
+
 - **Why this experiment and why selected:** after three consecutive losses for
   mechanisms that change which nodes are searched or add a ply at non-PV
   nodes, the matrix re-ranks **move-ordering ACCURACY with ZERO added per-node
