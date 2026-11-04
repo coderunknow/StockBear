@@ -59,21 +59,27 @@ universal, CCRL/FIDE or numeric gap-to-3000 claim. No dev7.
   saving was profiling and is NOT strength evidence. Full report
   `docs/DEV6_EXP0041_REPORT.md`. Gate verdict above is unchanged.
 
-## Currently executing (results pending)
-- **exp-0042** max-gain delta pruning in quiescence: frozen prereg
-  `docs/DEV6_PREREG_EXP0042.md` (SHA `3345325ce3…`), 1,400 fresh disjoint
-  openings with a programmatic ZERO-overlap proof, Tier-1 40+4 ms Stage-0
-  validity + two 1,000-game batches + null on isolated VMs, dispatched in the
-  same commit as the prereg. NO evaluation result exists yet; the +13.8 %
-  fixed-depth node change is profiling, NOT strength evidence. The gate
-  verdict above is unchanged.
+## Currently executing: exp-0042 bounded confirmation
+- **exp-0042 screen** (Tier-1 run `41802986830`, source `efd2f22…`) is
+  **INCONCLUSIVE**, not a failure: Stage-0 validity PASS, nulls include zero,
+  frozen combined `+2.6110 [−7.9556, +13.1825]` on 1,998 games / 998
+  clusters, independent audit 44/44 PASS. ADVANCE needs point >= +20 and
+  LCB > 0; CLOSE needs UCB < +10 or point <= 0 — neither holds. The frozen
+  §5 "more samples" clause therefore applies.
+- **exp-0042 bounded confirmation** is dispatched: `docs/DEV6_PREREG_EXP0042_ADDENDUM.md`
+  (SHA `21b0b1e6…`) freezes two fresh 1,000-game batches + null + Stage-0,
+  separate Tier-1 run, NO pooling with the screen, identical 40+4 ms
+  conditions and identical thresholds, plus a conservative experiment-level
+  compute bound. NO confirmation result exists yet. The +13.8 % fixed-depth
+  node change is profiling, NOT strength evidence. Gate verdict unchanged.
 
 ## Exact continuation state (for the next cycle)
 Branch `arena/3e6dd5b6-stockbear`; working tree clean; all default strength
 switches OFF; immutable dev5 binary/tag, `main`, and all historical artifacts
-untouched. Tier-1 dispatch file is at `mode=benchmark`, attempt 9 (exp-0042 screen);
-the NEXT push will trigger a new benchmark run unless the dispatch is
-deliberately changed, so edit it in the same commit as any follow-up. Ranked
+untouched. Tier-1 dispatch file is at `mode=benchmark`, attempt 11 (exp-0042 bounded
+confirmation); the NEXT push will trigger a new benchmark run unless the
+dispatch is deliberately changed, so edit it in the same commit as any
+follow-up. Ranked
 unexecuted directions: singular/tactical extensions, TT replacement policy, a
 NEW frozen prereg for bit-exact qsearch eval throughput (never a silent reuse
 of the abandoned exp-0038 cache), and a larger bullet-matched eval corpus /

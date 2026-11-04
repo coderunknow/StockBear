@@ -1,0 +1,12 @@
+{
+  "seed": 2026113001,
+  "count": 1400,
+  "disjoint_overlap": 0,
+  "master_sha256": "f4d9ab3fdc2e19bbaeae09bb551dfe005138aa0b9bff378043396a7851a6bf5c",
+  "slices": {
+    "batchA": "d0f919e8ac6a4ed5588ad0bcae1ec3fb041cd4640c89a3d5b38beb6df8aaa91b",
+    "batchB": "7dd4047b91ebac9fb545bef0a6e0b9994825a2d4f361b1b6b210237058b59148",
+    "null": "c573aa14453281aa36beeb262e82a661a38f708e2de289dabb47b780453ebf6e",
+    "stage0": "802fe6555e1ea1e879ff60fd79a3e769a679ef6fb08c6e5cd9f35d7136664712"
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "experiment_id": "exp0042_confirm",
+  "frozen_before_evaluation_games": true,
+  "no_pooling_with_screen": true,
+  "control": "FIXED TIME 40+4 ms; never --nodes",
+  "jobs": [
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0042.md",
+      "addendum": "docs/DEV6_PREREG_EXP0042_ADDENDUM.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0042-confirm-stage0",
+      "games": 400,
+      "seed": 2026120100,
+      "openings": "benchmarks/positions/openings_exp0042confirm_stage0.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": true,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Confirmation Stage-0 validity null (0 forfeits required)"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0042.md",
+      "addendum": "docs/DEV6_PREREG_EXP0042_ADDENDUM.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0042-confirm-batchA",
+      "games": 1000,
+      "seed": 2026120101,
+      "openings": "benchmarks/positions/openings_exp0042confirm_batchA.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "MaxGainDelta=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "exp-0042 CONFIRMATION MaxGainDelta candidate vs control"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0042.md",
+      "addendum": "docs/DEV6_PREREG_EXP0042_ADDENDUM.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0042-confirm-batchB",
+      "games": 1000,
+      "seed": 2026120102,
+      "openings": "benchmarks/positions/openings_exp0042confirm_batchB.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "MaxGainDelta=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "exp-0042 CONFIRMATION MaxGainDelta candidate vs control"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0042.md",
+      "addendum": "docs/DEV6_PREREG_EXP0042_ADDENDUM.md",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0042-confirm-null",
+      "games": 400,
+      "seed": 2026120103,
+      "openings": "benchmarks/positions/openings_exp0042confirm_null.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "MaxGainDelta=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Confirmation null arm"
+    }
+  ]
+}

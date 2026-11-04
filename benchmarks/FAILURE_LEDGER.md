@@ -1399,3 +1399,33 @@ misleading proxy. This entry will be completed with exact source SHA, binary
 SHA-256, W/D/L, CR1/t CIs, independent recomputation, root-cause class and
 abandon/defer/redesign outcome after the preregistered Tier-1 screen. No vague
 "optimization unsuccessful".
+
+## exp-0042 SCREEN — INCONCLUSIVE (not a failure, not a success)
+
+Exact source SHA `efd2f22ddf327c8462c8839a2f5bbbcebfd92609`; frozen prereg SHA
+`3345325ce3e4fdc98501410bd7fcea2b3b5e7e1aa6b9d6a8139e4ced6b29c62b`. Tier-1
+isolated VMs run `41802986830`, export `41804342869`, CI `41802986854`
+SUCCESS; 4/4 SHA256SUMS, 0 failures. FIXED TIME 40+4 ms, Hash16/Threads1/
+maxplies240, NO `--nodes`; same binary `MaxGainDelta=true` vs `false`; 1,400
+fresh disjoint openings (seed 2026112801, zero overlap with 29,202 earlier).
+Raw/audited results: Stage-0 validity null 400 games 137/123/140
+`−2.6058 [−21.9076,+16.6798]`, 0 forfeits/illegal/UCI failures, CI includes
+0 -> PASS; batchA 1,000 games 357/300/343 `+4.8644 [−10.1879,+19.9350]`;
+batchB 998 games 336/328/334 `+0.3488 [−14.5041,+15.2030]`; null 399 games
+144/131/124 `+17.4738 [−1.9909,+37.0488]` (CI includes 0; unusually large
+noise point estimate is disclosed); frozen combined 1,998 games 693/628/677,
+score 0.5040040, `+2.6110 [−7.9556,+13.1825]`, 998 clusters. Independent
+raw-JSONL audit 44 stored values, 0 issues, AUDIT PASS; independent Elo-from-
+score +2.7823; seeded cluster bootstrap `[−8.0085,+12.8868]`.
+
+Decision under UNCHANGED frozen §5: ADVANCE FALSE (point +2.61 < +20, LCB
+< 0); CLOSE FALSE (UCB +13.18 >= +10 and point > 0) -> **INCONCLUSIVE**, which
+the prereg explicitly routes to "more samples under the same frozen
+conditions". No strength claim, no default change, no retune, no bundle.
+`docs/DEV6_PREREG_EXP0042_ADDENDUM.md` (SHA
+`21b0b1e6b425c8a7083f674d5019f6329dbe57286efcdbc1dedc8c719669bf74`) freezes a
+BOUNDED additional sample (two fresh 1,000-game batches + null + Stage-0,
+separate Tier-1 run, NO pooling with this screen) with the SAME thresholds and
+a conservative experiment-level compute bound. Root-cause class is deliberately
+NOT assigned yet: the observed effect is statistically indistinguishable from
+zero. This entry will be completed after the confirmation.

@@ -562,3 +562,19 @@ more example of why fixed-depth node counts are not strength evidence. If
 exp-0042 closes negative, do NOT retune `deltaMargin` or the gain formula; the
 conclusion would be that this engine's quiescence stand-pat decisions are
 load-bearing, consistent with the earlier qlite rejection.
+
+### exp-0042 screen: an INCONCLUSIVE result is not a failure and not a success
+
+The frozen §5 rules deliberately left a third state. `+2.6110 [−7.9556,
++13.1825]` misses ADVANCE (needs +20 and LCB > 0) but also misses CLOSE
+(needs UCB < +10 or point <= 0). Recording it as "no improvement" would be a
+post-hoc reinterpretation; recording it as "promising" would be batch
+selection. The prereg therefore routes it to more samples. The addendum fixes
+the previously-unspecified sample size and, importantly, forbids pooling the
+screen with the confirmation: combining an already-observed +2.61 screen with
+new data would be exactly the post-hoc combining the mission forbids. The
+screen stays exploratory; only the fresh confirmation decides. A terminal
+compute bound is added for the residual-inconclusive case; it can only PREVENT
+a claim, never create one, and changes no Gate and no threshold. The
+confirmation null is required partly because the screen null arm showed a
+noisy +17.47 point estimate (CI still includes zero).

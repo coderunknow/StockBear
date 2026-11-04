@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0042",
+  "mode": "benchmark",
+  "experiment_id": "exp0042_confirm",
   "source_sha": "HEAD",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0042.json",
-  "source_run_id": "41802986830",
-  "note": "Deliberate export of all four Tier-1 exp0042 isolated-VM artifacts for independent raw-game audit under frozen prereg thresholds.",
-  "attempt": 10
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0042-confirm.json",
+  "source_run_id": "",
+  "note": "Bounded preregistered additional-sample confirmation for exp-0042 INCONCLUSIVE screen; addendum frozen in this same commit; no pooling with screen.",
+  "attempt": 11
 }

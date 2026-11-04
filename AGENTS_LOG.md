@@ -755,3 +755,20 @@ Run `41802986830` on source `efd2f22dd…`: prepare + all four isolated-VM
 `docs/DEV6_PREREG_EXP0042.md` §5) are ADVANCE point>=+20/LCB>0/both batches
 >=-5/null includes 0/clean and CLOSE UCB<+10 or point<=0; they were fixed
 before any result was read. No exp-0042 result has been inspected yet.
+
+### exp-0042 screen INCONCLUSIVE; bounded confirmation dispatched
+
+Run `41802986830` on `efd2f22…` completed all four isolated-VM jobs SUCCESS;
+CI `41802986854` SUCCESS; export `41804342869` mirrored four artifacts and
+local `sha256sum -c` reported 4/4 with 0 failures. Independent audit
+(`scripts/dev6_exp0038_audit.py 41802986830 exp0042 20 10`) verified 44 stored
+values AUDIT PASS. Stage-0 validity PASS (0 forfeits), both nulls include zero,
+frozen combined `+2.6110 [−7.9556,+13.1825]` on 1,998 games / 998 clusters,
+independent Elo-from-score +2.7823, seeded cluster bootstrap
+`[−8.0085,+12.8868]`. Frozen §5 gives INCONCLUSIVE, which mandates more
+samples; `docs/DEV6_PREREG_EXP0042_ADDENDUM.md` (SHA `21b0b1e6…`) was frozen
+BEFORE any additional game with a bounded, separate confirmation (NO pooling
+with the screen), the SAME thresholds, and a conservative experiment-level
+compute bound justified by the preregistered scheduler. Dispatch attempt 11.
+Gate verdict UNCHANGED: 1 UNMET / 2 direction-supported / 3 PASS / 4 UNMET.
+Mission ACTIVE; no strength claim.

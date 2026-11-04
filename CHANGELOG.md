@@ -477,3 +477,16 @@ unchanged. Release/ASan ctest 11/11, exact default-off signatures, live
 Frozen prereg SHA `3345325ce3…`, 1,400 disjoint openings (seed 2026112801,
 zero overlap with 29,202 earlier openings), Tier-1 40+4 ms screen dispatched.
 No results yet; no strength claim.
+
+## exp-0042 screen INCONCLUSIVE; bounded confirmation preregistered
+
+Tier-1 run `41802986830` (source `efd2f22…`, CI SUCCESS): Stage-0 validity
+PASS, null includes 0, batchA `+4.8644`, batchB `+0.3488`, frozen combined
+`+2.6110 [−7.9556,+13.1825]` over 1,998 games / 998 clusters. Independent
+raw-game audit 44/44 AUDIT PASS with seeded cluster bootstrap. Under the
+UNCHANGED frozen §5 rules this is neither ADVANCE (point < +20, LCB < 0) nor
+CLOSE (UCB >= +10, point > 0) -> INCONCLUSIVE, so the prereg's "more samples"
+clause is triggered. `docs/DEV6_PREREG_EXP0042_ADDENDUM.md` freezes a bounded,
+separate 2×1,000-game confirmation with a new null and Stage-0 re-check, NO
+pooling with the screen, identical thresholds, and a conservative
+experiment-level compute bound. No strength claim; gates unchanged.
