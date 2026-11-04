@@ -532,3 +532,30 @@ packaged artifact not tested, no final-source CI). Terminal state
 writes performed; explicit approval needed before any push, PR, merge, tag or
 release. Exact next action: authorized push -> isolated-runner fixed-time
 confirmation of exp-0035 with unchanged Gates 1-4.
+
+### 2026-11-04 — one authorized push, final-source CI, exp-0036
+1. Verified branch/HEAD/clean tree and the exact 11 unpushed commits; confirmed
+   pushing touches no watched lane/exp/publish path filters; verified the
+   immutable dev5 binary SHA. `git push origin arena/3e6dd5b6-stockbear`
+   succeeded `797f5cb..03868da`; `git ls-remote` confirmed. Grant CONSUMED.
+2. CI `41770918367` on `03868da`: success, 9/9 jobs (Clang, ASan+UBSan, TSan,
+   Min CMake 3.16, Independent reference, ubuntu Debug/Release, windows
+   Debug/Release). Artifact IDs pinned; blob CDN EOF prevented download.
+3. Inspected `.github/workflows/dev6-lane.yml` (no `workflow_dispatch`, absent
+   on `main`), `scripts/actions_dev6_lane.sh` (`commit_and_push`), and
+   `benchmarks/exp-runs/dev6-trigger.json` (still exp0027/28/29). Concluded
+   Tier-1 isolated-runner confirmation needs a new prereg + trigger commit +
+   result pushes => a SECOND remote write, NOT authorized.
+4. Froze `docs/DEV6_PREREG_EXP0036.md` (SHA `430fe96e...`) BEFORE results with
+   an explicit tier disclosure, Stage-0 validity gate, frozen futility
+   boundary, and Gates 1–4 verbatim.
+5. Ran `scripts/dev6_exp0036.py --all` on a local dedicated core (`taskset -c 1`).
+   Stage 0 PASS -> Stage 1. Combined +21.52 [+10.28,+32.81], both batches
+   positive, 0 forfeits, null -1.75 [-22.39,+18.87].
+6. Independent audit incl. exp-0036: 201 values, AUDIT PASS. Gate 1 FAIL,
+   Gate 2 direction supported, Gate 3 PASS, Gate 4 UNMET. Futility boundary
+   triggered. Closed the experiment; no PR/merge/tag/release/dev7.
+7. Froze `docs/DEV6_PREREG_EXP0037.md` (ProbCut) as the next isolated
+   direction; NOT executed (authorization exhausted).
+8. All post-push local commits are documentation/results ONLY; `src/` unchanged
+   from `03868da`, so the CI-tested source SHA stays exact.

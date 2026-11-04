@@ -1061,3 +1061,94 @@ pruning/ordering, best-of-N param selection, fixed-node-only conclusions).
 - **Next:** decisive FIXED-TIME confirmation on isolated CI runners with
   unchanged Gate 1/2/3/4, exact packaged candidate artifact, and final-source
   CI. Requires explicit authorization for a push. Mission ACTIVE.
+
+---
+
+## FINAL-SOURCE CI — exp-0036 context (2026-11-04)
+
+- **Classification:** PASS (not a strength gate).
+- Run `41770918367`, `push`, head `03868dafc6f644abb5b53caf2ef6ef1dda14e830`,
+  conclusion `success`, 9/9 jobs (Clang Release, ASan+UBSan, Min CMake 3.16,
+  Independent reference, ThreadSanitizer, ubuntu-22.04 Debug/Release,
+  windows-2022 Debug/Release). Evidence
+  `benchmarks/dev6-baseline/final_source_ci.json`.
+- Artifact IDs `13294612578` (linux), `13295120861` (windows),
+  `13295575626` (dead-position). Download BLOCKED by
+  `productionresultssa6.blob.core.windows.net` EOF (outside sandbox allow-list);
+  not retried unchanged. CI build image omits the pinned portable flags, so a
+  CI artifact is NOT the Track A match binary; Gate 4 unaffected.
+
+## exp-0036 — FIXED-TIME confirmation of exp-0035 (40+4 ms, 2026-11-04)
+
+- **Classification:** **FIXED TIME / GATE NOT MET — conclusively blocked.**
+  Closed at the pre-registered futility boundary (combined 95 % UCB +32.81 <
+  +50). Gate 1 FAIL; Gate 4 UNMET. NOT an invalid measurement: Stage-0
+  validity gate PASSED with 0 TIME_FORFEITs. NOT a noisy conclusion and NOT a
+  gate pass.
+- **Hypothesis:** the fixed-node `+27.10 [+15.94,+38.33]` Elo of
+  `BadCapturePruning=true` (exp-0035) translates into a fixed-time gain large
+  enough to satisfy Gate 1 (>= +75 and 95 % LCB > +50).
+- **Prereg:** `docs/DEV6_PREREG_EXP0036.md`, SHA
+  `430fe96ebd4095e7a4df84716f0b909f175f04cd95cfd4e55c303346f03e610d`, frozen
+  before any fixed-time game; Gates 1–4 reproduced verbatim, unweakened.
+- **Runner:** Tier 1 (GitHub isolated VM) **BLOCKED by the one-push
+  authorization boundary** (lane has no `workflow_dispatch`, is absent on
+  `main`, and its `commit_and_push` performs further remote writes). Tier 2
+  executed: LOCAL dedicated core, `taskset -c 1`, no concurrent CPU work,
+  pre-registered validity gate. Tier 2 is NOT a dedicated VM.
+- **Source / binary / params / build env:** pushed source SHA `03868da`;
+  candidate `build-exp0034/stockbear`
+  `075ec955a65acad4624cc6d3f4998763aaa7b968e4d01a27e73cd9dfd4c77d82`
+  (GCC 12.2.0-14, ld 2.40, glibc 2.36, CMake 4.4.4, Ninja, Release,
+  `-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4`, no `-march=native`);
+  official dev5 `391cb50e13ab9...`; Track A rebuild
+  `214cbed002e58f...`; `EvalParams=research-data/params_abc.txt`,
+  `TTEval=true`, Hash16, Threads1, max-plies 240. Local CPU Xeon 2.60 GHz,
+  2 vCPU, CPU 1 dedicated.
+- **Commands / env:** `scripts/dev6_exp0036.py --all` ->
+  `scripts/tournament.py --base-ms 40 --inc-ms 4 --hash 16 --threads 1
+  --max-plies 240 --a-option BadCapturePruning=true`; fresh disjoint suites
+  seed `2026111901` (1,600 openings), arm seeds `2026112000..2026112103`;
+  `--nodes` NEVER used. Log `benchmarks/exp-runs/exp0036-run.log`.
+- **Raw paths:** `benchmarks/exp-runs/exp0036-{stage0,batchA,batchB,null,trackA}/`,
+  `benchmarks/dev6-baseline/exp0036_results.json`, `docs/DEV6_EXP0036_REPORT.md`.
+- **Statistics:** Stage 0 null -10.43 [-31.86,+10.93] (400 games), 0 forfeits,
+  NPS ratio 1.0059 in [0.97,1.03] -> validity PASS. batchA +17.14
+  [+1.24,+33.12] (1,000), batchB +25.91 [+10.03,+41.91] (997), **combined
+  +21.52 [+10.28,+32.81]** (1,994 games, `+735=645-614`, score 0.5303, 994
+  clusters), null -1.75 [-22.39,+18.87] (400), Track A +26.24
+  [+0.99,+51.77] (400). 0 TIME_FORFEIT / illegal / crash / UCI failure in all
+  arms; 6 UNADJUDICATED_MAX_PLIES exclusions. CR1/t opening-clustered
+  two-sided 95 % CI. Independent audit: 201 stored values, AUDIT PASS;
+  Elo-from-score +21.11 vs stored CR1 +21.52.
+- **Gate evaluation:** Gate 1 **FAIL** (point +21.52 < +75; LCB +10.28 not >
+  +50); both batches positive and consistent (sub-clauses pass). Gate 2
+  direction supported by both datasets. Gate 3 PASS (both nulls include 0).
+  Gate 4 **UNMET** (no packaged candidate release artifact; CI artifacts are a
+  different build image and undownloadable; Tier 2 not an isolated VM).
+- **Outcome / root cause:** the mechanism produces a modest, reproducible
+  fixed-time gain (~+21 Elo), roughly a quarter of the +75 gate; the fixed-node
+  +27 Elo did NOT translate into a gate-sized fixed-time gain. Gate 4 is
+  structurally blocked: no packaged candidate artifact exists, and decisive
+  Tier-1 isolated-runner confirmation needs a new prereg + trigger commit and
+  result pushes, i.e. a SECOND remote write not authorized here.
+- **Lessons learned:** (1) a validity-gated dedicated CORE can produce clean
+  zero-forfeit fixed-time data locally, but that is not equivalent to a
+  dedicated VM and cannot satisfy Gate 4; (2) fixed-node gains are unreliable
+  proxies for fixed-time gains — exp-0035 +27.10 fixed-node vs exp-0036 +21.52
+  fixed-time are DIFFERENT quantities, never interchangeable; (3) a frozen
+  futility/upper-bound stopping rule closes an experiment cheaply without
+  weakening gates; (4) recording the authorization boundary as an experimental
+  limitation is mandatory, not optional.
+- **Non-repeatable / dead ends:** do NOT re-run the whole-screen 40+4 ms
+  confirmation this cycle (UCB already < +50); do NOT present Tier-2 results
+  as Tier-1 isolated-runner evidence; do NOT claim Gate 1/4 passes; do NOT
+  stack badCapturePruning with another switch post hoc; do NOT tune
+  `BadCaptureMargin=100` on these results; do NOT enable `BadCapturePruning`
+  by default before isolated-runner confirmation; do NOT repeat razoring,
+  small CPU NNUE, extended features, or other recorded dead ends.
+- **Next experiment:** `docs/DEV6_PREREG_EXP0037.md` — **ProbCut**, isolated
+  default-off switch, fixed-node screen then Tier-1 fixed-time, Gates 1–4
+  unchanged. NOT executed: requires new explicit authorization for the
+  additional push. Ranked ahead of qsearch-TT, endgame eval knowledge, NNUE
+  with an accuracy→strength link, and any stacking.

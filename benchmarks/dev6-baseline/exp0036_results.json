@@ -1,0 +1,212 @@
+{
+  "experiment": "exp-0036",
+  "prereg": "docs/DEV6_PREREG_EXP0036.md",
+  "prereg_sha256": "430fe96ebd4095e7a4df84716f0b909f175f04cd95cfd4e55c303346f03e610d",
+  "pushed_source_sha": "03868dafc6f644abb5b53caf2ef6ef1dda14e830",
+  "ci_run_id": 41770918367,
+  "candidate_binary_sha256": "075ec955a65acad4624cc6d3f4998763aaa7b968e4d01a27e73cd9dfd4c77d82",
+  "official_dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "trackA_dev5_rebuilt_sha256": "214cbed002e58fbc94d74a089491bba94634e9e8d06b782992548fdacaa9b501",
+  "master_suite_sha256": "df282f68aa82d3ee93a1a4bda260231f4e997f8a982d4fb9fc0e6c285da875d6",
+  "runner": "LOCAL dedicated core (taskset -c 1); NOT a GitHub-hosted isolated VM",
+  "tier1_status": "BLOCKED by one-push authorization boundary (see prereg \u00a71)",
+  "control": "FIXED TIME 40+4 ms, hash 16, threads 1, max-plies 240; NEVER --nodes",
+  "nps_integrity": {
+    "candidate_nps": 2626928.325281591,
+    "dev5_nps": 2611642.4490387165,
+    "ratio": 1.0058529743413005
+  },
+  "stage0": {
+    "games": 400,
+    "unadjudicated": 0,
+    "wins": 129,
+    "draws": 130,
+    "losses": 141,
+    "score": 0.485,
+    "elo": -10.426196175570956,
+    "ci95": [
+      -31.857767639782214,
+      10.926247816197403
+    ],
+    "clusters": 200,
+    "terminations": {
+      "CHECKMATE": 270,
+      "INSUFFICIENT_MATERIAL": 12,
+      "THREEFOLD_REPETITION": 118
+    },
+    "time_forfeit": 0,
+    "illegal": 0,
+    "uci_fail": 0,
+    "tag": "stage0",
+    "dir": "benchmarks/exp-runs/exp0036-stage0",
+    "seed": 2026112000,
+    "control": "FIXED TIME 40+4 ms (no --nodes)",
+    "openings_sha256": "26250ab11a3e2463834ff7eccdb8afae46db2701ca28371cd4fc914749f7ec49",
+    "command": "taskset -c 1 /home/user/StockBear/.venv/bin/python /home/user/StockBear/scripts/tournament.py --engine-a /home/user/StockBear/build-exp0034/stockbear --engine-b /home/user/StockBear/build-exp0034/stockbear --games 400 --base-ms 40 --inc-ms 4 --hash 16 --threads 1 --max-plies 240 --openings /home/user/StockBear/benchmarks/positions/openings_exp0036_stage0.txt --seed 2026112000 --a-option EvalParams=research-data/params_abc.txt --a-option TTEval=true --a-option BadCapturePruning=false --b-option EvalParams=research-data/params_abc.txt --b-option TTEval=true --b-option BadCapturePruning=false --pgn /home/user/StockBear/benchmarks/exp-runs/exp0036-stage0/match.pgn --jsonl /home/user/StockBear/benchmarks/exp-runs/exp0036-stage0/match.jsonl --csv /home/user/StockBear/benchmarks/exp-runs/exp0036-stage0/match.csv",
+    "validity_gate": "PASS"
+  },
+  "results": [
+    {
+      "games": 400,
+      "unadjudicated": 0,
+      "wins": 129,
+      "draws": 130,
+      "losses": 141,
+      "score": 0.485,
+      "elo": -10.426196175570956,
+      "ci95": [
+        -31.857767639782214,
+        10.926247816197403
+      ],
+      "clusters": 200,
+      "terminations": {
+        "CHECKMATE": 270,
+        "INSUFFICIENT_MATERIAL": 12,
+        "THREEFOLD_REPETITION": 118
+      },
+      "time_forfeit": 0,
+      "illegal": 0,
+      "uci_fail": 0,
+      "tag": "stage0",
+      "dir": "benchmarks/exp-runs/exp0036-stage0",
+      "seed": 2026112000,
+      "control": "FIXED TIME 40+4 ms (no --nodes)",
+      "openings_sha256": "26250ab11a3e2463834ff7eccdb8afae46db2701ca28371cd4fc914749f7ec49",
+      "command": "taskset -c 1 /home/user/StockBear/.venv/bin/python /home/user/StockBear/scripts/tournament.py --engine-a /home/user/StockBear/build-exp0034/stockbear --engine-b /home/user/StockBear/build-exp0034/stockbear --games 400 --base-ms 40 --inc-ms 4 --hash 16 --threads 1 --max-plies 240 --openings /home/user/StockBear/benchmarks/positions/openings_exp0036_stage0.txt --seed 2026112000 --a-option EvalParams=research-data/params_abc.txt --a-option TTEval=true --a-option BadCapturePruning=false --b-option EvalParams=research-data/params_abc.txt --b-option TTEval=true --b-option BadCapturePruning=false --pgn /home/user/StockBear/benchmarks/exp-runs/exp0036-stage0/match.pgn --jsonl /home/user/StockBear/benchmarks/exp-runs/exp0036-stage0/match.jsonl --csv /home/user/StockBear/benchmarks/exp-runs/exp0036-stage0/match.csv",
+      "validity_gate": "PASS"
+    },
+    {
+      "games": 997,
+      "unadjudicated": 3,
+      "wins": 364,
+      "draws": 317,
+      "losses": 316,
+      "score": 0.5240722166499499,
+      "elo": 17.140999966907156,
+      "ci95": [
+        1.236043223520509,
+        33.1181174612367
+      ],
+      "clusters": 497,
+      "terminations": {
+        "CHECKMATE": 680,
+        "THREEFOLD_REPETITION": 292,
+        "INSUFFICIENT_MATERIAL": 23,
+        "UNADJUDICATED_MAX_PLIES": 3,
+        "FIFTY_MOVES": 1,
+        "STALEMATE": 1
+      },
+      "time_forfeit": 0,
+      "illegal": 0,
+      "uci_fail": 0,
+      "tag": "batchA",
+      "dir": "benchmarks/exp-runs/exp0036-batchA",
+      "seed": 2026112100,
+      "control": "FIXED TIME 40+4 ms (no --nodes)",
+      "openings_sha256": "0f3011a631380236b90358f6d76abe2295afdcdfb14304c8244125f38ff1d712",
+      "command": "taskset -c 1 /home/user/StockBear/.venv/bin/python /home/user/StockBear/scripts/tournament.py --engine-a /home/user/StockBear/build-exp0034/stockbear --engine-b /home/user/StockBear/benchmarks/binaries/stockbear-dev5-release --games 1000 --base-ms 40 --inc-ms 4 --hash 16 --threads 1 --max-plies 240 --openings /home/user/StockBear/benchmarks/positions/openings_exp0036_batchA.txt --seed 2026112100 --a-option EvalParams=research-data/params_abc.txt --a-option TTEval=true --a-option BadCapturePruning=true --b-option EvalParams=research-data/params_abc.txt --b-option TTEval=true --pgn /home/user/StockBear/benchmarks/exp-runs/exp0036-batchA/match.pgn --jsonl /home/user/StockBear/benchmarks/exp-runs/exp0036-batchA/match.jsonl --csv /home/user/StockBear/benchmarks/exp-runs/exp0036-batchA/match.csv"
+    },
+    {
+      "games": 997,
+      "unadjudicated": 3,
+      "wins": 371,
+      "draws": 328,
+      "losses": 298,
+      "score": 0.5366098294884654,
+      "elo": 25.913370138792896,
+      "ci95": [
+        10.025340057924616,
+        41.91039737284863
+      ],
+      "clusters": 497,
+      "terminations": {
+        "CHECKMATE": 669,
+        "INSUFFICIENT_MATERIAL": 28,
+        "THREEFOLD_REPETITION": 298,
+        "FIFTY_MOVES": 2,
+        "UNADJUDICATED_MAX_PLIES": 3
+      },
+      "time_forfeit": 0,
+      "illegal": 0,
+      "uci_fail": 0,
+      "tag": "batchB",
+      "dir": "benchmarks/exp-runs/exp0036-batchB",
+      "seed": 2026112101,
+      "control": "FIXED TIME 40+4 ms (no --nodes)",
+      "openings_sha256": "6af23b876017c210a7486e033626ba248bd62c250d4a593c5c330205979f66b3",
+      "command": "taskset -c 1 /home/user/StockBear/.venv/bin/python /home/user/StockBear/scripts/tournament.py --engine-a /home/user/StockBear/build-exp0034/stockbear --engine-b /home/user/StockBear/benchmarks/binaries/stockbear-dev5-release --games 1000 --base-ms 40 --inc-ms 4 --hash 16 --threads 1 --max-plies 240 --openings /home/user/StockBear/benchmarks/positions/openings_exp0036_batchB.txt --seed 2026112101 --a-option EvalParams=research-data/params_abc.txt --a-option TTEval=true --a-option BadCapturePruning=true --b-option EvalParams=research-data/params_abc.txt --b-option TTEval=true --pgn /home/user/StockBear/benchmarks/exp-runs/exp0036-batchB/match.pgn --jsonl /home/user/StockBear/benchmarks/exp-runs/exp0036-batchB/match.jsonl --csv /home/user/StockBear/benchmarks/exp-runs/exp0036-batchB/match.csv"
+    },
+    {
+      "games": 398,
+      "unadjudicated": 2,
+      "wins": 136,
+      "draws": 126,
+      "losses": 136,
+      "score": 0.5,
+      "elo": -1.754740099245516,
+      "ci95": [
+        -22.390854895751463,
+        18.868986847458668
+      ],
+      "clusters": 198,
+      "terminations": {
+        "THREEFOLD_REPETITION": 115,
+        "CHECKMATE": 272,
+        "INSUFFICIENT_MATERIAL": 11,
+        "UNADJUDICATED_MAX_PLIES": 2
+      },
+      "time_forfeit": 0,
+      "illegal": 0,
+      "uci_fail": 0,
+      "tag": "null",
+      "dir": "benchmarks/exp-runs/exp0036-null",
+      "seed": 2026112102,
+      "control": "FIXED TIME 40+4 ms (no --nodes)",
+      "openings_sha256": "8dbdd7aff3922317863858447ce1448d6b91c8672c7d5c60063cd295097575df",
+      "command": "taskset -c 1 /home/user/StockBear/.venv/bin/python /home/user/StockBear/scripts/tournament.py --engine-a /home/user/StockBear/build-exp0034/stockbear --engine-b /home/user/StockBear/build-exp0034/stockbear --games 400 --base-ms 40 --inc-ms 4 --hash 16 --threads 1 --max-plies 240 --openings /home/user/StockBear/benchmarks/positions/openings_exp0036_null.txt --seed 2026112102 --a-option EvalParams=research-data/params_abc.txt --a-option TTEval=true --a-option BadCapturePruning=false --b-option EvalParams=research-data/params_abc.txt --b-option TTEval=true --b-option BadCapturePruning=false --pgn /home/user/StockBear/benchmarks/exp-runs/exp0036-null/match.pgn --jsonl /home/user/StockBear/benchmarks/exp-runs/exp0036-null/match.jsonl --csv /home/user/StockBear/benchmarks/exp-runs/exp0036-null/match.csv"
+    },
+    {
+      "games": 399,
+      "unadjudicated": 1,
+      "wins": 152,
+      "draws": 125,
+      "losses": 122,
+      "score": 0.5375939849624061,
+      "elo": 26.238380135861757,
+      "ci95": [
+        0.9896714676945392,
+        51.76726926252613
+      ],
+      "clusters": 199,
+      "terminations": {
+        "CHECKMATE": 274,
+        "THREEFOLD_REPETITION": 112,
+        "INSUFFICIENT_MATERIAL": 13,
+        "UNADJUDICATED_MAX_PLIES": 1
+      },
+      "time_forfeit": 0,
+      "illegal": 0,
+      "uci_fail": 0,
+      "tag": "trackA",
+      "dir": "benchmarks/exp-runs/exp0036-trackA",
+      "seed": 2026112103,
+      "control": "FIXED TIME 40+4 ms (no --nodes)",
+      "openings_sha256": "dbdc0ddec755e9273697062b9aaadc70269694bea2a7fc77fa065c230b61eff1",
+      "command": "taskset -c 1 /home/user/StockBear/.venv/bin/python /home/user/StockBear/scripts/tournament.py --engine-a /home/user/StockBear/build-exp0034/stockbear --engine-b /home/user/StockBear/build-dev5/stockbear --games 400 --base-ms 40 --inc-ms 4 --hash 16 --threads 1 --max-plies 240 --openings /home/user/StockBear/benchmarks/positions/openings_exp0036_trackA.txt --seed 2026112103 --a-option EvalParams=research-data/params_abc.txt --a-option TTEval=true --a-option BadCapturePruning=true --b-option EvalParams=research-data/params_abc.txt --b-option TTEval=true --pgn /home/user/StockBear/benchmarks/exp-runs/exp0036-trackA/match.pgn --jsonl /home/user/StockBear/benchmarks/exp-runs/exp0036-trackA/match.jsonl --csv /home/user/StockBear/benchmarks/exp-runs/exp0036-trackA/match.csv"
+    }
+  ],
+  "combined": {
+    "games": 1994,
+    "wins": 735,
+    "draws": 645,
+    "losses": 614,
+    "score": 0.5303410230692076,
+    "elo": 21.52375886517998,
+    "ci95": [
+      10.281904080393064,
+      32.81082167217919
+    ],
+    "clusters": 994
+  },
+  "decision": null
+}

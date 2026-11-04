@@ -394,3 +394,20 @@ noise on this 2-vCPU sandbox, and the historical +33 Elo "gain" was a build
 image artifact. Keep the switch default OFF until isolated-runner fixed-time
 confirmation; changing the default would alter the shipped bench signature and
 require a fresh artifact/CI cycle. No gate weakened.
+
+### exp-0036 / post-authorization (2026-11-04)
+- Kept `docs/DEV6_PREREG.md` §8 unchanged. Added a pre-registered RUNNER
+  VALIDITY GATE (0 forfeits + null includes 0 + NPS ratio in [0.97,1.03])
+  before any fixed-time match, so a shared-clock environment cannot silently
+  produce a fabricated strength result.
+- Added a frozen futility boundary (combined 95 % UCB < +50) to stop a
+  confirmation cheaply. It is an experiment-level stopping rule, NOT a gate
+  weakening:Gate 1 still requires point >= +75 AND LCB > +50.
+- Fixed-time confirmation used `--base-ms 40 --inc-ms 4` with NO `--nodes`;
+  fixed-node exp-0035 (+27.10) and fixed-time exp-0036 (+21.52) are recorded
+  as different quantities. Neither is a gate pass or an absolute Elo.
+- Recorded the lane's `commit_and_push` as a hard authorization boundary:
+  no `workflow_dispatch`, no `main` copy, results pushed back -> a second push
+  would be required. No second push was made.
+- Next isolated direction ranked: ProbCut > quiescence TT probe > endgame eval
+  knowledge > NNUE-with-accuracy-link > stacking (separate prereg only).

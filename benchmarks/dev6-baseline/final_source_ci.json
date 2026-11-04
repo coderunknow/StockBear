@@ -1,0 +1,103 @@
+{
+  "purpose": "final-source CI on the exact authorized pushed SHA",
+  "run_id": 41770918367,
+  "run_url": "https://github.com/coderunknow/StockBear/actions/runs/41770918367",
+  "event": "push",
+  "head_sha": "03868dafc6f644abb5b53caf2ef6ef1dda14e830",
+  "branch": "arena/3e6dd5b6-stockbear",
+  "status": "completed",
+  "conclusion": "success",
+  "created_at": "2026-11-04T04:04:07Z",
+  "updated_at": "2026-11-04T04:11:57Z",
+  "authorization": "exactly one git push (797f5cb..03868da); no further remote writes",
+  "jobs": [
+    {
+      "name": "Linux Clang Release",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-04T04:04:09Z",
+      "completed_at": "2026-11-04T04:04:41Z"
+    },
+    {
+      "name": "windows-2022 / Debug",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-04T04:04:09Z",
+      "completed_at": "2026-11-04T04:06:00Z"
+    },
+    {
+      "name": "Minimum CMake 3.16",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-04T04:04:10Z",
+      "completed_at": "2026-11-04T04:04:49Z"
+    },
+    {
+      "name": "Linux ASan + UBSan",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-04T04:04:10Z",
+      "completed_at": "2026-11-04T04:06:32Z"
+    },
+    {
+      "name": "Independent reference, statistics and dead positions",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-04T04:04:09Z",
+      "completed_at": "2026-11-04T04:11:56Z"
+    },
+    {
+      "name": "ubuntu-22.04 / Debug",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-04T04:04:09Z",
+      "completed_at": "2026-11-04T04:05:22Z"
+    },
+    {
+      "name": "Linux ThreadSanitizer",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-04T04:04:10Z",
+      "completed_at": "2026-11-04T04:05:09Z"
+    },
+    {
+      "name": "ubuntu-22.04 / Release",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-04T04:04:10Z",
+      "completed_at": "2026-11-04T04:04:49Z"
+    },
+    {
+      "name": "windows-2022 / Release",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-04T04:04:10Z",
+      "completed_at": "2026-11-04T04:05:34Z"
+    }
+  ],
+  "all_jobs_success": true,
+  "artifacts": [
+    {
+      "id": 13295575626,
+      "name": "dead-position-evidence",
+      "size_in_bytes": 696
+    },
+    {
+      "id": 13295120861,
+      "name": "stockbear-windows-x64",
+      "size_in_bytes": 287343
+    },
+    {
+      "id": 13294612578,
+      "name": "stockbear-linux-x64",
+      "size_in_bytes": 614748
+    }
+  ],
+  "artifact_download": {
+    "status": "BLOCKED",
+    "reason": "gh run download redirected to productionresultssa6.blob.core.windows.net (EOF); that host is outside the sandbox allow-list, same class of blockage as the recorded dev5 release-asset CDN. Not retried unchanged.",
+    "consequence": "isolated-runner-built CI binaries could not be hashed locally; artifact IDs pinned above."
+  },
+  "gate4_note": "CI builds use plain cmake -S . -B build -DCMAKE_BUILD_TYPE=Release WITHOUT the pinned portable flags (-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4), so a CI artifact is a DIFFERENT build image from the pinned Track A match binaries. There is no packaged candidate release artifact. Gate 4 therefore remains UNMET regardless of exp-0036 match results.",
+  "source_identity": "pushed SHA == CI head SHA == 03868dafc6f644abb5b53caf2ef6ef1dda14e830; no src/ changes after push"
+}

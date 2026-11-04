@@ -1,3 +1,8 @@
+> **SUPERSEDED for the post-authorization cycle** — see
+> `docs/DEV6_POST_AUTHORIZATION_REPORT.md` (final-source CI on `03868da`,
+> exp-0036 fixed-time confirmation and current gate verdict). This report
+> remains authoritative for the pre-authorization dev6 work only.
+
 # StockBear v0.1.0-dev6 — CURRENT STATUS REPORT (authoritative)
 
 **Date:** 2026-11-03 (Asia/Bangkok) · **Branch:** `arena/3e6dd5b6-stockbear`

@@ -337,3 +337,23 @@ stay bit-identical to dev5. **This is NOT a dev6 gate pass, NOT a fixed-time
 Elo, NOT a strength claim for release.** Decisive fixed-time confirmation on
 isolated runners and final-source CI are NOT RUN and require an authorized
 push. No PR/merge/tag/release/dev7; gates UNMET; mission ACTIVE.
+
+## dev6 — post-authorization cycle (2026-11-04)
+
+- Single authorized push executed: `797f5cb..03868da` (11 commits). No further
+  remote write, PR, merge, tag, release, deploy or dev7.
+- Final-source CI run `41770918367` on exact head `03868da`: **success, 9/9
+  jobs**. Evidence `benchmarks/dev6-baseline/final_source_ci.json`. CI artifact
+  download blocked by the blob CDN (outside sandbox allow-list).
+- exp-0036 preregistered FIXED-TIME 40+4 ms confirmation of exp-0035:
+  Stage-0 validity gate PASS (0 forfeits, null includes 0, NPS 1.0059);
+  combined **+21.52 [+10.28,+32.81]** Elo over 1,994 games, both batches
+  positive, 0 forfeits/illegal/UCI failures, null compatible with zero.
+  Runner was a LOCAL dedicated core — Tier-1 GitHub isolated VMs are BLOCKED
+  by the one-push authorization boundary and were NOT run.
+- Gate verdict: **Gate 1 FAIL** (needs >=+75 and LCB >+50), Gate 2 direction
+  supported, **Gate 3 PASS**, **Gate 4 UNMET** (no packaged candidate artifact;
+  different CI build image). Overall FAILURE / gate not met; NO strength claim,
+  no PR/merge/tag/release. See `docs/DEV6_EXP0036_REPORT.md`.
+- exp-0037 (ProbCut) preregistered as the next isolated direction, NOT run.
+- Independent audit `scripts/dev6_audit.py`: 201 values, AUDIT PASS.
