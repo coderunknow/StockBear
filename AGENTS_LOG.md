@@ -1041,3 +1041,9 @@ AND LCB>0 AND both batches >= −5 AND both null CIs include 0 AND clean; CLOSE
 if UCB<+10 OR point<=0; otherwise CLOSED AS INCONCLUSIVE / ABANDONED. Gates 1
 and 4 remain UNMET; no strength claim, no bundle, no default change, no
 PR/merge/tag/release/deploy/dev7.
+
+exp-0045 launch commit (exact source SHA pinned by `source_sha=HEAD` in the
+`mode=benchmark` attempt-20 dispatch): `e41a0b18b4e522f57196e2834c8937f8c55019e8`. LOCAL and REMOTE heads are
+identical at this SHA. The following docs-only commit records this SHA and does
+NOT relaunch the benchmark (push trigger is paths-filtered to the dispatch
+file).
