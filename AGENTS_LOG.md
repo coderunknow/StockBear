@@ -746,3 +746,12 @@ earlier openings, Stage-0 validity + two 1,000-game batches + null Tier-1
 40+4 ms plan, dispatch attempt 9. NO evaluation games yet.
 Gate verdict UNCHANGED: 1 UNMET / 2 direction-supported / 3 PASS / 4 UNMET
 (no final candidate). Mission ACTIVE.
+
+### exp-0042 Tier-1 screen completed; export dispatched
+
+Run `41802986830` on source `efd2f22dd…`: prepare + all four isolated-VM
+40+4 ms jobs SUCCESS; CI `41802986854` SUCCESS. Evidence export dispatched
+(attempt 10). exp-0042 frozen audit thresholds (verbatim from
+`docs/DEV6_PREREG_EXP0042.md` §5) are ADVANCE point>=+20/LCB>0/both batches
+>=-5/null includes 0/clean and CLOSE UCB<+10 or point<=0; they were fixed
+before any result was read. No exp-0042 result has been inspected yet.
