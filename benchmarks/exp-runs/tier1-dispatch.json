@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0046",
   "source_sha": "HEAD",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0046.json",
-  "source_run_id": "",
-  "note": "Launch exp-0046 margin-adaptive null-move reduction, frozen prereg/plan/code/suites in this commit. exp-0045 CLOSED; no pooling, no retune.",
-  "attempt": 24
+  "source_run_id": "41825055840",
+  "note": "Deliberate export of all four exp-0046 Tier-1 artifacts for independent raw-game audit.",
+  "attempt": 25
 }
