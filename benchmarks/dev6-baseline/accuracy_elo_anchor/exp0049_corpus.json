@@ -1,0 +1,120 @@
+{
+  "purpose": "Audit whether historical accuracy->Elo evidence exists for exp-0047 \u00a73.3",
+  "scope": "AUDIT of existing evidence. Zero strength games. Activates/reopens nothing.",
+  "corpus": "benchmarks/exp-runs/corpus-export/run-42171974318",
+  "corpus_manifest_sha256": "ce7e2e0761d9fb9ea438265485852458ce58c3074dcd4a618b94c6d2c60b2641",
+  "subsampling": "every 40th row, first 6000; score/outcome independent",
+  "n_positions": 6000,
+  "clusters_games": 4981,
+  "binaries": {
+    "dev4": "1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae",
+    "dev5": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918"
+  },
+  "params_abc_sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be",
+  "measured_elo_champion_vs_dev4": 64.7,
+  "measured_elo_ci95": [
+    57.5,
+    72.0
+  ],
+  "elo_provenance": "exp-0024, run 41620641753, 6600 games, clustered CR1 t(1745)",
+  "elo_is_bundle_not_eval_only": true,
+  "arms_identical_dev4_default_vs_dev5_default": true,
+  "reason_defaults_identical": "params_abc does not assign the four dev5-only features (RookOn7th/KnightOutpost/BackwardPawn/PawnChain), so with it the two binaries score identically; dev5's default weights for them are 0.",
+  "logloss_sensitivity": [
+    {
+      "K": 400.0,
+      "log_base": "log10",
+      "L_baseline": 0.23920740752336997,
+      "L_champion": 0.24036948353450233,
+      "relative_change_pct": 0.4858026861140765,
+      "paired": {
+        "mean": 0.0011620760111323769,
+        "se": 0.000367662223729427,
+        "t_stat": 3.1607163753314547,
+        "ci95": [
+          0.0004341301768415487,
+          0.001890021845423205
+        ],
+        "distinguishable_from_zero": true
+      },
+      "champion_more_accurate": false
+    },
+    {
+      "K": 400.0,
+      "log_base": "ln",
+      "L_baseline": 0.5507954106970634,
+      "L_champion": 0.5534711895972229,
+      "relative_change_pct": 0.4858026861140766,
+      "paired": {
+        "mean": 0.0026757789001593943,
+        "se": 0.00084657355561642,
+        "t_stat": 3.1607163753314564,
+        "ci95": [
+          0.00099962167361422,
+          0.0043519361267045685
+        ],
+        "distinguishable_from_zero": true
+      },
+      "champion_more_accurate": false
+    },
+    {
+      "K": 600.0,
+      "log_base": "log10",
+      "L_baseline": 0.2309511288139295,
+      "L_champion": 0.23071624799646265,
+      "relative_change_pct": -0.10170152389948905,
+      "paired": {
+        "mean": -0.00023488081746683828,
+        "se": 0.00023871446249285923,
+        "t_stat": -0.9839404576246166,
+        "ci95": [
+          -0.0007075189819047876,
+          0.00023775734697111103
+        ],
+        "distinguishable_from_zero": false
+      },
+      "champion_more_accurate": true
+    },
+    {
+      "K": 600.0,
+      "log_base": "ln",
+      "L_baseline": 0.5317846264171017,
+      "L_champion": 0.5312437933481723,
+      "relative_change_pct": -0.10170152389948882,
+      "paired": {
+        "mean": -0.000540833068929396,
+        "se": 0.000549660362818144,
+        "t_stat": -0.9839404576246141,
+        "ci95": [
+          -0.0016291226607442868,
+          0.0005474565228854948
+        ],
+        "distinguishable_from_zero": false
+      },
+      "champion_more_accurate": true
+    }
+  ],
+  "brier_paired_K400": {
+    "mean": -0.0005167187066196915,
+    "se": 0.00026536458191052256,
+    "t_stat": -1.9472029872996472,
+    "ci95": [
+      -0.0010421222686463744,
+      8.684855406991456e-06
+    ],
+    "distinguishable_from_zero": false
+  },
+  "brier_champion_more_accurate": true,
+  "frozen_metric_result": {
+    "metric": "Texel log10 loss at K=400 (the frozen exp-0048/49 metric)",
+    "relative_change_pct": 0.4858026861140765,
+    "ci95_pct": [
+      0.18148692857646362,
+      0.7901184436516894
+    ],
+    "champion_more_accurate": false,
+    "distinguishable_from_zero": true
+  },
+  "logloss_sign_stable_across_K_and_base": false,
+  "metrics_disagree": true
+}

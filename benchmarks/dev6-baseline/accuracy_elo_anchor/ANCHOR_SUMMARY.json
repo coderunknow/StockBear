@@ -1,0 +1,62 @@
+{
+  "question": "Does measured eval accuracy predict fixed-time Elo in this project? exp-0047 \u00a73.3 requires that link.",
+  "scope": "AUDIT of existing evidence. ZERO strength games. Activates nothing, reopens nothing, re-tunes nothing.",
+  "method": "Score the two immutable committed binaries (dev4, dev5) on IDENTICAL positions with IDENTICAL labels from an existing corpus, so the accuracy delta costs no games. Pair it with the project's one high-confidence fixed-time Elo: dev5 vs dev4 = +64.7 [+57.5,+72.0], exp-0024 run 41620641753, 6600 games, clustered CR1 t(1745). Uncertainty on the accuracy delta is a PAIRED CR1 clustered SE over games, not per-position.",
+  "arms": {
+    "baseline": "dev4 with its defaults (the released dev4 runtime)",
+    "champion": "dev5 with params_abc (the champion runtime)",
+    "note": "With params_abc the two binaries score IDENTICALLY on every row, because params_abc does not assign dev5's four extra features and dev5's default weights for them are 0. So the eval-accuracy delta here is entirely the params_abc retune, not new features."
+  },
+  "results": {
+    "exp0049_corpus": {
+      "n_positions": 6000,
+      "clusters": 4981,
+      "K400_rel_pct": 0.4858026861140765,
+      "K400_ci95_pct": [
+        0.18148692857646362,
+        0.7901184436516894
+      ],
+      "K400_significant": true,
+      "K600_rel_pct": -0.10170152389948905,
+      "K600_significant": false,
+      "brier_champion_better": true,
+      "brier_significant": false,
+      "sign_stable_across_K": false
+    },
+    "exp0048_corpus": {
+      "n_positions": 6000,
+      "clusters": 4999,
+      "K400_rel_pct": 0.16128977676614104,
+      "K400_ci95_pct": [
+        -0.12803938425758352,
+        0.4506189377898655
+      ],
+      "K400_significant": false,
+      "K600_rel_pct": -0.3260815003511419,
+      "K600_significant": true,
+      "brier_champion_better": true,
+      "brier_significant": true,
+      "sign_stable_across_K": false
+    }
+  },
+  "findings": [
+    "NO usable accuracy->Elo calibration exists in this project. The ledger has a NPS->Elo slope (~+90 Elo per 2x nodes) but NO accuracy->Elo pair.",
+    "The one high-confidence Elo anchor (+64.7) shows an eval-accuracy change of at most ~0.5% in MAGNITUDE, whose SIGN FLIPS with the logistic constant K (K=400 vs K=600) on BOTH independent corpora.",
+    "Brier and log-loss DISAGREE in sign on both corpora: Brier favours the champion, log-loss at K=400 does not.",
+    "Therefore a large, well-measured Elo gain coexists with an accuracy change indistinguishable from zero at the metric's own tuning constant. The 3% log-loss threshold is NOT calibrated to Elo.",
+    "Only exp-0048 and exp-0049 ever measured accuracy at all, and BOTH closed before any strength game, so no experiment has ever observed an accuracy gain AND its strength effect."
+  ],
+  "critical_caveats": [
+    "The +64.7 is a BUNDLE (portable build flags + params_abc + TTEval), NOT an eval-only delta. Much of it plausibly comes from NPS, so this does NOT show that accuracy gains fail to produce Elo.",
+    "It DOES show the converse gap: Elo gains can arrive with ~no accuracy change, so accuracy is not a sufficient proxy and no slope can be fitted from this anchor.",
+    "Labels and positions come from dev5 self-play, which would BIAS IN FAVOUR of dev5 if anything.",
+    "params_abc was tuned at K=600 with natural-log loss; the frozen exp-0048/49 metric uses log10 at K=400. The sign instability is a property of the metric choice, and is reported rather than hidden.",
+    "Subsample is 6000 positions per corpus (every 40th row), deterministic and score-independent; not the full corpus."
+  ],
+  "consequence_for_exp0047": "\u00a73.3 requires a pre-result argument from '(1) and (2) and the historical NPS->Elo and accuracy->Elo evidence in benchmarks/FAILURE_LEDGER.md'. That accuracy->Elo evidence DOES NOT EXIST. So \u00a73.3 is currently UNSATISFIABLE for any accuracy-driven candidate, regardless of how large its accuracy gain is. This is a structural blocker, not a candidate failure.",
+  "what_would_resolve_it": [
+    "Preregister a calibration experiment that measures BOTH accuracy and fixed-time Elo for SEVERAL evaluator variants spanning a range of accuracy deltas, on one common corpus, so a slope can be fitted with uncertainty.",
+    "Alternatively abandon accuracy as the gate variable and select candidates directly on fixed-time strength screens, which the ledger already identifies as the only trustworthy filter at bullet.",
+    "Do NOT lower the +75/+50 thresholds or the 3% bar to manufacture a pass."
+  ]
+}

@@ -2097,3 +2097,59 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
 - **Continue / abandon:** sandbox-hosted NPS gating stays ABANDONED; isolated
   gating is now validated and available. Gates 1/4 UNMET, 2 direction-only,
   3 PASS. Mission ACTIVE / NOT COMPLETE. Zero strength games; exp-0047 DORMANT.
+
+## STRUCTURAL BLOCKER — the accuracy→Elo evidence exp-0047 §3.3 cites does not exist
+
+- **Not an experiment.** An audit of existing evidence, run before proposing a
+  third evaluator candidate. **Zero strength games; nothing activated, reopened
+  or re-tuned.** Report `docs/DEV6_ACCURACY_ELO_LINK_AUDIT.md`; evidence
+  `benchmarks/dev6-baseline/accuracy_elo_anchor/`; script
+  `scripts/dev6_accuracy_elo_anchor.py`.
+- **Trigger:** exp-0048 and exp-0049 both failed a frozen **>= 3 %** held-out
+  log-loss gate. Asked what that 3 % is calibrated against.
+- **Finding 1 — the cited evidence is absent.** exp-0047 §3.3 requires an
+  argument from "the historical NPS->Elo and **accuracy->Elo** evidence in
+  `benchmarks/FAILURE_LEDGER.md`". The ledger has a **NPS->Elo** slope
+  (~+90 Elo per 2x nodes) but **no accuracy->Elo pair anywhere**. Only exp-0048
+  and exp-0049 ever measured accuracy, and **both closed before any strength
+  game**, so no experiment has ever observed an accuracy gain AND its strength
+  effect. The older tuning runs (exp-0005/0012) recorded loss + Elo but cannot
+  calibrate a slope: the ordering **inverts** between the two best-loss sets
+  (outv2 0.4717 -> +41.2 vs abc 0.4752 -> +48.2), each loss used its **own**
+  corpus, and the 15.8 Elo spread is **smaller than the ±25 screen noise**.
+- **Finding 2 — a real anchor at zero game cost.** Both dev4 and dev5 binaries
+  are immutable and committed, so their evaluators were scored on **identical
+  positions and labels** (6,000 rows, every 40th, score-independent) from each
+  independent corpus, paired CR1 clustered SE over games, against the project's
+  one high-confidence fixed-time Elo: **+64.7 [+57.5,+72.0]**, 6,600 games
+  (exp-0024 run `41620641753`). Result: accuracy change **< 0.5 % in magnitude**
+  whose **sign flips with K** on BOTH corpora — exp-0049 corpus +0.486 % at K=400
+  (t=3.16) vs -0.102 % at K=600 (n.s.); exp-0048 corpus +0.161 % (n.s.) vs
+  -0.326 % at K=600 (t=-2.4). **Brier and log-loss disagree in sign on both.**
+  Also recorded: with `params_abc` the two binaries score **byte-identically**,
+  because params_abc omits dev5's four extra features and their default weights
+  are 0 — so the delta is the retune, not new features.
+- **What it does NOT show:** that accuracy gains fail to produce Elo. The +64.7
+  is a **BUNDLE** (portable flags + params_abc + TTEval), much of it plausibly
+  NPS; attributing it to eval would repeat the mismatched-toolchain error this
+  ledger already records. Labels come from dev5 self-play, biasing toward dev5.
+- **What it DOES show:** (a) Elo gains can arrive with ~no accuracy change, so
+  accuracy is not necessary for strength and no slope is fittable from this
+  anchor; (b) **the 3 % bar is not calibrated to anything** — it was plausible,
+  not derived, and its sign depends on K while params_abc was tuned at K=600 and
+  the gate measures at K=400.
+- **Consequence:** for any accuracy-driven candidate, **§3.3 is currently
+  UNSATISFIABLE** — a structural blocker, not a candidate failure. A third PST
+  candidate at 4 % would still hit it. This retro-explains why exp-0048/0049
+  could not have activated exp-0047 even on a pass: the number would have had no
+  licensed interpretation.
+- **What would resolve it:** preregister a calibration experiment measuring
+  **both** accuracy (one common corpus) **and** fixed-time 40+4 Elo for several
+  variants spanning a range of accuracy deltas, so a slope can be fitted with
+  uncertainty; **or** abandon accuracy as the gate variable and select on
+  fixed-time screens, already the ledger's only trustworthy bullet filter.
+  **Do NOT lower the +75/+50 thresholds or the 3 % bar to manufacture a pass.**
+- **Continue / abandon:** ABANDON accuracy-only gating as a route to activation
+  until the link is measured. Gates 1/4 UNMET, 2 direction-only, 3 PASS. Mission
+  ACTIVE / NOT COMPLETE. exp-0047 DORMANT; no PR strength claim, merge, tag,
+  release or deploy.

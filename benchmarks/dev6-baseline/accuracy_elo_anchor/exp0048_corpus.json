@@ -1,0 +1,120 @@
+{
+  "purpose": "Audit whether historical accuracy->Elo evidence exists for exp-0047 \u00a73.3",
+  "scope": "AUDIT of existing evidence. Zero strength games. Activates/reopens nothing.",
+  "corpus": "benchmarks/exp-runs/corpus-export/run-42169244756",
+  "corpus_manifest_sha256": "1246dba8d396744177081c1cdd8d1e2b255445e5fbe615a10caf1f0937d89411",
+  "subsampling": "every 40th row, first 6000; score/outcome independent",
+  "n_positions": 6000,
+  "clusters_games": 4999,
+  "binaries": {
+    "dev4": "1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae",
+    "dev5": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918"
+  },
+  "params_abc_sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be",
+  "measured_elo_champion_vs_dev4": 64.7,
+  "measured_elo_ci95": [
+    57.5,
+    72.0
+  ],
+  "elo_provenance": "exp-0024, run 41620641753, 6600 games, clustered CR1 t(1745)",
+  "elo_is_bundle_not_eval_only": true,
+  "arms_identical_dev4_default_vs_dev5_default": true,
+  "reason_defaults_identical": "params_abc does not assign the four dev5-only features (RookOn7th/KnightOutpost/BackwardPawn/PawnChain), so with it the two binaries score identically; dev5's default weights for them are 0.",
+  "logloss_sensitivity": [
+    {
+      "K": 400.0,
+      "log_base": "log10",
+      "L_baseline": 0.24355773063765038,
+      "L_champion": 0.24395056435769247,
+      "relative_change_pct": 0.16128977676614104,
+      "paired": {
+        "mean": 0.00039283372004214536,
+        "se": 0.00035591318013725566,
+        "t_stat": 1.1037346801561312,
+        "ci95": [
+          -0.0003118498186201914,
+          0.001097517258704482
+        ],
+        "distinguishable_from_zero": false
+      },
+      "champion_more_accurate": false
+    },
+    {
+      "K": 400.0,
+      "log_base": "ln",
+      "L_baseline": 0.5608123998497129,
+      "L_champion": 0.5617169329175073,
+      "relative_change_pct": 0.1612897767661409,
+      "paired": {
+        "mean": 0.0009045330677944393,
+        "se": 0.0008195203829841494,
+        "t_stat": 1.10373468015613,
+        "ci95": [
+          -0.0007180607436077508,
+          0.0025271268791966293
+        ],
+        "distinguishable_from_zero": false
+      },
+      "champion_more_accurate": false
+    },
+    {
+      "K": 600.0,
+      "log_base": "log10",
+      "L_baseline": 0.23449355261936672,
+      "L_champion": 0.2337289125247588,
+      "relative_change_pct": -0.3260815003511419,
+      "paired": {
+        "mean": -0.0007646400946079254,
+        "se": 0.000232309327506117,
+        "t_stat": -3.2914739275279055,
+        "ci95": [
+          -0.001224596533726439,
+          -0.0003046836554894116
+        ],
+        "distinguishable_from_zero": true
+      },
+      "champion_more_accurate": true
+    },
+    {
+      "K": 600.0,
+      "log_base": "ln",
+      "L_baseline": 0.5399413586645687,
+      "L_champion": 0.5381807097812189,
+      "relative_change_pct": -0.32608150035114186,
+      "paired": {
+        "mean": -0.0017606488833497658,
+        "se": 0.0005349119944790566,
+        "t_stat": -3.2914739275279055,
+        "ci95": [
+          -0.002819737723490679,
+          -0.0007015600432088527
+        ],
+        "distinguishable_from_zero": true
+      },
+      "champion_more_accurate": true
+    }
+  ],
+  "brier_paired_K400": {
+    "mean": -0.000897804402325212,
+    "se": 0.00026966129259789316,
+    "t_stat": -3.3293781012315242,
+    "ci95": [
+      -0.0014317151550398513,
+      -0.0003638936496105727
+    ],
+    "distinguishable_from_zero": true
+  },
+  "brier_champion_more_accurate": true,
+  "frozen_metric_result": {
+    "metric": "Texel log10 loss at K=400 (the frozen exp-0048/49 metric)",
+    "relative_change_pct": 0.16128977676614104,
+    "ci95_pct": [
+      -0.12803938425758352,
+      0.4506189377898655
+    ],
+    "champion_more_accurate": false,
+    "distinguishable_from_zero": false
+  },
+  "logloss_sign_stable_across_K_and_base": false,
+  "metrics_disagree": true
+}

@@ -1707,3 +1707,46 @@ from the message itself rather than assuming a GitHub outage; re-dispatched clea
 Summary updated at `benchmarks/dev6-baseline/nps_gate_calibration/CALIBRATION_SUMMARY.json`
 (checksummed); ledger entry appended. Zero strength games; no candidate measured;
 exp-0047 DORMANT; gates unchanged (1 UNMET, 2 direction-only, 3 PASS, 4 UNMET).
+
+## 2026-11-06 — audit: the accuracy→Elo link exp-0047 §3.3 requires does not exist
+
+Before proposing a third evaluator candidate, checked what the frozen 3 %
+log-loss bar is calibrated against. **It is not calibrated to anything, and the
+evidence §3.3 cites is absent.** Zero strength games; nothing activated/reopened.
+
+The ledger has a NPS→Elo slope (~+90 per 2x nodes) but **no accuracy→Elo pair**.
+Only exp-0048/0049 ever measured accuracy and both closed before any strength
+game, so no experiment has ever seen an accuracy gain AND its strength effect.
+exp-0005/0012 recorded loss + Elo but the ordering inverts between the two
+best-loss sets, each loss used its own corpus, and the 15.8 Elo spread is below
+the ±25 screen noise — no slope is fittable.
+
+Then built a genuine anchor for **zero** games: dev4 and dev5 are immutable
+committed binaries, so I scored both on identical positions/labels (6,000 rows,
+every 40th, score-independent) from each corpus, with a PAIRED CR1 clustered SE
+over games, against the one high-confidence fixed-time Elo (+64.7 [+57.5,+72.0],
+6,600 games, exp-0024). Accuracy change is **<0.5 % in magnitude and its sign
+flips with K on both corpora**; Brier and log-loss disagree in sign on both.
+
+Two mistakes caught by verifying rather than reporting: my first run used DEFAULT
+params for both arms and produced identical losses — dev5's extra features have
+zero default weight, so I re-ran with the champion's actual `params_abc`. That
+also revealed the binaries score byte-identically under params_abc, since it omits
+dev5's four extra features. And I checked K-sensitivity and replication on the
+second corpus **before** writing any conclusion, which is what stopped me from
+claiming "accuracy got worse" as a finding.
+
+**Stated carefully:** this does NOT show accuracy gains fail to produce Elo — the
++64.7 is a bundle (flags + params + TTEval), much of it plausibly NPS. It DOES show
+Elo can arrive with ~no accuracy change, so no slope is fittable and the 3 % bar
+has no licensed Elo interpretation. **§3.3 is therefore currently unsatisfiable
+for any accuracy-driven candidate** — a structural blocker, not a candidate
+failure, and it retro-explains why exp-0048/0049 could never have activated even
+on a pass.
+
+Report `docs/DEV6_ACCURACY_ELO_LINK_AUDIT.md`; checksummed evidence + raw extractor
+output (gzipped) in `benchmarks/dev6-baseline/accuracy_elo_anchor/`; reusable
+script `scripts/dev6_accuracy_elo_anchor.py`; ledger entry appended. Resolution
+options recorded (preregistered accuracy+Elo calibration, or select on fixed-time
+screens) with an explicit instruction not to lower any threshold. Gates unchanged;
+exp-0047 DORMANT.
