@@ -1,0 +1,66 @@
+{
+  "STATUS": "EXPLORATORY HYPOTHESIS GENERATION - NOT A PREREGISTERED RESULT",
+  "permitted_use": "Inform a NEW preregistration only. May NOT activate exp-0047, fill an Activation Record, or support any strength claim.",
+  "corpus": "benchmarks/exp-runs/corpus-export/run-42169244756",
+  "corpus_manifest_games": 6000,
+  "corpus_status": "CLOSED exp-0048 corpus; BURNED for confirmatory use. Any successor hypothesis requires a FRESH disjoint corpus.",
+  "exp0048_verdict_unchanged": "NEGATIVE / CLOSED",
+  "iterations": 600,
+  "learning_rate": 5.0,
+  "champion_holdout_logloss": 0.2424826561388389,
+  "champion_holdout_brier": 0.10342795929416566,
+  "grid": [
+    {
+      "l2": 0.0,
+      "train_logloss": 0.22764555074540874,
+      "holdout_logloss": 0.23163863286786268,
+      "holdout_reduction_pct": 4.472082021720858,
+      "holdout_brier": 0.09918174951990981,
+      "rms_delta_cp": 276.81762543765603,
+      "max_abs_delta_cp": 1371.4220939752086,
+      "is_frozen_exp0048_control": false
+    },
+    {
+      "l2": 1e-08,
+      "train_logloss": 0.23683166309950754,
+      "holdout_logloss": 0.2384829862759307,
+      "holdout_reduction_pct": 1.6494663686866362,
+      "holdout_brier": 0.10097663705826039,
+      "rms_delta_cp": 21.37541302791715,
+      "max_abs_delta_cp": 81.50744761316014,
+      "is_frozen_exp0048_control": false
+    },
+    {
+      "l2": 1e-07,
+      "train_logloss": 0.2403340443579143,
+      "holdout_logloss": 0.24076383163515247,
+      "holdout_reduction_pct": 0.7088443070758399,
+      "holdout_brier": 0.10217464136547015,
+      "rms_delta_cp": 5.458997638535648,
+      "max_abs_delta_cp": 26.61775857845065,
+      "is_frozen_exp0048_control": false
+    },
+    {
+      "l2": 1e-06,
+      "train_logloss": 0.24246602494830838,
+      "holdout_logloss": 0.24206197864576953,
+      "holdout_reduction_pct": 0.17348766289845274,
+      "holdout_brier": 0.10306102817710301,
+      "rms_delta_cp": 0.98197034212025,
+      "max_abs_delta_cp": 8.418642890420266,
+      "is_frozen_exp0048_control": false
+    },
+    {
+      "l2": 1e-05,
+      "train_logloss": 0.24310903309637125,
+      "holdout_logloss": 0.24243374593222033,
+      "holdout_reduction_pct": 0.020170599991520266,
+      "holdout_brier": 0.10337440135790019,
+      "rms_delta_cp": 0.12351025734563395,
+      "max_abs_delta_cp": 1.2206778944807133,
+      "is_frozen_exp0048_control": true
+    }
+  ],
+  "observed_ceiling_reduction_pct": 4.472082021720858,
+  "frozen_threshold_pct_for_reference": 3.0
+}

@@ -1441,3 +1441,25 @@ moves BEFORE freezing), and `benchmarks/dev6-baseline/exp0048_results/`
 
 Mission status: ACTIVE / NOT COMPLETE. Gates 1/4 UNMET, 2 direction-only,
 3 PASS. No PR strength claim, no merge/tag/release/prerelease/deploy.
+
+## 2026-11-06 — post-closure exploratory ceiling (exp-0048 verdict unchanged)
+
+Before spending more compute, asked whether the per-square mechanism carries any
+signal at all. `scripts/dev6_exp0048_exploratory_ceiling.py` re-fit the CLOSED
+exp-0048 corpus across an L2 grid (600 iters, lr 5.0). Held-out reduction:
+L2=0 → **4.4721 %** (RMS delta 276.8 cp); 1e-8 → 1.65 %; 1e-7 → 0.71 %;
+1e-6 → 0.17 %; **1e-5 (the frozen exp-0048 value) → 0.0202 %** (RMS 0.124 cp).
+
+This confirms the root-cause diagnosis quantitatively: the frozen regulariser
+sits at the degenerate end where the optimum is the initialisation. The
+mechanism is NOT empty — but exp-0048 as run is still a valid NEGATIVE for its
+frozen protocol, and that verdict, report and ledger entry are unchanged.
+
+Guardrails written into the artifact itself
+(`benchmarks/dev6-baseline/exp0048_exploratory/README.md` + the JSON `STATUS`
+field): exploratory only; may NOT activate exp-0047 or support a strength claim;
+the exp-0048 corpus/holdout are BURNED; a successor needs a NEW prereg frozen
+before its OWN fresh disjoint corpus. Also recorded: a 4.47 % accuracy gain is
+not evidence of +75 Elo.
+
+CI on `95ea477` (the negative-result commit): **SUCCESS**, all 9 jobs.

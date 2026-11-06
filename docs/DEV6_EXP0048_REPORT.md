@@ -119,3 +119,32 @@ can reuse all of it with its own, properly scaled, pre-registered objective.
 - `benchmarks/dev6-baseline/exp0048_results/SHA256SUMS.txt`
 - `benchmarks/exp-runs/corpus-export/run-42169244756/` — raw PGN/JSONL/EPD (gzip), per-shard manifests, `MANIFEST.json`, `SHA256SUMS.txt`
 - `benchmarks/dev6-baseline/exp0048_corpus_suites.json`, `exp0048_screen_suites.json` — suite provenance (screen suites generated but **unused**)
+
+---
+
+## 8. Post-closure exploratory follow-up (does NOT change the verdict above)
+
+After closing exp-0048, one exploratory question was asked before spending any
+further compute: does an expressive per-square table carry real outcome signal
+at all, or was the mechanism empty? `scripts/dev6_exp0048_exploratory_ceiling.py`
+re-fitted the same closed corpus across an L2 grid. Result
+(`benchmarks/dev6-baseline/exp0048_exploratory/EXPLORATORY_CEILING.json`):
+
+| L2 | held-out log-loss reduction | RMS delta (cp) |
+|---|---|---|
+| 0 | **4.4721 %** | 276.8 |
+| 1e-8 | 1.6495 % | 21.4 |
+| 1e-7 | 0.7088 % | 5.5 |
+| 1e-6 | 0.1735 % | 0.98 |
+| **1e-5 (the frozen exp-0048 value)** | **0.0202 %** | **0.124** |
+
+This confirms the §4 root cause quantitatively: the frozen L2 sits at the
+degenerate end of the curve, where the optimum IS the initialisation. The
+mechanism itself is not empty.
+
+**Limits, stated explicitly:** these are EXPLORATORY numbers on a BURNED corpus.
+They do not rehabilitate exp-0048, do not activate exp-0047, and are not a
+strength claim. The exp-0048 verdict in §1–§5 stands exactly as written. Any
+successor must be a NEW preregistration, frozen before its own FRESH corpus,
+disjoint from this one and from every prior suite. A 4.47 % accuracy gain is
+also NOT evidence of +75 Elo; only a fixed-time match can establish that.
