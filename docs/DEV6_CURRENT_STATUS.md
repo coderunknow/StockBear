@@ -460,13 +460,35 @@ Mission ACTIVE / NOT COMPLETE. Zero strength games played in this cycle.**
 ## Current state
 
 - **exp-0047: DORMANT.** Activation Record empty. Zero games under it.
-- **exp-0049:** corpus dispatched (run `42171974318`) from pinned source
-  `5a4dad750f3accd3a556300eea0ff1a1901d07b4`; at the time of writing the 8 shards
-  were still running. No fit, no screen and no accuracy verdict yet.
+- **exp-0049: EXECUTED and CLOSED as NEGATIVE.** Corpus run `42171974318` (8/8
+  shards) / export `42187907151`: 6,000 games, 261,641 positions, **0 engine
+  failures, 0 time forfeits**; empirically **0** shared positions/openings with
+  the burned exp-0048 corpus. ONE fit, no sweep. **Accuracy gate FAILED:
+  2.4712 % held-out log-loss reduction vs 3 % required** (shortfall 1.214x);
+  Brier improved but the rule is a conjunction. **Cost gate FAILED as measured**
+  (median NPS ratio 0.93931, node-identical) — recorded with the caveat that the
+  champion arm varied 19.2 % against itself, more than the effect, so this
+  2-core sandbox cannot resolve a 3 % band; **not re-run**, and accuracy closes
+  the candidate regardless. The exp-0048 degeneracy WAS fixed (RMS delta
+  111.83 cp vs 0.124 cp; train loss fell), so this failed on measured merit.
+  **291/768 entries hit the +-150 cp cap** — the obvious tuning lever,
+  deliberately not pulled. Report `docs/DEV6_EXP0049_REPORT.md`; artifacts
+  `benchmarks/dev6-baseline/exp0049_results/`. **No screen, zero strength games.**
+  The exp-0049 corpus/holdout are now **BURNED**.
 - No PR presenting a strength improvement. **No merge, tag, release, prerelease
   or deploy.** `VERSION` is `0.1.0-dev6` on the development branch only.
-- Next concrete action: export and verify the exp-0049 corpus, run ONE fit,
-  evaluate the frozen accuracy and cost gates, and only if both pass consider
-  the single 2,000-game diagnostic screen. A 3–5 % accuracy gain is **not**
-  evidence of +75 Elo; the exp-0047 §3.3 pre-result argument still has to be
-  made independently before any decisive game.
+- Also landed this cycle: a **benchmark-integrity fix** to
+  `scripts/match_stats.py`. The Student-t table was rounded to nearest, making
+  it anti-conservative at 14 of 128 checked df (a too-small critical value
+  narrows a gate CI and biases its lower bound toward passing). Every entry is
+  now ceiled at 1e-6; verified against an independent incomplete-beta quantile,
+  with the regression test proven to FAIL on the old table. Impact was
+  <= 0.017 Elo and **all three stored decision verdicts are unchanged**.
+- Next concrete action: the expressive-PST direction has now consumed two
+  independent fresh corpora without clearing a 3 % accuracy bar under
+  chess-plausible bounds. It is **not** the route to Gate 1 as configured.
+  Either propose a genuinely different evaluator hypothesis (its own prereg,
+  its own fresh corpus) or continue engineering hardening; do **not** relax the
+  exp-0049 cap or threshold on its burned corpus. A 2.47 % accuracy gain is
+  **not** evidence of +75 Elo, and the exp-0047 §3.3 pre-result argument still
+  has to be made independently before any decisive game.
