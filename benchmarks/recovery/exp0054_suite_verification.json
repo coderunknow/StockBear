@@ -1,0 +1,33 @@
+{
+  "prefix": "openings_exp0054",
+  "verifier": "independent; generator not imported",
+  "master_positions": 2400,
+  "earlier_files": 194,
+  "earlier_positions": 54441,
+  "master_vs_earlier_overlap": 0,
+  "per_file_overlap_nonzero": {},
+  "slice_pair_overlap": {
+    "stage0/null": 0,
+    "stage0/batchA": 0,
+    "stage0/batchB": 0,
+    "null/batchA": 0,
+    "null/batchB": 0,
+    "batchA/batchB": 0
+  },
+  "slices_partition_master": true,
+  "slice_sizes": {
+    "stage0": 200,
+    "null": 200,
+    "batchA": 1000,
+    "batchB": 1000
+  },
+  "digests_verified": {
+    "master": true,
+    "stage0": true,
+    "null": true,
+    "batchA": true,
+    "batchB": true
+  },
+  "issues": [],
+  "verdict": "PASS"
+}

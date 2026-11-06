@@ -2407,3 +2407,40 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
   3 **PASS**, 4 **UNMET**. Mission **ACTIVE / NOT COMPLETE**; exp-0047 **DORMANT**;
   exp-0048/0049/0050/0051 verdicts untouched. Feature stays default-OFF. No
   default change, no PR strength claim, no merge, tag, release or deploy.
+
+## exp-0053 — threat / material-exposure detection — VALID MEASUREMENT / SCREEN ADVANCE (2026-11-06)
+
+- **First positive result of the recovery mission.** ONE default-off param
+  `ThreatDetection`; units = min(10*|hanging| + 16*|pawnThreat|, 64), mg and eg,
+  where hanging = enemy NON-PAWN pieces attacked by us and NOT defended by them,
+  pawnThreat = any enemy piece attacked by our pawn. Unions accumulated inside the
+  EXISTING mobility/king-danger loops. Arm B = exact released dev5 artifact
+  `391cb50e…5bdb918`. `KingSafetyQuadratic` absent ⇒ 0, so attribution is to
+  threats alone. Prereg `6049ef7fd044fad15418e453e7ec6cbc51022dd9954835869cdbe49c44e66722`,
+  pinned source `f4d1779`, run **42241653329**, export **42243260420**.
+- **Independent raw recomputation:** batchA 390/318/289 **+34.7189
+  [+18.0174,+51.5819]**; batchB 341/360/298 **+14.6302 [−1.2957,+30.6178]**;
+  **FROZEN COMBINED 731/678/587, 996 clusters, +24.6338 [+13.1027,+36.2193]**,
+  bootstrap [+13.0873,+36.2348].
+- **Validity PASS, 0 issues:** 0 forfeits / 0 illegal / 0 engine failures in all
+  five jobs; both nulls include 0 (stage0 [−26.09,+12.15], candidate
+  [−26.37,+8.95]); **3,200/3,200 PGN replayed, 0 inconsistent**; 67/67 blobs,
+  55/55 sums; per-arm `EvalParams LOAD VERIFIED` cross-checked against the frozen
+  plan at the pinned SHA; arm digests match the declared design.
+- **Baseline-equivalence:** candidate knob-OFF vs exact dev5 **+1.7459
+  [−20.6462,+24.1526]**, CI includes 0 ⇒ attribution to the knob is CLEAN.
+- **All 7 frozen ADVANCE conditions PASS** (point ≥ +20; LCB > 0; both batches
+  ≥ −5; both nulls include 0; audit issues 0) ⇒ **SCREEN ADVANCE**.
+- **ADVANCE is NOT a confirmed improvement and NOT Gate 1.** A screen is a
+  selection instrument and its winner is upward-biased; the two batches differ by
+  ~20 Elo. Confirmation is preregistered separately as **exp-0054** (4,000 combined
+  games, fresh disjoint openings seed 2026110654, never pooled with these games).
+- **Measured dead end that shaped the design:** a shared per-square attack table
+  (Direction 3) was implemented, proved BIT-EXACT, and measured **~19.5% SLOWER**
+  over 90 paired blocks — 512-byte store/reload costs more than the magic-lookup
+  recomputation it removes. REVERTED. Do not retry attack-set dedup via a
+  per-square table. The fused-union design used instead costs **+1.97%**.
+- **Gates:** 1 **UNMET**, 2 direction-supported (now exp-0053, pending
+  confirmation), 3 **PASS**, 4 **UNMET**. Mission **ACTIVE / NOT COMPLETE**;
+  exp-0047 **DORMANT**. Feature stays default-OFF. No default change, no PR
+  strength claim, no merge, tag, release or deploy.

@@ -2108,3 +2108,31 @@ benchmark lane is push-triggered, so isolated-VM experiments require dispatch
 commits, while the directive forbids pushing before completion. Dispatch/export
 commits to the research branch are treated as the experiment mechanism, NOT as
 publication; the §8 completion push stays blocked. No merge/tag/release/deploy.
+
+## 2026-11-06 — exp-0053 SCREEN ADVANCE (+24.63); exp-0054 confirmation frozen
+
+exp-0053 played: run 42241653329, export 42243260420, 3,200 games, 5 isolated VMs.
+Independent raw recomputation: batchA +34.7189 [+18.0174,+51.5819], batchB
++14.6302 [−1.2957,+30.6178], **combined 731/678/587 over 996 clusters, +24.6338
+[+13.1027,+36.2193]**, bootstrap [+13.0873,+36.2348]. Audit **PASS, 0 issues**:
+0 forfeits/illegal/failures, both nulls include 0, 3,200/3,200 PGN replay with 0
+inconsistencies, 67/67 blobs, 55/55 sums, per-arm EvalParams LOAD VERIFIED, arm
+digests match the declared design. Baseline-equivalence +1.7459
+[−20.6462,+24.1526] includes 0 ⇒ attribution to ThreatDetection is clean.
+
+**All 7 frozen ADVANCE conditions PASS ⇒ SCREEN ADVANCE.** This is the first
+positive signal of the mission, but a screen is a selection instrument and its
+winner is upward-biased (batches differ ~20 Elo). It is NOT a confirmed
+improvement and NOT Gate 1.
+
+exp-0054 CONFIRMATION frozen before any of its games: prereg
+`docs/DEV6_PREREG_EXP0054.md` SHA
+`48e800e804dbaa27b32d369c368b3c7baed42c931a6d6236bc1166a4d5b993ea`, 4,000 combined
+games (batchA/B 2,000 each) + two 400-game validity nulls, 2,400 fresh disjoint
+openings seed 2026110654 independently verified (0 overlap vs 54,441 earlier
+positions in 194 files, 6/6 slice pairs). Configuration UNCHANGED from the screen;
+screen games NEVER pooled. Rules: CONFIRMED if point ≥ +10 AND LCB > 0 AND both
+batches ≥ −5; REJECTED if UCB < +5 or point ≤ 0; else INCONCLUSIVE. Power ~±9 Elo.
+
+Gates: 1 UNMET, 2 direction-supported, 3 PASS, 4 UNMET. Mission ACTIVE.
+ThreatDetection stays shipped 0. No default change, merge, tag, release or deploy.
