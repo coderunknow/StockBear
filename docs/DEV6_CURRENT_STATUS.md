@@ -398,3 +398,75 @@ default change, no PR/merge/tag/release/deploy/dev7, no absolute/CCRL/FIDE Elo
 or gap-to-3000 claim. Next concrete action: regenerate a fresh bullet-matched
 corpus with a frozen accuracy metric, measure champion/candidate evaluator
 accuracy and matched-toolchain inference cost, and only then activate exp-0047.
+
+---
+
+# LATEST (2026-11-06, post-exp-0048 / exp-0049 dispatched) — SUPERSEDES THE ABOVE FOR THIS CYCLE
+
+Branch `arena/6a6a2ba3-stockbear`. The sections above remain historical record.
+**Gate verdict is unchanged: 1 UNMET, 2 direction-supported, 3 PASS, 4 UNMET.
+Mission ACTIVE / NOT COMPLETE. Zero strength games played in this cycle.**
+
+## What happened
+
+1. **Engineering hardening landed** (each with a regression test):
+   - `scripts/tournament.py` failure classification: a non-timeout engine error
+     coinciding with a flag fall is now `ENGINE_FAILURE`, not hidden inside
+     `TIME_FORFEIT`; per-game `engine_failure` flag and summary counters added;
+     `max_plies` recorded in the configuration.
+   - `RELEASE_NOTES.md` dev4-content/dev5-version mismatch corrected.
+   - **qsearch TT store defect** (`src/search/search.cpp`): `quiescence()`'s move
+     loop returned `best` directly, bypassing the `finish()` store used by every
+     other completed exit, so the exp-0038 cache only ever held stand-pat values
+     and never a searched capture node. Fixed. Default OFF, so the shipped
+     search is untouched. The regression asserts the *discriminating*
+     observable (node-count reduction), because score/mate comparisons passed
+     even with the bug present — verified by reintroducing it.
+   - Default-OFF `PstFile` UCI option + `bench --pst` + `evaldata --pst`, with
+     `evaldata --pst --check` refused rather than reporting a false verdict.
+   - `ctest` now **13/13**; all three shipped bench signatures still exact:
+     `243f9a1c1ba5b36f`, `a14ab62224f837e5`, `e45fa2ec2287eb41`.
+   - Tier-1 export job no longer pushes to a hardcoded foreign branch.
+
+2. **exp-0048 EXECUTED and CLOSED as NEGATIVE.** Full 6,000-game bullet corpus
+   (run `42169244756`, 8/8 isolated shards, 260,042 positions, **0 engine
+   failures, 0 time forfeits**), one frozen fit, no sweep. Held-out log-loss
+   reduction **0.0202 %** against a frozen **3 %** requirement. Cost gate passed
+   (node-identical, ratio 1.0097) — the mechanism is free per node; accuracy
+   failed. Report `docs/DEV6_EXP0048_REPORT.md`; ledger entry appended.
+   **Root cause:** the mean-normalised objective made the frozen L2 the same
+   order as the data gradient at ~1 cp, so the optimum was the initialisation
+   (max |delta| **1.22 cp**). As frozen it tested "formulaic PST + sub-1.3 cp
+   noise", not an expressive table. **No hyperparameter was changed after
+   seeing data; no second fit; no screen; no strength games.**
+
+3. **Post-closure EXPLORATORY ceiling** (explicitly not a result): an L2 grid on
+   the closed corpus gave 4.47 % held-out reduction at L2=0 vs 0.0202 % at the
+   frozen 1e-5, confirming the degeneracy quantitatively. The exp-0048
+   corpus/holdout are therefore **BURNED**, and these numbers may not activate
+   exp-0047 or support any strength claim.
+
+4. **exp-0049 PREREGISTERED and dispatched** — a NEW hypothesis, not a retry.
+   `docs/DEV6_PREREG_EXP0049.md`, SHA-256
+   `05a43ca5afcae55d115c381225132b21e155e780a1c3dda43fe1f3e594c75265`, committed
+   before its corpus existed. Differences: `L2 = 0`; a **support floor** (<200
+   training occurrences ⇒ reset to formulaic, because Adam is per-coordinate
+   scale-invariant); a **+-150 cp deviation cap**. The `L2 = 0` choice's
+   exploratory provenance is disclosed in the prereg; the floor and cap were
+   not data-selected. **Accuracy threshold unchanged** (>=3 % AND non-worsening
+   Brier). Fresh suites seed 2026110611, zero overlap with all **161** earlier
+   suites (44,441 positions) including the burned exp-0048 corpus.
+
+## Current state
+
+- **exp-0047: DORMANT.** Activation Record empty. Zero games under it.
+- **exp-0049:** corpus dispatched (run `42171974318`) from pinned source
+  `5a4dad750f3accd3a556300eea0ff1a1901d07b4`; at the time of writing the 8 shards
+  were still running. No fit, no screen and no accuracy verdict yet.
+- No PR presenting a strength improvement. **No merge, tag, release, prerelease
+  or deploy.** `VERSION` is `0.1.0-dev6` on the development branch only.
+- Next concrete action: export and verify the exp-0049 corpus, run ONE fit,
+  evaluate the frozen accuracy and cost gates, and only if both pass consider
+  the single 2,000-game diagnostic screen. A 3–5 % accuracy gain is **not**
+  evidence of +75 Elo; the exp-0047 §3.3 pre-result argument still has to be
+  made independently before any decisive game.
