@@ -486,6 +486,23 @@ Mission ACTIVE / NOT COMPLETE. Zero strength games played in this cycle.**
   now ceiled at 1e-6; verified against an independent incomplete-beta quantile,
   with the regression test proven to FAIL on the old table. Impact was
   <= 0.017 Elo and **all three stored decision verdicts are unchanged**.
+- **Measurement-instrument defect found, fixed and VERIFIED.** exp-0049's cost
+  gate reported a 6 % slowdown while the champion arm varied 19.2 % against
+  itself, so the instrument was validated instead of the candidate. An **A/A
+  null** (identical arms, true ratio exactly 1.0) showed the frozen gate
+  **false-rejects 80 %** of evaluations on the shared sandbox at 3 reps (58 % at
+  5), with ratios 0.894–1.035. **A PASS there is as uninformative as a FAIL**, so
+  exp-0048's earlier "the mechanism is free per node" claim is **WITHDRAWN** in
+  its report, the ledger and this document. **No verdict changed** — both
+  experiments closed on the timing-independent accuracy gate — and **no recorded
+  measurement was altered or re-run**.
+  The required fix is now implemented and verified: a new isolated-runner lane
+  (`.github/workflows/dev6-cost-gate.yml`, run **42191869178**) achieved **0 false
+  rejects / 6** at the *same* 3 reps, A/A half-range **0.0057** vs the 0.030 band
+  half-width — **12.4x** tighter than the sandbox. The ±3 % band is resolvable on
+  a dedicated runner. Evidence export **42192830961**, **39/39 committed blobs
+  hash-verified**. This validates host + protocol, **not any candidate**; future
+  cost gates must run isolated and re-validate A/A in the same session.
 - Next concrete action: the expressive-PST direction has now consumed two
   independent fresh corpora without clearing a 3 % accuracy bar under
   chess-plausible bounds. It is **not** the route to Gate 1 as configured.
