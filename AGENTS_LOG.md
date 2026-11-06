@@ -1609,3 +1609,37 @@ Report `docs/DEV6_EXP0049_REPORT.md`; artifacts + `GATE_DIAGNOSIS.json` under
 **No screen, zero strength games, exp-0047 DORMANT with empty Activation Record.**
 Gates unchanged: 1 UNMET, 2 direction-only, 3 PASS, 4 UNMET. No PR strength
 claim, no merge/tag/release/deploy.
+
+## 2026-11-06 — A/A calibration invalidates the NPS cost gate; a prior claim of mine is withdrawn
+
+Followed up the exp-0049 anomaly (gate said 6 % slowdown while the champion arm
+varied 19.2 % against itself) by validating the INSTRUMENT rather than the
+candidate. Wrote `scripts/dev6_nps_gate_calibration.py`: an A/A null running the
+frozen protocol with both arms the identical champion binary and no PST, so the
+true ratio is exactly 1.0 and every FAIL is a false reject.
+
+**Result: the gate is invalid on this host.** False-reject rate **80 %** (4/5) at
+the frozen 3 reps and **58 %** (7/12) at 5 reps; A/A ratios **0.894–1.035** against
+a true 1.0; max arm self-spread 21.1 % vs a 3 % band half-width. Tested four
+statistics on the same runs — ratio-of-medians (frozen) 7/12, median-of-paired
+4/12, mean-of-paired 6/12, pooled totals 6/12 — **none** rescues it. Between-rep
+drift exceeds the band, so adding reps is not a fix on a drifting host.
+
+**This invalidates a claim I made earlier, so I corrected the record.** A PASS is
+as uninformative as a FAIL here: exp-0048's recorded 1.00967 does NOT show the PST
+is free per node. The "mechanism is genuinely free per node" wording is now
+**WITHDRAWN** in `docs/DEV6_EXP0048_REPORT.md`, `benchmarks/FAILURE_LEDGER.md` and
+`docs/DEV6_CURRENT_STATUS.md`, each with an explicit correction block. Exp-0049's
+0.93931 likewise does not establish a 6 % cost. **No verdict changed** — both
+experiments closed on the timing-independent accuracy gate — and **no recorded
+measurement was altered or re-run**. Only the interpretation was retracted.
+
+Explicitly did NOT re-roll exp-0049's timing to try for a better number; the
+calibration script carries a scope warning saying so. Required fix recorded for
+any future prereg: measure cost on an ISOLATED runner, validate with an A/A null
+on that host (zero false rejects over >=5 evaluations) BEFORE measuring any
+candidate, and freeze statistic/reps/band only afterwards.
+
+Evidence + raw bench CSVs (gzipped, fixed mtime) under
+`benchmarks/dev6-baseline/nps_gate_calibration/`, checksummed. Zero strength
+games; exp-0047 DORMANT; gates unchanged.

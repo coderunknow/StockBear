@@ -60,9 +60,20 @@ the fitted `--pst` equals the fitted model row-for-row.
 `benchmarks/dev6-baseline/exp0048_results/NPS_GATE.json`: node counts
 bit-identical on all 7 included positions across 3 alternating repetitions,
 champion median 2,497,826 nps, candidate median 2,521,968 nps,
-**ratio 1.0097**, inside `[0.97, 1.03]`. The mechanism is indeed free at the
-node level, exactly as hypothesised. A cheap evaluator that is not more accurate
-is still not a stronger engine.
+**ratio 1.0097**, inside `[0.97, 1.03]`. A cheap evaluator that is not more
+accurate is still not a stronger engine.
+
+> **CORRECTION (2026-11-06, after exp-0049).** The original text here concluded
+> "the mechanism is indeed free at the node level". **That conclusion is
+> withdrawn.** A later A/A calibration of this same instrument
+> (`benchmarks/dev6-baseline/nps_gate_calibration/`) ran BOTH arms as the
+> identical champion binary — true ratio exactly 1.0 — and the frozen statistic
+> still false-rejected **8/10** evaluations at 3 reps and **7/12** at 5 reps,
+> returning ratios from **0.894 to 1.035**. The shared 2-core sandbox cannot
+> resolve a ±3 % band, so this measurement supports **neither** "free per node"
+> **nor** any slowdown. The recorded numbers stand as measured; only the
+> interpretation is retracted. **The exp-0048 verdict is unchanged**: it closed
+> on the accuracy gate, which is timing-independent.
 
 ## 4. Root cause — recorded, NOT used to retune
 

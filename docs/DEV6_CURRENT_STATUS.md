@@ -432,8 +432,10 @@ Mission ACTIVE / NOT COMPLETE. Zero strength games played in this cycle.**
    (run `42169244756`, 8/8 isolated shards, 260,042 positions, **0 engine
    failures, 0 time forfeits**), one frozen fit, no sweep. Held-out log-loss
    reduction **0.0202 %** against a frozen **3 %** requirement. Cost gate passed
-   (node-identical, ratio 1.0097) — the mechanism is free per node; accuracy
-   failed. Report `docs/DEV6_EXP0048_REPORT.md`; ledger entry appended.
+   (node-identical, ratio 1.0097) — **but see the correction below: the "free
+   per node" interpretation is WITHDRAWN** after an A/A calibration showed this
+   instrument false-rejects identical arms 8/10 times. Accuracy failed, and that
+   is what closed the experiment. Report `docs/DEV6_EXP0048_REPORT.md`; ledger entry appended.
    **Root cause:** the mean-normalised objective made the frozen L2 the same
    order as the data gradient at ~1 cp, so the optimum was the initialisation
    (max |delta| **1.22 cp**). As frozen it tested "formulaic PST + sub-1.3 cp

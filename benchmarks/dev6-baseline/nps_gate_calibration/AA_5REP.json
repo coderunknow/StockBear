@@ -1,0 +1,3184 @@
+{
+  "purpose": "A/A instrument calibration of the frozen NPS cost gate",
+  "scope_warning": "Instrument validation ONLY. Does NOT re-run or reopen exp-0049, which is CLOSED NEGATIVE on its accuracy gate independently of timing. Output may only inform how a FUTURE candidate's cost gate is measured, frozen in that candidate's prereg before its corpus exists.",
+  "true_ratio_by_construction": 1.0,
+  "engine_sha256": "0b6b2005dd6252a27d90e988decf8fadd515ec45586df01289c18908d002aca8",
+  "champion_params_sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be",
+  "nodes_per_position": 300000,
+  "hash_mb": 16,
+  "threads": 1,
+  "reps_per_evaluation": 5,
+  "evaluations": 12,
+  "band": [
+    0.97,
+    1.03
+  ],
+  "false_rejects": 7,
+  "false_reject_rate": 0.5833333333333334,
+  "ratio_min": 0.8941031607058617,
+  "ratio_max": 1.034862177961487,
+  "ratio_median": 0.9976706471096275,
+  "max_arm_self_spread": 0.21074132673665247,
+  "median_arm_self_spread": 0.1430315525478647,
+  "evaluations_detail": [
+    {
+      "evaluation": 1,
+      "ratio": 1.0318302908941375,
+      "passed": false,
+      "median_of_per_rep_ratios": 1.0410445444530971,
+      "arm_a_nps": [
+        3638802.106346591,
+        3601471.4583386923,
+        3831361.7024382055,
+        3578323.5383826317,
+        3646206.8163232
+      ],
+      "arm_b_nps": [
+        3723734.3736146824,
+        3754626.2358978027,
+        3919021.812155686,
+        3725194.1979213413,
+        3891122.6815394023
+      ],
+      "arm_a_self_spread": 0.07071416582133438,
+      "arm_b_self_spread": 0.052443976650094815,
+      "included_positions": [
+        "Starting position",
+        "Complex middlegame",
+        "Rook and pawn ending",
+        "Promotion race",
+        "Hanging queen",
+        "Developed middlegame",
+        "Avoid immediate mate"
+      ],
+      "reps": [
+        {
+          "repetition": 1,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3638802.106346591,
+          "nps_b": 3723734.3736146824,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 2,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3601471.4583386923,
+          "nps_b": 3754626.2358978027,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 3,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3831361.7024382055,
+          "nps_b": 3919021.812155686,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 4,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3578323.5383826317,
+          "nps_b": 3725194.1979213413,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 5,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3646206.8163232,
+          "nps_b": 3891122.6815394023,
+          "node_counts_bit_identical": true
+        }
+      ]
+    },
+    {
+      "evaluation": 2,
+      "ratio": 0.9068246332774337,
+      "passed": false,
+      "median_of_per_rep_ratios": 0.9346545136082398,
+      "arm_a_nps": [
+        3991287.5893763327,
+        4077274.0510630035,
+        4062005.5475390055,
+        3882109.575315699,
+        3561936.1327889794
+      ],
+      "arm_b_nps": [
+        3730474.96051914,
+        3826356.3066551266,
+        3619397.9045409653,
+        3556067.328208081,
+        3506633.3814799665
+      ],
+      "arm_a_self_spread": 0.14467915736336256,
+      "arm_b_self_spread": 0.09117660456429633,
+      "included_positions": [
+        "Starting position",
+        "Complex middlegame",
+        "Rook and pawn ending",
+        "Promotion race",
+        "Hanging queen",
+        "Developed middlegame",
+        "Avoid immediate mate"
+      ],
+      "reps": [
+        {
+          "repetition": 1,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3991287.5893763327,
+          "nps_b": 3730474.96051914,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 2,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4077274.0510630035,
+          "nps_b": 3826356.3066551266,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 3,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4062005.5475390055,
+          "nps_b": 3619397.9045409653,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 4,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3882109.575315699,
+          "nps_b": 3556067.328208081,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 5,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3561936.1327889794,
+          "nps_b": 3506633.3814799665,
+          "node_counts_bit_identical": true
+        }
+      ]
+    },
+    {
+      "evaluation": 3,
+      "ratio": 1.007684909033792,
+      "passed": true,
+      "median_of_per_rep_ratios": 1.0098625635302163,
+      "arm_a_nps": [
+        3504895.1702544554,
+        4029294.892580917,
+        4041189.3412668933,
+        4070075.0638129627,
+        4072379.7629874973
+      ],
+      "arm_b_nps": [
+        4028189.6548416927,
+        4069034.0694409725,
+        4081077.404434771,
+        4072245.513742859,
+        4073485.6816978287
+      ],
+      "arm_a_self_spread": 0.16191200169100695,
+      "arm_b_self_spread": 0.01312940902112425,
+      "included_positions": [
+        "Starting position",
+        "Complex middlegame",
+        "Rook and pawn ending",
+        "Promotion race",
+        "Hanging queen",
+        "Developed middlegame",
+        "Avoid immediate mate"
+      ],
+      "reps": [
+        {
+          "repetition": 1,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3504895.1702544554,
+          "nps_b": 4028189.6548416927,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 2,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4029294.892580917,
+          "nps_b": 4069034.0694409725,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 3,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4041189.3412668933,
+          "nps_b": 4081077.404434771,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 4,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4070075.0638129627,
+          "nps_b": 4072245.513742859,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 5,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4072379.7629874973,
+          "nps_b": 4073485.6816978287,
+          "node_counts_bit_identical": true
+        }
+      ]
+    },
+    {
+      "evaluation": 4,
+      "ratio": 0.8941031607058617,
+      "passed": false,
+      "median_of_per_rep_ratios": 0.9021787915002666,
+      "arm_a_nps": [
+        3983678.3009042945,
+        3383805.750213905,
+        3555447.1990694883,
+        3755942.4374993294,
+        4096913.4634330967
+      ],
+      "arm_b_nps": [
+        3712457.7707928573,
+        3358200.004797429,
+        3088912.1292753853,
+        3224186.9291461892,
+        3696148.437321243
+      ],
+      "arm_a_self_spread": 0.21074132673665247,
+      "arm_b_self_spread": 0.20186577520537852,
+      "included_positions": [
+        "Starting position",
+        "Complex middlegame",
+        "Rook and pawn ending",
+        "Promotion race",
+        "Hanging queen",
+        "Developed middlegame",
+        "Avoid immediate mate"
+      ],
+      "reps": [
+        {
+          "repetition": 1,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3983678.3009042945,
+          "nps_b": 3712457.7707928573,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 2,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3383805.750213905,
+          "nps_b": 3358200.004797429,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 3,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3555447.1990694883,
+          "nps_b": 3088912.1292753853,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 4,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3755942.4374993294,
+          "nps_b": 3224186.9291461892,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 5,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4096913.4634330967,
+          "nps_b": 3696148.437321243,
+          "node_counts_bit_identical": true
+        }
+      ]
+    },
+    {
+      "evaluation": 5,
+      "ratio": 1.0324974132766978,
+      "passed": false,
+      "median_of_per_rep_ratios": 0.9996391877238011,
+      "arm_a_nps": [
+        3673698.592273687,
+        4097185.233744418,
+        4093543.312612207,
+        3955748.3616608866,
+        3708845.0656465576
+      ],
+      "arm_b_nps": [
+        4095052.007160491,
+        4095706.919014222,
+        4084299.9509884007,
+        3990150.0296411146,
+        3670468.8062586733
+      ],
+      "arm_a_self_spread": 0.11527528207169291,
+      "arm_b_self_spread": 0.11585389638251575,
+      "included_positions": [
+        "Starting position",
+        "Complex middlegame",
+        "Rook and pawn ending",
+        "Promotion race",
+        "Hanging queen",
+        "Developed middlegame",
+        "Avoid immediate mate"
+      ],
+      "reps": [
+        {
+          "repetition": 1,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3673698.592273687,
+          "nps_b": 4095052.007160491,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 2,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4097185.233744418,
+          "nps_b": 4095706.919014222,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 3,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4093543.312612207,
+          "nps_b": 4084299.9509884007,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 4,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3955748.3616608866,
+          "nps_b": 3990150.0296411146,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 5,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3708845.0656465576,
+          "nps_b": 3670468.8062586733,
+          "node_counts_bit_identical": true
+        }
+      ]
+    },
+    {
+      "evaluation": 6,
+      "ratio": 0.9435031290654837,
+      "passed": false,
+      "median_of_per_rep_ratios": 0.971886702318949,
+      "arm_a_nps": [
+        3917610.7797724428,
+        3865950.913468973,
+        3985197.8366068886,
+        3620758.3247268484,
+        3519002.6141162277
+      ],
+      "arm_b_nps": [
+        3647536.783671541,
+        3757266.2846182887,
+        3446668.548657112,
+        3672265.997964516,
+        3616368.7180661727
+      ],
+      "arm_a_self_spread": 0.132479362368346,
+      "arm_b_self_spread": 0.09011534807493793,
+      "included_positions": [
+        "Starting position",
+        "Complex middlegame",
+        "Rook and pawn ending",
+        "Promotion race",
+        "Hanging queen",
+        "Developed middlegame",
+        "Avoid immediate mate"
+      ],
+      "reps": [
+        {
+          "repetition": 1,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3917610.7797724428,
+          "nps_b": 3647536.783671541,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 2,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3865950.913468973,
+          "nps_b": 3757266.2846182887,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 3,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3985197.8366068886,
+          "nps_b": 3446668.548657112,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 4,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3620758.3247268484,
+          "nps_b": 3672265.997964516,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 5,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3519002.6141162277,
+          "nps_b": 3616368.7180661727,
+          "node_counts_bit_identical": true
+        }
+      ]
+    },
+    {
+      "evaluation": 7,
+      "ratio": 0.9643572753973163,
+      "passed": false,
+      "median_of_per_rep_ratios": 0.9815204246480497,
+      "arm_a_nps": [
+        3883969.194575759,
+        4081426.4002207853,
+        3950219.707458015,
+        4033350.0429263683,
+        4032637.479332733
+      ],
+      "arm_b_nps": [
+        3969649.196429584,
+        4085595.1642117426,
+        3877221.3247172856,
+        3888903.2922344157,
+        3882985.3130703135
+      ],
+      "arm_a_self_spread": 0.05083902465570245,
+      "arm_b_self_spread": 0.053743086102945314,
+      "included_positions": [
+        "Starting position",
+        "Complex middlegame",
+        "Rook and pawn ending",
+        "Promotion race",
+        "Hanging queen",
+        "Developed middlegame",
+        "Avoid immediate mate"
+      ],
+      "reps": [
+        {
+          "repetition": 1,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3883969.194575759,
+          "nps_b": 3969649.196429584,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 2,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4081426.4002207853,
+          "nps_b": 4085595.1642117426,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 3,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3950219.707458015,
+          "nps_b": 3877221.3247172856,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 4,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4033350.0429263683,
+          "nps_b": 3888903.2922344157,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 5,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4032637.479332733,
+          "nps_b": 3882985.3130703135,
+          "node_counts_bit_identical": true
+        }
+      ]
+    },
+    {
+      "evaluation": 8,
+      "ratio": 1.0003167321974662,
+      "passed": true,
+      "median_of_per_rep_ratios": 1.0076754217349182,
+      "arm_a_nps": [
+        3843324.1459584697,
+        3509698.466763155,
+        3711899.9978789142,
+        3821419.602790728,
+        4005913.4913443653
+      ],
+      "arm_b_nps": [
+        3705239.3849302623,
+        3633067.1390807303,
+        3831158.9985715253,
+        3822629.9694189606,
+        4036660.566824032
+      ],
+      "arm_a_self_spread": 0.14138394773236684,
+      "arm_b_self_spread": 0.1110888987989973,
+      "included_positions": [
+        "Starting position",
+        "Complex middlegame",
+        "Rook and pawn ending",
+        "Promotion race",
+        "Hanging queen",
+        "Developed middlegame",
+        "Avoid immediate mate"
+      ],
+      "reps": [
+        {
+          "repetition": 1,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3843324.1459584697,
+          "nps_b": 3705239.3849302623,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 2,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3509698.466763155,
+          "nps_b": 3633067.1390807303,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 3,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3711899.9978789142,
+          "nps_b": 3831158.9985715253,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 4,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3821419.602790728,
+          "nps_b": 3822629.9694189606,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 5,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4005913.4913443653,
+          "nps_b": 4036660.566824032,
+          "node_counts_bit_identical": true
+        }
+      ]
+    },
+    {
+      "evaluation": 9,
+      "ratio": 1.034862177961487,
+      "passed": false,
+      "median_of_per_rep_ratios": 0.9870602011768799,
+      "arm_a_nps": [
+        3993017.9229461625,
+        3341543.9842661014,
+        3411882.4492766806,
+        3882274.6432004734,
+        3474669.658191782
+      ],
+      "arm_b_nps": [
+        3595804.2101730434,
+        3579250.573106193,
+        3646669.0283189896,
+        3815483.2309512,
+        3429708.131837981
+      ],
+      "arm_a_self_spread": 0.19496195224350554,
+      "arm_b_self_spread": 0.11248044564844117,
+      "included_positions": [
+        "Starting position",
+        "Complex middlegame",
+        "Rook and pawn ending",
+        "Promotion race",
+        "Hanging queen",
+        "Developed middlegame",
+        "Avoid immediate mate"
+      ],
+      "reps": [
+        {
+          "repetition": 1,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3993017.9229461625,
+          "nps_b": 3595804.2101730434,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 2,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3341543.9842661014,
+          "nps_b": 3579250.573106193,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 3,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3411882.4492766806,
+          "nps_b": 3646669.0283189896,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 4,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3882274.6432004734,
+          "nps_b": 3815483.2309512,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 5,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3474669.658191782,
+          "nps_b": 3429708.131837981,
+          "node_counts_bit_identical": true
+        }
+      ]
+    },
+    {
+      "evaluation": 10,
+      "ratio": 0.9786315967206348,
+      "passed": true,
+      "median_of_per_rep_ratios": 0.9672438699510346,
+      "arm_a_nps": [
+        4025764.895330113,
+        3811356.026026117,
+        3799062.1743660993,
+        4069838.4274144317,
+        4073161.7433132264
+      ],
+      "arm_b_nps": [
+        3581319.8357367967,
+        3513239.0558420983,
+        3998164.6520359227,
+        4080363.735281545,
+        3939740.7275387878
+      ],
+      "arm_a_self_spread": 0.07214927167988838,
+      "arm_b_self_spread": 0.16142501845878843,
+      "included_positions": [
+        "Starting position",
+        "Complex middlegame",
+        "Rook and pawn ending",
+        "Promotion race",
+        "Hanging queen",
+        "Developed middlegame",
+        "Avoid immediate mate"
+      ],
+      "reps": [
+        {
+          "repetition": 1,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4025764.895330113,
+          "nps_b": 3581319.8357367967,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 2,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3811356.026026117,
+          "nps_b": 3513239.0558420983,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 3,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3799062.1743660993,
+          "nps_b": 3998164.6520359227,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 4,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4069838.4274144317,
+          "nps_b": 4080363.735281545,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 5,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4073161.7433132264,
+          "nps_b": 3939740.7275387878,
+          "node_counts_bit_identical": true
+        }
+      ]
+    },
+    {
+      "evaluation": 11,
+      "ratio": 0.9997048194057935,
+      "passed": true,
+      "median_of_per_rep_ratios": 0.9999961255627622,
+      "arm_a_nps": [
+        4020354.4803979006,
+        4086390.1802098067,
+        4068174.8617789154,
+        4082632.481424022,
+        4079357.0933220927
+      ],
+      "arm_b_nps": [
+        4085086.516296577,
+        4078152.9462713054,
+        4068159.099890741,
+        4066922.1726660226,
+        4080910.8593037967
+      ],
+      "arm_a_self_spread": 0.016425342624357464,
+      "arm_b_self_spread": 0.004466361257817519,
+      "included_positions": [
+        "Starting position",
+        "Complex middlegame",
+        "Rook and pawn ending",
+        "Promotion race",
+        "Hanging queen",
+        "Developed middlegame",
+        "Avoid immediate mate"
+      ],
+      "reps": [
+        {
+          "repetition": 1,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4020354.4803979006,
+          "nps_b": 4085086.516296577,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 2,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4086390.1802098067,
+          "nps_b": 4078152.9462713054,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 3,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4068174.8617789154,
+          "nps_b": 4068159.099890741,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 4,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4082632.481424022,
+          "nps_b": 4066922.1726660226,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 5,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4079357.0933220927,
+          "nps_b": 4080910.8593037967,
+          "node_counts_bit_identical": true
+        }
+      ]
+    },
+    {
+      "evaluation": 12,
+      "ratio": 0.9956364748134616,
+      "passed": true,
+      "median_of_per_rep_ratios": 0.9956364748134616,
+      "arm_a_nps": [
+        4081402.603157451,
+        4137857.653755894,
+        4147165.1164168497,
+        3969461.608690474,
+        3624826.957665473
+      ],
+      "arm_b_nps": [
+        4063593.30010217,
+        4140141.829430099,
+        4038181.9720173213,
+        4116339.5156832533,
+        3446945.759846365
+      ],
+      "arm_a_self_spread": 0.14410016391176428,
+      "arm_b_self_spread": 0.20110443212040297,
+      "included_positions": [
+        "Starting position",
+        "Complex middlegame",
+        "Rook and pawn ending",
+        "Promotion race",
+        "Hanging queen",
+        "Developed middlegame",
+        "Avoid immediate mate"
+      ],
+      "reps": [
+        {
+          "repetition": 1,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4081402.603157451,
+          "nps_b": 4063593.30010217,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 2,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4137857.653755894,
+          "nps_b": 4140141.829430099,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 3,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 4147165.1164168497,
+          "nps_b": 4038181.9720173213,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 4,
+          "order": [
+            "b",
+            "a"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3969461.608690474,
+          "nps_b": 4116339.5156832533,
+          "node_counts_bit_identical": true
+        },
+        {
+          "repetition": 5,
+          "order": [
+            "a",
+            "b"
+          ],
+          "included": [
+            "Starting position",
+            "Complex middlegame",
+            "Rook and pawn ending",
+            "Promotion race",
+            "Hanging queen",
+            "Developed middlegame",
+            "Avoid immediate mate"
+          ],
+          "excluded": [
+            {
+              "position": "Mate in one",
+              "nodes_a": 6325,
+              "nodes_b": 6325
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes_a": 0,
+              "nodes_b": 0
+            },
+            {
+              "position": "Mate in two",
+              "nodes_a": 15265,
+              "nodes_b": 15265
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes_a": 82776,
+              "nodes_b": 82776
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes_a": 23100,
+              "nodes_b": 23100
+            }
+          ],
+          "nps_a": 3624826.957665473,
+          "nps_b": 3446945.759846365,
+          "node_counts_bit_identical": true
+        }
+      ]
+    }
+  ],
+  "observed_aa_half_range": 0.07037950862781267,
+  "band_half_width": 0.030000000000000027,
+  "band_resolvable_on_this_host": false
+}

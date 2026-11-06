@@ -1,0 +1,66 @@
+{
+  "finding": "The frozen NPS cost gate is INVALID on the shared 2-core sandbox.",
+  "method": "A/A null: both arms the identical champion binary and options, no PST in either arm, so the true ratio is exactly 1.0. Every FAIL is a false reject.",
+  "true_ratio_by_construction": 1.0,
+  "false_reject_rate_3rep": 0.8,
+  "false_reject_rate_5rep": 0.5833333333333334,
+  "aa_ratio_range_5rep": [
+    0.8941031607058617,
+    1.034862177961487
+  ],
+  "max_arm_self_spread_5rep": 0.21074132673665247,
+  "band": [
+    0.97,
+    1.03
+  ],
+  "statistic_comparison_5rep": {
+    "ratio_of_medians_FROZEN": {
+      "false_rejects": 7,
+      "n": 12,
+      "min": 0.8941031607058617,
+      "max": 1.034862177961487,
+      "sd": 0.04719490156088909
+    },
+    "median_of_paired_ratios": {
+      "false_rejects": 4,
+      "n": 12,
+      "min": 0.9021787915002666,
+      "max": 1.0410445444530971,
+      "sd": 0.0365368604805389
+    },
+    "mean_of_paired_ratios": {
+      "false_rejects": 6,
+      "n": 12,
+      "min": 0.9623328629939096,
+      "max": 1.1010143712122704,
+      "sd": 0.041678791562261605
+    },
+    "pooled_arm_totals": {
+      "false_rejects": 6,
+      "n": 12,
+      "min": 0.9096771887038653,
+      "max": 1.03921770791381,
+      "sd": 0.039069853894229845
+    }
+  },
+  "median_paired_ratio_sd": 0.04330204290165239,
+  "reps_needed_for_3pct_at_95pct_conf": 9,
+  "conclusions": [
+    "No statistic rescues the gate on this host: the best (median of paired ratios) still false-rejects 4/12.",
+    "Between-rep host drift (median arm CV 5.3%) exceeds the 3% band half-width, so more reps alone is not a fix on a drifting host.",
+    "A PASS is as uninformative as a FAIL here: exp-0048's recorded 1.00967 'PASS' does NOT establish that the PST is free per node.",
+    "exp-0049's recorded 0.93931 'FAIL' does NOT establish a 6% per-node cost.",
+    "Neither experiment's VERDICT changes: both closed on the ACCURACY gate, which is timing-independent."
+  ],
+  "required_fix_for_any_future_prereg": [
+    "Measure the cost gate on an ISOLATED GitHub-hosted runner (as Tier-1 strength matches already do), never on the shared sandbox.",
+    "Run an A/A null on that host FIRST and require its false-reject rate to be 0 over >=5 gate evaluations before any candidate arm is measured.",
+    "Freeze the statistic, rep count and band in the prereg only after that A/A validation passes.",
+    "Keep node counts bit-identical as a structural check; it is the one part of the protocol that was never in doubt."
+  ],
+  "scope_limits": [
+    "Does NOT reopen, re-run or re-score exp-0048 or exp-0049; both remain CLOSED NEGATIVE.",
+    "Does NOT license any claim that a candidate is free per node.",
+    "Instrument validation only; zero strength games."
+  ]
+}

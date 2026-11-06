@@ -1921,9 +1921,15 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
   0.2352081765. Relative reduction **0.0202 %** vs 3 % required — missed by
   ~149x. Brier improved (0.10342796 -> 0.10337440) but the conjunction fails.
   **Accuracy threshold NOT met.**
-- **Cost gate:** PASSED and recorded for completeness — node counts
-  bit-identical, 3 alternating reps, ratio **1.0097** in `[0.97,1.03]`. The
-  mechanism is genuinely free per node; it was the accuracy that failed.
+- **Cost gate:** PASSED as measured and recorded for completeness — node counts
+  bit-identical, 3 alternating reps, ratio **1.0097** in `[0.97,1.03]`.
+  **CORRECTION (2026-11-06):** the accompanying claim "the mechanism is genuinely
+  free per node" is **WITHDRAWN**. A subsequent A/A calibration of this
+  instrument (identical arms, true ratio 1.0) false-rejected 8/10 at 3 reps and
+  7/12 at 5 reps with ratios 0.894–1.035, so the sandbox cannot resolve a ±3 %
+  band and this PASS carries no information about mechanism cost. See the
+  `NPS cost gate INVALID on the shared sandbox` entry below. It was the accuracy
+  that failed, and that verdict is unchanged.
 - **Validity:** three exact engine/model identity checks passed on all 260,042
   rows (champion counts reproduce `evaluate()`; Python formulaic PST equals the
   engine PST term; engine with `--pst` equals the fitted model). The metric
@@ -2009,3 +2015,42 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
   to be better play. **The exp-0049 corpus and holdout are BURNED.** Gates 1/4
   UNMET, 2 direction-only, 3 PASS. Mission ACTIVE / NOT COMPLETE. No PR strength
   claim, no merge, tag, release, prerelease or deploy.
+
+## INSTRUMENT DEFECT — NPS cost gate INVALID on the shared sandbox (A/A calibrated)
+
+- **Not an experiment.** This is a measurement-instrument finding that affects
+  how every future candidate's cost gate must be run. No strength games, no
+  candidate measured, no experiment reopened.
+- **Trigger:** exp-0049's cost gate printed ratio 0.93931 (a ~6 % slowdown) while
+  the champion arm varied **19.2 %** across reps against itself. An instrument
+  whose subject noise exceeds its decision band cannot support its own verdict.
+- **Method (A/A null):** `scripts/dev6_nps_gate_calibration.py` runs the frozen
+  protocol with **both arms the identical champion binary and options, no PST in
+  either arm**, so the true ratio is **exactly 1.0** and every FAIL is a false
+  reject. Evidence:
+  `benchmarks/dev6-baseline/nps_gate_calibration/` (raw bench CSVs preserved).
+- **Result:** false-reject rate **80 %** (4/5 evaluations) at the frozen 3 reps;
+  **58 %** (7/12) even at 5 reps. A/A ratios spanned **0.894 – 1.035** against a
+  true 1.0. Max arm self-spread **21.1 %**; band half-width is **3 %**.
+- **No statistic rescues it on this host:** ratio-of-medians (frozen) 7/12 false
+  rejects, median-of-paired-ratios 4/12, mean-of-paired-ratios 6/12, pooled arm
+  totals 6/12. Between-rep host drift (median arm CV 5.3 %) exceeds the band, so
+  simply adding reps is not a fix on a drifting host (naive paired-SD sizing
+  suggests 9 reps, but that assumes stationarity this host does not have).
+- **Consequences for the record — a PASS is as uninformative as a FAIL here:**
+  exp-0048's recorded **1.00967 "PASS" does NOT establish that the PST is free
+  per node**, and that claim has been **WITHDRAWN** in
+  `docs/DEV6_EXP0048_REPORT.md`, this ledger and `docs/DEV6_CURRENT_STATUS.md`.
+  exp-0049's **0.93931 "FAIL" does NOT establish a 6 % cost**. **Neither verdict
+  changes** — both closed on the timing-independent ACCURACY gate. The recorded
+  numbers stand as measured; only their interpretation is retracted.
+- **Required fix, to be frozen in any future prereg BEFORE its corpus exists:**
+  (1) measure the cost gate on an **isolated GitHub-hosted runner**, as Tier-1
+  strength matches already do, never on the shared sandbox; (2) run an **A/A
+  null on that host first** and require **zero** false rejects over >= 5 gate
+  evaluations before any candidate arm is measured; (3) freeze statistic, rep
+  count and band only after that A/A validation passes; (4) keep the
+  bit-identical node-count check, the one part of the protocol never in doubt.
+- **Continue / abandon:** ABANDON sandbox-hosted NPS gating. The calibration
+  script is retained as a reusable instrument check. Gates 1/4 UNMET,
+  2 direction-only, 3 PASS. Mission ACTIVE / NOT COMPLETE.
