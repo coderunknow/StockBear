@@ -119,3 +119,51 @@ This also reframes the two negative results honestly: they were not merely
 Gates unchanged: **1 UNMET, 2 direction-supported, 3 PASS, 4 UNMET**. Mission
 **ACTIVE / NOT COMPLETE**. exp-0047 **DORMANT**, Activation Record empty. No PR
 strength claim, no merge/tag/release/deploy.
+
+---
+
+## 9. Implemented replacement, with the negative control in CI
+
+`scripts/eval_accuracy.py` provides the corrected comparison:
+
+- **`calibrated_logloss`** — fits the loss-minimising positive scale for **each**
+  arm before comparing, so global confidence is quotiented out. Scores are
+  normalised by their own RMS before the bracketed search, making invariance
+  hold *by construction* rather than by luck.
+- **`pairwise_auc`** — ranking-only, exactly invariant to any strictly increasing
+  transform; ties counted as one half; O(n log n) so it scales to full corpora.
+- `fit_scale` / `apply_scale` are exposed so a decisive measurement can fit the
+  scale on the **training** split and apply it to the holdout.
+
+**Validated on the real corpus rows** (exp-0049, 6,000 positions):
+
+| arm | old fixed-K gate | new calibrated gain | AUC gain |
+|---|---|---|---|
+| u80 pure rescale | **+3.043 % (PASS)** | **+0.010 %** | −0.00002 |
+| u95 pure rescale | +0.764 % | +0.015 % | +0.00009 |
+| outcome_v3 (real refit) | −1.569 % | −0.154 % | −0.00075 |
+| material_only ablation | **+0.218 %** | **−1.977 %** | **−0.01357** |
+
+The rescales collapse to ≈ 0, as they must. Note the last row: deleting every
+piece-square term looked like a small **gain** under the old metric and is
+correctly a clear **loss** under the new one — the old gate was not merely
+permissive, it had the **wrong sign** for a real ablation.
+
+**Property tests: `tests/integration/test_eval_accuracy.py`, 10/10, wired into
+CI.** They assert the rescale control (factors 0.5–10 score zero), that the *old*
+fixed-link metric is demonstrably fooled by the same rescale, that genuine
+improvement is still detected, AUC invariance and agreement with the O(n²) pair
+count, and the train/holdout path.
+
+Two real limitations found **by** those tests and documented rather than hidden:
+
+1. A fixed search bracket silently clamped calibration at extreme factors (10×),
+   producing a spurious −0.6 % "regression". Fixed by RMS-normalising first.
+2. **Calibrated log-loss is floored at `log10(2)`** — a catastrophically bad arm
+   can shrink its scale to the constant predictor, so the metric *compresses*
+   regressions (a sign flip scores only ≈ −4 %). It is a good improvement detector
+   but a poor severity measure; AUC shows the same flip as −0.49. **Never read the
+   calibrated loss alone to conclude a candidate is "not much worse".**
+
+This module is a **development diagnostic, not an activation gate**. It still has
+no licensed Elo conversion (§6), so it cannot satisfy exp-0047 §3.3 on its own.
