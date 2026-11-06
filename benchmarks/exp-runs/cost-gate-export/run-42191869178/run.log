@@ -1,0 +1,63 @@
+source_sha VERIFIED cc79c36e33c7ab24709c8023ab216e5fef6b1c39
+dev5 baseline sha256 VERIFIED 391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918
+-- The CXX compiler identification is GNU 15.2.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Performing Test STOCKBEAR_HAS_SIMD_FLAG
+-- Performing Test STOCKBEAR_HAS_SIMD_FLAG - Success
+-- StockBear: AVX2 neural kernel enabled (-mavx2), run-time detected
+-- StockBear version: 0.1.0-dev6
+-- Configuring done (2.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/runner/work/StockBear/StockBear/build-costgate
+[1/23] Building CXX object CMakeFiles/stockbear_core.dir/src/chess/bitboard.cpp.o
+[2/23] Building CXX object CMakeFiles/stockbear_core.dir/src/chess/dead_position.cpp.o
+[3/23] Building CXX object CMakeFiles/stockbear_core.dir/src/chess/move.cpp.o
+[4/23] Building CXX object CMakeFiles/stockbear_core.dir/src/chess/fen.cpp.o
+[5/23] Building CXX object CMakeFiles/stockbear_core.dir/src/chess/zobrist.cpp.o
+[6/23] Building CXX object CMakeFiles/stockbear_core.dir/src/chess/position.cpp.o
+[7/23] Building CXX object CMakeFiles/stockbear_core.dir/src/evaluation/eval_params.cpp.o
+[8/23] Building CXX object CMakeFiles/stockbear_core.dir/src/evaluation/evaluation.cpp.o
+[9/23] Building CXX object CMakeFiles/stockbear_core.dir/src/evaluation/nnue_forward.cpp.o
+[10/23] Building CXX object CMakeFiles/stockbear_core.dir/src/evaluation/nnue_net_data.cpp.o
+[11/23] Building CXX object CMakeFiles/stockbear_core.dir/src/evaluation/nnue.cpp.o
+[12/23] Building CXX object CMakeFiles/stockbear_core.dir/src/search/timeman.cpp.o
+[13/23] Building CXX object CMakeFiles/stockbear_core.dir/src/search/search.cpp.o
+[14/23] Building CXX object CMakeFiles/stockbear_core.dir/src/search/transposition_table.cpp.o
+[15/23] Building CXX object CMakeFiles/stockbear_core.dir/src/utilities/bench.cpp.o
+[16/23] Building CXX object CMakeFiles/stockbear_core.dir/src/uci/uci.cpp.o
+[17/23] Building CXX object CMakeFiles/stockbear_core.dir/src/utilities/evaldata.cpp.o
+[18/23] Building CXX object CMakeFiles/stockbear_core.dir/src/utilities/nnuecli.cpp.o
+[19/23] Building CXX object CMakeFiles/stockbear_core.dir/src/utilities/selfplay.cpp.o
+[20/23] Building CXX object CMakeFiles/stockbear.dir/src/main.cpp.o
+[21/23] Building CXX object CMakeFiles/stockbear_core.dir/src/evaluation/nnue_forward_avx2.cpp.o
+[22/23] Linking CXX static library libstockbear_core.a
+[23/23] Linking CXX executable stockbear
+engine built sha256 9d1483f27e7378a33c30008afc7f0c524a89225c191e2adb2fff335e6b944653 flags -mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4
+host {"executed_on_github_actions": true, "isolated_runner": true, "runner_name": "GitHub Actions 1000010295", "os": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43", "machine": "x86_64", "cpu_model": "AMD EPYC 7763 64-Core Processor", "nproc": 4, "python": "3.12.16", "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0", "cmake": "cmake version 3.31.6", "runner_image": "ubuntu26", "runner_os": "20261101.186.1", "github_run_id": "42191869178", "github_run_attempt": "1"}
+evaluation 1: ratio 0.99116 PASS  (arm A self-spread 4.0%)
+evaluation 2: ratio 1.00254 PASS  (arm A self-spread 0.9%)
+evaluation 3: ratio 0.99765 PASS  (arm A self-spread 0.9%)
+evaluation 4: ratio 0.99629 PASS  (arm A self-spread 0.9%)
+evaluation 5: ratio 0.99431 PASS  (arm A self-spread 0.3%)
+evaluation 6: ratio 0.99796 PASS  (arm A self-spread 0.9%)
+{
+  "false_rejects": 0,
+  "false_reject_rate": 0.0,
+  "ratio_min": 0.9911603528000168,
+  "ratio_max": 1.0025384828404156,
+  "max_arm_self_spread": 0.05866857967550265,
+  "observed_aa_half_range": 0.005689065020199391,
+  "band_half_width": 0.030000000000000027,
+  "band_resolvable_on_this_host": true
+}
+A/A false_rejects 0 / 6
+A/A ratio range 0.9911603528000168 1.0025384828404156
+A/A max arm self-spread 0.05866857967550265
+band resolvable on this host: True
