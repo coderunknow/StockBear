@@ -1,0 +1,58 @@
+{
+  "fingerprint_sha256": "b9313b8cb307b695c1e38f4a216ffd86664f85e181626b812e9884f82634b0ac",
+  "source_sha": "2927c50fff072817f27d7e05cb3e3a44c659256f",
+  "prereg_sha256": "c3a022d5686d4d5485f890ea23884dcc10e36e209e5a9902626c2a505f74d578",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0052.md",
+    "prereg_sha256": "c3a022d5686d4d5485f890ea23884dcc10e36e209e5a9902626c2a505f74d578",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "id": "tier1-exp0052-batchA",
+    "games": 1000,
+    "seed": 2026110661,
+    "openings": "benchmarks/positions/openings_exp0052_batchA.txt",
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "null": false,
+    "ctest": false,
+    "a_options": [
+      "EvalParams=research-data/params_exp0052_ks.txt",
+      "TTEval=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "engine_a": "candidate",
+    "engine_b": "baseline",
+    "note": "frozen batchA; A=candidate+KingSafetyQuadratic 1, B=EXACT released dev5 artifact at params_abc",
+    "assets": [
+      "research-data/params_exp0052_ks.txt"
+    ]
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "62db6e3ecdb715daa141d3b98b90588aa09096336162bf4c99ad051f7e28831a",
+  "packaged_binary_sha256": "62db6e3ecdb715daa141d3b98b90588aa09096336162bf4c99ad051f7e28831a",
+  "package_sha256": "64cb1aba1bff43ec3162aa2f336a2f0b598f7080c3bc021c1460c6ffa4232d62",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "7b63704ee4d26d239bf49710558e21b63b0e7fe1a13349a98eee5070648f598c",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_exp0052_ks.txt",
+    "TTEval=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0052-batchA/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/benchmarks/binaries/stockbear-dev5-release",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}

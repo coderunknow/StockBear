@@ -1,0 +1,58 @@
+{
+  "fingerprint_sha256": "4d4fdbe6019bfa0f97f0f6f106c3ee94eeddedaf1482906adc19beef11965456",
+  "source_sha": "2927c50fff072817f27d7e05cb3e3a44c659256f",
+  "prereg_sha256": "c3a022d5686d4d5485f890ea23884dcc10e36e209e5a9902626c2a505f74d578",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0052.md",
+    "prereg_sha256": "c3a022d5686d4d5485f890ea23884dcc10e36e209e5a9902626c2a505f74d578",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "id": "tier1-exp0052-equiv",
+    "games": 400,
+    "seed": 2026110664,
+    "openings": "benchmarks/positions/openings_exp0052_equiv.txt",
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "null": false,
+    "ctest": false,
+    "a_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "engine_a": "candidate",
+    "engine_b": "baseline",
+    "note": "BASELINE-EQUIVALENCE diagnostic (prereg 5.1): candidate knob-OFF vs exact dev5. Attribution only; never pooled; cannot invalidate or rescue the screen",
+    "assets": [
+      "research-data/params_exp0052_ks.txt"
+    ]
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "62db6e3ecdb715daa141d3b98b90588aa09096336162bf4c99ad051f7e28831a",
+  "packaged_binary_sha256": "62db6e3ecdb715daa141d3b98b90588aa09096336162bf4c99ad051f7e28831a",
+  "package_sha256": "1c15f871db75be3da47bb3bce301b236c591df4bb901a30ba7eb490f8bffc1d0",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "c2dd7e0cf499fc054c355ad7bffa0c352943052ca35c0740e19cd6caed89a8cf",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0052-equiv/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/benchmarks/binaries/stockbear-dev5-release",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}
