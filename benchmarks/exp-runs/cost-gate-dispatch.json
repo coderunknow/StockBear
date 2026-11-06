@@ -1,0 +1,9 @@
+{
+  "mode": "calibrate",
+  "source_sha": "HEAD",
+  "note": "Deliberate dispatch of an A/A INSTRUMENT CALIBRATION for the NPS cost gate on one isolated GitHub-hosted runner. Both arms are the identical champion binary with no PST, so the true ratio is exactly 1.0 and every FAIL is a false reject. Motivated by the sandbox A/A result (80% false rejects at 3 reps, 58% at 5 reps, ratios 0.894-1.035), which invalidated the gate in BOTH directions on that host. NO candidate is measured; this lane has no --pst input and cannot re-run, re-score or reopen exp-0048/exp-0049. Output may only inform how a FUTURE candidate's cost gate is frozen in its own prereg.",
+  "nodes": 300000,
+  "reps": 3,
+  "evaluations": 6,
+  "attempt": 1
+}

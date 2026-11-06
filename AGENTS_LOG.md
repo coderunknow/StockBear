@@ -1643,3 +1643,32 @@ candidate, and freeze statistic/reps/band only afterwards.
 Evidence + raw bench CSVs (gzipped, fixed mtime) under
 `benchmarks/dev6-baseline/nps_gate_calibration/`, checksummed. Zero strength
 games; exp-0047 DORMANT; gates unchanged.
+
+## 2026-11-06 — isolated-runner A/A cost-gate calibration lane (implements the recorded fix)
+
+Implemented the fix the instrument-defect ledger entry required. New
+`.github/workflows/dev6-cost-gate.yml` + `scripts/dev6_cost_gate_calibrate_job.py`
+run the A/A null on ONE dedicated `ubuntu-latest` VM: build the engine from the
+pinned source with the frozen flags, verify HEAD == `source_sha` and the dev5
+baseline hash, record the host (CPU, nproc, image, compiler), then run
+`dev6_nps_gate_calibration.py` with identical arms and no PST.
+
+**Scope is enforced in code, not just prose:** the lane has NO `--pst` input and
+no code path that loads one, so it cannot re-score, reopen or re-roll exp-0048 or
+exp-0049. The prepare job rejects any mode other than `calibrate`, requires
+>=3 reps and >=5 evaluations (the ledger's minimum), and requires both scripts to
+exist in the PINNED commit. Evidence is uploaded as an artifact; nothing is
+pushed to any branch.
+
+Smoke-tested locally end-to-end (build, A/A, checksums) before dispatch. That
+caught a labelling flaw worth fixing: run locally it still printed "ISOLATED
+HOST", which could let a sandbox smoke run be cited as host-capability evidence.
+Now the job detects `GITHUB_ACTIONS`/`RUNNER_NAME` and labels a non-runner run
+`LOCAL/NON-ISOLATED RUN - NOT VALID HOST EVIDENCE`, recording
+`isolated_runner` in the manifest. **Both label branches were exercised** (the
+isolated branch via a simulated environment writing only to a throwaway path,
+then deleted). All smoke artifacts removed; all 10 workflows parse.
+
+A host that cannot resolve the band is reported as a legitimate informative
+result, not a job failure. Zero strength games; no candidate measured; exp-0047
+DORMANT; gates unchanged.

@@ -1,0 +1,166 @@
+name: Dev6 cost-gate instrument calibration
+
+# A/A INSTRUMENT CALIBRATION ONLY. Both arms are the identical champion binary
+# with no PST loaded, so the true NPS ratio is exactly 1.0 and every FAIL is a
+# false reject. There is NO candidate input and NO --pst code path in this lane.
+#
+# Why: the frozen +/-3% NPS cost gate was calibrated on the shared 2-core sandbox
+# and false-rejected identical arms 80% of the time at 3 reps (58% at 5 reps),
+# with A/A ratios 0.894-1.035. That invalidated the gate in BOTH directions on
+# that host: exp-0048's 1.00967 "PASS" no longer establishes "free per node"
+# (claim withdrawn) and exp-0049's 0.93931 "FAIL" does not establish a 6% cost.
+# Neither experiment's verdict changed - both closed on the timing-independent
+# accuracy gate. See benchmarks/dev6-baseline/nps_gate_calibration/.
+#
+# This lane asks whether an ISOLATED runner can resolve the band, which is a
+# prerequisite recorded in the failure ledger before any FUTURE candidate's cost
+# gate may be frozen. It cannot re-roll a closed experiment's timing.
+#
+# Evidence is uploaded as an artifact and NOTHING is pushed to any branch. The
+# push trigger exists because a workflow_dispatch workflow must be registered on
+# the DEFAULT branch before it can be dispatched, and this mission must not
+# modify main.
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: 'EXACT source commit SHA, or HEAD for the triggering commit'
+        required: true
+        default: 'HEAD'
+        type: string
+      nodes:
+        description: 'Fixed node budget per bench position'
+        required: true
+        default: '300000'
+        type: string
+      reps:
+        description: 'Repetitions per gate evaluation (frozen protocol: 3)'
+        required: true
+        default: '3'
+        type: string
+      evaluations:
+        description: 'Independent repetitions of the WHOLE A/A gate'
+        required: true
+        default: '6'
+        type: string
+  push:
+    paths:
+      - 'benchmarks/exp-runs/cost-gate-dispatch.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dev6-cost-gate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Resolve dispatch / verify calibration plan
+    runs-on: ubuntu-latest
+    outputs:
+      source_sha: ${{ steps.cfg.outputs.source_sha }}
+      nodes: ${{ steps.cfg.outputs.nodes }}
+      reps: ${{ steps.cfg.outputs.reps }}
+      evaluations: ${{ steps.cfg.outputs.evaluations }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Resolve and validate
+        id: cfg
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            SHA='${{ inputs.source_sha }}'
+            NODES='${{ inputs.nodes }}'
+            REPS='${{ inputs.reps }}'
+            EVALS='${{ inputs.evaluations }}'
+          else
+            SHA=$(python3 -c "import json;print(json.load(open('benchmarks/exp-runs/cost-gate-dispatch.json'))['source_sha'])")
+            NODES=$(python3 -c "import json;print(json.load(open('benchmarks/exp-runs/cost-gate-dispatch.json'))['nodes'])")
+            REPS=$(python3 -c "import json;print(json.load(open('benchmarks/exp-runs/cost-gate-dispatch.json'))['reps'])")
+            EVALS=$(python3 -c "import json;print(json.load(open('benchmarks/exp-runs/cost-gate-dispatch.json'))['evaluations'])")
+            MODE=$(python3 -c "import json;print(json.load(open('benchmarks/exp-runs/cost-gate-dispatch.json'))['mode'])")
+            [ "$MODE" = "calibrate" ] || { echo "this lane only runs A/A calibration" >&2; exit 1; }
+          fi
+          [ "$SHA" = "HEAD" ] && SHA=$(git rev-parse HEAD)
+          echo "$SHA" | grep -Eq '^[0-9a-f]{40}$' || { echo "bad source_sha" >&2; exit 1; }
+          git cat-file -e "$SHA^{commit}" || { echo "unknown commit $SHA" >&2; exit 1; }
+          for v in "$NODES" "$REPS" "$EVALS"; do
+            echo "$v" | grep -Eq '^[1-9][0-9]*$' || { echo "bad integer: $v" >&2; exit 1; }
+          done
+          [ "$REPS" -ge 3 ] || { echo "frozen protocol needs >=3 reps" >&2; exit 1; }
+          [ "$EVALS" -ge 5 ] || { echo "ledger requires >=5 A/A evaluations" >&2; exit 1; }
+          # The calibration script and its scope guard must exist in the PINNED commit.
+          git show "$SHA:scripts/dev6_nps_gate_calibration.py" > /dev/null
+          git show "$SHA:scripts/dev6_cost_gate_calibrate_job.py" > /dev/null
+          {
+            echo "source_sha=$SHA"
+            echo "nodes=$NODES"
+            echo "reps=$REPS"
+            echo "evaluations=$EVALS"
+          } >> "$GITHUB_OUTPUT"
+          echo "calibration source_sha=$SHA nodes=$NODES reps=$REPS evaluations=$EVALS"
+
+  calibrate:
+    name: A/A cost-gate calibration (isolated runner)
+    needs: prepare
+    runs-on: ubuntu-latest      # one dedicated VM; no other job shares it
+    timeout-minutes: 45
+    env:
+      SOURCE_SHA: ${{ needs.prepare.outputs.source_sha }}
+      NODES: ${{ needs.prepare.outputs.nodes }}
+      REPS: ${{ needs.prepare.outputs.reps }}
+      EVALUATIONS: ${{ needs.prepare.outputs.evaluations }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ needs.prepare.outputs.source_sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned build tools
+        run: python3 -m pip install --disable-pip-version-check -q 'cmake==3.31.6' 'ninja==1.11.1.4'
+      - name: Run the A/A calibration (no candidate, no PST)
+        run: |
+          set -euo pipefail
+          python3 scripts/dev6_cost_gate_calibrate_job.py \
+            --source-sha "$SOURCE_SHA" \
+            --run-id '${{ github.run_id }}' --run-attempt '${{ github.run_attempt }}' \
+            --nodes "$NODES" --reps "$REPS" --evaluations "$EVALUATIONS"
+      - name: Report the verdict in the job summary
+        if: always()
+        run: |
+          set -euo pipefail
+          M=benchmarks/exp-runs/cost-gate-calibration/MANIFEST.json
+          if [ -f "$M" ]; then
+            python3 - "$M" <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, sys
+          m = json.load(open(sys.argv[1]))
+          print("## A/A cost-gate calibration (instrument validation only)\n")
+          print(f"**{m['verdict']}**\n")
+          print(f"- true ratio by construction: **1.0** (identical arms, no PST)")
+          print(f"- false rejects: **{m['false_rejects']} / {m['evaluations']}**")
+          print(f"- A/A ratio range: {m['aa_ratio_min']:.5f} .. {m['aa_ratio_max']:.5f}")
+          print(f"- max arm self-spread: {m['max_arm_self_spread']:.1%}")
+          print(f"- band {m['band']}, half-width {m['band_half_width']:.3f}")
+          print(f"- observed A/A half-range: {m['observed_aa_half_range']:.5f}")
+          print(f"- host: {m['host']['cpu_model']}, nproc={m['host']['nproc']}")
+          print(f"\n{m['scope_warning']}")
+          PY
+          else
+            echo "No manifest produced; see run.log in the artifact." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload complete calibration evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: cost-gate-calibration-run${{ github.run_id }}
+          path: benchmarks/exp-runs/cost-gate-calibration/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 6
