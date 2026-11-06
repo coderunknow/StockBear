@@ -1,9 +1,10 @@
 {
-  "mode": "calibrate",
+  "mode": "export",
   "source_sha": "HEAD",
-  "note": "Deliberate dispatch of an A/A INSTRUMENT CALIBRATION for the NPS cost gate on one isolated GitHub-hosted runner. Both arms are the identical champion binary with no PST, so the true ratio is exactly 1.0 and every FAIL is a false reject. Motivated by the sandbox A/A result (80% false rejects at 3 reps, 58% at 5 reps, ratios 0.894-1.035), which invalidated the gate in BOTH directions on that host. NO candidate is measured; this lane has no --pst input and cannot re-run, re-score or reopen exp-0048/exp-0049. Output may only inform how a FUTURE candidate's cost gate is frozen in its own prereg.",
+  "note": "Deliberate git mirror of the completed A/A calibration from isolated-runner run 42191869178 (both jobs SUCCESS). The artifact blob CDN and job logs are unreachable from this sandbox, so evidence is exported via the supported download-artifact interface inside the runner, checksum-verified before AND after the copy, and committed once to this branch. The export REFUSES to mirror a non-isolated run as host evidence. Instrument validation only: no candidate measured, no --pst path, cannot re-run or reopen exp-0048/exp-0049.",
   "nodes": 300000,
   "reps": 3,
   "evaluations": 6,
-  "attempt": 1
+  "attempt": 2,
+  "source_run_id": "42191869178"
 }
