@@ -3,10 +3,11 @@
 Older reports `docs/DEV6_STATUS_REPORT.md` and
 `docs/DEV6_POST_AUTHORIZATION_REPORT.md` are superseded for this cycle; they
 remain historical records. This document is the current gate verdict.
-**LATEST (post-exp-0046): see the "LATEST (2026-11-04, post-exp-0046
-investigation)" section at the end and
-`docs/DEV6_EXP0047_INVESTIGATION_REPORT.md`; no new strength games were played
-and `docs/DEV6_PREREG_EXP0047.md` is a DORMANT frozen preregistration.**
+**LATEST: see the "LATEST (2026-11-06, exp-0050 RESULT)" section at the very end.
+exp-0050 (pawn-structure correction history) is CLOSED / NEGATIVE on 2,800 new
+fixed-time games on isolated VMs: combined `-1.5713 [-10.1225, +6.9780]`. Gates
+are unchanged; `docs/DEV6_PREREG_EXP0047.md` remains a DORMANT frozen
+preregistration with an empty Activation Record.**
 
 ## Verdict: MISSION ACTIVE — NOT COMPLETE
 `docs/DEV6_PREREG.md` §8 gates are **unchanged and unweakened**.
@@ -566,3 +567,73 @@ Mission ACTIVE / NOT COMPLETE. Zero strength games played in this cycle.**
   exp-0049 cap or threshold on its burned corpus. A 2.47 % accuracy gain is
   **not** evidence of +75 Elo, and the exp-0047 §3.3 pre-result argument still
   has to be made independently before any decisive game.
+
+---
+
+# LATEST (2026-11-06, exp-0050 RESULT) — SUPERSEDES THE ABOVE FOR THIS CYCLE
+
+**2,800 new fixed-time games were played on four isolated GitHub-hosted VMs.
+exp-0050 is CLOSED / NEGATIVE. Gates are unchanged.**
+
+## exp-0050 — pawn-structure correction history — CLOSED / NEGATIVE
+
+The two accuracy audits both concluded "select on fixed-time games", so exp-0050
+was the first direction chosen under that rule: a **search** change needing
+neither the scale-broken accuracy gate nor a nonexistent accuracy→Elo link.
+Verified genuinely untried (absent from the ledger; no eval-bias table existed).
+
+- Prereg `docs/DEV6_PREREG_EXP0050.md` SHA `e80375135cf991cd…`, frozen before any
+  game and **ENFORCED** by the runner. Source `96822f65fc17`; Tier-1 run
+  **42206510815** (4/4 SUCCESS); export **42207882294**; **36/36 committed blobs**
+  verified via `git show` + sha256.
+- **FROZEN COMBINED batchA+batchB only:** `+649=691−655`, 1,995 games, 995
+  clusters, **CR1/t −1.5713 Elo, 95 % CI [−10.1225, +6.9780]**. Independent
+  Elo-from-score −1.0449; independent cluster bootstrap [−9.9544, +6.8099].
+- **Both frozen CLOSE triggers fired** (UCB +6.98 < +10 **and** point ≤ 0) →
+  **CLOSED / NEGATIVE**. ADVANCE failed on point, LCB and batchA.
+- **Validity clean:** 0 TIME_FORFEIT / 0 ILLEGAL / 0 ENGINE_FAILURE in all four
+  jobs; both nulls include 0; stage-0 **ctest 14/14 on the packaged binary**;
+  independent raw audit **44 values, 0 issues, AUDIT PASS**. One binary
+  `7b80ce37ee19…` byte-identical across all jobs (the 4 package SHAs differ only
+  by `job_id` in `BUILD_INFO.json` — checked, not assumed).
+- **The mechanism was LIVE**, verified before any game (fixed-depth 10:
+  1,418,459 → 1,410,036 nodes, −0.59 %, live on 7/12 positions, signature
+  changed) and **mutation-tested** (both a never-written and a never-read mutant
+  failed the liveness assertion while all correctness assertions passed). So
+  "the switch did nothing" is not available as an explanation.
+- Report `docs/DEV6_EXP0050_REPORT.md`; evidence
+  `benchmarks/dev6-baseline/exp0050_results/`. **Do NOT** retune the frozen
+  constants, re-run, pool, or enable the switch by default.
+
+**Why this negative is stronger evidence than exp-0048/0049:** it is
+**instrument-independent**. Fixed-time games charge every per-node cost against
+the candidate, both nulls are clean, and no accuracy metric or Elo conversion
+enters the decision.
+
+## Integrity fix shipped alongside (zero games)
+
+`scripts/dev6_tier1_job.py` **recorded** the prereg digest but never **enforced**
+it against the plan's frozen pin — a prereg edited after freezing would still run
+and stamp the NEW digest into its own evidence. Now asserted before any build;
+all three branches exercised (wrong pin aborts, missing pin aborts, correct pin
+verifies). exp0037–0045 plans carry no pin and now **fail closed**, which is
+correct for closed experiments; the export path is unaffected. **Lesson: a digest
+that is only recorded is provenance theatre.**
+
+## Gates and mission (unchanged)
+
+| gate | verdict |
+|---|---|
+| 1 | **UNMET** — best preregistered fixed-time evidence remains exp-0036 `+21.5238 [10.2819, 32.8108]` |
+| 2 | direction-supported (exp-0036, unchanged) |
+| 3 | **PASS** — exp-0050's two nulls also include 0 |
+| 4 | **UNMET** for a final candidate |
+
+Mission **ACTIVE / NOT COMPLETE**. exp-0047 **DORMANT**, Activation Record empty.
+exp-0048/0049 verdicts untouched, corpora still burned. No strength claim, no
+default change, no PR / merge / tag / release / deploy. `origin/main` untouched.
+
+**Next:** the accuracy route is closed twice over and the first fixed-time search
+direction since exp-0046 is now closed. Any further candidate needs its own
+prereg, fresh disjoint openings, and a fixed-time screen — **not** a retune of a
+closed switch and **not** a relaxed threshold.
