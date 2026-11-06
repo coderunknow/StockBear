@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0052",
-  "source_sha": "2927c50fff072817f27d7e05cb3e3a44c659256f",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0052.json",
-  "source_run_id": "42231550633",
-  "note": "exp-0052: export the raw evidence bundle of Tier-1 SCREEN run 42231550633 (5 jobs, 3200 games) via the in-workflow git mirror, because artifact/log CDN downloads are blocked in the sandbox. No games are played by an export. Raw per-game JSONL/PGN will be independently re-audited before any verdict.",
+  "mode": "benchmark",
+  "experiment_id": "exp0053",
+  "source_sha": "f4d17793ef4f2fcd80f8bdb8aab7df8b8b13efd8",
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0053.json",
+  "source_run_id": "",
+  "note": "exp-0053 Tier-1 SCREEN (NOT a Gate-1 decisive run) of ONE default-off eval term, ThreatDetection: units = min(10*|hanging| + 16*|pawnThreat|, 64), mg and eg, unions fused into the existing mobility/king-danger loops. Arm B is the EXACT released dev5 artifact 391cb50e...5bdb918. KingSafetyQuadratic is absent from the candidate file and therefore 0, so attribution is to threats alone. Prereg 6049ef7f...4e66722 pinned in every job. Scale pre-declared then PASS first try (RMS 16.88, p99 46, max 64). Cost +1.97% with a tight A/A control; 7 mutants applied and all 7 KILLED. Per-arm EvalParams LOAD VERIFIED enforced. 1600 fresh openings seed 2026110653 independently verified disjoint (0 overlap vs 52841 earlier positions, 10/10 slice pairs). Frozen combined = batchA+batchB only; equiv is an attribution diagnostic and is never pooled. ADVANCE >= +20 with LCB>0; CLOSE if UCB<+10; else INCONCLUSIVE.",
   "attempt": 1
 }
