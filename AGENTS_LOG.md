@@ -1880,3 +1880,36 @@ pin (4 jobs each), so they now fail closed. That is correct — they are closed
 experiments that must never be re-run — and the **export** path does not use this
 script, so retrieving historical evidence is unaffected. exp-0046 and exp-0050
 both pin and are unaffected.
+
+## 2026-11-06 — exp-0050 RESULT: CLOSED / NEGATIVE on 2,800 isolated-VM games
+
+Ran the frozen 4-job plan (run **42206510815**, 4/4 SUCCESS), mirrored the raw
+evidence through the export channel (run **42207882294**) and verified **36/36
+COMMITTED blobs** via `git show` + sha256 — not just the working tree.
+
+**FROZEN COMBINED batchA+batchB: −1.5713 Elo, 95 % CI [−10.1225, +6.9780]**
+(649/691/655, 1,995 games, 995 clusters). Independent Elo-from-score −1.0449;
+independent cluster bootstrap [−9.9544, +6.8099]. **Both frozen CLOSE triggers
+fired** (UCB +6.98 < +10 AND point <= 0) → **CLOSED / NEGATIVE**. Independent audit:
+44 stored values, 0 issues, AUDIT PASS.
+
+**Validity clean**, so this is a real mechanism rejection, not another instrument
+failure: 0 forfeits / 0 illegal / 0 engine failures in all four jobs, both nulls
+include 0, stage-0 ctest 14/14 on the packaged binary, prereg SHA enforced by the
+runner, dev5 verified immutable. Checked the one oddity instead of ignoring it:
+4 different `package_sha256` but **1 identical binary sha** — the packages differ
+only by `job_id` inside `BUILD_INFO.json`.
+
+**The mechanism was live**, verified before any game (−0.59 % tree, 7/12
+positions, signature changed) and mutation-tested. So "the switch did nothing"
+is not available as an explanation. The learned bias just isn't worth its
+per-node cost at 40+4 ms.
+
+Notably this verdict is **instrument-independent** — unlike exp-0048/0049 it
+touches neither the scale-broken accuracy gate nor any accuracy→Elo conversion.
+That was the whole point of choosing a search direction.
+
+Recorded `RESULTS.json` + `AUDIT.txt` (checksummed), report
+`docs/DEV6_EXP0050_REPORT.md`, and a full ledger entry. No retune, no re-run, no
+pooling, no default change. Gates unchanged (1/4 UNMET, 2 direction-only, 3 PASS);
+mission ACTIVE; exp-0047 DORMANT.

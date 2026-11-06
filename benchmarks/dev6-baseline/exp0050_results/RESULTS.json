@@ -1,0 +1,115 @@
+{
+  "experiment_id": "exp-0050",
+  "mechanism": "pawn-structure correction history (search; NOT accuracy-gated)",
+  "verdict": "CLOSED / NEGATIVE",
+  "decided_by": "frozen prereg rule: CLOSE if combined 95% UCB < +10 OR combined point <= 0",
+  "both_close_triggers_fired": true,
+  "prereg": "docs/DEV6_PREREG_EXP0050.md",
+  "prereg_sha256": "e80375135cf991cd8c4fcc1723e5c6c4f2c1dd957e5a6d920be8bfda88f9569a",
+  "prereg_sha_enforced_by_runner": true,
+  "source_sha": "96822f65fc173d8348a91c1bf136af87450a0eb5",
+  "tier1_run_id": "42206510815",
+  "export_run_id": "42207882294",
+  "control": "FIXED TIME 40+4 ms, Hash16, Threads1, max-plies 240; never --nodes",
+  "binary_sha256": "7b80ce37ee1977e881f7228ae4cb6caf252efa7d2b6c42fdf12af17836303ed8",
+  "binary_identical_across_all_four_jobs": true,
+  "package_sha_differs_only_by_job_id_in_BUILD_INFO": true,
+  "frozen_combined": {
+    "scope": "batchA + batchB ONLY; nulls never pooled",
+    "wins": 649,
+    "draws": 691,
+    "losses": 655,
+    "games": 1995,
+    "clusters": 995,
+    "score": 0.4984962,
+    "cr1_t_elo": -1.5713,
+    "ci95": [
+      -10.1225,
+      6.978
+    ],
+    "independent_elo_from_score": -1.0449,
+    "independent_cluster_bootstrap_ci95": [
+      -9.9544,
+      6.8099
+    ]
+  },
+  "per_job": {
+    "stage0": {
+      "games": 400,
+      "unadjudicated": 0,
+      "elo": -9.556888220144554,
+      "ci95": [
+        -27.89214598436862,
+        8.725256094452003
+      ]
+    },
+    "batchA": {
+      "games": 997,
+      "unadjudicated": 3,
+      "elo": -5.24338977350909,
+      "ci95": [
+        -16.776217763550434,
+        6.277891552971158
+      ]
+    },
+    "batchB": {
+      "games": 998,
+      "unadjudicated": 2,
+      "elo": 2.093010773470812,
+      "ci95": [
+        -10.543867718144728,
+        14.73543181043805
+      ]
+    },
+    "null": {
+      "games": 399,
+      "unadjudicated": 1,
+      "elo": 6.111306327520652,
+      "ci95": [
+        -15.594015841050412,
+        27.86449436928419
+      ]
+    }
+  },
+  "validity": {
+    "time_forfeit": 0,
+    "illegal": 0,
+    "engine_failure": 0,
+    "stage0_null_ci_includes_0": true,
+    "candidate_null_ci_includes_0": true,
+    "stage0_ctest_on_packaged_binary": "14/14",
+    "committed_blobs_verified": "36/36",
+    "independent_audit": "44 stored values checked, 0 issues, AUDIT PASS"
+  },
+  "liveness_before_games": {
+    "fixed_depth": 10,
+    "nodes_off": 1418459,
+    "nodes_on": 1410036,
+    "tree_change_pct": -0.59,
+    "positions_live": "7/12",
+    "mutation_tested": "update-removed and apply-disabled mutants BOTH failed the liveness assertion while all correctness assertions passed"
+  },
+  "interpretation": [
+    "The mechanism was demonstrably LIVE and still produced no fixed-time gain: combined -1.57 Elo with CI straddling zero.",
+    "This is a genuine mechanism rejection, NOT an instrument failure: fixed-time games charge every per-node cost, validity was clean, and both nulls include zero.",
+    "Unlike exp-0048/0049 this verdict does NOT depend on the scale-broken accuracy gate or any accuracy->Elo conversion.",
+    "The learned bias evidently does not improve pruning decisions enough at 40+4 ms to pay for its per-node lookup; the CI also rules out a gain anywhere near the +20 ADVANCE bar."
+  ],
+  "not_claimed": [
+    "no strength gain",
+    "no default change",
+    "no NPS/speedup claim",
+    "no absolute/CCRL/FIDE Elo",
+    "no gap-to-3000",
+    "no Gate 1 or Gate 4 pass"
+  ],
+  "gates_after": {
+    "1": "UNMET",
+    "2": "direction-supported (exp-0036, unchanged)",
+    "3": "PASS",
+    "4": "UNMET"
+  },
+  "mission": "ACTIVE / NOT COMPLETE",
+  "exp0047": "DORMANT, Activation Record empty",
+  "next": "Do NOT retune the frozen constants on these results, do NOT re-run exp-0050, do NOT pool. Direction abandoned."
+}

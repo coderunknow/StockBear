@@ -1,0 +1,18 @@
+exp0050 independent audit, run 42206510815, 4 artifacts
+  FROZEN thresholds from prereg: ADVANCE point>=+20 and LCB>0; CLOSE UCB<+10 or point<=0
+  tier1-exp0050-tier1-exp0050-batchA-run42206510815  329/ 325/ 343  score 0.492979  CR1 -5.24338977350909  CI [-16.776217763550434, 6.277891552971158]
+  tier1-exp0050-tier1-exp0050-batchB-run42206510815  320/ 366/ 312  score 0.504008  CR1 2.093010773470812  CI [-10.543867718144728, 14.73543181043805]
+  tier1-exp0050-tier1-exp0050-null-run42206510815  149/ 109/ 141  score 0.510025  CR1 6.111306327520652  CI [-15.594015841050412, 27.86449436928419]
+  tier1-exp0050-tier1-exp0050-stage0-run42206510815  138/ 113/ 149  score 0.486250  CR1 -9.556888220144554  CI [-27.89214598436862, 8.725256094452003]
+
+FROZEN COMBINED batchA+batchB (no post-hoc selection)
+  W/D/L = 649/691/655  games=1995  score=0.4984962  clusters=995
+  CR1/t Elo = -1.5713  95% CI = [-10.1225, 6.9780]
+  independent Elo-from-score = -1.0449
+  independent cluster bootstrap 95% = [-9.9544, 6.8099]
+  FROZEN RULE: point>=+20 False, LCB>0 False, both_batches>=-5 False, null present True, clean True; CLOSE UCB<+10 True or point<=0 True
+CLOSE
+  decision_inputs: {"advance_point": 20.0, "batches_ok": false, "clean": true, "close_ucb": 10.0}
+
+checked 44 stored values; 0 issues
+AUDIT PASS

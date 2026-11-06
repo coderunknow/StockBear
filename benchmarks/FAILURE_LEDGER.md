@@ -2205,3 +2205,90 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
 - **Continue / abandon:** ABANDON fixed-K accuracy gating as an activation route.
   Gates 1/4 UNMET, 2 direction-only, 3 PASS. Mission ACTIVE / NOT COMPLETE.
   exp-0047 DORMANT; no PR strength claim, merge, tag, release or deploy.
+
+## exp-0050 — pawn-structure correction history — CLOSED / NEGATIVE (2026-11-06)
+
+- **ID / source / binary SHAs:** exp-0050; branch `arena/6a6a2ba3-stockbear`;
+  source `96822f65fc173d8348a91c1bf136af87450a0eb5`; Tier-1 run **42206510815**
+  (4/4 SUCCESS), export run **42207882294**. One byte-identical binary
+  `7b80ce37ee1977e881f7228ae4cb6caf252efa7d2b6c42fdf12af17836303ed8` in all four
+  jobs (`built == packaged`). Prereg `docs/DEV6_PREREG_EXP0050.md` SHA
+  `e80375135cf991cd8c4fcc1723e5c6c4f2c1dd957e5a6d920be8bfda88f9569a`, frozen
+  before any game and **ENFORCED** by the runner (see the integrity-fix entry).
+- **Why this direction:** both accuracy audits said select on fixed-time games.
+  Correction history was verified **genuinely untried** (absent from this ledger,
+  no eval-bias table in `src/search/`). It is a **SEARCH** change, so it needs
+  neither the scale-broken accuracy gate nor a nonexistent accuracy→Elo link.
+- **Hypothesis / chess rationale:** the handcrafted tapered eval is systematically
+  biased by pawn skeleton (passed-pawn races, blocked chains, colour complexes).
+  A decaying running mean of `(search − raw static eval)`, indexed by a hash of
+  the two pawn bitboards, added to the **pruning-margin** eval, should make
+  reverse-futility / null-move / futility decisions better informed for one table
+  lookup per node. The **RAW** eval still goes into the TT so the bias cannot
+  compound. Falsifier: frozen combined UCB < +10 or point <= 0.
+- **Config / conditions:** FIXED TIME `--base-ms 40 --inc-ms 4`, Hash16,
+  Threads1, max-plies 240, **never `--nodes`**; four isolated `ubuntu-latest`
+  VMs; both arms `params_abc.txt` + `TTEval=true`, A adds only
+  `CorrectionHistory=true`. Six constants frozen from theory before any game.
+  Default OFF; all three shipped signatures bit-exact; ctest 14/14 release and
+  14/14 ASan+UBSan.
+- **Raw paths:** `benchmarks/exp-runs/tier1-export/run-42206510815/` (36/36
+  **committed** blobs verified via `git show` + sha256);
+  `benchmarks/dev6-baseline/exp0050_results/{RESULTS.json,AUDIT.txt}`; report
+  `docs/DEV6_EXP0050_REPORT.md`. Openings seed 2026120801, 1,400 fresh 8-ply,
+  **0 overlap** with 48,441 positions in 172 files, 4 disjoint slices.
+- **Statistics:** stage0 400 g −9.56 [−27.89,+8.73]; batchA 997 g −5.24
+  [−16.78,+6.28]; batchB 998 g +2.09 [−10.54,+14.74]; candidate null 399 g +6.11
+  [−15.59,+27.86]. **FROZEN COMBINED batchA+batchB only:** `+649=691−655`,
+  1,995 games, 995 clusters, score 0.4984962, **CR1/t −1.5713
+  [−10.1225,+6.9780]**; independent Elo-from-score −1.0449; independent seeded
+  cluster bootstrap [−9.9544,+6.8099]. 6 UNADJUDICATED_MAX_PLIES excluded.
+- **Validity:** **0 TIME_FORFEIT / 0 ILLEGAL / 0 ENGINE_FAILURE** in all four
+  jobs; both nulls include 0; stage-0 **ctest 14/14 on the packaged binary**;
+  runner bench `243f9a1c1ba5b36f`; dev5 `391cb50e…` verified immutable;
+  independent raw-JSONL audit **44 values, 0 issues, AUDIT PASS**. The four
+  `package_sha256` differ **only** by `job_id` inside `BUILD_INFO.json` — checked.
+- **Decision / classification:** **CLOSED / NEGATIVE.** Both frozen CLOSE
+  triggers fired (UCB +6.98 < +10 **and** point −1.57 <= 0). ADVANCE failed
+  (point, LCB and batchA all short). No threshold changed after results, no
+  sample increase, no retune, no confirmation.
+- **Root cause / recurrence / audits:** the mechanism was **demonstrably LIVE**
+  before any game — fixed-depth 10: 1,418,459 → 1,410,036 nodes (−0.59 %), live on
+  7/12 positions, signature changed — and **two deliberate mutants** (update
+  removed; apply disabled) both FAILED the liveness assertion while all
+  correctness assertions passed. So this is **not** a silent no-op and **not** an
+  instrument failure: the learned bias simply does not improve pruning enough at
+  40+4 ms to pay for its per-node lookup. Recurrence condition: a runtime-learned
+  eval correction must clear a fixed-time screen, not just look theoretically
+  sound; a ±32 cp clamp on a pawn-hash-only index is too coarse to help here.
+- **Non-repeatable / dead ends:** do NOT retune the six frozen constants on these
+  results, do NOT re-run exp-0050, do NOT pool its games, do NOT enable
+  `CorrectionHistory` by default, do NOT widen the clamp or add piece keys post
+  hoc. The switch stays in the tree default OFF and bit-exact for reproducibility.
+- **Gates:** 1 **UNMET**, 2 direction-supported (exp-0036, unchanged), 3 **PASS**,
+  4 **UNMET**. Mission **ACTIVE / NOT COMPLETE**; exp-0047 **DORMANT**;
+  exp-0048/0049 untouched. No PR strength claim, merge, tag, release or deploy.
+
+---
+
+## INTEGRITY FIX — the Tier-1 runner RECORDED the frozen prereg SHA but never ENFORCED it
+
+- **Not an experiment.** Zero games. Found while wiring the exp-0050 dispatch.
+- **Defect:** `scripts/dev6_tier1_job.py` computed `prereg_sha = sha(prereg)` and
+  stamped it into the manifest, but never compared it with the `prereg_sha256`
+  the plan was frozen against. A prereg edited **after** freezing would still run
+  and still stamp the **NEW** digest into its own evidence — laundering a post-hoc
+  protocol change into "frozen" evidence. exp-0046 and exp-0050 both carried the
+  pin; nothing was reading it.
+- **Fix:** assert the pin exists AND matches, before any build. **All three
+  branches exercised locally:** wrong pin → `frozen prereg CHANGED` abort; missing
+  pin → `does not pin prereg_sha256` abort; correct pin → `frozen prereg SHA
+  VERIFIED against plan e80375135cf991cd…` then proceeds. Scratch dirs/build deleted.
+- **Blast radius checked, not assumed:** exp0037–exp0045 plans carry **no** pin
+  (4 jobs each) so they now **fail closed**, which is correct for closed
+  experiments that must never be re-run. The **export** path does not use this
+  script, so historical evidence retrieval is unaffected. Verified in the real
+  exp-0050 run: all four jobs logged the VERIFIED line.
+- **Lesson:** a digest that is only *recorded* is provenance theatre. Any value a
+  plan freezes must be **asserted** at the point of use, and the assertion itself
+  must be exercised in both directions.
