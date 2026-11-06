@@ -1945,3 +1945,32 @@ scratch builds and the corrupt probe file all deleted.
 
 This is the same class of defect as the recorded `evaldata` without `--params`
 trap: an instrument that silently measures the wrong thing and reports success.
+
+## 2026-11-06 — exp-0051 REGISTERED: first strength measurement of the frozen exp-0049 PST
+
+User approved this route after I surfaced the protocol tension rather than
+resolving it silently. exp-0049 §7 gated its fixed-time screen on §5 (accuracy)
+AND §6 (NPS cost) — **both since proven invalid** — so a genuinely fitted
+768-parameter table was discarded with **zero strength games**. Its 2.4712 %
+figure carries no strength information in either direction.
+
+**Boundary kept explicit:** this is a NEW ID testing an EXISTING artefact read-only.
+No refit, no entry edited, no cap changed, no corpus read. Table SHA re-verified
+`6e31a01a…6c733`, byte-identical to the exp-0049 commit. **exp-0049's CLOSED /
+NEGATIVE verdict stands**; its corpus stays BURNED. A positive result here would
+not validate accuracy gating or reopen exp-0049 — it would only show this artefact
+plays better, and further confirm the gate was the wrong selection variable.
+
+**Diagnostics before registering:** shipped default signature unchanged; ctest
+14/14; all three shipped sigs exact. Liveness at fixed depth 10 with champion
+options both arms: 1,418,459 → 1,621,265 nodes (**+14.30 %**), live on **11/12**
+positions, 2/12 bestmoves changed, signature `a5bc21ef…` → `f200ad0b…`. So the
+option demonstrably changes play — a null here cannot be blamed on an inert switch.
+
+1,400 fresh openings seed 2026120901, **0 overlap** with 49,841 positions in 177
+files, 4 disjoint slices — independently re-verified, not trusted from the
+generator's own printout. Prereg `docs/DEV6_PREREG_EXP0051.md` SHA
+`94673e910b0dd8f1…` frozen before any game; 4-job plan pins that SHA and declares
+the PST as a packaged **asset** in every job, so the §3.1 load assertion applies.
+
+**Zero exp-0051 games played at registration.** Gates unchanged; exp-0047 DORMANT.

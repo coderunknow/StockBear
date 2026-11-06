@@ -1,0 +1,145 @@
+{
+  "experiment_id": "exp0051",
+  "frozen_before_evaluation_games": true,
+  "prereg": "docs/DEV6_PREREG_EXP0051.md",
+  "prereg_sha256": "94673e910b0dd8f1676ee90db1784524244f08a9df7fec399fb2038485318ae3",
+  "control": "FIXED TIME 40+4 ms; never --nodes",
+  "no_pooling_with_earlier_experiments": true,
+  "artefact_under_test": "benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst",
+  "artefact_sha256": "6e31a01a6988fd2192259a101a1e089320e9ddeb8d414acf4ed3d05740d6c733",
+  "not_a_refit_or_rescore_of_exp0049": true,
+  "jobs": [
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0051.md",
+      "prereg_sha256": "94673e910b0dd8f1676ee90db1784524244f08a9df7fec399fb2038485318ae3",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0051-stage0",
+      "games": 400,
+      "seed": 2026120910,
+      "openings": "benchmarks/positions/openings_exp0051_stage0.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": true,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Stage-0 control/control validity null; 0 forfeits required",
+      "assets": [
+        "benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+      ]
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0051.md",
+      "prereg_sha256": "94673e910b0dd8f1676ee90db1784524244f08a9df7fec399fb2038485318ae3",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0051-batchA",
+      "games": 1000,
+      "seed": 2026120911,
+      "openings": "benchmarks/positions/openings_exp0051_batchA.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "PstFile=benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "frozen batchA; A=+frozen exp0049 PST, B=champion formulaic",
+      "assets": [
+        "benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+      ]
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0051.md",
+      "prereg_sha256": "94673e910b0dd8f1676ee90db1784524244f08a9df7fec399fb2038485318ae3",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0051-batchB",
+      "games": 1000,
+      "seed": 2026120912,
+      "openings": "benchmarks/positions/openings_exp0051_batchB.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "PstFile=benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "frozen batchB; A=+frozen exp0049 PST, B=champion formulaic",
+      "assets": [
+        "benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+      ]
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0051.md",
+      "prereg_sha256": "94673e910b0dd8f1676ee90db1784524244f08a9df7fec399fb2038485318ae3",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0051-null",
+      "games": 400,
+      "seed": 2026120913,
+      "openings": "benchmarks/positions/openings_exp0051_null.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "PstFile=benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true",
+        "PstFile=benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "candidate-options null (frozen PST both sides); CI must include 0",
+      "assets": [
+        "benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+      ]
+    }
+  ]
+}
