@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0051",
-  "source_sha": "HEAD",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0051.json",
-  "source_run_id": "42217333693",
-  "note": "Deliberate export of all four exp-0051 Tier-1 artifacts for independent raw-game audit AND for verification that arm A actually loaded the frozen PST (pst_probe_A.txt / BUILD_INFO.assets_sha256). A missing PST silently falls back to formulaic tables and would fake a null, so success status is not accepted as proof. Blob CDN unreachable from sandbox; git mirror is the only working evidence channel.",
-  "attempt": 2
+  "mode": "benchmark",
+  "experiment_id": "exp0052",
+  "source_sha": "2927c50fff072817f27d7e05cb3e3a44c659256f",
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0052.json",
+  "source_run_id": "",
+  "note": "exp-0052 Tier-1 SCREEN (NOT a Gate-1 decisive run) of ONE default-off eval term, KingSafetyQuadratic: curve min(units,32)^2/16, weights N2 B2 R3 Q5, MG-only, per-side queen gate, fused into the existing king-danger loop. Arm B is the EXACT released dev5 artifact 391cb50e...5bdb918. Prereg c3a022d5...f74d578 pinned in every job. Scale fixed pre-game by a declared criterion (p99<=120cp, RMS<40cp): RMS 13.87, p99 56, max 64. EvalParams now carries the same per-arm LOAD VERIFIED assertion as PstFile, because a missing params file silently falls back and would fake a result; all four guard branches exercised at zero games. 1600 fresh openings seed 2026110652 independently verified disjoint (0 overlap vs 51241 earlier positions, all 10 slice pairs). Frozen combined = batchA+batchB only; the equiv job is an attribution diagnostic and is never pooled. ADVANCE >= +20 with LCB>0; CLOSE if UCB<+10; else INCONCLUSIVE.",
+  "attempt": 1
 }
