@@ -503,7 +503,30 @@ Mission ACTIVE / NOT COMPLETE. Zero strength games played in this cycle.**
   a dedicated runner. Evidence export **42192830961**, **39/39 committed blobs
   hash-verified**. This validates host + protocol, **not any candidate**; future
   cost gates must run isolated and re-validate A/A in the same session.
-- Next concrete action: the expressive-PST direction has now consumed two
+- **STRUCTURAL BLOCKER identified (audit, zero strength games).** exp-0047 §3.3
+  requires a pre-result argument citing "historical NPS→Elo and **accuracy→Elo**
+  evidence" in the ledger. **The accuracy→Elo evidence does not exist.** The
+  ledger has a NPS→Elo slope (~+90 per 2x nodes) but no accuracy→Elo pair; only
+  exp-0048/0049 ever measured accuracy and both closed before any strength game.
+  A real anchor was then built for **zero** games by scoring the immutable dev4
+  and dev5 binaries on identical positions/labels from both corpora (paired
+  CR1 clustered SE over games) against the one high-confidence fixed-time Elo,
+  **+64.7 [+57.5,+72.0]** (6,600 games, exp-0024): the accuracy change is
+  **< 0.5 % in magnitude and its sign flips with the logistic constant K** on
+  both corpora, and Brier disagrees with log-loss. This does **not** show
+  accuracy gains fail to produce Elo — the +64.7 is a bundle (flags + params +
+  TTEval), much of it plausibly NPS — but it does show **no slope is fittable and
+  the 3 % bar has no licensed Elo interpretation**. So **§3.3 is currently
+  UNSATISFIABLE for any accuracy-driven candidate**: a structural blocker, not a
+  candidate failure. Report `docs/DEV6_ACCURACY_ELO_LINK_AUDIT.md`, evidence
+  `benchmarks/dev6-baseline/accuracy_elo_anchor/`.
+- Next concrete action: **resolve the accuracy→Elo blocker before spending any
+  further corpus on an evaluator candidate.** Either preregister a calibration
+  experiment measuring BOTH accuracy (one common corpus) AND fixed-time 40+4 Elo
+  for several variants spanning a range of accuracy deltas, or abandon accuracy
+  as the gate variable and select on fixed-time strength screens (already the
+  ledger's only trustworthy bullet filter). **Do not lower the +75/+50 thresholds
+  or the 3 % bar.** Separately, the expressive-PST direction has consumed two
   independent fresh corpora without clearing a 3 % accuracy bar under
   chess-plausible bounds. It is **not** the route to Gate 1 as configured.
   Either propose a genuinely different evaluator hypothesis (its own prereg,
