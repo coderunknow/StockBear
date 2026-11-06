@@ -1,8 +1,8 @@
 {
-  "mode": "generate",
+  "mode": "export",
   "experiment_id": "exp0049",
   "source_sha": "5a4dad750f3accd3a556300eea0ff1a1901d07b4",
-  "source_run_id": "",
-  "note": "Deliberate dispatch of the frozen exp-0049 evaluator-fitting corpus: 8 isolated shards x 750 dev5-vs-dev5 self-play games at 40+4 ms, match seed 2026110613, openings seed 2026110611. FRESH corpus, zero overlap with all 161 earlier suites INCLUDING the burned exp-0048 corpus. Training data ONLY - never a strength batch, never pooled with a match. Prereg docs/DEV6_PREREG_EXP0049.md and all opening shards are frozen in the pinned source commit.",
-  "attempt": 1
+  "source_run_id": "42171974318",
+  "note": "Deliberate export of the completed exp-0049 fitting corpus. Generation run 42171974318 finished SUCCESS with all 8 isolated shards green and 8 non-expired artifacts. The pinned source_sha is the ORIGINAL generation source (frozen prereg + opening shards), NOT this export commit, so shard manifests still verify against the commit that produced them. Combines, verifies every checksum, rejects tamper/missing/duplicate/mixed-SHA, and mirrors one gzipped corpus + MANIFEST to this branch. Training data only; no Elo measurable; exp-0047 DORMANT.",
+  "attempt": 2
 }
