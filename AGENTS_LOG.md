@@ -1859,3 +1859,24 @@ files, 4 disjoint slices (independently re-verified). Prereg
 `docs/DEV6_PREREG_EXP0050.md` SHA `e80375135cf991cd…` FROZEN before any game;
 4-job Tier-1 plan written. **Zero exp-0050 games played yet.** Gates unchanged;
 exp-0047 still DORMANT; exp-0048/0049 untouched.
+
+## 2026-11-06 — integrity fix: the Tier-1 runner RECORDED the prereg SHA but never ENFORCED it
+
+Found while wiring the exp-0050 dispatch. `scripts/dev6_tier1_job.py` computed
+`prereg_sha = sha(prereg)` and stamped it into the manifest, but never compared it
+to the `prereg_sha256` the plan was frozen against. So a prereg could be edited
+AFTER freezing and the job would still run and still stamp the **new** digest into
+its own evidence — laundering a post-hoc protocol change into "frozen" evidence.
+The exp-0046/0050 plans both carry the pin; nothing was reading it.
+
+Now asserts the pin exists AND matches, before any build. **All three branches
+exercised locally**: wrong pin → `frozen prereg CHANGED` abort; missing pin →
+`does not pin prereg_sha256` abort; correct pin → `frozen prereg SHA VERIFIED
+against plan e80375135cf991cd…` then proceeds. Scratch dirs and the scratch build
+were deleted.
+
+Checked the blast radius rather than assuming: exp0037–exp0045 plans have **no**
+pin (4 jobs each), so they now fail closed. That is correct — they are closed
+experiments that must never be re-run — and the **export** path does not use this
+script, so retrieving historical evidence is unaffected. exp-0046 and exp-0050
+both pin and are unaffected.

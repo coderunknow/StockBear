@@ -70,6 +70,16 @@ def main():
     prereg = ROOT / job.get("prereg", f"docs/DEV6_PREREG_{a.experiment_id.upper()}.md")
     assert prereg.is_file(), f"frozen prereg missing: {prereg}"
     prereg_sha = sha(prereg)
+    # The plan pins the prereg digest it was frozen against. Enforce it, do not
+    # merely record it: otherwise the prereg could be edited after freezing and
+    # the job would still run and still stamp the NEW digest into its manifest,
+    # silently laundering a post-hoc protocol change into "frozen" evidence.
+    expected_prereg_sha = job.get("prereg_sha256")
+    assert expected_prereg_sha, f"job {job_id} does not pin prereg_sha256"
+    assert prereg_sha == expected_prereg_sha, (
+        f"frozen prereg CHANGED: plan pins {expected_prereg_sha}, "
+        f"{prereg.relative_to(ROOT)} is {prereg_sha}")
+    say("frozen prereg SHA VERIFIED against plan", prereg_sha)
     assert sha(DEV5) == DEV5_SHA, "immutable dev5 baseline binary changed"
     say("prereg", prereg.relative_to(ROOT), prereg_sha)
     say("dev5 baseline sha256", DEV5_SHA, "VERIFIED")
