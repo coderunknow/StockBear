@@ -1,8 +1,8 @@
 {
-  "mode": "generate",
+  "mode": "export",
   "experiment_id": "exp0048",
   "source_sha": "49018e96a6abdba5091c1b39d2473b6f14819894",
-  "source_run_id": "",
-  "note": "Deliberate dispatch of the frozen exp-0048 evaluator-fitting corpus: 8 isolated shards x 750 dev5-vs-dev5 self-play games at 40+4 ms, seed 2026110603. Training data ONLY - never a strength batch, never pooled with a match. Prereg docs/DEV6_PREREG_EXP0048.md and all opening shards are frozen in the pinned source commit.",
-  "attempt": 1
+  "source_run_id": "42169244756",
+  "note": "Deliberate export of the completed exp-0048 fitting corpus (run 42169244756, all 8 shards SUCCESS, 6,000 dev5-vs-dev5 games at 40+4 ms). Verifies every shard SHA-256, rejects missing/duplicate/tampered shards, and commits ONE combined gzip corpus with shard-prefixed game ids. Training data ONLY - never a strength batch.",
+  "attempt": 2
 }
