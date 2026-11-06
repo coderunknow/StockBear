@@ -1,0 +1,437 @@
+{
+  "export_dir": "benchmarks/exp-runs/tier1-export/run-42217333693",
+  "jobs": {
+    "batchA": {
+      "job": "tier1-exp0051-tier1-exp0051-batchA-run42217333693",
+      "issues": [],
+      "wdl": [
+        199,
+        194,
+        604
+      ],
+      "scored": 997,
+      "unscored": 3,
+      "complete_pairs": 497,
+      "incomplete_pairs": 3,
+      "orphan_scored_games": 3,
+      "games_in_primary_estimate": 994,
+      "stats": {
+        "pairs": 497,
+        "clusters": 497,
+        "pair_mean": 0.5935613682092555,
+        "score": 0.29678068410462777,
+        "cr1_stderr": 0.023907575374627458,
+        "naive_stderr": 0.02390757537462746,
+        "design_effect": 0.9999999999999998,
+        "t_critical_0975": 1.9647582832370905,
+        "df": 496,
+        "elo": -149.86206390700738,
+        "elo_ci95": [
+          -169.8911264984781,
+          -130.73047522334716
+        ],
+        "elo_ci95_repo_convention": [
+          -170.04980347768895,
+          -130.585765520633
+        ],
+        "t_critical_repo_convention": 1.979931,
+        "obs_per_cluster": {
+          "1": 497
+        }
+      },
+      "pentanomial": [
+        10,
+        37,
+        166,
+        107,
+        177
+      ],
+      "elo_from_score_all_scored_games": -149.77052276308805,
+      "cluster_bootstrap_ci95": [
+        -169.58731741417617,
+        -130.60636667467207
+      ],
+      "terminations": {
+        "CHECKMATE": 803,
+        "THREEFOLD_REPETITION": 189,
+        "INSUFFICIENT_MATERIAL": 4,
+        "UNADJUDICATED_MAX_PLIES": 3,
+        "FIFTY_MOVES": 1
+      },
+      "time_forfeits": 0,
+      "illegal": 0,
+      "engine_failures": 0,
+      "clock": {
+        "min_remaining_ms": 13.64,
+        "max_remaining_ms": 43.32,
+        "negative_clocks": 0
+      },
+      "config": {
+        "base_ms": 40,
+        "increment_ms": 4,
+        "nodes_per_move": 0,
+        "max_plies": 240,
+        "hash": 16,
+        "threads": 1
+      },
+      "binary_sha256": "7b80ce37ee1977e881f7228ae4cb6caf252efa7d2b6c42fdf12af17836303ed8",
+      "a_options": {
+        "hash": "requested 16",
+        "threads": "1 (StockBear single-threaded build)",
+        "evalparams": "research-data/params_abc.txt",
+        "tteval": "true",
+        "pstfile": "benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+      },
+      "b_options": {
+        "hash": "requested 16",
+        "threads": "1 (StockBear single-threaded build)",
+        "evalparams": "research-data/params_abc.txt",
+        "tteval": "true"
+      },
+      "seed": 2026120911,
+      "opening_sha256": "49d00e1f7baa870661fda5ca4546382c04c9d3e5e190a41969d95baab52532a6",
+      "suite_openings": 500,
+      "pgn_replay": {
+        "games_replayed": 1000,
+        "inconsistent": 0
+      }
+    },
+    "batchB": {
+      "job": "tier1-exp0051-tier1-exp0051-batchB-run42217333693",
+      "issues": [],
+      "wdl": [
+        174,
+        195,
+        626
+      ],
+      "scored": 995,
+      "unscored": 5,
+      "complete_pairs": 495,
+      "incomplete_pairs": 5,
+      "orphan_scored_games": 5,
+      "games_in_primary_estimate": 990,
+      "stats": {
+        "pairs": 495,
+        "clusters": 495,
+        "pair_mean": 0.5474747474747474,
+        "score": 0.2737373737373737,
+        "cr1_stderr": 0.022257048436508213,
+        "naive_stderr": 0.022257048436508213,
+        "design_effect": 1.0,
+        "t_critical_0975": 1.9647777401610171,
+        "df": 494,
+        "elo": -169.50383980339078,
+        "elo_ci95": [
+          -189.11813355105568,
+          -150.8439226713944
+        ],
+        "elo_ci95_repo_convention": [
+          -189.27363279647346,
+          -150.7032563209258
+        ],
+        "t_critical_repo_convention": 1.979931,
+        "obs_per_cluster": {
+          "1": 495
+        }
+      },
+      "pentanomial": [
+        7,
+        27,
+        145,
+        143,
+        173
+      ],
+      "elo_from_score_all_scored_games": -170.2674806120762,
+      "cluster_bootstrap_ci95": [
+        -188.51668442357544,
+        -150.96733661097437
+      ],
+      "terminations": {
+        "CHECKMATE": 800,
+        "THREEFOLD_REPETITION": 187,
+        "INSUFFICIENT_MATERIAL": 6,
+        "FIFTY_MOVES": 2,
+        "UNADJUDICATED_MAX_PLIES": 5
+      },
+      "time_forfeits": 0,
+      "illegal": 0,
+      "engine_failures": 0,
+      "clock": {
+        "min_remaining_ms": 13.45,
+        "max_remaining_ms": 43.06,
+        "negative_clocks": 0
+      },
+      "config": {
+        "base_ms": 40,
+        "increment_ms": 4,
+        "nodes_per_move": 0,
+        "max_plies": 240,
+        "hash": 16,
+        "threads": 1
+      },
+      "binary_sha256": "7b80ce37ee1977e881f7228ae4cb6caf252efa7d2b6c42fdf12af17836303ed8",
+      "a_options": {
+        "hash": "requested 16",
+        "threads": "1 (StockBear single-threaded build)",
+        "evalparams": "research-data/params_abc.txt",
+        "tteval": "true",
+        "pstfile": "benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+      },
+      "b_options": {
+        "hash": "requested 16",
+        "threads": "1 (StockBear single-threaded build)",
+        "evalparams": "research-data/params_abc.txt",
+        "tteval": "true"
+      },
+      "seed": 2026120912,
+      "opening_sha256": "f919ce7f1c1424eb43f0716f16b65a8e69129384ff0b266e2b01b031003ff715",
+      "suite_openings": 500,
+      "pgn_replay": {
+        "games_replayed": 1000,
+        "inconsistent": 0
+      }
+    },
+    "null": {
+      "job": "tier1-exp0051-tier1-exp0051-null-run42217333693",
+      "issues": [],
+      "wdl": [
+        134,
+        136,
+        128
+      ],
+      "scored": 398,
+      "unscored": 2,
+      "complete_pairs": 198,
+      "incomplete_pairs": 2,
+      "orphan_scored_games": 2,
+      "games_in_primary_estimate": 396,
+      "stats": {
+        "pairs": 198,
+        "clusters": 198,
+        "pair_mean": 1.0126262626262625,
+        "score": 0.5063131313131313,
+        "cr1_stderr": 0.027134053163633095,
+        "naive_stderr": 0.027134053163633095,
+        "design_effect": 1.0,
+        "t_critical_0975": 1.972079033778543,
+        "df": 197,
+        "elo": 4.3870460897261605,
+        "elo_ci95": [
+          -14.212560423876292,
+          23.011854980069465
+        ],
+        "elo_ci95_repo_convention": [
+          -14.286708131366973,
+          23.08620435937824
+        ],
+        "t_critical_repo_convention": 1.979931,
+        "obs_per_cluster": {
+          "1": 198
+        }
+      },
+      "pentanomial": [
+        5,
+        37,
+        122,
+        26,
+        8
+      ],
+      "elo_from_score_all_scored_games": 5.238119236059052,
+      "cluster_bootstrap_ci95": [
+        -14.045447766529817,
+        22.844290757871573
+      ],
+      "terminations": {
+        "CHECKMATE": 262,
+        "THREEFOLD_REPETITION": 132,
+        "INSUFFICIENT_MATERIAL": 4,
+        "UNADJUDICATED_MAX_PLIES": 2
+      },
+      "time_forfeits": 0,
+      "illegal": 0,
+      "engine_failures": 0,
+      "clock": {
+        "min_remaining_ms": 13.29,
+        "max_remaining_ms": 42.71,
+        "negative_clocks": 0
+      },
+      "config": {
+        "base_ms": 40,
+        "increment_ms": 4,
+        "nodes_per_move": 0,
+        "max_plies": 240,
+        "hash": 16,
+        "threads": 1
+      },
+      "binary_sha256": "7b80ce37ee1977e881f7228ae4cb6caf252efa7d2b6c42fdf12af17836303ed8",
+      "a_options": {
+        "hash": "requested 16",
+        "threads": "1 (StockBear single-threaded build)",
+        "evalparams": "research-data/params_abc.txt",
+        "tteval": "true",
+        "pstfile": "benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+      },
+      "b_options": {
+        "hash": "requested 16",
+        "threads": "1 (StockBear single-threaded build)",
+        "evalparams": "research-data/params_abc.txt",
+        "tteval": "true",
+        "pstfile": "benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+      },
+      "seed": 2026120913,
+      "opening_sha256": "4c4197a10ca1bab328d10137b13dbc44548b8dd119a2c2894e57a87e102d57c7",
+      "suite_openings": 200,
+      "pgn_replay": {
+        "games_replayed": 400,
+        "inconsistent": 0
+      }
+    },
+    "stage0": {
+      "job": "tier1-exp0051-tier1-exp0051-stage0-run42217333693",
+      "issues": [],
+      "wdl": [
+        132,
+        127,
+        139
+      ],
+      "scored": 398,
+      "unscored": 2,
+      "complete_pairs": 198,
+      "incomplete_pairs": 2,
+      "orphan_scored_games": 2,
+      "games_in_primary_estimate": 396,
+      "stats": {
+        "pairs": 198,
+        "clusters": 198,
+        "pair_mean": 0.9848484848484849,
+        "score": 0.49242424242424243,
+        "cr1_stderr": 0.02372446986882905,
+        "naive_stderr": 0.023724469868829045,
+        "design_effect": 1.0000000000000002,
+        "t_critical_0975": 1.972079033778543,
+        "df": 197,
+        "elo": -5.2645784231883255,
+        "elo_ci95": [
+          -21.54706291418122,
+          10.99479852277993
+        ],
+        "elo_ci95_repo_convention": [
+          -21.612034515426434,
+          11.059585341198645
+        ],
+        "t_critical_repo_convention": 1.979931,
+        "obs_per_cluster": {
+          "1": 198
+        }
+      },
+      "pentanomial": [
+        4,
+        24,
+        137,
+        28,
+        5
+      ],
+      "elo_from_score_all_scored_games": -6.1113063275206905,
+      "cluster_bootstrap_ci95": [
+        -21.082540206401166,
+        10.53157548893966
+      ],
+      "terminations": {
+        "THREEFOLD_REPETITION": 119,
+        "INSUFFICIENT_MATERIAL": 7,
+        "CHECKMATE": 271,
+        "FIFTY_MOVES": 1,
+        "UNADJUDICATED_MAX_PLIES": 2
+      },
+      "time_forfeits": 0,
+      "illegal": 0,
+      "engine_failures": 0,
+      "clock": {
+        "min_remaining_ms": 13.75,
+        "max_remaining_ms": 42.33,
+        "negative_clocks": 0
+      },
+      "config": {
+        "base_ms": 40,
+        "increment_ms": 4,
+        "nodes_per_move": 0,
+        "max_plies": 240,
+        "hash": 16,
+        "threads": 1
+      },
+      "binary_sha256": "7b80ce37ee1977e881f7228ae4cb6caf252efa7d2b6c42fdf12af17836303ed8",
+      "a_options": {
+        "hash": "requested 16",
+        "threads": "1 (StockBear single-threaded build)",
+        "evalparams": "research-data/params_abc.txt",
+        "tteval": "true"
+      },
+      "b_options": {
+        "hash": "requested 16",
+        "threads": "1 (StockBear single-threaded build)",
+        "evalparams": "research-data/params_abc.txt",
+        "tteval": "true"
+      },
+      "seed": 2026120910,
+      "opening_sha256": "8f2994cc815be9e51e3c52ac90c2c0fd09831908ecf685953c0ce0e28dfba5e4",
+      "suite_openings": 200,
+      "pgn_replay": {
+        "games_replayed": 400,
+        "inconsistent": 0
+      }
+    },
+    "_combined": {
+      "wdl": [
+        373,
+        389,
+        1230
+      ],
+      "stats": {
+        "pairs": 992,
+        "clusters": 992,
+        "pair_mean": 0.5705645161290323,
+        "score": 0.2852822580645161,
+        "cr1_stderr": 0.016342632649152273,
+        "naive_stderr": 0.016342632649152273,
+        "design_effect": 1.0,
+        "t_critical_0975": 1.9623606767359258,
+        "df": 991,
+        "elo": -159.54391986351052,
+        "elo_ci95": [
+          -173.44772738909575,
+          -146.10234604336924
+        ],
+        "elo_ci95_repo_convention": [
+          -173.57451229680981,
+          -145.98389110446942
+        ],
+        "t_critical_repo_convention": 1.979931,
+        "obs_per_cluster": {
+          "1": 992
+        }
+      },
+      "bootstrap_ci95": [
+        -173.30820405848777,
+        -146.02481851495085
+      ],
+      "batch_label_overlap": 0
+    }
+  },
+  "committed_blobs": "50/50",
+  "checksums": "40/40",
+  "nulls_ok": true,
+  "pst_load_proof": {
+    "batchA": [
+      "arm A: benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+    ],
+    "batchB": [
+      "arm A: benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+    ],
+    "null": [
+      "arm A: benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst",
+      "arm B: benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+    ],
+    "stage0": []
+  },
+  "issues": []
+}

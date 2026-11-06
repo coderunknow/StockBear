@@ -44,6 +44,13 @@ enum EvalParamId : int {
     // dev6 (exp-0026): genuinely new pawn-structure features, appended so the
     // table stays append-only. Shipped value 0 -> default build bit-identical.
     ConnectedPassed, RookBehindPassed,
+    // exp-0052: nonlinear king safety. The shipped KingDanger* rows are LINEAR
+    // in zone hits, so concentration of attackers can never be punished
+    // super-linearly at ANY parameter value. This row adds a saturating
+    // quadratic over weighted attack units. ONE row, so a measured effect is
+    // attributable to ONE mechanism (the exp-0026 six-feature bundle could not
+    // be attributed). Shipped 0 => default build bit-exact and no extra cost.
+    KingSafetyQuadratic,
     // The table must only ever be appended: reordering/removing an entry would
     // silently reinterpret every recorded tuning dataset and parameter file.
     EvalParamNB

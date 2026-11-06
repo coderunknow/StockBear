@@ -142,6 +142,7 @@ if(STOCKBEAR_BUILD_TESTS)
         tests/unit/test_correction_history.cpp
         tests/unit/test_eval.cpp
         tests/unit/test_eval_baseline.cpp
+        tests/unit/test_king_safety.cpp
         tests/unit/test_fen.cpp
         tests/unit/test_move.cpp
         tests/unit/test_nnue.cpp
@@ -178,6 +179,11 @@ if(STOCKBEAR_BUILD_TESTS)
     # exp-0050 correction history: exercised with the switch explicitly ON,
     # which the shipped default never does, so it gets its own entry.
     add_test(NAME correction_history COMMAND stockbear_tests correction_history)
+    # exp-0052 king safety: installs process-wide evaluation parameters (feature
+    # explicitly ON, which the shipped default never is), so it needs its own
+    # isolated entry. The runner filters by group name -- without this line the
+    # group would compile but NEVER run under CTest.
+    add_test(NAME king_safety COMMAND stockbear_tests king_safety)
     add_test(NAME regression  COMMAND stockbear_tests regression)
     add_test(NAME perft_quick COMMAND stockbear_tests perft_quick)
     add_test(NAME stress      COMMAND stockbear_tests stress)

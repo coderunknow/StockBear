@@ -1,0 +1,19 @@
+{
+  "n": 3000,
+  "changed": 1850,
+  "rms_delta_cp": 13.87,
+  "mean_delta_cp": -0.36,
+  "max_abs_delta_cp": 64,
+  "p50_abs": 1,
+  "p90_abs": 22,
+  "p99_abs": 56,
+  "sd_off": 679.6,
+  "sd_on": 684.4,
+  "sd_ratio": 1.0072,
+  "criterion": "p99 <= 120cp AND RMS < 40cp (smallest pruning margin is 85cp)",
+  "exp0049_reference_rms": 111.83,
+  "cap_units": 32,
+  "curve_divisor": 16,
+  "coefficient": 1,
+  "criterion_pass": true
+}

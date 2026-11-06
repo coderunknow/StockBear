@@ -1,0 +1,10 @@
+{
+  "blocks": 40,
+  "median_b_over_a": 1.0064976162962715,
+  "p10": 0.9689089881288864,
+  "p90": 1.0429752066115703,
+  "min": 0.9169329073482427,
+  "max": 1.0837264150943398,
+  "a_params": "research-data/params_abc.txt",
+  "b_params": "research-data/params_exp0052_ks.txt"
+}

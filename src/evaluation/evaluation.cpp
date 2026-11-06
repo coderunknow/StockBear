@@ -149,6 +149,62 @@ struct Score { int mg = 0; int eg = 0; };
 bool gExtendedEval = false;
 bool extended_eval_active() { return gExtendedEval; }
 
+// --- exp-0052: nonlinear king safety (default OFF) --------------------------
+// The shipped KingDanger* rows charge a CONSTANT cp per zone hit, so four
+// converging attackers cost exactly 4x one attacker. Real king attacks are
+// super-linear: a lone attacker is nearly harmless, several together can be
+// decisive. No value of the linear coefficients can express that, which makes
+// this a REPRESENTATIONAL limit rather than a tuning error.
+//
+// Weighted hits into the king zone are summed and the total indexes a
+// saturating quadratic curve, tapered as a middlegame-only term (the king PST
+// already handles endgame king activity, so safety there would double-count).
+// The attack-unit idea is the published Rebel/CPW formulation; the weights,
+// curve and cap below are StockBear's own. No external engine code is used.
+//
+// COST: the units are accumulated inside the EXISTING king-danger loop, which
+// already computes every enemy piece's attack set. No attack is recomputed;
+// the only new work is one multiply-add per piece plus one table-free curve
+// evaluation per side. The accumulation is guarded by the hoisted gate flag,
+// so the default build does no extra work at all.
+bool gKingSafety = false;
+bool king_safety_active() { return gKingSafety; }
+
+// Attack-unit weights per attacking piece type (index by PieceType). Pawns and
+// kings weigh 0: their zone contact is already covered by the linear rows and
+// the pawn shield, and counting them here would double-count.
+constexpr int KingAttackWeight[PieceTypeNB] = {0, 0, 2, 2, 3, 5, 0};
+// Cap at the p99 of the observed per-side attack-unit distribution (33 units on
+// a 3,000-position diagnostic corpus), rounded down to 32. This clips only the
+// extreme ~1% of sides and bounds one side's danger at 32*32/16 = 64 cp, so the
+// term can never dwarf material or swamp the pruning margins.
+constexpr int KingDangerIndexMax = 32;
+
+// Saturating quadratic in "danger units"; the parameter scales it to cp.
+//
+// SCALE IS PART OF THE DESIGN, NOT A FREE KNOB. exp-0051 measured -159.54 Elo
+// for a table whose RMS eval perturbation was 111.83 cp: a large perturbation
+// distorts the cp-calibrated futility (110), reverse-futility (85) and delta
+// (200) margins, so the search prunes on a different scale than the margins
+// assume. This curve is therefore scaled so that, at the frozen coefficient,
+// the p99 term is about one pawn and the RMS eval delta stays well below the
+// smallest pruning margin. Divisor 16 with the 64-unit cap bounds one side's
+// danger at 256 "units"; see docs/STOCKBEAR_RECOVERY_RESEARCH.md for the
+// pre-declared criterion and the measured distribution.
+int king_danger_curve(int units) {
+    const int u = units < 0 ? 0 : (units > KingDangerIndexMax ? KingDangerIndexMax : units);
+    return (u * u) / 16;
+}
+
+// Shared by features(), accumulate_breakdown() and the incremental count path
+// so the three can never drift apart. Queen gate: with no enemy queen the
+// weighted total stays small and the curve contributes little, so the term is
+// skipped in queenless positions (most endgames), keeping endgame cost flat.
+int king_safety_danger(const Position& p, Color them, int units) {
+    if (!p.pieces(them, Queen)) return 0;
+    return king_danger_curve(units);
+}
+
 // Raw counts (always from `us`'s point of view) of the six extended features.
 // A single shared implementation is used by features(), accumulate_breakdown()
 // and cheap_feature_counts() so the live evaluation and the offline breakdown
@@ -346,6 +402,11 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
         out.mg += mgp(PawnShield) * popcount(pawns & shieldFiles & RankBB[frontRank]);
     }
     if (!lite) {
+        // exp-0052: accumulate attack units in the SAME loop that already
+        // computes these attacks. Hoisted flag => no per-piece branch cost
+        // when the feature is off, and no recomputed attack sets when it is on.
+        const bool ks = king_safety_active();
+        int kingUnits = 0;
         const Bitboard zone = KingZoneBB[us][k];
         for (PieceType pt : {Pawn, Knight, Bishop, Rook, Queen}) {
             EvalParamId id = KingDangerPawn;
@@ -358,8 +419,10 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
                 Square s = pop_lsb(b);
                 const int hits = popcount(attacks_bb(pt, them, s, p.pieces()) & zone);
                 out.mg -= hits * mgp(id);
+                if (ks) kingUnits += KingAttackWeight[pt] * hits;
             }
         }
+        if (ks) out.mg -= king_safety_danger(p, them, kingUnits) * mgp(KingSafetyQuadratic);
     }
     return out;
 }
@@ -487,6 +550,8 @@ void accumulate_breakdown(const Position& p, Color us, EvalBreakdown& bd) {
         const Bitboard shieldFiles = FileBB[file_of(k)] | AdjacentFilesBB[file_of(k)];
         mg(PawnShield) += sign * popcount(pawns & shieldFiles & RankBB[frontRank]);
     }
+    const bool ks = king_safety_active();
+    int kingUnits = 0;
     const Bitboard zone = KingZoneBB[us][k];
     for (PieceType pt : {Pawn, Knight, Bishop, Rook, Queen}) {
         EvalParamId id = KingDangerPawn;
@@ -500,8 +565,12 @@ void accumulate_breakdown(const Position& p, Color us, EvalBreakdown& bd) {
             // The feature value is negative (enemy attacks hurt us) while the
             // parameter is positive, so the count enters with the opposite sign.
             mg(id) -= sign * hits;
+            if (ks) kingUnits += KingAttackWeight[pt] * hits;
         }
     }
+    // The curve is a pure function of the POSITION, so it enters as a COUNT and
+    // the parameter stays linear: sum(count*param) == features() exactly.
+    if (ks) mg(KingSafetyQuadratic) -= sign * king_safety_danger(p, them, kingUnits);
 }
 } // namespace
 
@@ -542,7 +611,8 @@ void cheap_feature_counts(const Position& p, Color us, std::int16_t* out) {
     for (int id : {int(BishopPair), int(IsolatedPawn), int(DoubledPawn), int(PassedPawnAdvance),
                    int(RookOpenFile), int(RookSemiOpenFile), int(PawnShield),
                    int(RookOn7th), int(KnightOutpost), int(BackwardPawn), int(PawnChain),
-                   int(ConnectedPassed), int(RookBehindPassed)})
+                   int(ConnectedPassed), int(RookBehindPassed),
+                   int(KingSafetyQuadratic)})
         out[id] = 0;
     if (extended_eval_active()) {
         const ExtCounts e = extended_counts(p, us);
@@ -614,13 +684,18 @@ void all_feature_counts(const Position& p, Color us, std::int16_t* out) {
         }
     }
     const Bitboard zone = KingZoneBB[us][p.king_square(us)];
+    const bool ks = king_safety_active();
+    int kingUnits = 0;
     for (PieceType pt : {Pawn, Knight, Bishop, Rook, Queen}) {
         Bitboard b = p.pieces(them, pt);
         while (b) {
             const Square s = pop_lsb(b);
-            out[king_danger_param_id(pt)] -= std::int16_t(king_danger_count_at(p, them, pt, s, occ, zone));
+            const int hits = king_danger_count_at(p, them, pt, s, occ, zone);
+            out[king_danger_param_id(pt)] -= std::int16_t(hits);
+            if (ks) kingUnits += KingAttackWeight[pt] * hits;
         }
     }
+    if (ks) out[KingSafetyQuadratic] -= std::int16_t(king_safety_danger(p, them, kingUnits));
 }
 
 void init_evaluation() {
@@ -657,6 +732,8 @@ void evaluation_rebuild_tables() {
                  || p.mg[PawnChain] || p.eg[PawnChain]
                  || p.mg[ConnectedPassed] || p.eg[ConnectedPassed]
                  || p.mg[RookBehindPassed] || p.eg[RookBehindPassed];
+    // exp-0052: pay for the nonlinear king-safety term only when it is enabled.
+    gKingSafety = p.mg[KingSafetyQuadratic] || p.eg[KingSafetyQuadratic];
 }
 
 EvalBreakdown eval_breakdown(const Position& p) {

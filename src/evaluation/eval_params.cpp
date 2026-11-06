@@ -61,6 +61,9 @@ constexpr std::array<EvalParamDef, EvalParamNB> kTable = {{
     // dev6 exp-0026 appended features: shipped 0 (bit-identical default build).
     {"ConnectedPassed", 0, 0, -100, 200},
     {"RookBehindPassed", 0, 0, -100, 200},
+    // exp-0052. Shipped 0 keeps the default bit-exact. Ranges are wide enough
+    // for a real term but bounded so a hostile file cannot overflow.
+    {"KingSafetyQuadratic", 0, 0, -400, 400},
 }};
 
 EvalParams gActive{};

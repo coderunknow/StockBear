@@ -46,3 +46,6 @@ PawnChain 0 0
 # evaluation and its bench signature are unchanged.
 ConnectedPassed 0 0
 RookBehindPassed 0 0
+# exp-0052: nonlinear king-safety row, appended and shipped 0 so the default
+# evaluation and all three bench signatures are unchanged.
+KingSafetyQuadratic 0 0

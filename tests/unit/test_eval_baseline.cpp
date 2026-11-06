@@ -158,7 +158,10 @@ TEST(unit, evaluation_reproduces_dev2_baseline) {
     // the raw checksum of the table; the semantic pin below (dev2_evaluate
     // equality) plus bench 243f9a1c1ba5b36f still guarantee the shipped
     // evaluation is unchanged. All appended ids default to 0.
-    CHECK(eval_params_checksum(default_eval_params()) == 0x5d90d35fb2203bdeULL);
+    // exp-0052 appended one more zero-valued row (KingSafetyQuadratic), so the
+    // raw table checksum changes again while the semantic pin and all three
+    // frozen bench signatures stay identical.
+    CHECK(eval_params_checksum(default_eval_params()) == 0xcc89240fd7b7e39eULL);
     CHECK(active_eval_params() == default_eval_params());
     std::vector<Position> positions;
     for (const auto& c : SearchCases) positions.push_back(test::position(c.fen));
