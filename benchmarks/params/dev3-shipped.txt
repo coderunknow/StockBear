@@ -49,3 +49,7 @@ RookBehindPassed 0 0
 # exp-0052: nonlinear king-safety row, appended and shipped 0 so the default
 # evaluation and all three bench signatures are unchanged.
 KingSafetyQuadratic 0 0
+
+# exp-0053: threat/material-exposure row, appended and shipped 0 so the default
+# evaluation and all three bench signatures are unchanged.
+ThreatDetection 0 0

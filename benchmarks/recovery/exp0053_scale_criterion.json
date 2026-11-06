@@ -1,0 +1,20 @@
+{
+  "experiment": "exp-0053",
+  "declared_before_measurement": true,
+  "criterion": {
+    "p99_abs_delta_cp_max": 120,
+    "rms_delta_cp_max": 40
+  },
+  "rationale": "Same criterion as exp-0052. StockBear's pruning margins are cp-calibrated (futility 110, reverse-futility 85, delta 200). exp-0049 perturbed eval at RMS 111.83 cp and lost ~160 Elo despite better log-loss, so a new term must stay well inside the smallest margin (85 cp).",
+  "frozen_candidate": {
+    "weights": {
+      "hanging": 10,
+      "pawn_threat": 16
+    },
+    "cap_units": 64,
+    "mg": 1,
+    "eg": 1
+  },
+  "no_strength_sweep": true,
+  "rule_if_failed": "Tighten the IMPLEMENTATION (cap/weights). Never relax this criterion after seeing the distribution."
+}

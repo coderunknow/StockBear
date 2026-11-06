@@ -1,0 +1,10 @@
+{
+  "fixed_depth": 10,
+  "positions": 11,
+  "positions_live": 11,
+  "bestmoves_changed": 3,
+  "nodes_off": 3136281,
+  "nodes_on": 2809041,
+  "total_node_delta_pct": -10.43,
+  "note": "tree-change proxy only; NOT a strength or speed measurement"
+}

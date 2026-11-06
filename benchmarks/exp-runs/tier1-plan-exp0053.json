@@ -1,0 +1,177 @@
+{
+  "experiment_id": "exp0053",
+  "frozen_before_evaluation_games": true,
+  "prereg": "docs/DEV6_PREREG_EXP0053.md",
+  "prereg_sha256": "6049ef7fd044fad15418e453e7ec6cbc51022dd9954835869cdbe49c44e66722",
+  "control": "FIXED TIME 40+4 ms; never --nodes",
+  "tier": "SCREEN (not a Gate-1 decisive run)",
+  "no_pooling_with_earlier_experiments": true,
+  "frozen_combined": "batchA + batchB ONLY (2000 games)",
+  "candidate_config": "research-data/params_exp0053_threats.txt",
+  "candidate_config_sha256": "7266eb4c2d17f226b31e8e435c118be1abd06b412e07256c4f793c2f8e097548",
+  "baseline_binary": "benchmarks/binaries/stockbear-dev5-release",
+  "baseline_binary_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "openings_seed": 2026110653,
+  "jobs": [
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0053.md",
+      "prereg_sha256": "6049ef7fd044fad15418e453e7ec6cbc51022dd9954835869cdbe49c44e66722",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0053-stage0",
+      "games": 400,
+      "seed": 2026110670,
+      "openings": "benchmarks/positions/openings_exp0053_stage0.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": true,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Stage-0 control/control validity null on the packaged candidate; fresh ctest; 0 forfeits required",
+      "assets": [
+        "research-data/params_exp0053_threats.txt"
+      ]
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0053.md",
+      "prereg_sha256": "6049ef7fd044fad15418e453e7ec6cbc51022dd9954835869cdbe49c44e66722",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0053-batchA",
+      "games": 1000,
+      "seed": 2026110671,
+      "openings": "benchmarks/positions/openings_exp0053_batchA.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_exp0053_threats.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "baseline",
+      "note": "frozen batchA; A=candidate+ThreatDetection 1 1 (KingSafetyQuadratic absent => 0), B=EXACT released dev5 at params_abc",
+      "assets": [
+        "research-data/params_exp0053_threats.txt"
+      ]
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0053.md",
+      "prereg_sha256": "6049ef7fd044fad15418e453e7ec6cbc51022dd9954835869cdbe49c44e66722",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0053-batchB",
+      "games": 1000,
+      "seed": 2026110672,
+      "openings": "benchmarks/positions/openings_exp0053_batchB.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_exp0053_threats.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "baseline",
+      "note": "frozen batchB; independent seed and disjoint openings; same arms as batchA",
+      "assets": [
+        "research-data/params_exp0053_threats.txt"
+      ]
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0053.md",
+      "prereg_sha256": "6049ef7fd044fad15418e453e7ec6cbc51022dd9954835869cdbe49c44e66722",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0053-null",
+      "games": 400,
+      "seed": 2026110673,
+      "openings": "benchmarks/positions/openings_exp0053_null.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_exp0053_threats.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "candidate-options-on-both-sides validity null; CI must include 0",
+      "assets": [
+        "research-data/params_exp0053_threats.txt"
+      ]
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0053.md",
+      "prereg_sha256": "6049ef7fd044fad15418e453e7ec6cbc51022dd9954835869cdbe49c44e66722",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0053-equiv",
+      "games": 400,
+      "seed": 2026110674,
+      "openings": "benchmarks/positions/openings_exp0053_equiv.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "baseline",
+      "note": "BASELINE-EQUIVALENCE diagnostic (prereg 5.1): candidate knob-OFF vs exact dev5. Attribution only; never pooled",
+      "assets": [
+        "research-data/params_exp0053_threats.txt"
+      ]
+    }
+  ]
+}

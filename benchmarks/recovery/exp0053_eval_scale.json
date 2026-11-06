@@ -1,0 +1,19 @@
+{
+  "n": 3000,
+  "changed": 2006,
+  "rms_delta_cp": 16.88,
+  "mean_delta_cp": -0.13,
+  "max_abs_delta_cp": 64,
+  "p50_abs": 10,
+  "p90_abs": 26,
+  "p99_abs": 46,
+  "sd_off": 679.6,
+  "sd_on": 678.2,
+  "sd_ratio": 0.9981,
+  "criterion": {
+    "p99_abs_delta_cp_max": 120,
+    "rms_delta_cp_max": 40
+  },
+  "criterion_pass": true,
+  "exp0049_reference_rms": 111.83
+}

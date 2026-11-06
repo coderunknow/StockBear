@@ -1,0 +1,58 @@
+{
+  "group": "threats",
+  "baseline": "PASS",
+  "mutants": [
+    {
+      "mutant": "computed_but_never_applied",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "a term that is computed but never added is correct-looking dead code",
+      "first_failure": null
+    },
+    {
+      "mutant": "defended_mask_removed",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "defended pieces would count as hanging; sign/linearity tests still pass",
+      "first_failure": null
+    },
+    {
+      "mutant": "pawn_component_removed",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "pawn threats are the larger component and must be independently pinned",
+      "first_failure": null
+    },
+    {
+      "mutant": "hanging_component_removed",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "hanging pieces must be independently pinned",
+      "first_failure": null
+    },
+    {
+      "mutant": "cap_removed",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "without the cap the term can swamp the cp-calibrated pruning margins",
+      "first_failure": null
+    },
+    {
+      "mutant": "pawns_counted_as_hanging_targets",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "a pawn attacked by a piece is not a material-exposure threat",
+      "first_failure": null
+    },
+    {
+      "mutant": "sign_flipped",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "a flipped sign would make the engine help its opponent",
+      "first_failure": null
+    }
+  ],
+  "survivors": [],
+  "source_restored": true,
+  "verdict": "PASS"
+}

@@ -51,6 +51,8 @@ enum EvalParamId : int {
     // attributable to ONE mechanism (the exp-0026 six-feature bundle could not
     // be attributed). Shipped 0 => default build bit-exact and no extra cost.
     KingSafetyQuadratic,
+    // exp-0053: material-exposure (threat) detection. Shipped 0 = default OFF.
+    ThreatDetection,
     // The table must only ever be appended: reordering/removing an entry would
     // silently reinterpret every recorded tuning dataset and parameter file.
     EvalParamNB

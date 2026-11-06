@@ -1128,3 +1128,70 @@ not play-equivalent to dev5, the batch effect may not be claimed as this knob's.
 SCREEN rules: ADVANCE >= +20 with LCB > 0; CLOSE if UCB < +10; else INCONCLUSIVE.
 **This is not a Gate-1 run and cannot satisfy Gate 1.** Gates: 1 UNMET,
 2 direction-supported, 3 PASS, 4 UNMET. Mission ACTIVE; exp-0047 DORMANT.
+
+## 2026-11-06 — exp-0053: threat / material-exposure detection (Direction 2)
+
+**Gate clarified.** The user withdrew the interim dev4 wording as carry-over
+context and reconfirmed the dev6 gate: combined point >= +75 AND two-sided
+opening-clustered 95% LCB strictly > +50 vs the exact released dev5 champion.
+Recorded in `STOCKBEAR_COMPLETION_CHECKLIST.md` §0.1. The in-repo dev4 binary is a
+verified rebuild from tag `v0.1.0-dev4`, not a downloaded release asset; the user
+asked for the published asset to be fetched and checksum-verified, which is
+tracked as an open checklist item (§0.2).
+
+**A measured dead end, recorded because it changed the design.** Direction 3
+(shared attack infrastructure) was implemented first as a per-square attack table
+built once per evaluate() and shared by both features() calls. It was BIT-EXACT
+(all three signatures, ctest 15/15) but measured **~19.5% SLOWER** over 90 paired
+blocks in two independent runs: writing and reloading 512 bytes per call costs
+more than the magic-lookup recomputation it removes. Removing the 544-byte
+zero-initialisation did not rescue it. **Reverted.** The lesson is that attack
+generation is not the bottleneck it appears to be in a profile; memory traffic
+is. The first A/A control for this measurement was too wide (0.1214) and was
+NOT used to claim a number; the conclusion rests on two consistent runs whose
+effect (~+19.5%) exceeded the noise.
+
+**exp-0053 mechanism.** StockBear had NO threat term. Added ONE appended param
+`ThreatDetection` (shipped 0): units = min(10*|hanging| + 16*|pawnThreat|, 64),
+where hanging = enemy non-pawn pieces attacked by us and NOT defended by them,
+and pawnThreat = any enemy piece attacked by our pawn. Applied to mg AND eg.
+Cost design carries the dead end forward: the union masks are accumulated with a
+few ORs INSIDE the existing mobility and king-danger loops, and the term itself
+is pure popcount work. Measured cost **+1.97%** (A/A control 0.0598).
+
+**Verification.** All three signatures bit-exact; ctest **16/16** with `threats`
+confirmed registered as test #8 and the binary run directly (exit 0, 8 tests, 0
+failures); ASan+UBSan **16/16**; independent python-chess oracle **800 positions,
+0 mismatches**; breakdown invariant **3,997 positions, 0 mismatches** with the
+term ON and OFF (the breakdown path uses an INDEPENDENT union builder, so this
+really cross-checks the fusion); liveness **11/11** trees change.
+
+**Mutation testing was decisive again.** Seven mutants physically applied and
+**all seven KILLED**, zero survivors: never-applied, defended-mask removed, pawn
+component removed, hanging component removed, cap removed, pawns counted as
+hanging targets, sign flipped. Test FENs were derived from the oracle by searching
+for positions that discriminate ONE component each (e.g. two attacked but
+DEFENDED enemy pieces must score 0; a both-sides-over-cap position must score 0
+where uncapped would give -10). No hand-labelled diagrams.
+
+**One test assertion was wrong and was corrected on the merits, not to pass.**
+An invented strict bound `v < VALUE_KNOWN_WIN` failed at coefficient 400.
+Inspection showed `taper()` clamps INCLUSIVELY to +/-10000, a heuristic bound far
+below MATE_BOUND (~29900), so reaching exactly 10000 is the pre-existing clamp
+working. The assertion was replaced with the true invariant (inclusive bound
+plus no mate encoding, at both sign extremes) and an added check that the frozen
+coefficient stays far from the clamp.
+
+**Scale.** Criterion pre-declared before measurement (p99 <= 120 cp, RMS < 40 cp).
+Measured RMS **16.88**, p99 **46**, max **64**, sd ratio 0.9981 -> PASS on the
+first attempt, so no rescaling and no post-hoc criterion adjustment.
+
+**Frozen screen.** Prereg `docs/DEV6_PREREG_EXP0053.md` SHA
+`6049ef7fd044fad15418e453e7ec6cbc51022dd9954835869cdbe49c44e66722`. Arm B is the
+exact released dev5 artifact. `KingSafetyQuadratic` is absent from the candidate
+file and therefore 0, so exp-0052's feature is OFF and attribution is to threats
+alone. 1,600 fresh openings seed 2026110653, independently verified 0 overlap
+against 52,841 earlier positions in 188 files, all 10 slice pairs disjoint.
+SCREEN rules: ADVANCE >= +20 with LCB > 0; CLOSE if UCB < +10; else INCONCLUSIVE.
+**Not a Gate-1 run.** Mission remains ACTIVE and is governed solely by
+`STOCKBEAR_COMPLETION_CHECKLIST.md`.

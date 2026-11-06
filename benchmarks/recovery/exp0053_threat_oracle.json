@@ -1,0 +1,13 @@
+{
+  "positions": 800,
+  "mismatches": 0,
+  "nonzero_positions": 566,
+  "seed": 20261112,
+  "spec": {
+    "w_hanging": 10,
+    "w_pawn": 16,
+    "cap": 64
+  },
+  "examples": [],
+  "verdict": "PASS"
+}

@@ -64,6 +64,8 @@ constexpr std::array<EvalParamDef, EvalParamNB> kTable = {{
     // exp-0052. Shipped 0 keeps the default bit-exact. Ranges are wide enough
     // for a real term but bounded so a hostile file cannot overflow.
     {"KingSafetyQuadratic", 0, 0, -400, 400},
+    // exp-0053. Shipped 0 keeps the default bit-exact.
+    {"ThreatDetection", 0, 0, -400, 400},
 }};
 
 EvalParams gActive{};

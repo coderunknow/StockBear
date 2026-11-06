@@ -169,6 +169,9 @@ bool extended_eval_active() { return gExtendedEval; }
 // so the default build does no extra work at all.
 bool gKingSafety = false;
 bool king_safety_active() { return gKingSafety; }
+// exp-0053: cached activation flag for the threat term, same discipline as
+// gKingSafety -- with the shipped set (param 0) evaluate() pays nothing.
+bool gThreats = false;
 
 // Attack-unit weights per attacking piece type (index by PieceType). Pawns and
 // kings weigh 0: their zone contact is already covered by the linear rows and
@@ -288,6 +291,70 @@ ExtCounts extended_counts(const Position& p, Color us) {
     return e;
 }
 
+// exp-0053: material exposure (threats). StockBear had NO threat term at all:
+// an undefended enemy piece, or one attacked by a pawn, was invisible to static
+// evaluation. At median depth 5 that is a real representational gap.
+//
+// Cost design (the exp-0052 lesson, plus a measured dead end): a shared per-square
+// attack table was tried first and measured ~19.5% SLOWER -- storing/reloading
+// 512 bytes cost more than the magic-lookup recomputation it replaced. Instead
+// the union masks are accumulated with a few ORs inside the loops that ALREADY
+// generate these attacks, and the threat term itself is pure popcount work.
+//
+// After both features() calls, by[c] covers colour c's P,N,B,R,Q attacks: the
+// N/B/R/Q part comes from that side's own mobility loop, and the P/N/B/R/Q part
+// from the opponent's king-danger loop. Kings are added explicitly below.
+struct ThreatUnions {
+    Bitboard by[2];
+    Bitboard byPawn[2];
+};
+
+// Fixed internal weights + ONE scale parameter, so the experiment has a single
+// attributable knob (the exp-0052 discipline). Bounded so the term can never
+// dwarf material or swamp the cp-calibrated pruning margins.
+constexpr int ThreatWeightHanging = 10;
+constexpr int ThreatWeightPawn    = 16;
+constexpr int ThreatUnitsMax      = 64;
+
+bool threats_active() { return gThreats; }
+
+int threat_units(const Position& p, Color us, const ThreatUnions& tu) {
+    const Color them = ~us;
+    const Bitboard occ = p.pieces();
+    const Bitboard enemy = p.pieces(them);
+    const Bitboard enemyNonPawn = enemy & ~p.pieces(them, Pawn);
+    const Bitboard atkUs   = tu.by[us]   | attacks_bb(King, us,   p.king_square(us),   occ);
+    const Bitboard defThem = tu.by[them] | attacks_bb(King, them, p.king_square(them), occ);
+    // Attacked by us and not defended by them.
+    const Bitboard hanging = enemyNonPawn & atkUs & ~defThem;
+    // Any enemy piece attacked by one of our pawns (a pawn is always cheaper).
+    const Bitboard pawnThreat = enemy & tu.byPawn[us];
+    const int units = ThreatWeightHanging * popcount(hanging)
+                    + ThreatWeightPawn    * popcount(pawnThreat);
+    return std::min(units, ThreatUnitsMax);
+}
+
+// Independent union construction for the offline breakdown / count paths. The
+// hot evaluate() path does NOT use this -- it reuses its existing loops -- so
+// the breakdown invariant genuinely cross-checks the fused accumulation.
+ThreatUnions build_threat_unions(const Position& p) {
+    ThreatUnions tu{};
+    const Bitboard occ = p.pieces();
+    for (int c = 0; c < ColorNB; ++c) {
+        const Color col = Color(c);
+        for (PieceType pt : {Pawn, Knight, Bishop, Rook, Queen}) {
+            Bitboard b = p.pieces(col, pt);
+            while (b) {
+                const Square s = pop_lsb(b);
+                const Bitboard at = attacks_bb(pt, col, s, occ);
+                tu.by[c] |= at;
+                if (pt == Pawn) tu.byPawn[c] |= at;
+            }
+        }
+    }
+    return tu;
+}
+
 // Dev5 isolated experiment: activity on an enemy-pawn-controlled square is
 // often illusory. This mask is deliberately geometric, not a legality test.
 Bitboard mobility_area(const Position& p, Color us) {
@@ -306,7 +373,8 @@ Bitboard mobility_area(const Position& p, Color us) {
 // The live evaluation of one side. Mirrors `accumulate_breakdown` below
 // term for term; `eval_breakdown_matches_evaluate` in the unit tests is what
 // keeps the two from drifting apart.
-Score features(const Position& p, Color us, const EvalParams& par, bool lite = false) {
+Score features(const Position& p, Color us, const EvalParams& par, bool lite = false,
+               ThreatUnions* tu = nullptr) {
     const Color them = ~us;
     const Bitboard pawns = p.pieces(us, Pawn);
     const Bitboard mobilityArea = mobility_area(p, us);
@@ -353,7 +421,9 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
         while (b) {
             Square s = pop_lsb(b);
             if (!lite) {
-            const int mobility = popcount(attacks_bb(pt, us, s, p.pieces()) & mobilityArea);
+            const Bitboard at = attacks_bb(pt, us, s, p.pieces());
+            if (tu) tu->by[us] |= at;
+            const int mobility = popcount(at & mobilityArea);
             EvalParamId id = MobilityKnight;
             if (pt == Bishop) id = MobilityBishop;
             else if (pt == Rook) id = MobilityRook;
@@ -417,7 +487,12 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
             b = p.pieces(them, pt);
             while (b) {
                 Square s = pop_lsb(b);
-                const int hits = popcount(attacks_bb(pt, them, s, p.pieces()) & zone);
+                const Bitboard at = attacks_bb(pt, them, s, p.pieces());
+                if (tu) {
+                    tu->by[them] |= at;
+                    if (pt == Pawn) tu->byPawn[them] |= at;
+                }
+                const int hits = popcount(at & zone);
                 out.mg -= hits * mgp(id);
                 if (ks) kingUnits += KingAttackWeight[pt] * hits;
             }
@@ -673,6 +748,9 @@ int king_danger_count_at(const Position& p, Color them, PieceType pt, Square sq,
 void all_feature_counts(const Position& p, Color us, std::int16_t* out) {
     for (int id = 0; id < int(EvalParamNB); ++id) out[id] = 0;
     cheap_feature_counts(p, us, out);
+    // exp-0053: per-side threat count, from the independent union builder.
+    out[std::size_t(ThreatDetection)] =
+        std::int16_t(threat_units(p, us, build_threat_unions(p)));
     const Bitboard occ = p.pieces();
     const Bitboard own = p.pieces(us);
     const Color them = ~us;
@@ -734,12 +812,22 @@ void evaluation_rebuild_tables() {
                  || p.mg[RookBehindPassed] || p.eg[RookBehindPassed];
     // exp-0052: pay for the nonlinear king-safety term only when it is enabled.
     gKingSafety = p.mg[KingSafetyQuadratic] || p.eg[KingSafetyQuadratic];
+    // exp-0053: pay for the threat term only when it is enabled.
+    gThreats = p.mg[ThreatDetection] || p.eg[ThreatDetection];
 }
 
 EvalBreakdown eval_breakdown(const Position& p) {
     EvalBreakdown bd;
     accumulate_breakdown(p, White, bd);
     accumulate_breakdown(p, Black, bd);
+    // exp-0053: threats need BOTH sides' attack unions, so they are added here
+    // rather than per-side. build_threat_unions() is an INDEPENDENT computation
+    // (evaluate() reuses its own existing loops), so the breakdown-vs-evaluate
+    // invariant genuinely cross-checks the fused accumulation.
+    const ThreatUnions tu = build_threat_unions(p);
+    const int diff = threat_units(p, White, tu) - threat_units(p, Black, tu);
+    bd.mg[std::size_t(ThreatDetection)] += diff;
+    bd.eg[std::size_t(ThreatDetection)] += diff;
     bd.phase = phase_of(p);
     return bd;
 }
@@ -767,9 +855,21 @@ int evaluate(const Position& p) {
     const EvalParams& par = active_eval_params();
 #if defined(STOCKBEAR_SAFE_MOBILITY) || !SB_INCREMENTAL_EVAL
     // Default (and safe-mobility) path: compute features() directly.
-    const Score w = features(p, White, par), b = features(p, Black, par);
-    const int mg = p.acc_mg(White) - p.acc_mg(Black) + w.mg - b.mg;
-    const int eg = p.acc_eg(White) - p.acc_eg(Black) + w.eg - b.eg;
+    // exp-0053: the union masks are filled by the loops inside features() at no
+    // extra attack-generation cost. They are only complete after BOTH calls,
+    // which is why the threat term is applied here rather than inside features().
+    ThreatUnions tu{};
+    const bool th = threats_active();
+    ThreatUnions* tup = th ? &tu : nullptr;
+    const Score w = features(p, White, par, false, tup), b = features(p, Black, par, false, tup);
+    int threatMg = 0, threatEg = 0;
+    if (th) {
+        const int diff = threat_units(p, White, tu) - threat_units(p, Black, tu);
+        threatMg = diff * par.mg[std::size_t(ThreatDetection)];
+        threatEg = diff * par.eg[std::size_t(ThreatDetection)];
+    }
+    const int mg = p.acc_mg(White) - p.acc_mg(Black) + w.mg - b.mg + threatMg;
+    const int eg = p.acc_eg(White) - p.acc_eg(Black) + w.eg - b.eg + threatEg;
 #else
     // Incremental path: raw per-side counts live in the Position's StateInfo
     // (maintained by make_move) and the active parameters are applied here.

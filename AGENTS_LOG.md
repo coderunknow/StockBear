@@ -2073,3 +2073,38 @@ Gates: 1 UNMET, 2 direction-supported, 3 PASS, 4 UNMET. Mission ACTIVE.
 Strongest next action: Direction 2 (threats/hanging pieces) under its own
 prereg — with the caveat that three eval-side candidates have now produced no
 confirmed gain and no single term credibly reaches +75.
+
+## 2026-11-06 — exp-0053 implemented and frozen (threats); attack-table dead end
+
+Gate reconfirmed by the user as the dev6 gate (+75 point, LCB > +50 vs released
+dev5); the interim dev4 wording was withdrawn as carry-over. Created
+`STOCKBEAR_COMPLETION_CHECKLIST.md` as the authoritative completion gate, all
+strength items unchecked.
+
+Direction 3 tried first: a shared per-square attack table, bit-exact but
+**~19.5% SLOWER** over 90 paired blocks (512-byte store/reload costs more than
+magic-lookup recomputation). REVERTED. First A/A control was too wide (0.1214)
+and was not used to claim a number.
+
+exp-0053: ONE appended default-off param `ThreatDetection`,
+units = min(10*|hanging| + 16*|pawnThreat|, 64), mg and eg. Unions accumulated
+inside the EXISTING mobility/king-danger loops; cost **+1.97%** (A/A 0.0598).
+
+Evidence: 3 signatures bit-exact; ctest 16/16 with `threats` registered (test #8)
+and binary exit 0 / 8 tests / 0 failures; ASan+UBSan 16/16; oracle 800/0
+mismatches; breakdown invariant 3997/0 with term ON and OFF; liveness 11/11;
+**7 mutants applied, all 7 KILLED, 0 survivors**. Scale pre-declared then
+PASS first try (RMS 16.88, p99 46, max 64). One invented strict bound assertion
+was corrected to the true inclusive-clamp invariant after inspecting types.hpp.
+
+Prereg SHA 6049ef7fd044fad15418e453e7ec6cbc51022dd9954835869cdbe49c44e66722;
+1,600 fresh openings seed 2026110653 independently verified disjoint (0 vs
+52,841 earlier positions, 10/10 slice pairs). Arm B = exact dev5 artifact;
+KingSafetyQuadratic absent => 0, so attribution is to threats alone.
+SCREEN only: ADVANCE >= +20 & LCB>0, CLOSE if UCB<+10, else INCONCLUSIVE.
+
+Recorded an UNCHECKED checklist item (§0.3) for the push-scope tension: the
+benchmark lane is push-triggered, so isolated-VM experiments require dispatch
+commits, while the directive forbids pushing before completion. Dispatch/export
+commits to the research branch are treated as the experiment mechanism, NOT as
+publication; the §8 completion push stays blocked. No merge/tag/release/deploy.
