@@ -14,7 +14,7 @@ scripts/dev6_exp0038_audit.py. Everything is recomputed from the raw per-game
     fraction (NOT the repo's lookup table)
   * Elo-from-score and an independent cluster bootstrap
   * full PGN replay: every move legal, final outcome matches the record
-  * time control, options, binary/asset identity, PST load proof
+  * time control, options, binary/asset identity, per-arm file-option load proof
   * null-control validity and clock-starvation diagnostics
 
 Usage: recovery_independent_audit.py <export-run-dir> [--pgn-replay] [--json out]
@@ -527,23 +527,90 @@ def main() -> int:
                 all_issues.append(f"checksum failure {j.name}/{fn}")
     print(f"  per-job SHA256SUMS: {sums_ok}/{sums_tot} verified")
 
-    pst_expected = None
+    # File-valued options (PstFile AND, from exp-0052, EvalParams) must have
+    # positive per-arm load proof. A missing file is NOT fatal to the engine:
+    # it prints "could not load" and plays on with fallback tables, which would
+    # fake a result. The runner renamed pst_probe_* to option_probe_* when the
+    # guard was generalised; accept both so older exports still audit.
     load_proof = {}
     for short, j in zip(results, jobs):
         log = (j / "run.log").read_text()
-        verified = re.findall(r"arm ([AB]) PstFile LOAD VERIFIED (\S+)", log)
-        load_proof[short] = [f"arm {a}: {p}" for a, p in verified]
+        verified = re.findall(r"arm ([AB]) (\w+) LOAD VERIFIED (\S+)", log)
+        load_proof[short] = [f"arm {a} {opt}: {p}" for a, opt, p in verified]
+        # Cross-check the runner's claim against the raw probe output and
+        # against the option list the job actually declared.
+        fp = j / "fingerprint.json"
+        declared = {}
+        spec = {}
+        if fp.is_file():
+            fj = json.loads(fp.read_text())
+            spec = fj.get("plan_job") or {}
+            if not spec:
+                all_issues.append(f"{short}: fingerprint has no plan_job; cannot "
+                                  f"verify which options the job declared")
+            # Independently confirm the job ran the FROZEN plan's config, by
+            # reading the plan out of the pinned source commit rather than
+            # trusting the fingerprint's own copy.
+            exp_id = fj.get("experiment_id", "")
+            mf = j / "manifest.json"
+            if not exp_id and mf.is_file():
+                exp_id = json.loads(mf.read_text()).get("experiment_id", "")
+            if not exp_id:
+                all_issues.append(f"{short}: cannot determine experiment_id")
+            plan_path = f"benchmarks/exp-runs/tier1-plan-{exp_id}.json"
+            src = fj.get("source_sha") or ""
+            if src:
+                try:
+                    blob = subprocess.check_output(
+                        ["git", "show", f"{src}:{plan_path}"], cwd=ROOT,
+                        text=True, stderr=subprocess.DEVNULL)
+                    frozen = {x["id"]: x for x in json.loads(blob)["jobs"]}
+                    want = frozen.get(spec.get("id"))
+                    if want is None:
+                        all_issues.append(f"{short}: job id absent from the frozen plan")
+                    else:
+                        for k in ("a_options", "b_options", "engine_a", "engine_b",
+                                  "games", "seed", "openings", "control", "null",
+                                  "prereg_sha256", "assets"):
+                            if spec.get(k) != want.get(k):
+                                all_issues.append(
+                                    f"{short}: {k} differs from the frozen plan")
+                except (subprocess.CalledProcessError, KeyError, ValueError):
+                    all_issues.append(f"{short}: could not read frozen plan {plan_path} "
+                                      f"at pinned source {src[:8]}")
+            for side, key in (("A", "a_options"), ("B", "b_options")):
+                for o in spec.get(key, []) or []:
+                    if "=" in o:
+                        k, v = o.split("=", 1)
+                        if k.strip().lower() in ("pstfile", "evalparams") and v.strip():
+                            declared.setdefault(side, []).append(
+                                (k.strip(), v.strip()))
+            if spec.get("null"):
+                declared["B"] = list(declared.get("A", []))
         for side in ("A", "B"):
-            probe = j / f"pst_probe_{side}.txt"
-            if probe.is_file():
-                txt = probe.read_text()
-                m = re.search(r"PstFile loaded: (\S+)", txt)
-                if not m:
-                    all_issues.append(f"{short}: probe {side} has no positive load line")
-                elif "could not load" in txt:
-                    all_issues.append(f"{short}: probe {side} reports a load failure")
-                else:
-                    pst_expected = m.group(1)
+            probe = j / f"option_probe_{side}.txt"
+            generalised_guard = probe.is_file()
+            if not generalised_guard:
+                # Exports made before the guard covered EvalParams used
+                # pst_probe_*; requiring a runner record that did not exist
+                # yet would retroactively invalidate valid historical runs.
+                probe = j / f"pst_probe_{side}.txt"
+            if not probe.is_file():
+                continue
+            txt = probe.read_text()
+            if "could not load" in txt:
+                all_issues.append(f"{short}: probe {side} reports a load failure")
+            for opt, path in declared.get(side, []):
+                if f"{opt} loaded: {path}" not in txt:
+                    all_issues.append(
+                        f"{short}: arm {side} declared {opt}={path} but the probe "
+                        f"has no positive load confirmation")
+                elif generalised_guard and not any(
+                        v.startswith(f"arm {side} {opt}: {path}")
+                        for v in load_proof[short]):
+                    all_issues.append(
+                        f"{short}: arm {side} {opt} loaded but the runner did not "
+                        f"record LOAD VERIFIED")
         tg = next(j.glob("stockbear-*.tar.gz"), None)
         if tg:
             with tarfile.open(tg, "r:gz") as tf:
@@ -560,7 +627,7 @@ def main() -> int:
                     repo = ROOT / path
                     if repo.is_file() and sha_bytes(repo.read_bytes()) != actual:
                         all_issues.append(f"{short}: packaged asset differs from repo {path}")
-        print(f"  {short}: {load_proof[short] or 'no PST arm (control)'}")
+        print(f"  {short}: {load_proof[short] or 'no file-valued option arm'}")
 
     # ---- null controls ---------------------------------------------------
     print("\n=== null controls ===")
@@ -575,7 +642,7 @@ def main() -> int:
     out = {"export_dir": str(D), "jobs": {k: v for k, v in results.items()},
            "committed_blobs": f"{len(tracked)-len(mismatch)}/{len(tracked)}",
            "checksums": f"{sums_ok}/{sums_tot}", "nulls_ok": bool(nulls_ok),
-           "pst_load_proof": load_proof, "issues": all_issues}
+           "option_load_proof": load_proof, "issues": all_issues}
     for v in out["jobs"].values():
         if isinstance(v, dict):
             v.pop("_pair_scores", None)
