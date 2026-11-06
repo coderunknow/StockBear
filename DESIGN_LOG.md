@@ -1002,3 +1002,20 @@ single-run compute bound and an independent raw-JSONL decision script; it stays
 DORMANT until its Activation Record is committed. Gates 1/4 UNMET, 2
 direction-supported, 3 PASS; no strength claim, default change, PR, merge, tag,
 release, deploy or dev7.
+
+## 2026-11-06 — benchmark integrity: engine-failure classification
+
+- The tournament harness classified a move by checking the clock before the
+  engine error. A crash (`RuntimeError`/`OSError`) or illegal move that happened
+  on the same move the clock expired was recorded as `TIME_FORFEIT`, hiding a
+  correctness defect inside a timing record. Because the DEV6 validity rule
+  counts `FAILURE` and `FORFEIT` substrings separately, this also mis-counted the
+  failure category and would misdirect root-cause analysis. The error is now
+  classified first: any non-`TimeoutError` engine error is `ENGINE_FAILURE` even
+  when the flag also fell; a `TimeoutError` (the forfeit deadline itself) remains
+  a time forfeit. Each game record carries `engine_failure`, and the summary
+  carries `engine_failures`/`time_forfeits`. The ply limit (`max_plies`) is now
+  recorded in the configuration line so censored matches are distinguishable.
+  Regression: `tests/integration/test_tournament_integrity.py` (fake engines,
+  deterministic flag fall via base_ms=0). No game semantics or adjudication
+  changed; only the failure category and provenance fields.

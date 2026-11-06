@@ -199,7 +199,12 @@ if(STOCKBEAR_BUILD_TESTS)
                  COMMAND ${Python3_EXECUTABLE}
                          ${CMAKE_CURRENT_SOURCE_DIR}/tests/integration/test_nnue_features.py
                          $<TARGET_FILE:stockbear>)
-        set_tests_properties(uci_integration uci_fuzz nnue_features PROPERTIES
+        # Game-integrity classification (engine-failure vs time-forfeit). Uses
+        # fake engines, so it needs python-chess but not the engine binary.
+        add_test(NAME tournament_integrity
+                 COMMAND ${Python3_EXECUTABLE}
+                         ${CMAKE_CURRENT_SOURCE_DIR}/tests/integration/test_tournament_integrity.py)
+        set_tests_properties(uci_integration uci_fuzz nnue_features tournament_integrity PROPERTIES
             ENVIRONMENT "PYTHONUNBUFFERED=1" TIMEOUT 30)
     else()
         message(WARNING "Python3 not found - UCI integration test will not be registered")

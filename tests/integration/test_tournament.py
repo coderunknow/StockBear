@@ -27,6 +27,9 @@ with tempfile.TemporaryDirectory() as tmp:
     # match was played to a clock or to a node limit.
     assert records[0]["configuration"]["nodes_per_move"] == 2000, records[0]
     config = records[0]["configuration"]
+    # The ply limit determines when games are censored, so it must travel with
+    # the configuration record (still-relevant PR #2 finding).
+    assert config["max_plies"] == 20, config
     expected_binary = hashlib.sha256(Path(engine).read_bytes()).hexdigest()
     assert config["engine_a_sha256"] == expected_binary
     assert config["engine_b_sha256"] == expected_binary
@@ -41,6 +44,8 @@ with tempfile.TemporaryDirectory() as tmp:
     assert all(item["result"] == "*" and item["termination"] == "UNADJUDICATED_MAX_PLIES" for item in games), games
     summary = records[-1]["summary"]
     assert summary["games"] == 0 and summary["unadjudicated"] == 2, summary
+    assert summary["engine_failures"] == 0 and summary["time_forfeits"] == 0, summary
+    assert all(item["engine_failure"] is False for item in games), games
     with pgn.open(encoding="utf-8") as stream:
         for _ in range(2):
             game = chess.pgn.read_game(stream)

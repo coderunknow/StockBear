@@ -1225,3 +1225,53 @@ single-run compute bound and an independent raw-JSONL decision script; it stays
 DORMANT until its Activation Record is committed. Gates 1/4 UNMET, 2
 direction-supported, 3 PASS; no strength claim, default change, PR, merge, tag,
 release, deploy or dev7.
+
+## 2026-11-06 — DEV6 continuation on arena/6a6a2ba3-stockbear: reconnaissance + engineering hardening (session 1)
+
+Branch: `arena/6a6a2ba3-stockbear` (fixed for this session). Fast-forwarded from
+`main` `6e7c2e02881faf93a84990a8345c41ad28bcae11` to the demonstrably-correct
+DEV6 continuation point `origin/arena/3e6dd5b6-stockbear`
+`2f3ded50a34b0086d5597d651a1733b1eb20b595` (0 behind main, 104 ahead). No
+history rewritten, no force push, no other branch touched.
+
+Reconnaissance verified against the live remote (not the stale audit snapshot):
+- `main` HEAD `6e7c2e0…`, VERSION `0.1.0-dev5`; tag `v0.1.0-dev5` ->
+  `c94571313a1667048468cf6d4e070400dc5ab228`; release `v0.1.0-dev5` exists.
+- Immutable dev5 baseline binary SHA-256 re-verified locally:
+  `391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918` (matches).
+  Champion `research-data/params_abc.txt` SHA
+  `8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be` (matches).
+- CORRECTION to the starting snapshot: the research branch DOES modify
+  `src/`, `tests/`, `scripts/` (default-OFF experimental switches + zero-gated
+  eval features + Tier-1 infrastructure). The earlier "no src changes" audit
+  was stale. Default build is still bit-identical to dev5: fresh Release build
+  reproduces all three frozen signatures `243f9a1c1ba5b36f`,
+  `a14ab62224f837e5`, `e45fa2ec2287eb41`; ctest 11/11 before changes.
+- All 10 remote branches, all 10 PRs, 5 tags/releases, 9 workflows and recent
+  runs re-audited via `gh`. PR #2 still OPEN/CONFLICTING; its DEAD_POSITION_RESEARCH
+  packaging and `set -e` findings are superseded (file renamed, tests already
+  separated); its tournament max-plies and engine-failure-classification
+  findings are still relevant and were ported (below).
+- Read in full/relevant part: DEV6_CURRENT_STATUS, DEV6_PREREG_EXP0047 (DORMANT,
+  hash 285b3f34…), DEV6_EXP0047_INVESTIGATION_REPORT, DEV6_PREREG §8,
+  DEV6_POWER_ANALYSIS, FAILURE_LEDGER (all headings), search/eval/timeman/UCI/
+  tournament/match_stats source. exp-0047 stays DORMANT; no activation conditions
+  met; zero strength games played this session.
+
+Engineering hardening landed this session (each with a regression test):
+- `scripts/tournament.py`: a non-timeout engine error that coincides with a flag
+  fall is now classified `ENGINE_FAILURE` (was hidden inside `TIME_FORFEIT`);
+  `TimeoutError` stays a time forfeit. Added per-game `engine_failure` flag and
+  summary `engine_failures`/`time_forfeits` counters. Added `max_plies` to the
+  configuration record. New `tests/integration/test_tournament_integrity.py`
+  (ctest `tournament_integrity`) drives the exact failure paths with fake
+  engines; `test_tournament.py` asserts the new fields. ctest now 12/12.
+- `RELEASE_NOTES.md`: corrected the verified dev4-content/dev5-version mismatch
+  by restoring the verified dev5 notes (from `arena/daa69a3b-stockbear`) under a
+  clear "dev6 unreleased / no strength claim" banner. No publication performed.
+
+Mission status: ACTIVE / NOT COMPLETE. Strength gate UNMET (no candidate >= +75
+with LCB > +50 exists; exp-0047 dormant). No PR opened yet (no validated
+candidate). No merge/tag/release/prerelease/deploy. Next: continue engineering
+audit + pursue the materially-stronger-evaluator research direction with a fresh
+bullet-matched corpus and frozen activation evidence.

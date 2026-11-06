@@ -332,6 +332,7 @@ def play_game(a, b, index, opening, base_ms, inc_ms, max_plies, nodes=0, nodes_j
         engine.new_game()
     termination = None
     result = "*"
+    engine_failure = False
     while len(moves) < max_plies:
         outcome = board.outcome(claim_draw=True)
         if outcome is not None:
@@ -354,10 +355,6 @@ def play_game(a, b, index, opening, base_ms, inc_ms, max_plies, nodes=0, nodes_j
         elapsed = (time.monotonic_ns() - start) / 1_000_000
         if not nodes:
             clocks[color] -= elapsed
-        if not nodes and clocks[color] < 0:
-            result = "0-1" if color == chess.WHITE else "1-0"
-            termination = f"TIME_FORFEIT ({engine.name}, {elapsed:.1f}ms move)"
-            break
         if error is None:
             try:
                 move = chess.Move.from_uci(text)
@@ -365,9 +362,20 @@ def play_game(a, b, index, opening, base_ms, inc_ms, max_plies, nodes=0, nodes_j
                     raise ValueError(f"illegal move {text}")
             except ValueError as exc:
                 error = exc
-        if error is not None:
+        # A non-timeout engine error (crash, broken pipe, illegal move) is an
+        # ENGINE FAILURE even when the clock also expired on the same move.
+        # Classifying it as TIME_FORFEIT would hide a correctness defect inside
+        # a timing record and send root-cause analysis down the wrong path. A
+        # TimeoutError is the forfeit deadline itself (remaining clock + grace),
+        # so it remains a time forfeit, not an engine failure.
+        engine_failure = error is not None and not isinstance(error, TimeoutError)
+        if engine_failure:
             result = "0-1" if color == chess.WHITE else "1-0"
             termination = f"ENGINE_FAILURE ({engine.name}: {error})"
+            break
+        if not nodes and clocks[color] < 0:
+            result = "0-1" if color == chess.WHITE else "1-0"
+            termination = f"TIME_FORFEIT ({engine.name}, {elapsed:.1f}ms move)"
             break
         board.push(move)
         node = node.add_variation(move)
@@ -390,7 +398,8 @@ def play_game(a, b, index, opening, base_ms, inc_ms, max_plies, nodes=0, nodes_j
         score_a = 1 if (white is a) == white_won else 0
     return game, {"game": index+1, "opening": opening_name, "white": white.name,
                   "black": black.name, "result": result, "score_a": score_a,
-                  "termination": termination, "plies": len(moves),
+                  "termination": termination, "engine_failure": engine_failure,
+                  "plies": len(moves),
                   "remaining_white_ms": round(clocks[chess.WHITE], 2),
                   "remaining_black_ms": round(clocks[chess.BLACK], 2)}
 
@@ -475,6 +484,7 @@ def main():
                   "engine_a_options": a.effective, "engine_b_options": b.effective,
                   "base_ms": args.base_ms, "increment_ms": args.inc_ms,
                   "nodes_per_move": args.nodes, "nodes_jitter": args.nodes_jitter,
+                  "max_plies": args.max_plies,
                   "hash_requested_mb_each": args.hash, "threads_requested_each": args.threads,
                   "host": platform.platform(), "machine": platform.machine(),
                   "python_chess": chess.__version__, "opening_file": args.openings,
@@ -482,6 +492,8 @@ def main():
                   "policy": "claimable draws automatically claimed; capped games unadjudicated"}
         print(json.dumps({"configuration": config}), flush=True)
         scores = []
+        engine_failures = 0
+        time_forfeits = 0
         pair_scores = []
         pair_games = {}
         pair_openings = {}
@@ -512,6 +524,10 @@ def main():
                                          record["remaining_white_ms"], record["remaining_black_ms"]])
                 if record["score_a"] is not None:
                     scores.append(record["score_a"])
+                if record["engine_failure"]:
+                    engine_failures += 1
+                if "FORFEIT" in record["termination"].upper():
+                    time_forfeits += 1
                 # Pair accumulation is keyed by the pair index, not by opening
                 # name: the two games of a pair are indices 2k and 2k+1, and a
                 # pair contributes a pentanomial observation only when *both*
@@ -537,6 +553,8 @@ def main():
                                                                  args.sprt_elo),
                                             pair_openings=openings_of_pairs)
             summary["unadjudicated"] = args.games - len(scores)
+            summary["engine_failures"] = engine_failures
+            summary["time_forfeits"] = time_forfeits
             summary["config"] = {"engine_a": a.name, "engine_b": b.name,
                                  "base_ms": args.base_ms, "increment_ms": args.inc_ms,
                                  "nodes_per_move": args.nodes, "nodes_jitter": args.nodes_jitter,
