@@ -1512,3 +1512,48 @@ prereg was byte-identical before and after the smoke test.
 
 Zero strength games. exp-0047 still DORMANT, Activation Record empty. No PR
 strength claim, no merge/tag/release/deploy.
+
+## 2026-11-06 — benchmark-integrity fix: the gate's t critical values were anti-conservative
+
+Audited `scripts/match_stats.py` independently while the exp-0049 corpus ran.
+The clustered estimator is correct (200/200 pseudo-random trials match a
+separately derived CR1 variance to 1e-12, and clustering correctly widens the
+interval under within-opening correlation), but the **Student-t table was
+rounded to NEAREST at 3 decimals**, which makes it too small at some degrees of
+freedom. A too-small critical value narrows the interval and biases the lower
+bound UPWARD — i.e. toward PASSING a gate. That is the wrong direction for a
+decision statistic.
+
+Measured against an independent reference (regularised incomplete beta via
+continued fraction, bisected to the 0.975 quantile — no table dependency):
+**14 of 128** checked df were anti-conservative. Worst absolute excess
+`-4.495e-4` at df=15 (stored 2.131000 vs true 2.1314497); worst relative
+`-2.11e-4`.
+
+**Impact assessed before changing anything.** On gate-sized samples the lower
+bound was optimistic by at most **0.017 Elo** (G=16), 0.007 Elo at G=31 and
+0.006 Elo at G=61. Re-ran all three stored decision scripts: exp-0044 confirm
+`+13.5977 [2.1750,25.0499]`, exp-0045 retry `-8.9240 [-18.2789,0.4179]`, exp-0046
+`+3.5096 [-5.1012,12.1247]`. **Every verdict is unchanged**; CIs move by ~0.0003
+Elo. No historical result is rewritten and no gate flips. The fix is made
+because the direction is wrong in principle, not because it changes an outcome.
+
+Fix: every table entry is now the true quantile **ceiled at 1e-6**, so all 128
+checked df are conservative (worst relative excess +2.08e-8). Documented why
+linear interpolation is safe (the t quantile is convex and decreasing, so a
+chord lies ABOVE the curve) and that df>120 clamps at t(120), also conservative.
+
+Regression tests added to `tests/integration/test_statistics.py` (already a CI
+step, so they run automatically): the independent incomplete-beta reference
+itself, a never-anti-conservative assertion over 128 df with MEASURED upper
+tolerances per construction (exact 1e-6, interpolated 4e-3, clamped 2.1e-2 — not
+guessed), monotonicity plus a Z95 lower bound over df 1..10000, the independent
+clustered-variance derivation, and the correlation-widening property.
+**Verified the new test FAILS when the old nearest-rounded table is restored**
+(`anti-conservative ... df=1: table 12.706 < true 12.7062047`) and passes with
+the fix. One pre-existing assertion pinned the old value 12.706; updated to the
+ceiled 12.706205 with a comment, preserving the test's purpose.
+
+Verification: `test_statistics.py` 15/15, `ctest` 13/13, PST pipeline 5/5,
+tournament integrity PASS. Zero strength games; exp-0047 DORMANT; gates
+unchanged (1 UNMET, 2 direction-only, 3 PASS, 4 UNMET).

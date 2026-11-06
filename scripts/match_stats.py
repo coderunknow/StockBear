@@ -100,13 +100,26 @@ def pentanomial(pair_scores):
 # Two-sided 95 % Student-t critical values for the small cluster counts this
 # script realistically sees. Above the table the normal value is used, which is
 # conservative for df > 120 only by a fraction of a percent.
+# Two-sided 95 % Student-t critical values, t_{0.975, df}.
+#
+# Every entry is ROUNDED UP (ceil at 1e-6) from the true quantile, never to
+# nearest. The old table used 3-decimal nearest rounding, which made 14 of 128
+# checked degrees of freedom ANTI-CONSERVATIVE (e.g. df=15 stored 2.131000 vs
+# the true 2.131450). A gate interval must never be narrower than the nominal
+# 95 %: that biases a lower bound upward, i.e. toward passing. The measured
+# impact was <= 0.017 Elo and changed no recorded verdict, but the direction is
+# wrong in principle. Verified against an independent incomplete-beta quantile
+# in tests/integration/test_statistics.py.
 _T975 = {
-    1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447, 7: 2.365,
-    8: 2.306, 9: 2.262, 10: 2.228, 11: 2.201, 12: 2.179, 13: 2.160, 14: 2.145,
-    15: 2.131, 16: 2.120, 17: 2.110, 18: 2.101, 19: 2.093, 20: 2.086,
-    21: 2.080, 22: 2.074, 23: 2.069, 24: 2.064, 25: 2.060, 26: 2.056,
-    27: 2.052, 28: 2.048, 29: 2.045, 30: 2.042, 40: 2.021, 60: 2.000,
-    120: 1.980,
+    1: 12.706205, 2: 4.302653, 3: 3.182447, 4: 2.776446,
+    5: 2.570582, 6: 2.446912, 7: 2.364625, 8: 2.306005,
+    9: 2.262158, 10: 2.228139, 11: 2.200986, 12: 2.178813,
+    13: 2.160369, 14: 2.144787, 15: 2.131450, 16: 2.119906,
+    17: 2.109816, 18: 2.100923, 19: 2.093025, 20: 2.085964,
+    21: 2.079614, 22: 2.073874, 23: 2.068658, 24: 2.063899,
+    25: 2.059539, 26: 2.055530, 27: 2.051831, 28: 2.048408,
+    29: 2.045230, 30: 2.042273, 40: 2.021076, 60: 2.000298,
+    120: 1.979931,
 }
 
 
@@ -120,7 +133,9 @@ def _t95(df):
         return Z95
     if upper is None:
         return _T975[lower]
-    # Linear interpolation between table entries (conservative enough).
+    # t_{0.975,df} is convex and decreasing in df, so a straight line between
+    # two table points lies ABOVE the true curve: linear interpolation here is
+    # conservative, which is the safe direction for a gate interval.
     a, b = _T975[lower], _T975[upper]
     return a + (b - a) * (df - lower) / (upper - lower)
 

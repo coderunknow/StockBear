@@ -142,7 +142,9 @@ def test_opening_clustered_interval_accounts_for_repeats():
     plain = match_stats.pentanomial(pair_scores)
     clustered = match_stats.opening_clustered(pair_scores, openings)
     assert clustered["clusters"] == 2
-    assert clustered["critical_value"] == 12.706
+    # df = G-1 = 1. The value is the true t_{0.975,1} = 12.70620473... rounded
+    # UP at 1e-6, so the interval is never narrower than nominal 95 %.
+    assert clustered["critical_value"] == 12.706205
     # stderr = 1.0 pair points here, so the t interval covers the whole range
     # and both ends are unbounded, while the plain pentanomial interval is not.
     assert clustered["elo_ci95"] == [None, None], clustered
@@ -159,6 +161,152 @@ def test_report_contains_uncertainty_and_sample_size():
     assert "opening pairs" in text
     assert "Elo" in text and "[" in text and "]" in text
     assert "sprt" in text
+
+
+# --- Independent reference for the Student-t critical values -----------------
+# The gate decision is "opening-clustered 95 % CI lower bound strictly > +50".
+# If the critical value is too SMALL the interval is too narrow and the lower
+# bound is biased UPWARD, i.e. toward passing. The shipped table used to be
+# rounded to nearest, which made 14 of 128 checked df anti-conservative. These
+# tests recompute t_{0.975,df} from scratch via the regularised incomplete beta
+# function (continued fraction + bisection), with no dependency on the table.
+
+def _betacf(a, b, x):
+    MAXIT, EPS, FPMIN = 500, 3e-16, 1e-300
+    qab, qap, qam = a + b, a + 1.0, a - 1.0
+    c = 1.0
+    d = 1.0 - qab * x / qap
+    if abs(d) < FPMIN:
+        d = FPMIN
+    d = 1.0 / d
+    h = d
+    for m in range(1, MAXIT + 1):
+        m2 = 2 * m
+        aa = m * (b - m) * x / ((qam + m2) * (a + m2))
+        d = 1.0 + aa * d
+        if abs(d) < FPMIN:
+            d = FPMIN
+        c = 1.0 + aa / c
+        if abs(c) < FPMIN:
+            c = FPMIN
+        d = 1.0 / d
+        h *= d * c
+        aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
+        d = 1.0 + aa * d
+        if abs(d) < FPMIN:
+            d = FPMIN
+        c = 1.0 + aa / c
+        if abs(c) < FPMIN:
+            c = FPMIN
+        d = 1.0 / d
+        delta = d * c
+        h *= delta
+        if abs(delta - 1.0) < EPS:
+            break
+    return h
+
+
+def _betai(a, b, x):
+    if x <= 0.0:
+        return 0.0
+    if x >= 1.0:
+        return 1.0
+    lbeta = math.lgamma(a + b) - math.lgamma(a) - math.lgamma(b)
+    front = math.exp(lbeta + a * math.log(x) + b * math.log(1.0 - x))
+    if x < (a + 1.0) / (a + b + 2.0):
+        return front * _betacf(a, b, x) / a
+    return 1.0 - front * _betacf(b, a, 1.0 - x) / b
+
+
+def _t975_reference(df):
+    """Smallest t with P(|T_df| > t) <= 0.05, by bisection on the exact CDF."""
+    lo, hi = 1.0, 200.0
+    for _ in range(200):
+        mid = (lo + hi) / 2.0
+        if _betai(df / 2.0, 0.5, df / (df + mid * mid)) > 0.05:
+            lo = mid
+        else:
+            hi = mid
+    return (lo + hi) / 2.0
+
+
+def test_t_critical_values_are_never_anti_conservative():
+    dfs = list(range(1, 121)) + [150, 200, 300, 500, 1000, 2000, 5000, 10000]
+    for df in dfs:
+        reference = _t975_reference(df)
+        got = match_stats._t95(df)
+        # The safety property: never narrower than nominal 95 %.
+        assert got >= reference - 1e-9, (
+            f"anti-conservative t critical value at df={df}: "
+            f"table {got!r} < true {reference!r}")
+        # Upper bounds are MEASURED, not guessed, and differ by construction:
+        #   exact table df : ceiled at 1e-6      -> excess < 1e-6
+        #   interpolated   : chord above convex  -> excess < 4e-3 (max 3.54e-3)
+        #   df > 120       : clamped at t(120)   -> excess < 2.1e-2
+        # All three err conservative; a gross typo would exceed these.
+        if df in match_stats._T975:
+            limit = 1e-6
+        elif df <= 120:
+            limit = 4e-3
+        else:
+            limit = 2.1e-2
+        assert got <= reference + limit, (df, got, reference, limit)
+
+
+def test_t_critical_values_are_monotone_and_bounded_below_by_normal():
+    previous = None
+    for df in range(1, 10001):
+        value = match_stats._t95(df)
+        if previous is not None:
+            assert value <= previous + 1e-12, (df, value, previous)
+        # t converges to the normal quantile from above; never below it.
+        assert value >= match_stats.Z95 - 1e-12, (df, value)
+        previous = value
+
+
+def test_clustered_variance_matches_independent_derivation():
+    # CR1 variance of the pair mean, accumulated per cluster in a different
+    # algebraic form from the implementation, on pseudo-random cluster sizes.
+    state = 12345
+    def rnd(n):
+        nonlocal state
+        state = (1103515245 * state + 12345) % (2 ** 31)
+        return state % n
+    for _ in range(50):
+        groups = 2 + rnd(10)
+        scores, openings = [], []
+        for g in range(groups):
+            for _ in range(1 + rnd(6)):
+                scores.append(rnd(5) / 2.0)
+                openings.append(f"op{g}")
+        n = len(scores)
+        mean = sum(scores) / n
+        per = {}
+        for value, opening in zip(scores, openings):
+            per.setdefault(opening, []).append(value)
+        total = 0.0
+        for values in per.values():
+            deviation = sum(v - mean for v in values)
+            total += deviation * deviation
+        reference = math.sqrt((groups / (groups - 1.0)) * total / (n * n))
+        got = match_stats.opening_clustered(scores, openings)
+        assert got["clusters"] == groups
+        assert abs(got["pair_score_stderr"] - reference) < 1e-12
+        assert abs(got["elo_difference"]
+                   - match_stats.score_to_elo(mean / 2.0)) < 1e-9
+
+
+def test_clustering_widens_interval_under_within_opening_correlation():
+    scores, openings = [], []
+    for g in range(20):
+        value = 2.0 if g % 2 else 0.0   # perfectly correlated inside an opening
+        for _ in range(5):
+            scores.append(value)
+            openings.append(f"op{g}")
+    clustered = match_stats.opening_clustered(scores, openings)
+    unclustered = match_stats.opening_clustered(
+        scores, [f"u{i}" for i in range(len(scores))])
+    assert clustered["pair_score_stderr"] > unclustered["pair_score_stderr"]
 
 
 def main():
