@@ -1,0 +1,39 @@
+{
+  "purpose": "file-option load guard, real runner, ZERO games",
+  "games_played": 0,
+  "scenarios": [
+    {
+      "scenario": "valid",
+      "expected_substring": "games must be a positive even number",
+      "found": true,
+      "reached_games_assertion": true,
+      "pass": true,
+      "exit_code": 1
+    },
+    {
+      "scenario": "undeclared_evalparams",
+      "expected_substring": "is not declared in job['assets']",
+      "found": true,
+      "reached_games_assertion": false,
+      "pass": true,
+      "exit_code": 1
+    },
+    {
+      "scenario": "corrupt_evalparams",
+      "expected_substring": "could not load",
+      "found": true,
+      "reached_games_assertion": false,
+      "pass": true,
+      "exit_code": 1
+    },
+    {
+      "scenario": "undeclared_pst",
+      "expected_substring": "is not declared in job['assets']",
+      "found": true,
+      "reached_games_assertion": false,
+      "pass": true,
+      "exit_code": 1
+    }
+  ],
+  "verdict": "PASS"
+}
