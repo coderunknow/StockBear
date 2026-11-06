@@ -1,0 +1,818 @@
+{
+  "experiment_id": "exp0048",
+  "gate": "prereg \u00a75 / exp-0047 \u00a73.2",
+  "engine_sha256": "0b6b2005dd6252a27d90e988decf8fadd515ec45586df01289c18908d002aca8",
+  "pst_sha256": "ba22b73d58d33c9afd8f7ee9e6b6e0d92ab4edc7a59c1fd65226413fef7e695f",
+  "champion_params_sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be",
+  "nodes_per_position": 300000,
+  "hash_mb": 16,
+  "threads": 1,
+  "repetitions": 3,
+  "included_positions": [
+    "Avoid immediate mate",
+    "Complex middlegame",
+    "Developed middlegame",
+    "Hanging queen",
+    "Promotion race",
+    "Rook and pawn ending",
+    "Starting position"
+  ],
+  "node_counts_bit_identical": true,
+  "champion_nps": [
+    2445645.5281371516,
+    2497826.296401584,
+    2521223.2975439685
+  ],
+  "candidate_nps": [
+    2406777.4853988835,
+    2521968.1439395305,
+    2529440.8851597705
+  ],
+  "champion_nps_median": 2497826.296401584,
+  "candidate_nps_median": 2521968.1439395305,
+  "ratio": 1.0096651426773453,
+  "band": [
+    0.97,
+    1.03
+  ],
+  "passed": true,
+  "reps": [
+    {
+      "repetition": 1,
+      "order": [
+        "champion",
+        "candidate"
+      ],
+      "arms": {
+        "champion": {
+          "command": [
+            "/home/user/StockBear/build-rel/stockbear",
+            "bench",
+            "--nodes",
+            "300000",
+            "--hash",
+            "16",
+            "--params",
+            "/home/user/StockBear/research-data/params_abc.txt"
+          ],
+          "rows": [
+            {
+              "position": "Starting position",
+              "nodes": 300000,
+              "time_us": 174382,
+              "depth": 10,
+              "bestmove": "g1f3"
+            },
+            {
+              "position": "Complex middlegame",
+              "nodes": 300000,
+              "time_us": 142062,
+              "depth": 8,
+              "bestmove": "e2a6"
+            },
+            {
+              "position": "Mate in one",
+              "nodes": 6325,
+              "time_us": 657,
+              "depth": 243,
+              "bestmove": "f7g7"
+            },
+            {
+              "position": "Rook and pawn ending",
+              "nodes": 300000,
+              "time_us": 117792,
+              "depth": 15,
+              "bestmove": "b4f4"
+            },
+            {
+              "position": "Promotion race",
+              "nodes": 300000,
+              "time_us": 77595,
+              "depth": 10,
+              "bestmove": "g1h2"
+            },
+            {
+              "position": "Hanging queen",
+              "nodes": 300000,
+              "time_us": 84063,
+              "depth": 19,
+              "bestmove": "e4d5"
+            },
+            {
+              "position": "Developed middlegame",
+              "nodes": 300000,
+              "time_us": 187532,
+              "depth": 11,
+              "bestmove": "b1a3"
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes": 0,
+              "time_us": 2,
+              "depth": 0,
+              "bestmove": "e1d1"
+            },
+            {
+              "position": "Mate in two",
+              "nodes": 15265,
+              "time_us": 5121,
+              "depth": 243,
+              "bestmove": "b2c3"
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes": 82776,
+              "time_us": 23700,
+              "depth": 243,
+              "bestmove": "g1h1"
+            },
+            {
+              "position": "Avoid immediate mate",
+              "nodes": 300000,
+              "time_us": 75243,
+              "depth": 10,
+              "bestmove": "a1a3"
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes": 23100,
+              "time_us": 7324,
+              "depth": 243,
+              "bestmove": "b7b8r"
+            }
+          ],
+          "included_positions": [
+            "Avoid immediate mate",
+            "Complex middlegame",
+            "Developed middlegame",
+            "Hanging queen",
+            "Promotion race",
+            "Rook and pawn ending",
+            "Starting position"
+          ],
+          "total_nodes": 2100000,
+          "total_time_us": 858669,
+          "nps": 2445645.5281371516
+        },
+        "candidate": {
+          "command": [
+            "/home/user/StockBear/build-rel/stockbear",
+            "bench",
+            "--nodes",
+            "300000",
+            "--hash",
+            "16",
+            "--params",
+            "/home/user/StockBear/research-data/params_abc.txt",
+            "--pst",
+            "/home/user/StockBear/benchmarks/dev6-baseline/exp0048_results/exp0048.sbpst"
+          ],
+          "rows": [
+            {
+              "position": "Starting position",
+              "nodes": 300000,
+              "time_us": 151629,
+              "depth": 9,
+              "bestmove": "e2e4"
+            },
+            {
+              "position": "Complex middlegame",
+              "nodes": 300000,
+              "time_us": 139380,
+              "depth": 8,
+              "bestmove": "e2a6"
+            },
+            {
+              "position": "Mate in one",
+              "nodes": 6325,
+              "time_us": 649,
+              "depth": 243,
+              "bestmove": "f7g7"
+            },
+            {
+              "position": "Rook and pawn ending",
+              "nodes": 300000,
+              "time_us": 175852,
+              "depth": 15,
+              "bestmove": "b4f4"
+            },
+            {
+              "position": "Promotion race",
+              "nodes": 300000,
+              "time_us": 77911,
+              "depth": 10,
+              "bestmove": "g1h2"
+            },
+            {
+              "position": "Hanging queen",
+              "nodes": 300000,
+              "time_us": 84274,
+              "depth": 19,
+              "bestmove": "e4d5"
+            },
+            {
+              "position": "Developed middlegame",
+              "nodes": 300000,
+              "time_us": 167035,
+              "depth": 10,
+              "bestmove": "c1e3"
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes": 0,
+              "time_us": 3,
+              "depth": 0,
+              "bestmove": "e1d1"
+            },
+            {
+              "position": "Mate in two",
+              "nodes": 15265,
+              "time_us": 5077,
+              "depth": 243,
+              "bestmove": "b2c3"
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes": 82776,
+              "time_us": 23539,
+              "depth": 243,
+              "bestmove": "g1h1"
+            },
+            {
+              "position": "Avoid immediate mate",
+              "nodes": 300000,
+              "time_us": 76455,
+              "depth": 10,
+              "bestmove": "a1a3"
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes": 23100,
+              "time_us": 7394,
+              "depth": 243,
+              "bestmove": "b7b8r"
+            }
+          ],
+          "included_positions": [
+            "Avoid immediate mate",
+            "Complex middlegame",
+            "Developed middlegame",
+            "Hanging queen",
+            "Promotion race",
+            "Rook and pawn ending",
+            "Starting position"
+          ],
+          "total_nodes": 2100000,
+          "total_time_us": 872536,
+          "nps": 2406777.4853988835
+        }
+      },
+      "excluded_terminal_positions": [
+        {
+          "position": "Mate in one",
+          "champion_nodes": 6325,
+          "candidate_nodes": 6325
+        },
+        {
+          "position": "Bare kings drawn",
+          "champion_nodes": 0,
+          "candidate_nodes": 0
+        },
+        {
+          "position": "Mate in two",
+          "champion_nodes": 15265,
+          "candidate_nodes": 15265
+        },
+        {
+          "position": "Forced check evasion",
+          "champion_nodes": 82776,
+          "candidate_nodes": 82776
+        },
+        {
+          "position": "Stalemate avoidance",
+          "champion_nodes": 23100,
+          "candidate_nodes": 23100
+        }
+      ],
+      "node_counts_bit_identical": true
+    },
+    {
+      "repetition": 2,
+      "order": [
+        "candidate",
+        "champion"
+      ],
+      "arms": {
+        "candidate": {
+          "command": [
+            "/home/user/StockBear/build-rel/stockbear",
+            "bench",
+            "--nodes",
+            "300000",
+            "--hash",
+            "16",
+            "--params",
+            "/home/user/StockBear/research-data/params_abc.txt",
+            "--pst",
+            "/home/user/StockBear/benchmarks/dev6-baseline/exp0048_results/exp0048.sbpst"
+          ],
+          "rows": [
+            {
+              "position": "Starting position",
+              "nodes": 300000,
+              "time_us": 152650,
+              "depth": 9,
+              "bestmove": "e2e4"
+            },
+            {
+              "position": "Complex middlegame",
+              "nodes": 300000,
+              "time_us": 138704,
+              "depth": 8,
+              "bestmove": "e2a6"
+            },
+            {
+              "position": "Mate in one",
+              "nodes": 6325,
+              "time_us": 680,
+              "depth": 243,
+              "bestmove": "f7g7"
+            },
+            {
+              "position": "Rook and pawn ending",
+              "nodes": 300000,
+              "time_us": 120945,
+              "depth": 15,
+              "bestmove": "b4f4"
+            },
+            {
+              "position": "Promotion race",
+              "nodes": 300000,
+              "time_us": 76836,
+              "depth": 10,
+              "bestmove": "g1h2"
+            },
+            {
+              "position": "Hanging queen",
+              "nodes": 300000,
+              "time_us": 84455,
+              "depth": 19,
+              "bestmove": "e4d5"
+            },
+            {
+              "position": "Developed middlegame",
+              "nodes": 300000,
+              "time_us": 167108,
+              "depth": 10,
+              "bestmove": "c1e3"
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes": 0,
+              "time_us": 2,
+              "depth": 0,
+              "bestmove": "e1d1"
+            },
+            {
+              "position": "Mate in two",
+              "nodes": 15265,
+              "time_us": 5101,
+              "depth": 243,
+              "bestmove": "b2c3"
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes": 82776,
+              "time_us": 23565,
+              "depth": 243,
+              "bestmove": "g1h1"
+            },
+            {
+              "position": "Avoid immediate mate",
+              "nodes": 300000,
+              "time_us": 91985,
+              "depth": 10,
+              "bestmove": "a1a3"
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes": 23100,
+              "time_us": 8400,
+              "depth": 243,
+              "bestmove": "b7b8r"
+            }
+          ],
+          "included_positions": [
+            "Avoid immediate mate",
+            "Complex middlegame",
+            "Developed middlegame",
+            "Hanging queen",
+            "Promotion race",
+            "Rook and pawn ending",
+            "Starting position"
+          ],
+          "total_nodes": 2100000,
+          "total_time_us": 832683,
+          "nps": 2521968.1439395305
+        },
+        "champion": {
+          "command": [
+            "/home/user/StockBear/build-rel/stockbear",
+            "bench",
+            "--nodes",
+            "300000",
+            "--hash",
+            "16",
+            "--params",
+            "/home/user/StockBear/research-data/params_abc.txt"
+          ],
+          "rows": [
+            {
+              "position": "Starting position",
+              "nodes": 300000,
+              "time_us": 163274,
+              "depth": 10,
+              "bestmove": "g1f3"
+            },
+            {
+              "position": "Complex middlegame",
+              "nodes": 300000,
+              "time_us": 145550,
+              "depth": 8,
+              "bestmove": "e2a6"
+            },
+            {
+              "position": "Mate in one",
+              "nodes": 6325,
+              "time_us": 636,
+              "depth": 243,
+              "bestmove": "f7g7"
+            },
+            {
+              "position": "Rook and pawn ending",
+              "nodes": 300000,
+              "time_us": 119954,
+              "depth": 15,
+              "bestmove": "b4f4"
+            },
+            {
+              "position": "Promotion race",
+              "nodes": 300000,
+              "time_us": 77746,
+              "depth": 10,
+              "bestmove": "g1h2"
+            },
+            {
+              "position": "Hanging queen",
+              "nodes": 300000,
+              "time_us": 87282,
+              "depth": 19,
+              "bestmove": "e4d5"
+            },
+            {
+              "position": "Developed middlegame",
+              "nodes": 300000,
+              "time_us": 168914,
+              "depth": 11,
+              "bestmove": "b1a3"
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes": 0,
+              "time_us": 2,
+              "depth": 0,
+              "bestmove": "e1d1"
+            },
+            {
+              "position": "Mate in two",
+              "nodes": 15265,
+              "time_us": 5081,
+              "depth": 243,
+              "bestmove": "b2c3"
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes": 82776,
+              "time_us": 23552,
+              "depth": 243,
+              "bestmove": "g1h1"
+            },
+            {
+              "position": "Avoid immediate mate",
+              "nodes": 300000,
+              "time_us": 78011,
+              "depth": 10,
+              "bestmove": "a1a3"
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes": 23100,
+              "time_us": 7437,
+              "depth": 243,
+              "bestmove": "b7b8r"
+            }
+          ],
+          "included_positions": [
+            "Avoid immediate mate",
+            "Complex middlegame",
+            "Developed middlegame",
+            "Hanging queen",
+            "Promotion race",
+            "Rook and pawn ending",
+            "Starting position"
+          ],
+          "total_nodes": 2100000,
+          "total_time_us": 840731,
+          "nps": 2497826.296401584
+        }
+      },
+      "excluded_terminal_positions": [
+        {
+          "position": "Mate in one",
+          "champion_nodes": 6325,
+          "candidate_nodes": 6325
+        },
+        {
+          "position": "Bare kings drawn",
+          "champion_nodes": 0,
+          "candidate_nodes": 0
+        },
+        {
+          "position": "Mate in two",
+          "champion_nodes": 15265,
+          "candidate_nodes": 15265
+        },
+        {
+          "position": "Forced check evasion",
+          "champion_nodes": 82776,
+          "candidate_nodes": 82776
+        },
+        {
+          "position": "Stalemate avoidance",
+          "champion_nodes": 23100,
+          "candidate_nodes": 23100
+        }
+      ],
+      "node_counts_bit_identical": true
+    },
+    {
+      "repetition": 3,
+      "order": [
+        "champion",
+        "candidate"
+      ],
+      "arms": {
+        "champion": {
+          "command": [
+            "/home/user/StockBear/build-rel/stockbear",
+            "bench",
+            "--nodes",
+            "300000",
+            "--hash",
+            "16",
+            "--params",
+            "/home/user/StockBear/research-data/params_abc.txt"
+          ],
+          "rows": [
+            {
+              "position": "Starting position",
+              "nodes": 300000,
+              "time_us": 149573,
+              "depth": 10,
+              "bestmove": "g1f3"
+            },
+            {
+              "position": "Complex middlegame",
+              "nodes": 300000,
+              "time_us": 139307,
+              "depth": 8,
+              "bestmove": "e2a6"
+            },
+            {
+              "position": "Mate in one",
+              "nodes": 6325,
+              "time_us": 629,
+              "depth": 243,
+              "bestmove": "f7g7"
+            },
+            {
+              "position": "Rook and pawn ending",
+              "nodes": 300000,
+              "time_us": 121389,
+              "depth": 15,
+              "bestmove": "b4f4"
+            },
+            {
+              "position": "Promotion race",
+              "nodes": 300000,
+              "time_us": 77223,
+              "depth": 10,
+              "bestmove": "g1h2"
+            },
+            {
+              "position": "Hanging queen",
+              "nodes": 300000,
+              "time_us": 90119,
+              "depth": 19,
+              "bestmove": "e4d5"
+            },
+            {
+              "position": "Developed middlegame",
+              "nodes": 300000,
+              "time_us": 179047,
+              "depth": 11,
+              "bestmove": "b1a3"
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes": 0,
+              "time_us": 3,
+              "depth": 0,
+              "bestmove": "e1d1"
+            },
+            {
+              "position": "Mate in two",
+              "nodes": 15265,
+              "time_us": 5110,
+              "depth": 243,
+              "bestmove": "b2c3"
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes": 82776,
+              "time_us": 23823,
+              "depth": 243,
+              "bestmove": "g1h1"
+            },
+            {
+              "position": "Avoid immediate mate",
+              "nodes": 300000,
+              "time_us": 76271,
+              "depth": 10,
+              "bestmove": "a1a3"
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes": 23100,
+              "time_us": 7372,
+              "depth": 243,
+              "bestmove": "b7b8r"
+            }
+          ],
+          "included_positions": [
+            "Avoid immediate mate",
+            "Complex middlegame",
+            "Developed middlegame",
+            "Hanging queen",
+            "Promotion race",
+            "Rook and pawn ending",
+            "Starting position"
+          ],
+          "total_nodes": 2100000,
+          "total_time_us": 832929,
+          "nps": 2521223.2975439685
+        },
+        "candidate": {
+          "command": [
+            "/home/user/StockBear/build-rel/stockbear",
+            "bench",
+            "--nodes",
+            "300000",
+            "--hash",
+            "16",
+            "--params",
+            "/home/user/StockBear/research-data/params_abc.txt",
+            "--pst",
+            "/home/user/StockBear/benchmarks/dev6-baseline/exp0048_results/exp0048.sbpst"
+          ],
+          "rows": [
+            {
+              "position": "Starting position",
+              "nodes": 300000,
+              "time_us": 161929,
+              "depth": 9,
+              "bestmove": "e2e4"
+            },
+            {
+              "position": "Complex middlegame",
+              "nodes": 300000,
+              "time_us": 140906,
+              "depth": 8,
+              "bestmove": "e2a6"
+            },
+            {
+              "position": "Mate in one",
+              "nodes": 6325,
+              "time_us": 644,
+              "depth": 243,
+              "bestmove": "f7g7"
+            },
+            {
+              "position": "Rook and pawn ending",
+              "nodes": 300000,
+              "time_us": 121225,
+              "depth": 15,
+              "bestmove": "b4f4"
+            },
+            {
+              "position": "Promotion race",
+              "nodes": 300000,
+              "time_us": 76887,
+              "depth": 10,
+              "bestmove": "g1h2"
+            },
+            {
+              "position": "Hanging queen",
+              "nodes": 300000,
+              "time_us": 84882,
+              "depth": 19,
+              "bestmove": "e4d5"
+            },
+            {
+              "position": "Developed middlegame",
+              "nodes": 300000,
+              "time_us": 168354,
+              "depth": 10,
+              "bestmove": "c1e3"
+            },
+            {
+              "position": "Bare kings drawn",
+              "nodes": 0,
+              "time_us": 2,
+              "depth": 0,
+              "bestmove": "e1d1"
+            },
+            {
+              "position": "Mate in two",
+              "nodes": 15265,
+              "time_us": 5416,
+              "depth": 243,
+              "bestmove": "b2c3"
+            },
+            {
+              "position": "Forced check evasion",
+              "nodes": 82776,
+              "time_us": 23699,
+              "depth": 243,
+              "bestmove": "g1h1"
+            },
+            {
+              "position": "Avoid immediate mate",
+              "nodes": 300000,
+              "time_us": 76040,
+              "depth": 10,
+              "bestmove": "a1a3"
+            },
+            {
+              "position": "Stalemate avoidance",
+              "nodes": 23100,
+              "time_us": 7414,
+              "depth": 243,
+              "bestmove": "b7b8r"
+            }
+          ],
+          "included_positions": [
+            "Avoid immediate mate",
+            "Complex middlegame",
+            "Developed middlegame",
+            "Hanging queen",
+            "Promotion race",
+            "Rook and pawn ending",
+            "Starting position"
+          ],
+          "total_nodes": 2100000,
+          "total_time_us": 830223,
+          "nps": 2529440.8851597705
+        }
+      },
+      "excluded_terminal_positions": [
+        {
+          "position": "Mate in one",
+          "champion_nodes": 6325,
+          "candidate_nodes": 6325
+        },
+        {
+          "position": "Bare kings drawn",
+          "champion_nodes": 0,
+          "candidate_nodes": 0
+        },
+        {
+          "position": "Mate in two",
+          "champion_nodes": 15265,
+          "candidate_nodes": 15265
+        },
+        {
+          "position": "Forced check evasion",
+          "champion_nodes": 82776,
+          "candidate_nodes": 82776
+        },
+        {
+          "position": "Stalemate avoidance",
+          "champion_nodes": 23100,
+          "candidate_nodes": 23100
+        }
+      ],
+      "node_counts_bit_identical": true
+    }
+  ]
+}

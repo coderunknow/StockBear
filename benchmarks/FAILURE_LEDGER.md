@@ -1893,3 +1893,64 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
   until the four activation conditions are committed. Gates 1/4 UNMET, 2
   direction-supported, 3 PASS. No strength claim / PR / merge / tag / release /
   deploy / dev7.
+
+---
+
+## exp-0048 — full per-square piece-square table (frozen L2 protocol) — CLOSED, NEGATIVE
+
+- **Date / branch / SHA:** 2026-11-06, `arena/6a6a2ba3-stockbear`. Prereg
+  `docs/DEV6_PREREG_EXP0048.md` SHA-256
+  `ea1d397e6728818715fa80c3f39171ebe9c696695163ef31176ef1e41f726623`, committed
+  BEFORE any exp-0048 game. Corpus generated from source
+  `49018e96a6abdba5091c1b39d2473b6f14819894`.
+- **Hypothesis:** replacing the champion's ~15 formulaic rank/file/centre PST
+  coefficients with an explicit 6x64x2 per-square table, fitted to StockBear's
+  own bullet self-play, is a materially stronger evaluator at unchanged
+  per-node cost (the accumulator already indexes `PieceSquare*[pt][idx]`).
+- **Corpus (training data only, never a strength batch):** run 42169244756,
+  8/8 isolated shards SUCCESS; 6,000 dev5-vs-dev5 games, 40+4 ms, Hash 16,
+  Threads 1, max-plies 240, champion options both sides; seed 2026110601
+  openings / 2026110603 match; 260,042 positions; **0 engine failures, 0 time
+  forfeits**. Exported via run 42170087975 to
+  `benchmarks/exp-runs/corpus-export/run-42169244756/` (commit `631a13a`),
+  every SHA-256 re-verified locally.
+- **Frozen metric / threshold:** held-out Texel log-loss, by-game split seed
+  2026110602 (4,754 train / 1,189 holdout games; 207,782 / 52,260 rows);
+  ADVANCE only if `L_cand <= 0.97*L_champ` AND `B_cand <= B_champ`.
+- **Result:** `L_champ` 0.2424826561, `L_cand` 0.2424337459, required ceiling
+  0.2352081765. Relative reduction **0.0202 %** vs 3 % required — missed by
+  ~149x. Brier improved (0.10342796 -> 0.10337440) but the conjunction fails.
+  **Accuracy threshold NOT met.**
+- **Cost gate:** PASSED and recorded for completeness — node counts
+  bit-identical, 3 alternating reps, ratio **1.0097** in `[0.97,1.03]`. The
+  mechanism is genuinely free per node; it was the accuracy that failed.
+- **Validity:** three exact engine/model identity checks passed on all 260,042
+  rows (champion counts reproduce `evaluate()`; Python formulaic PST equals the
+  engine PST term; engine with `--pst` equals the fitted model). The metric
+  describes the real engine.
+- **Root cause:** the objective is the MEAN loss, so per-entry data gradients
+  are ~8.6e-5, while the frozen L2 `2*1e-5*delta` is ~2e-5 at only 1 cp. The
+  regulariser pinned the table to the formulaic init: **max |delta| 1.22 cp,
+  RMS 0.124 cp**. As frozen, this tested "formulaic PST + sub-1.3 cp noise",
+  NOT an expressive 768-parameter table. See
+  `benchmarks/dev6-baseline/exp0048_results/GRADIENT_DIAGNOSIS.json`.
+- **What was NOT done:** no hyperparameter was changed after seeing data; no
+  second fit, no sweep, no best-of-N, no rerun with a smaller L2 on the same
+  holdout. The §6 diagnostic screen was NOT run (it is gated on the accuracy
+  threshold). **Zero strength games.** exp-0047 NOT activated; its Activation
+  Record stays empty.
+- **Recurrence condition / required fix for any successor:** a per-entry
+  regulariser must be scale-matched to the mean-normalised gradient BEFORE the
+  prereg is frozen — verify on synthetic data that the fitted table actually
+  moves (e.g. RMS delta of several cp) and that a *training*-loss reduction is
+  achievable, then freeze. Freezing an objective whose optimum is the init
+  guarantees a null result and wastes a full corpus.
+- **Continue / abandon / revisit:** ABANDON this frozen protocol as a route to
+  Gate 1. The *mechanism* (default-OFF `PstFile`, `bench --pst`, `evaldata
+  --pst`) and the corpus/fit/cost infrastructure are sound, bit-exact when
+  unused, and retained as engineering assets. An expressive per-square table
+  with a correctly scaled, newly pre-registered objective is NOT foreclosed by
+  this entry — but it is a NEW hypothesis requiring its own prereg and its own
+  fresh corpus, not a retune of this one. Gates 1/4 UNMET, 2 direction-only,
+  3 PASS. Mission ACTIVE / NOT COMPLETE. No PR strength claim, no merge, tag,
+  release, prerelease or deploy.

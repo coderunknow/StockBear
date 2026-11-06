@@ -1,0 +1,52 @@
+{
+  "experiment_id": "exp0048",
+  "corpus_manifest_sha256": "1246dba8d396744177081c1cdd8d1e2b255445e5fbe615a10caf1f0937d89411",
+  "corpus_source_sha": "49018e96a6abdba5091c1b39d2473b6f14819894",
+  "corpus_games": 6000,
+  "corpus_positions": 260042,
+  "params_file": "research-data/params_abc.txt",
+  "params_sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be",
+  "engine_sha256": "0b6b2005dd6252a27d90e988decf8fadd515ec45586df01289c18908d002aca8",
+  "prereg_sha256": "ea1d397e6728818715fa80c3f39171ebe9c696695163ef31176ef1e41f726623",
+  "hyperparameters": {
+    "iterations": 300,
+    "learning_rate": 5.0,
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "eps": 1e-08,
+    "l2": 1e-05,
+    "init": "champion formulaic tables",
+    "batch": "full"
+  },
+  "split": {
+    "by": "game",
+    "seed": 2026110602,
+    "holdout_fraction": 0.2
+  },
+  "identity_checks": {
+    "champion_counts_reproduce_evaluate": true,
+    "formulaic_pst_rebuild_exact": true,
+    "initialised_candidate_equals_champion": true,
+    "engine_with_pst_equals_fitted_model": true
+  },
+  "max_clamped_training_rows": 0,
+  "entries_clipped_to_limit": 0,
+  "delta_abs_max": 1.2206781867675276,
+  "delta_rms": 0.12351035194645209,
+  "metrics": {
+    "holdout_rows": 52260,
+    "train_rows": 207782,
+    "holdout_games": 1189,
+    "train_games": 4754,
+    "L_champ": 0.2424826561388389,
+    "L_cand": 0.24243374593222033,
+    "B_champ": 0.10342795929416566,
+    "B_cand": 0.10337440135790019,
+    "L_champ_train": 0.24318208656803236,
+    "L_cand_train": 0.24310903309637125,
+    "relative_logloss_reduction": 0.00020170599991520266,
+    "accuracy_threshold_met": false
+  },
+  "pst_file": "exp0048.sbpst",
+  "pst_sha256": "ba22b73d58d33c9afd8f7ee9e6b6e0d92ab4edc7a59c1fd65226413fef7e695f"
+}

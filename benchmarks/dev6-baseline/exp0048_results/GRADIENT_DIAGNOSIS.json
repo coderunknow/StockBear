@@ -1,0 +1,11 @@
+{
+  "mean_loss_normalisation": "gradient divided by n_train_rows",
+  "n_train_rows": 207782,
+  "typical_data_gradient_per_entry_order": 8.634694098727672e-05,
+  "l2_gradient_at_delta_1cp": 2e-05,
+  "ratio_l2_over_data_at_1cp": 0.2316237236817343,
+  "equilibrium_delta_estimate_cp": 4.3173470493638355,
+  "observed_delta_abs_max_cp": 1.2206781867675276,
+  "observed_delta_rms_cp": 0.12351035194645209,
+  "interpretation": "The frozen L2 (1e-5) is comparable to the mean-normalised data gradient at ~1 cp, so the regulariser pins the table to the formulaic init. The fit therefore tested 'formulaic PST + <1.3 cp noise', NOT an expressive full table. This is a real, recorded limitation of the frozen protocol, not a licence to retune it."
+}

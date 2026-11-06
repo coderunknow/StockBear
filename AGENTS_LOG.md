@@ -1401,3 +1401,43 @@ Also audited and recorded as NOT defects (no change made):
 
 Corpus: run **42169244756** completed SUCCESS, all 8 shards, 6,000 dev5-vs-dev5
 games at 40+4 ms. Artifacts present and unexpired. This is training data only.
+
+## 2026-11-06 — exp-0048 executed: NEGATIVE, closed without retuning
+
+Ran the frozen exp-0048 candidate-development protocol end to end.
+
+Corpus: dispatch → run **42169244756** (8/8 shards SUCCESS, 6,000 dev5-vs-dev5
+games, 40+4 ms) → export run **42170087975** SUCCESS → git commit `631a13a`.
+Retrieved through the git mirror because the artifact blob CDN is unreachable
+from this sandbox. Re-verified every SHA-256 locally: 6,000 games, 260,042
+positions, **0 engine failures, 0 time forfeits**, 15 games unadjudicated at the
+ply cap (contribute no positions, per the frozen extractor).
+
+One fit, frozen hyperparameters, no sweep. Held-out log-loss 0.2424337459 vs
+champion 0.2424826561; required ceiling 0.2352081765. **0.0202 % reduction vs
+3 % required — threshold NOT met.** Brier improved but the conjunction fails.
+All three engine/model identity checks passed on all 260,042 rows, so the
+number describes the real engine. Cost gate passed (node-identical, ratio
+1.0097) — the mechanism is free per node; accuracy was the failure.
+
+Root cause recorded in `GRADIENT_DIAGNOSIS.json`: with a mean-normalised
+objective the per-entry data gradient is ~8.6e-5 while the frozen L2 contributes
+~2e-5 at just 1 cp, so the regulariser pinned the table to the formulaic init
+(max |delta| **1.22 cp**, RMS 0.124 cp). As frozen, the run tested "formulaic PST
++ sub-1.3 cp noise", not an expressive table. This is stated plainly in the
+report and the ledger so the run is neither overclaimed as a fair test of the
+strong version nor used to wrongly foreclose the mechanism.
+
+**No retuning.** The L2/lr/iterations/split seed were frozen before the corpus
+existed and were not touched afterwards. No second fit, no smaller-L2 rerun on
+the same holdout, no diagnostic screen (it is gated on the accuracy threshold),
+**zero strength games**. exp-0047 stays DORMANT with an empty Activation Record.
+
+Written: `docs/DEV6_EXP0048_REPORT.md` (negative), a new `benchmarks/FAILURE_LEDGER.md`
+entry with the recurrence condition (scale-match any regulariser to the
+mean-normalised gradient and verify on synthetic data that the table actually
+moves BEFORE freezing), and `benchmarks/dev6-baseline/exp0048_results/`
+(FIT_REPORT, GRADIENT_DIAGNOSIS, NPS_GATE, the exact fitted table, SHA256SUMS).
+
+Mission status: ACTIVE / NOT COMPLETE. Gates 1/4 UNMET, 2 direction-only,
+3 PASS. No PR strength claim, no merge/tag/release/prerelease/deploy.
