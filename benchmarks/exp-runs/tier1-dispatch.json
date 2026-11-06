@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0050",
   "source_sha": "HEAD",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0050.json",
-  "source_run_id": "",
-  "note": "exp-0050 pawn-structure correction history. Frozen prereg e80375135cf991cd8c4fcc1723e5c6c4f2c1dd957e5a6d920be8bfda88f9569a. FIXED TIME 40+4 ms, never --nodes. Four isolated VMs: stage0 validity null, batchA, batchB, candidate-options null. A=+CorrectionHistory, B=champion; both arms EvalParams=params_abc.txt + TTEval=true. Zero exp-0050 games played before this dispatch.",
-  "attempt": 1
+  "source_run_id": "42206510815",
+  "note": "Deliberate export of all four exp-0050 Tier-1 artifacts for independent raw-game audit. Blob CDN unreachable from sandbox; git mirror is the only working evidence channel.",
+  "attempt": 2
 }
