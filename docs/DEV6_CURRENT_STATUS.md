@@ -541,7 +541,19 @@ Mission ACTIVE / NOT COMPLETE. Zero strength games played in this cycle.**
 - Next concrete action: **resolve the accuracy→Elo blocker before spending any
   further corpus on an evaluator candidate.** Any future accuracy-style gate must
   be scale-invariant (or calibrate the link for both arms) and must pass the
-  rescale negative control, or else be replaced by fixed-time 40+4 screens. Either preregister a calibration
+  rescale negative control, or else be replaced by fixed-time 40+4 screens.
+- **Replacement BUILT and then tested against measured Elo — it is not a
+  predictor either.** `scripts/eval_accuracy.py` (per-arm scale calibration +
+  ranking AUC) removes the exploit: u80 falls from **+3.043 % (old PASS)** to
+  **+0.010 %**, and it corrects a **wrong sign** (deleting every PST term read as
+  +0.218 % before, is −1.977 % / AUC −0.0136 now). 10 property tests in CI.
+  **But on the 9 variants with historical 40+4 Elo, none of the three metrics is a
+  significant predictor:** old r=+0.53 (t=1.64), calibrated loss r=+0.42 (t=1.23),
+  AUC r=+0.57 (t=1.84), all below t_crit 2.36. Removing an exploit does not make a
+  metric a strength proxy. It is therefore a **sanity check that rejects
+  degenerate "improvements", NOT a selection criterion.** Second independent
+  reason to **select on fixed-time 40+4 games**. Evidence
+  `benchmarks/dev6-baseline/accuracy_gate_validity/METRIC_VS_MEASURED_ELO.json`. Either preregister a calibration
   experiment measuring BOTH accuracy (one common corpus) AND fixed-time 40+4 Elo
   for several variants spanning a range of accuracy deltas, or abandon accuracy
   as the gate variable and select on fixed-time strength screens (already the
