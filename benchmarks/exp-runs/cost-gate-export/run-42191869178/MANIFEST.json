@@ -1,0 +1,42 @@
+{
+  "purpose": "A/A instrument calibration of the NPS cost gate on an isolated runner",
+  "scope_warning": "NO candidate measured; no --pst input exists in this lane. Does NOT re-run, re-score or reopen exp-0048/exp-0049. Output may only inform how a FUTURE candidate's cost gate is frozen in its own prereg.",
+  "source_sha": "cc79c36e33c7ab24709c8023ab216e5fef6b1c39",
+  "engine_sha256": "9d1483f27e7378a33c30008afc7f0c524a89225c191e2adb2fff335e6b944653",
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "dev5_baseline_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "calibration_script_sha256": "9aae4ffa40f916adece778e686ac03ce51bd4725fc749e88a70ea6934cc9a210",
+  "host": {
+    "executed_on_github_actions": true,
+    "isolated_runner": true,
+    "runner_name": "GitHub Actions 1000010295",
+    "os": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+    "machine": "x86_64",
+    "cpu_model": "AMD EPYC 7763 64-Core Processor",
+    "nproc": 4,
+    "python": "3.12.16",
+    "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "cmake": "cmake version 3.31.6",
+    "runner_image": "ubuntu26",
+    "runner_os": "20261101.186.1",
+    "github_run_id": "42191869178",
+    "github_run_attempt": "1"
+  },
+  "true_ratio_by_construction": 1.0,
+  "nodes_per_position": 300000,
+  "reps_per_evaluation": 3,
+  "evaluations": 6,
+  "band": [
+    0.97,
+    1.03
+  ],
+  "false_rejects": 0,
+  "false_reject_rate": 0.0,
+  "aa_ratio_min": 0.9911603528000168,
+  "aa_ratio_max": 1.0025384828404156,
+  "max_arm_self_spread": 0.05866857967550265,
+  "observed_aa_half_range": 0.005689065020199391,
+  "band_half_width": 0.030000000000000027,
+  "band_resolvable_on_this_host": true,
+  "verdict": "ISOLATED RUNNER CAN RESOLVE THE BAND"
+}

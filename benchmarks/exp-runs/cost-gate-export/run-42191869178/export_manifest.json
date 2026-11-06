@@ -1,0 +1,15 @@
+{
+  "exported_at_utc": "2026-11-06T09:06:09.456959+00:00",
+  "source_run_id": "42191869178",
+  "export_workflow_run_id": "42192432085",
+  "artifacts": [
+    {
+      "id": 13490257302,
+      "name": "cost-gate-calibration-run42191869178",
+      "size_in_bytes": 59562
+    }
+  ],
+  "channel": "git + GitHub Contents API (blob CDN unreachable from sandbox)",
+  "isolated_runner": true,
+  "verdict": "ISOLATED RUNNER CAN RESOLVE THE BAND"
+}
