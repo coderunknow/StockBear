@@ -147,6 +147,7 @@ if(STOCKBEAR_BUILD_TESTS)
         tests/unit/test_position.cpp
         tests/unit/test_position_extra.cpp
         tests/unit/test_pst.cpp
+        tests/unit/test_qsearch_tt.cpp
         tests/unit/test_search.cpp
         tests/unit/test_timeman.cpp
         tests/unit/test_uci_parsing.cpp
@@ -170,6 +171,9 @@ if(STOCKBEAR_BUILD_TESTS)
     # The runner filters by group name, so every group needs its own entry;
     # without this the position_extra group would never run under CTest.
     add_test(NAME position_extra COMMAND stockbear_tests position_extra)
+    # exp-0038 qsearch cache: exercised with the switch explicitly ON, which
+    # the shipped default never does, so it gets its own entry.
+    add_test(NAME qsearch_tt COMMAND stockbear_tests qsearch_tt)
     add_test(NAME regression  COMMAND stockbear_tests regression)
     add_test(NAME perft_quick COMMAND stockbear_tests perft_quick)
     add_test(NAME stress      COMMAND stockbear_tests stress)

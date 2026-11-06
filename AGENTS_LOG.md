@@ -1356,3 +1356,48 @@ Mission status: ACTIVE / NOT COMPLETE. Gate 1 UNMET, Gate 2 direction-only,
 Gate 3 PASS, Gate 4 UNMET. Next: commit + push this pipeline, dispatch the
 6,000-game corpus on isolated runners, fit once, evaluate the frozen accuracy
 and cost gates, and only then consider the diagnostic screen.
+
+## 2026-11-06 — engineering: qsearch TT store defect found and fixed (default-OFF path)
+
+Confirmed defect in `Search::quiescence()` (`src/search/search.cpp`): the main
+move loop ended with `return best;`, bypassing the `finish()` lambda that stores
+into the exp-0038 qsearch cache. Every OTHER completed exit went through
+`finish()`. Consequence: the cache only ever held stand-pat / delta-pruning /
+terminal values and NEVER the value of a node that actually searched a capture,
+which is the dominant case and the entire purpose of the cache. The switch is
+default OFF (`params_.qsearchTT`), so the shipped engine was unaffected — this
+explains why exp-0038 measured as a near-no-op rather than as a real technique.
+
+Fix: `return finish(best);`. The lambda already guards on `!aborted_` and
+excludes mate scores, so the store stays correct.
+
+Regression test `tests/unit/test_qsearch_tt.cpp` (new ctest entry `qsearch_tt`,
+4 tests). Important methodology note recorded honestly: the first version of
+this test compared scores/mates/PV legality with the switch ON vs OFF and
+**passed even with the bug reintroduced** — a cache that never stores is still
+*correct*, merely useless. The test was therefore rewritten around a
+discriminating observable, measured on both builds:
+- buggy `return best;`   -> on/off node ratio 0.9990 .. 1.0000 (no saving)
+- fixed `return finish()` -> on/off node ratio 0.3680 .. 0.9301
+`cache_actually_memoises_searched_capture_nodes` requires a real reduction
+(< 0.98) at a fixed depth, where node counts are deterministic. Verified by
+reintroducing the defect: that test FAILS (1/4), and passes again once restored.
+This is a behaviour assertion, not a timing assertion.
+
+All three shipped bench signatures still exact after the fix:
+`243f9a1c1ba5b36f`, `a14ab62224f837e5`, `e45fa2ec2287eb41`. ctest now 13/13.
+
+Also audited and recorded as NOT defects (no change made):
+- `negamax()` early returns (TT cutoff, mate-distance pruning, reverse futility,
+  null-move fail-high, ProbCut, razoring, empty move list) deliberately do not
+  store. Storing a proven TT cutoff is redundant; the others return heuristic
+  bounds that must NOT be written as if they were searched values. The current
+  behaviour is correct.
+- `update_quiet_stats()` halves the whole history table when an entry reaches
+  `HistoryLimit`. This is a deliberate dev2-era anti-saturation policy, applied
+  only on a positive update that hits the bound. It is O(2*64*64) and rare, and
+  it does not corrupt ordering (all entries scale together). Noted as a
+  possible future *strength* hypothesis, not an engineering bug; no change.
+
+Corpus: run **42169244756** completed SUCCESS, all 8 shards, 6,000 dev5-vs-dev5
+games at 40+4 ms. Artifacts present and unexpired. This is training data only.

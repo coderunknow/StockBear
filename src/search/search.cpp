@@ -460,7 +460,13 @@ int Search::quiescence(Position& pos, int alpha, int beta, int ply) {
             }
         }
     }
-    return best;
+    // Must go through finish() like every other completed exit. Returning
+    // `best` directly bypassed the store, so the qsearch cache only ever held
+    // stand-pat / delta-pruning values and NEVER the result of a node that
+    // actually searched a capture -- which is the dominant case and the whole
+    // point of the cache. Default OFF (params_.qsearchTT), so the shipped
+    // search is untouched; see tests/unit/test_search.cpp qsearch_tt group.
+    return finish(best);
 }
 
 int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
