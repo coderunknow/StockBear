@@ -1750,3 +1750,40 @@ script `scripts/dev6_accuracy_elo_anchor.py`; ledger entry appended. Resolution
 options recorded (preregistered accuracy+Elo calibration, or select on fixed-time
 screens) with an explicit instruction not to lower any threshold. Gates unchanged;
 exp-0047 DORMANT.
+
+## 2026-11-06 — metric audit: the frozen accuracy gate can be passed by a pure rescale
+
+Followed the accuracy→Elo blocker to its root. Tried to build a calibration ladder
+from the 13 committed param variants (zero build cost, one common corpus). The
+9 with historical Elo give slope **9.30 Elo per 1 % accuracy**, but **95 % CI
+[-4.13, +22.74] spans ZERO** (t=1.64, df=7) and leave-one-out swings it 5.1–11.3.
+So **no calibration is licensed** — recorded as such rather than used.
+
+Then tested WHY the metric behaves oddly, and found the real defect: the gate uses
+a **fixed** K=400 link, so it rewards score MAGNITUDE. Multiplying **every**
+champion parameter by **0.80** passes the frozen gate on **both** corpora
+(**+3.043 %**, **+3.109 %**, Brier non-worsening) — the bar two 6,000-game corpora
+and two 768-parameter fits failed. Ordering is essentially unchanged (**0.54 %**
+sign flips from integer rounding, Spearman **0.99984**), so it is calibration, not
+judgement.
+
+**Proved it with a control rather than asserting it:** fitted the loss-minimising
+scalar on the champion's own scores and re-compared. u80 flips to **-1.10 % /
+-1.26 %**, and every factor 0.80–1.10 is negative on both corpora — the correct
+answer, since rescaling adds no information. Also found independent corroboration
+with MEASURED Elo: `params_abc_s095` is verified byte-for-byte a pure 0.95 rescale
+and has better log-loss (+0.764 %) but lower Elo (+44.9 vs +48.2).
+
+Kept the caveats explicit: a rescale is NOT a strength no-op (cp-calibrated search
+margins), u80 was never played, and the -3.3 Elo difference is inside ±25 noise so
+it is not evidence rescaling loses strength. The loader correctly rejected extreme
+material rescales — that guard worked.
+
+**exp-0048/0049 verdicts are UNCHANGED** (they failed the bar as frozen; nothing
+re-scored, no measurement altered). What changes is the bar's interpretation: it
+was never a valid strength proxy. Wrote `scripts/dev6_accuracy_scale_audit.py` as a
+reusable negative control any future gate must pass.
+
+Report `docs/DEV6_ACCURACY_GATE_VALIDITY.md`; checksummed evidence in
+`benchmarks/dev6-baseline/accuracy_gate_validity/`; ledger entry appended. Zero
+strength games; exp-0047 DORMANT; gates unchanged.

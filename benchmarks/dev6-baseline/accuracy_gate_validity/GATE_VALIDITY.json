@@ -1,0 +1,72 @@
+{
+  "finding": "The frozen exp-0048/0049 accuracy gate is PASSABLE BY A PURE CONFIDENCE RESCALE, so it does not measure evaluator strength.",
+  "scope": "AUDIT. Zero strength games. No candidate activated, no experiment reopened, no threshold changed.",
+  "method": "Multiply EVERY champion parameter by 0.80 and round to integers. This is a positive linear rescale of the evaluation, i.e. a change in score MAGNITUDE (confidence), not in the ordering of positions. Score both arms with the immutable dev5 binary on identical positions and labels, then apply the exact frozen gate: L_cand <= 0.97*L_champ AND B_cand <= B_champ.",
+  "results": {
+    "run-42171974318": {
+      "n_positions": 6000,
+      "L_champion": 0.24036948353450233,
+      "L_u80": 0.23305619489187507,
+      "B_champion": 0.10423856786105025,
+      "B_u80": 0.10173839705826276,
+      "logloss_reduction_pct": 3.0425195973670753,
+      "brier_non_worsening": true,
+      "frozen_gate_passed": true,
+      "pairwise_ordering_sign_flips_pct": 0.5407277777777778,
+      "spearman_rank_corr": 0.9998443347734538
+    },
+    "run-42169244756": {
+      "n_positions": 6000,
+      "L_champion": 0.24395056435769247,
+      "L_u80": 0.23636605498393828,
+      "B_champion": 0.10293831160459126,
+      "B_u80": 0.10039935776292483,
+      "logloss_reduction_pct": 3.1090353874457115,
+      "brier_non_worsening": true,
+      "frozen_gate_passed": true,
+      "pairwise_ordering_sign_flips_pct": 0.5503444444444444,
+      "spearman_rank_corr": 0.9998420054956114
+    }
+  },
+  "why_this_invalidates_the_gate": [
+    "u80 clears the >=3% log-loss reduction AND the non-worsening Brier sub-gate on BOTH independent corpora (3.04% and 3.11%).",
+    "Yet pairwise ordering of positions is preserved for ~99.46% of pairs; the residual flips are integer-rounding ties, not better judgement (Spearman > 0.9998).",
+    "A gate that a uniform rescale can pass is measuring probability CALIBRATION against a fixed K=400 link, not chess understanding.",
+    "Independent corroboration with MEASURED Elo: params_abc_s095 is verified byte-for-byte a pure 0.95 rescale of params_abc (0 entries differ). It has BETTER log-loss (+0.764%) but LOWER measured Elo (+44.9 vs +48.2, exp-0012). Accuracy and strength moved in OPPOSITE directions."
+  ],
+  "caveats": [
+    "A uniform rescale is NOT a strict no-op for strength: search margins (futility, razoring, aspiration) are cp-calibrated, so scaling eval changes pruning behaviour. The claim is NOT that u80 is strength-identical; it is that a >3% 'accuracy gain' can be produced without any better position judgement.",
+    "The s095-vs-abc Elo difference (-3.3) is well inside the +/-25 screen noise at 480 games, so it is NOT evidence that rescaling loses strength. It is evidence that better log-loss did not come with better Elo.",
+    "6000 positions per corpus (every 40th row), deterministic and score-independent; not the full corpus.",
+    "u80 was never played. No strength claim is made for it."
+  ],
+  "consequence": [
+    "exp-0048 and exp-0049 were gated on a metric that does not isolate evaluator quality. Their NEGATIVE verdicts STAND (they failed the bar as frozen, and nothing here re-scores them), but the bar itself is not a valid strength proxy.",
+    "Combined with the absence of any accuracy->Elo calibration, exp-0047 \u00a73.3 remains unsatisfiable via accuracy evidence.",
+    "A future accuracy-style gate must be scale-invariant or explicitly calibrate K jointly, and must be validated against measured fixed-time Elo before it is used to gate anything."
+  ],
+  "recommended_replacement": [
+    "Separate CALIBRATION from DISCRIMINATION: fit/allow a monotone recalibration (or tune K) for BOTH arms before comparing, so a pure rescale scores zero gain.",
+    "Or gate on a ranking-only statistic insensitive to positive rescaling.",
+    "Or abandon accuracy gating and select on fixed-time 40+4 ms screens, already the ledger's only trustworthy bullet filter.",
+    "Do NOT lower the +75/+50 mission thresholds."
+  ],
+  "scale_invariant_reanalysis": {
+    "method": "Fit the loss-minimising positive scalar on the CHAMPION's own scores on the same rows (golden-section), then compare every rescaled arm against that reference. A pure rescale adds no information, so its gain must collapse to <= 0 under this comparison.",
+    "optimal_champion_scale": {
+      "exp0049_corpus": 0.6203591411886256,
+      "exp0048_corpus": 0.6080652487245941
+    },
+    "u80_gain_vs_frozen_baseline_pct": {
+      "exp0049_corpus": 3.0425195973670753,
+      "exp0048_corpus": 3.1090353874457115
+    },
+    "u80_gain_vs_scale_invariant_reference_pct": {
+      "exp0049_corpus": -1.0959003611754523,
+      "exp0048_corpus": -1.2581569146984815
+    },
+    "all_rescales_negative_vs_invariant_reference": true,
+    "conclusion": "Under the frozen fixed-K gate u80 PASSES on both corpora (+3.04%, +3.11%). Under a scale-invariant comparison EVERY rescale is negative on both corpora, which is the correct answer because rescaling adds no information. The frozen gate's pass is therefore an artifact of comparing against an uncalibrated baseline at a fixed K=400."
+  },
+  "reusable_audit_script": "scripts/dev6_accuracy_scale_audit.py"
+}

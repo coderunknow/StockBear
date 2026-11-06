@@ -1,0 +1,87 @@
+{
+  "purpose": "Scale-invariance audit of the frozen fixed-K accuracy gate",
+  "scope": "AUDIT only. Zero strength games. Nothing activated or re-tuned.",
+  "corpus": "benchmarks/exp-runs/corpus-export/run-42169244756",
+  "n_positions": 6000,
+  "engine_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "params_sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be",
+  "gate": "L_cand <= 0.97*L_champ AND B_cand <= B_champ, fixed K=400",
+  "champion": {
+    "L": 0.24395056435769247,
+    "B": 0.10293831160459126
+  },
+  "scale_invariant_reference": {
+    "optimal_champion_scale": 0.6080652487245941,
+    "L": 0.23342914999238717,
+    "B": 0.09961345777312533,
+    "note": "Champion rescaled optimally on the same rows. Comparing against THIS removes pure calibration from the measured gain."
+  },
+  "arms": [
+    {
+      "factor": 0.8,
+      "L": 0.23636605498393828,
+      "B": 0.10039935776292483,
+      "logloss_reduction_pct": 3.1090353874457115,
+      "frozen_gate_passed": true,
+      "pairwise_ordering_sign_flips_pct": 0.5503444444444444,
+      "spearman_rank_corr": 0.9998420054956114,
+      "gain_vs_scale_invariant_reference_pct": -1.2581569146984815
+    },
+    {
+      "factor": 0.85,
+      "L": 0.23794355955123836,
+      "B": 0.10094369372704937,
+      "logloss_reduction_pct": 2.4623861077223577,
+      "frozen_gate_passed": false,
+      "pairwise_ordering_sign_flips_pct": 0.49446666666666667,
+      "spearman_rank_corr": 0.9998738056631612,
+      "gain_vs_scale_invariant_reference_pct": -1.9339527899572153
+    },
+    {
+      "factor": 0.9,
+      "L": 0.2394763360313458,
+      "B": 0.10137286068475329,
+      "logloss_reduction_pct": 1.8340717260183634,
+      "frozen_gate_passed": false,
+      "pairwise_ordering_sign_flips_pct": 0.5090222222222223,
+      "spearman_rank_corr": 0.999870931107526,
+      "gain_vs_scale_invariant_reference_pct": -2.5905873534457204
+    },
+    {
+      "factor": 0.95,
+      "L": 0.24206320848737686,
+      "B": 0.10234153868429346,
+      "logloss_reduction_pct": 0.7736632523416791,
+      "frozen_gate_passed": false,
+      "pairwise_ordering_sign_flips_pct": 0.37698333333333334,
+      "spearman_rank_corr": 0.9999330791648078,
+      "gain_vs_scale_invariant_reference_pct": -3.6987919012133963
+    },
+    {
+      "factor": 1.05,
+      "L": 0.24598733152078656,
+      "B": 0.10358114698777562,
+      "logloss_reduction_pct": -0.8349097975882028,
+      "frozen_gate_passed": false,
+      "pairwise_ordering_sign_flips_pct": 0.35076666666666667,
+      "spearman_rank_corr": 0.9999423508872874,
+      "gain_vs_scale_invariant_reference_pct": -5.379868593450707
+    },
+    {
+      "factor": 1.1,
+      "L": 0.24931382639622104,
+      "B": 0.10471759718641638,
+      "logloss_reduction_pct": -2.1985036405428007,
+      "frozen_gate_passed": false,
+      "pairwise_ordering_sign_flips_pct": 0.41933333333333334,
+      "spearman_rank_corr": 0.9999133649420378,
+      "gain_vs_scale_invariant_reference_pct": -6.8049240655470475
+    }
+  ],
+  "factors_passing_frozen_gate": [
+    0.8
+  ],
+  "gate_is_scale_invariant": false,
+  "interpretation": "Any factor listed in factors_passing_frozen_gate clears the frozen gate by rescaling alone. Ordering is essentially unchanged (see sign flips / Spearman), so the gain is calibration, not better judgement. A valid gate must be scale-invariant or calibrate K for both arms.",
+  "caveat": "A rescale is NOT a strength no-op: search margins are cp-calibrated. No strength claim is made for any arm; none were played."
+}

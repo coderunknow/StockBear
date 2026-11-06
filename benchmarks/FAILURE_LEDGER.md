@@ -2153,3 +2153,55 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
   until the link is measured. Gates 1/4 UNMET, 2 direction-only, 3 PASS. Mission
   ACTIVE / NOT COMPLETE. exp-0047 DORMANT; no PR strength claim, merge, tag,
   release or deploy.
+
+## METRIC DEFECT — the frozen accuracy gate is PASSABLE BY A PURE RESCALE
+
+- **Not an experiment.** An audit of the gate itself. **Zero strength games; no
+  experiment reopened, no verdict changed, no threshold lowered.** Report
+  `docs/DEV6_ACCURACY_GATE_VALIDITY.md`; evidence
+  `benchmarks/dev6-baseline/accuracy_gate_validity/`; reusable script
+  `scripts/dev6_accuracy_scale_audit.py`.
+- **Finding:** the exp-0048/0049 gate (`L_cand <= 0.97*L_champ` AND
+  `B_cand <= B_champ`) uses a **fixed** link `p = 1/(1+10^(-s/400))`, so it is
+  sensitive to score MAGNITUDE, not only ordering. Multiplying **every** champion
+  parameter by **0.80** and rounding clears it on **both** independent corpora:
+  **+3.043 %** (exp-0049) and **+3.109 %** (exp-0048), Brier non-worsening, gate
+  **PASS**. A one-line uniform rescale passes the bar that two 6,000-game corpora
+  and two fitted 768-parameter tables failed.
+- **Not better judgement:** pairwise ordering sign flips only **0.541 % /
+  0.550 %** (integer-rounding ties), Spearman **0.99984** on both corpora. The
+  gain is probability CALIBRATION toward a draw-heavy outcome distribution.
+- **Control that proves it:** fit the loss-minimising positive scalar on the
+  champion's OWN scores on the same rows, then compare against that
+  scale-invariant reference. u80 flips to **-1.096 % / -1.258 %**, and **every**
+  factor tested (0.80…1.10) is negative on both corpora — the correct answer,
+  since rescaling adds no information. Fitted optimal champion scale ~**0.62**,
+  i.e. the champion is over-confident for this distribution; that is a property
+  of the metric's link, not an engine defect.
+- **Independent corroboration with MEASURED Elo:** `params_abc_s095` is verified
+  byte-for-byte a pure 0.95 rescale of `params_abc` (0 entries differ). It has
+  **better** log-loss (**+0.764 %**) but **lower** measured Elo (**+44.9 vs
+  +48.2**, exp-0012). The -3.3 is inside ±25 screen noise, so this is NOT evidence
+  rescaling loses strength — it is evidence better log-loss arrived without
+  better Elo.
+- **Caveats:** a rescale is **NOT** a strength no-op (futility/razoring/aspiration
+  margins are cp-calibrated), so no strength-identity is claimed; u80 was **never
+  played**; 6,000 positions per corpus, deterministic subsample. The loader
+  correctly **rejected** extreme material rescales (0.50/0.75/1.50) via range
+  validation — that guard worked.
+- **What does NOT change:** exp-0048 and exp-0049 stay **CLOSED / NEGATIVE**;
+  they failed the bar as frozen and nothing here re-scores them. No recorded
+  measurement was altered.
+- **What DOES change:** the bar was never a valid strength proxy. Together with
+  the `accuracy->Elo evidence does not exist` entry, the accuracy-gating route to
+  exp-0047 is unsupported **twice over**: not scale-invariant, and no licensed Elo
+  conversion. The two negatives are more honestly read as "failed a bar a rescale
+  can pass" than as pure candidate failures.
+- **Required of any future accuracy gate:** (1) be scale-invariant or calibrate
+  the link for BOTH arms so a pure rescale scores zero; (2) validate against
+  measured fixed-time Elo and run this audit as a negative control requiring
+  every rescale <= 0; (3) otherwise select on fixed-time 40+4 screens. **Do NOT
+  lower the +75/+50 thresholds.**
+- **Continue / abandon:** ABANDON fixed-K accuracy gating as an activation route.
+  Gates 1/4 UNMET, 2 direction-only, 3 PASS. Mission ACTIVE / NOT COMPLETE.
+  exp-0047 DORMANT; no PR strength claim, merge, tag, release or deploy.
