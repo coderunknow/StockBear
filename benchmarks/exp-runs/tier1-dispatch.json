@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0051",
-  "source_sha": "0dec094f43f6aea17ce7aaf46d62cf4d2033a45d",
+  "source_sha": "HEAD",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0051.json",
-  "source_run_id": "",
-  "note": "exp-0051: first fixed-time strength measurement of the FROZEN exp-0049 PST (read-only, SHA 6e31a01a...6c733). Not a refit/rescore/reopen; exp-0049 CLOSED/NEGATIVE stands. Prereg 94673e910b0dd8f1 pinned in every job. PST declared as packaged asset so the per-arm load assertion applies: arm A must print PstFile LOAD VERIFIED or the job aborts (a missing PST silently falls back to formulaic tables and fakes a null).",
-  "attempt": 1
+  "source_run_id": "42217333693",
+  "note": "Deliberate export of all four exp-0051 Tier-1 artifacts for independent raw-game audit AND for verification that arm A actually loaded the frozen PST (pst_probe_A.txt / BUILD_INFO.assets_sha256). A missing PST silently falls back to formulaic tables and would fake a null, so success status is not accepted as proof. Blob CDN unreachable from sandbox; git mirror is the only working evidence channel.",
+  "attempt": 2
 }
