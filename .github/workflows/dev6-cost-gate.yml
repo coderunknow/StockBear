@@ -261,6 +261,26 @@ jobs:
           git config user.email "dev6-costgate@stockbear.local"
           git config user.name "dev6-costgate-exporter"
           git add -A "$dest"
+          # .gitignore has *.log, so `git add -A` SILENTLY skips run.log while
+          # SHA256SUMS.txt still lists it. Force-add logs exactly as the tier1
+          # lane does, or the mirror is incomplete and fails verification.
+          find "$dest" -name '*.log' -type f -print0 | xargs -0 -r git add -f
+          # Guard the actual failure mode: verify the INDEX, not the working
+          # tree. Every path listed in SHA256SUMS.txt must be staged.
+          python3 - "$dest" <<'PYCHECK'
+          import subprocess, sys
+          from pathlib import Path
+          dest = Path(sys.argv[1])
+          listed = [l.split(None, 1)[1].strip()
+                    for l in (dest / "SHA256SUMS.txt").read_text().splitlines() if l.strip()]
+          staged = set(subprocess.run(["git", "diff", "--cached", "--name-only"],
+                                      capture_output=True, text=True,
+                                      check=True).stdout.splitlines())
+          missing = [n for n in listed
+                     if (dest / n).as_posix() not in staged]
+          assert not missing, f"listed in SHA256SUMS but NOT staged: {missing}"
+          print(f"all {len(listed)} checksummed files are staged")
+          PYCHECK
           git commit -q -m "dev6-cost-gate: export A/A calibration from run $SOURCE_RUN_ID [skip ci]"
           ok=0
           for attempt in 1 2 3 4; do
@@ -269,4 +289,24 @@ jobs:
             sleep 15
           done
           [ "$ok" -eq 1 ] || { echo "export push failed after 4 attempts" >&2; exit 1; }
+          # Verify what a consumer actually retrieves: the COMMITTED blobs.
+          python3 - "$dest" <<'PYVERIFY'
+          import hashlib, subprocess, sys
+          from pathlib import Path
+          dest = Path(sys.argv[1])
+          bad = []
+          for line in (dest / "SHA256SUMS.txt").read_text().splitlines():
+              if not line.strip():
+                  continue
+              want, name = line.split(None, 1)
+              name = name.strip()
+              blob = subprocess.run(["git", "show", f"HEAD:{dest.as_posix()}/{name}"],
+                                    capture_output=True)
+              if blob.returncode != 0:
+                  bad.append(f"{name}: not in commit")
+              elif hashlib.sha256(blob.stdout).hexdigest() != want:
+                  bad.append(f"{name}: committed hash mismatch")
+          assert not bad, "committed-tree verification failed: " + "; ".join(bad)
+          print("committed-tree SHA256 verification: all OK")
+          PYVERIFY
           echo "exported to $dest at $(git rev-parse HEAD)"
