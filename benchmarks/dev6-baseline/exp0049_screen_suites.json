@@ -1,0 +1,11 @@
+{
+  "seed": 2026110611,
+  "count": 1000,
+  "plies": 8,
+  "purpose": "diagnostic-screen-only",
+  "disjoint_overlap": 0,
+  "slices": {
+    "batchA": "90f84f421d937e2d9a942e7ff823c233f424dd0f347516ff8b0d9c18ae7cb9f8",
+    "batchB": "2cab86fda0b8fcd38784c652beb84d35751310c0ad2691e593647346cf18461c"
+  }
+}

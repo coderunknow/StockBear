@@ -31,7 +31,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEV5 = ROOT / "benchmarks/binaries/stockbear-dev5-release"
 DEV5_SHA = "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918"
 CHAMPION = ["EvalParams=research-data/params_abc.txt", "TTEval=true"]
-# Frozen in docs/DEV6_PREREG_EXP0048.md §3 before any corpus game was played.
+# Frozen in each experiment's prereg before any of its corpus games were played.
 EXTRACT = ["--min-ply", "12", "--sample-every", "2",
            "--max-positions-per-game", "60", "--min-pieces", "6",
            "--max-abs-material", "1500"]
@@ -47,7 +47,9 @@ def main() -> None:
     ap.add_argument("--source-sha", required=True)
     ap.add_argument("--experiment-id", default="exp0048")
     ap.add_argument("--games", type=int, default=750)
-    ap.add_argument("--seed", type=int, default=2026110603)
+    ap.add_argument("--seed", type=int, required=True,
+                    help="frozen match seed from the experiment prereg; no default, so a "
+                         "new experiment cannot silently inherit a previous seed")
     ap.add_argument("--base-ms", type=int, default=40)
     ap.add_argument("--inc-ms", type=int, default=4)
     ap.add_argument("--hash", type=int, default=16)

@@ -1463,3 +1463,52 @@ before its OWN fresh disjoint corpus. Also recorded: a 4.47 % accuracy gain is
 not evidence of +75 Elo.
 
 CI on `95ea477` (the negative-result commit): **SUCCESS**, all 9 jobs.
+
+## 2026-11-06 — exp-0049 preregistered: expressive PST with a correctly scaled objective
+
+A NEW hypothesis, not a retry. exp-0048 stays CLOSED/NEGATIVE and its report and
+ledger entry are untouched. `docs/DEV6_PREREG_EXP0049.md`
+(SHA-256 `05a43ca5afcae55d115c381225132b21e155e780a1c3dda43fe1f3e594c75265`) is
+committed BEFORE any exp-0049 corpus game and before that corpus exists.
+
+Three substantive, pre-declared differences from the degenerate exp-0048
+objective: (1) `L2 = 0` so the table is fitted to the data instead of pinned to
+the prior; (2) a **support floor** — entries seen < 200 times in the training
+split are reset to the formulaic value, because Adam is per-coordinate
+scale-invariant and would otherwise move a square seen 3 times as fast as one
+seen 100,000 times; (3) a **+-150 cp deviation cap**, an a-priori chess-plausible
+bound for a placement term.
+
+Provenance stated plainly in the prereg: `L2 = 0` was informed by the
+EXPLORATORY grid on the CLOSED exp-0048 corpus. That is hypothesis generation,
+which is exactly why that corpus/holdout are declared BURNED and why exp-0049
+uses a FRESH corpus its hyperparameters never saw. The support floor and the cap
+were NOT chosen on data: they follow from the measured support histogram (16
+entries with zero occurrences, 32 with < 200, median 2,446) and from chess
+plausibility. The accuracy threshold is **unchanged** (>= 3 % relative held-out
+log-loss reduction AND non-worsening Brier) — not relaxed to let this pass.
+
+Fresh suites, seed 2026110611: 3,000 corpus openings + 2x500 screen openings,
+**zero** overlap with all **161** earlier committed suites (44,441 excluded
+positions), explicitly including the burned exp-0048 corpus and its unused
+screen suites. Split seed 2026110612, match seed 2026110613, screen seeds
+2026110614/15.
+
+Infrastructure generalised from exp0048-only to exp0048|exp0049 with every guard
+retained: the prepare job still refuses unknown ids and still requires the
+prereg and suite manifest in the PINNED commit; `--seed` is now REQUIRED on the
+shard job so a new experiment cannot silently inherit a previous seed; the
+combiner takes the split seed from the experiment id.
+
+Smoke-tested the whole exp-0049 path on throwaway data before dispatch. That
+caught a real shape bug: `support` has 384 piece-square entries while `theta`
+has 768 (both phases), so `np.where` could not broadcast. Fixed by applying each
+entry's support to both of its phase halves, with an explicit shape assertion.
+Verified both guards engage (support floor reset 746 phase entries; cap held
+max deviation to exactly 150 cp) and that all three engine/model identity checks
+still pass. The 16-game smoke holdout was negative, as expected from overfitting
+on tiny data — precisely what the holdout is for. Smoke artifacts deleted; the
+prereg was byte-identical before and after the smoke test.
+
+Zero strength games. exp-0047 still DORMANT, Activation Record empty. No PR
+strength claim, no merge/tag/release/deploy.

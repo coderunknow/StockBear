@@ -139,7 +139,8 @@ def main() -> None:
         "games_contributing_positions": contrib,
         "engine_failures": sum(m["engine_failures"] for m in manifests.values()),
         "time_forfeits": sum(m["time_forfeits"] for m in manifests.values()),
-        "split_policy": {"by": "game", "holdout_fraction": 0.2, "seed": 2026110602,
+        "split_policy": {"by": "game", "holdout_fraction": 0.2,
+                         "seed": {"exp0048": 2026110602, "exp0049": 2026110612}.get(a.experiment_id, 2026110612),
                          "rule": "sorted unique game ids, random.Random(seed).shuffle, "
                                  "first ceil(0.2*G) ids are holdout"},
         "game_id_format": "<shard>:<per-shard game index from build_tuning_data>",

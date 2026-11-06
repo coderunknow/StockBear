@@ -1,9 +1,11 @@
-name: Dev6 exp-0048 self-play corpus
+name: Dev6 self-play fitting corpus
 
-# Training-data generation for the exp-0048 candidate evaluator. This is NOT a
-# strength benchmark: both sides are the immutable DEV5 champion binary, so no
-# Elo can be measured here and nothing produced by this workflow is ever pooled
-# with a match. See docs/DEV6_PREREG_EXP0048.md §3 (frozen before any game).
+# Training-data generation for a preregistered candidate evaluator (exp0048,
+# exp0049). Each experiment has its OWN frozen prereg and its OWN fresh corpus.
+# This is NOT a strength benchmark: both sides are the immutable DEV5 champion
+# binary, so no Elo can be measured here and nothing produced by this workflow is
+# ever pooled with a match. See each experiment's frozen prereg, e.g.
+# docs/DEV6_PREREG_EXP0049.md §3.
 #
 # Same two-stage discipline as dev6-tier1.yml:
 #   mode=generate  -> 8 isolated GitHub-hosted VMs, one opening shard each;
@@ -24,6 +26,11 @@ on:
         default: 'generate'
         type: choice
         options: [generate, export]
+      experiment_id:
+        description: 'Preregistered experiment id (exp0048 | exp0049)'
+        required: true
+        default: 'exp0049'
+        type: string
       source_sha:
         description: 'EXACT source commit SHA, or HEAD for the triggering commit'
         required: true
@@ -70,22 +77,26 @@ jobs:
             MODE='${{ inputs.mode }}'
             SHA='${{ inputs.source_sha }}'
             SRID='${{ inputs.source_run_id }}'
-            EXP=exp0048
+            EXP='${{ inputs.experiment_id }}'
           else
             python3 -c 'import json;d=json.load(open("benchmarks/exp-runs/corpus-dispatch.json"));[print(k+"="+str(d.get(k,""))) for k in ("mode","experiment_id","source_sha","source_run_id")]' > /tmp/cfg.env
             cat /tmp/cfg.env
             . /tmp/cfg.env
             MODE="$mode"; SHA="$source_sha"; SRID="$source_run_id"; EXP="$experiment_id"
           fi
-          [ "$EXP" = "exp0048" ] || { echo "this lane only generates the frozen exp0048 corpus" >&2; exit 1; }
+          case "$EXP" in
+            exp0048|exp0049) ;;
+            *) echo "no frozen corpus protocol for '$EXP'" >&2; exit 1 ;;
+          esac
           if [ -z "$SHA" ] || [ "$SHA" = "HEAD" ]; then SHA="$(git rev-parse HEAD)"; fi
           git cat-file -e "$SHA^{commit}" || { echo "unknown source_sha $SHA" >&2; exit 1; }
           # The prereg, the generator and every opening shard must already exist
           # in the pinned commit: conditions cannot be invented at run time.
-          git show "$SHA:docs/DEV6_PREREG_EXP0048.md" > /tmp/prereg.md
-          git show "$SHA:benchmarks/dev6-baseline/exp0048_corpus_suites.json" > /tmp/suites.json
+          UPPER="$(echo "$EXP" | tr '[:lower:]' '[:upper:]')"
+          git show "$SHA:docs/DEV6_PREREG_${UPPER}.md" > /tmp/prereg.md
+          git show "$SHA:benchmarks/dev6-baseline/${EXP}_corpus_suites.json" > /tmp/suites.json
           sha256sum /tmp/prereg.md /tmp/suites.json
-          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          EXP="$EXP" python3 - <<'PY' >> "$GITHUB_OUTPUT"
           import json
           s = json.load(open("/tmp/suites.json"))
           assert s["count"] == 3000 and s["shards"] == 8 and s["disjoint_overlap"] == 0, s
@@ -93,7 +104,9 @@ jobs:
           shards = [{"shard": k, "sha256": v} for k, v in sorted(s["slices"].items())]
           print("shards=" + json.dumps(shards))
           print("games=" + str(2 * s["count"] // s["shards"]))
-          print("seed=2026110603")
+          seeds = {"exp0048": 2026110603, "exp0049": 2026110613}
+          import os
+          print("seed=" + str(seeds[os.environ["EXP"]]))
           PY
           {
             echo "mode=$MODE"
@@ -104,7 +117,7 @@ jobs:
           echo "mode=$MODE experiment=$EXP source_sha=$SHA source_run_id=$SRID"
 
   generate:
-    name: corpus-${{ matrix.job.shard }}
+    name: corpus-${{ needs.prepare.outputs.experiment_id }}-${{ matrix.job.shard }}
     if: needs.prepare.outputs.mode == 'generate'
     needs: prepare
     runs-on: ubuntu-latest        # one dedicated GitHub-hosted VM per shard
@@ -142,8 +155,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: corpus-exp0048-${{ matrix.job.shard }}-run${{ github.run_id }}
-          path: benchmarks/exp-runs/corpus-exp0048-${{ matrix.job.shard }}/
+          name: corpus-${{ needs.prepare.outputs.experiment_id }}-${{ matrix.job.shard }}-run${{ github.run_id }}
+          path: benchmarks/exp-runs/corpus-${{ needs.prepare.outputs.experiment_id }}-${{ matrix.job.shard }}/
           if-no-files-found: error
           retention-days: 90
           compression-level: 6
@@ -156,6 +169,7 @@ jobs:
     timeout-minutes: 30
     env:
       SOURCE_RUN_ID: ${{ needs.prepare.outputs.source_run_id }}
+      EXPERIMENT_ID: ${{ needs.prepare.outputs.experiment_id }}
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -190,12 +204,12 @@ jobs:
           dest="benchmarks/exp-runs/corpus-export/run-$SOURCE_RUN_ID"
           mkdir -p "$dest"
           python3 scripts/dev6_corpus_combine.py \
-            --shards downloaded --out "$dest" --experiment-id exp0048 \
+            --shards downloaded --out "$dest" --experiment-id "$EXPERIMENT_ID" \
             --expect s00,s01,s02,s03,s04,s05,s06,s07 --source-run-id "$SOURCE_RUN_ID"
           # Keep the per-shard manifests too: they carry runner + termination
           # detail that the combined manifest only summarises.
           mkdir -p "$dest/shards"
-          for d in downloaded/corpus-exp0048-*; do
+          for d in downloaded/corpus-"$EXPERIMENT_ID"-*; do
             s="$(basename "$d")"
             cp "$d/manifest.json" "$dest/shards/$s.json"
             cp "$d/SHA256SUMS.txt" "$dest/shards/$s.SHA256SUMS.txt"
@@ -209,7 +223,7 @@ jobs:
           m = {"exported_at_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
                "source_run_id": os.environ["SOURCE_RUN_ID"],
                "export_workflow_run_id": os.environ["GITHUB_RUN_ID"],
-               "experiment_id": "exp0048",
+               "experiment_id": os.environ["EXPERIMENT_ID"],
                "artifacts": [{"id": x["id"], "name": x["name"], "size_in_bytes": x["size_in_bytes"]}
                              for x in arts],
                "channel": "git + GitHub Contents API (blob CDN unreachable from sandbox)"}
@@ -224,7 +238,7 @@ jobs:
           git config user.email "dev6-corpus@stockbear.local"
           git config user.name "dev6-corpus-exporter"
           git add -A "$dest"
-          git commit -q -m "dev6-corpus[exp0048]: export fitting corpus from run $SOURCE_RUN_ID [skip ci]"
+          git commit -q -m "dev6-corpus[$EXPERIMENT_ID]: export fitting corpus from run $SOURCE_RUN_ID [skip ci]"
           ok=0
           for attempt in 1 2 3 4; do
             if git push origin HEAD:"${{ github.ref_name }}"; then ok=1; break; fi
