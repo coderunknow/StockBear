@@ -1,10 +1,10 @@
 {
   "mode": "export",
   "source_sha": "HEAD",
-  "note": "Deliberate git mirror of the completed A/A calibration from isolated-runner run 42191869178 (both jobs SUCCESS). The artifact blob CDN and job logs are unreachable from this sandbox, so evidence is exported via the supported download-artifact interface inside the runner, checksum-verified before AND after the copy, and committed once to this branch. The export REFUSES to mirror a non-isolated run as host evidence. Instrument validation only: no candidate measured, no --pst path, cannot re-run or reopen exp-0048/exp-0049.",
+  "note": "Deliberate git mirror of the completed A/A calibration from isolated-runner run 42191869178 (both jobs SUCCESS). The artifact blob CDN and job logs are unreachable from this sandbox, so evidence is exported via the supported download-artifact interface inside the runner, checksum-verified before AND after the copy, and committed once to this branch. The export REFUSES to mirror a non-isolated run as host evidence. Instrument validation only: no candidate measured, no --pst path, cannot re-run or reopen exp-0048/exp-0049. Attempt 3: the previous dispatch push was suppressed because its commit message body contained a literal CI-suppression token while describing the export commit; GitHub honours that token anywhere in the message, so no workflow ran. Re-dispatched with the token absent.",
   "nodes": 300000,
   "reps": 3,
   "evaluations": 6,
-  "attempt": 2,
+  "attempt": 3,
   "source_run_id": "42191869178"
 }
