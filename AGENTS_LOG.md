@@ -1913,3 +1913,35 @@ Recorded `RESULTS.json` + `AUDIT.txt` (checksummed), report
 `docs/DEV6_EXP0050_REPORT.md`, and a full ledger entry. No retune, no re-run, no
 pooling, no default change. Gates unchanged (1/4 UNMET, 2 direction-only, 3 PASS);
 mission ACTIVE; exp-0047 DORMANT.
+
+## 2026-11-06 — blocker found before exp-0051: a missing PstFile SILENTLY fakes a null
+
+User approved testing the frozen exp-0049 table at fixed time (it was rejected
+only by the two instruments since proven invalid, and has never played a game).
+Before generating anything I checked whether the run could be trusted, and found
+it could not.
+
+**Two defects, both would have produced a convincing fake result:**
+1. The Tier-1 package copies only `stockbear`, `params_abc.txt` and
+   `BUILD_INFO.json`. A PST referenced by `a_options` was **not** carried, so the
+   exported "exact tested artefact" package would have been incomplete.
+2. Worse: `setoption name PstFile value <missing>` is **not fatal**. The engine
+   emits `info string ... could not load` and then **plays on with the formulaic
+   tables**. In a same-binary ablation that makes the candidate bit-identical to
+   the control and manufactures a clean, plausible **fake null** — 0 forfeits,
+   nulls including 0, everything green.
+
+**Fix:** jobs may declare `assets`, which are copied into the package, recorded in
+`BUILD_INFO.assets_sha256` and covered by `SHA256SUMS.txt`. Then a **positive**
+load assertion per arm: every referenced `PstFile` must be a declared asset AND
+the probe must print `PstFile loaded: <path>` with no `could not load`.
+
+**All branches exercised on the final code, zero games played:** undeclared PST →
+abort; declared-but-corrupt PST → packaged, then `FAILED to load` abort; valid
+declared PST → `LOAD VERIFIED`. The first guard alone was insufficient — the probe
+runs with `cwd=ROOT`, so an undeclared PST still loaded from the checkout and
+passed. That hole is why the asset-declaration assertion exists. Scratch dirs,
+scratch builds and the corrupt probe file all deleted.
+
+This is the same class of defect as the recorded `evaldata` without `--params`
+trap: an instrument that silently measures the wrong thing and reports success.

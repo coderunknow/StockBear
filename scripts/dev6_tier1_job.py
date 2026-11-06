@@ -120,6 +120,20 @@ def main():
     (staging / "research-data").mkdir(parents=True)
     shutil.copy2(built, staging / "stockbear")
     shutil.copy2(ROOT / "research-data/params_abc.txt", staging / "research-data/params_abc.txt")
+    # exp-0051: a job may reference extra repo assets (e.g. a frozen PST table).
+    # They MUST travel inside the package, or the "extracted binary is the exact
+    # tested artefact" claim is incomplete and a relative path could resolve
+    # differently at match time. Declared explicitly so nothing is implicit.
+    assets = job.get("assets", [])
+    asset_shas = {}
+    for rel in assets:
+        src = ROOT / rel
+        assert src.is_file(), f"declared asset missing: {rel}"
+        dst = staging / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dst)
+        asset_shas[rel] = sha(src)
+        say("packaged asset", rel, asset_shas[rel])
     info = {
         "source_sha": head, "experiment_id": a.experiment_id, "job_id": job_id,
         "workflow_run_id": a.run_id, "run_attempt": a.run_attempt,
@@ -130,6 +144,7 @@ def main():
                    "platform": platform.platform()},
         "binary_sha256": built_sha,
         "params_sha256": sha(ROOT / "research-data/params_abc.txt"),
+        "assets_sha256": asset_shas,
         "default_bench_signature": sig,
         "build_command": f"cmake -S . -B build-tier1 -G Ninja -DCMAKE_BUILD_TYPE=Release "
                          f"-DCMAKE_CXX_FLAGS='{flags}' -DSTOCKBEAR_BUILD_TESTS=OFF && "
@@ -137,7 +152,7 @@ def main():
     }
     (staging / "BUILD_INFO.json").write_text(json.dumps(info, indent=2) + "\n")
     lines = []
-    for rel in ("stockbear", "research-data/params_abc.txt", "BUILD_INFO.json"):
+    for rel in ("stockbear", "research-data/params_abc.txt", *assets, "BUILD_INFO.json"):
         lines.append(f"{sha(staging / rel)}  {rel}")
     (staging / "SHA256SUMS.txt").write_text("\n".join(lines) + "\n")
     (staging / "README.txt").write_text(
@@ -186,6 +201,46 @@ def main():
     (out / "uci.txt").write_text(uci.stdout)
     say("candidate UCI default switches:",
         [l for l in uci.stdout.splitlines() if "ProbCut" in l or "BadCapturePruning" in l])
+
+    # A PstFile that cannot be read is NOT fatal to the engine: it emits an
+    # `info string ... could not load` and then plays on with the FORMULAIC
+    # tables. In a same-binary ablation that makes the candidate bit-identical
+    # to the control and manufactures a convincing fake null. Assert positively
+    # that every declared PstFile really loaded, on the exact binary and with
+    # the exact option list that arm will use.
+    probe_opts = {"A": job.get("a_options", CHAMPION),
+                  "B": job.get("b_options", CHAMPION)}
+    if job.get("null", False):
+        probe_opts["B"] = list(probe_opts["A"])
+    probe_engines = {"A": job.get("engine_a", "candidate"),
+                     "B": job.get("engine_b", "baseline")}
+    for arm, opts in probe_opts.items():
+        psts = [o.split("=", 1)[1] for o in opts
+                if o.split("=", 1)[0].strip().lower() == "pstfile" and "=" in o]
+        if not psts:
+            continue
+        # The probe runs with cwd=ROOT, so a repo-relative PstFile would load
+        # from the CHECKOUT even if the package never carried it. Require every
+        # referenced PstFile to be a declared asset, so the exported package is
+        # self-contained evidence and not an incomplete mirror.
+        for path in psts:
+            assert path in assets, (
+                f"arm {arm}: PstFile {path} is not declared in job['assets']; "
+                f"it would load from the checkout but be absent from the package")
+        binary = {"candidate": candidate, "baseline": DEV5}.get(
+            probe_engines[arm], probe_engines[arm])
+        script = "uci\n" + "".join(f"setoption name {o.split('=',1)[0]} value {o.split('=',1)[1]}\n"
+                                   for o in opts) + "isready\nquit\n"
+        pr = subprocess.run([str(binary)], cwd=ROOT, input=script,
+                            capture_output=True, text=True, timeout=60)
+        (out / f"pst_probe_{arm}.txt").write_text(pr.stdout)
+        assert "could not load" not in pr.stdout, (
+            f"arm {arm}: PstFile FAILED to load; engine would silently use "
+            f"formulaic tables and fake a null: {pr.stdout}")
+        for path in psts:
+            assert f"PstFile loaded: {path}" in pr.stdout, (
+                f"arm {arm}: no positive confirmation that {path} loaded")
+            say(f"arm {arm} PstFile LOAD VERIFIED", path)
 
     # ---- 5. match ----------------------------------------------------------
     games = int(job.get("games", 0))
