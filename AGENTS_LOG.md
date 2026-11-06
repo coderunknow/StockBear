@@ -1787,3 +1787,33 @@ reusable negative control any future gate must pass.
 Report `docs/DEV6_ACCURACY_GATE_VALIDITY.md`; checksummed evidence in
 `benchmarks/dev6-baseline/accuracy_gate_validity/`; ledger entry appended. Zero
 strength games; exp-0047 DORMANT; gates unchanged.
+
+## 2026-11-06 — built the scale-invariant replacement, then tested it against Elo: still not a predictor
+
+Implemented `scripts/eval_accuracy.py` (per-arm scale calibration + ranking AUC),
+with 10 property tests wired into CI. The rescale control now holds: u80 drops
+from **+3.043 % (old gate PASS)** to **+0.010 %**. It also fixes a WRONG SIGN —
+deleting every PST term read as **+0.218 %** under the old metric and is
+**-1.977 % / AUC -0.0136** under the new one.
+
+Two real bugs were caught BY the tests and fixed/documented rather than papered
+over: a fixed search bracket clamped calibration at 10x (fixed by RMS-normalising
+before the search), and calibrated log-loss is **floored at log10(2)** so it
+compresses regressions (a sign flip scores -4 % there but -0.49 in AUC). The
+docstring now says never to read the calibrated loss alone to judge a candidate
+"not much worse".
+
+**Then I asked the question that matters and got a negative answer about my own
+fix.** Does the corrected metric predict MEASURED Elo better? On the 9 variants
+with historical 40+4 Elo: OLD r=+0.53 (t=1.64), NEW calibrated loss r=+0.42
+(t=1.23), NEW AUC r=+0.57 (t=1.84) — **none significant** against t_crit 2.36. The
+calibrated loss is even a slightly WORSE correlate than the metric it replaces.
+
+So the claim is narrowed to what was actually earned: the scale exploit is
+removed, but that does **not** make it a strength proxy. Removing an exploit from
+a metric does not establish that it measures Elo. `eval_accuracy.py` is a sanity
+check that rejects degenerate "improvements", NOT a selection criterion.
+
+Reinforced, by a second independent route: **select on fixed-time 40+4 games.**
+Evidence `METRIC_VS_MEASURED_ELO.json` added to the checksummed bundle (5/5).
+No verdict changed; zero strength games; exp-0047 DORMANT.

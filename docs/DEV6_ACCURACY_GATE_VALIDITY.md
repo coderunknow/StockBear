@@ -167,3 +167,40 @@ Two real limitations found **by** those tests and documented rather than hidden:
 
 This module is a **development diagnostic, not an activation gate**. It still has
 no licensed Elo conversion (§6), so it cannot satisfy exp-0047 §3.3 on its own.
+
+---
+
+## 10. The replacement is NOT an Elo predictor either — checked, and it failed
+
+The obvious next question: does the corrected metric actually predict **measured
+Elo** better than the broken one? Tested on the 9 committed variants that have
+historical 40+4 Elo (exp-0012), zero new games. Evidence
+`benchmarks/dev6-baseline/accuracy_gate_validity/METRIC_VS_MEASURED_ELO.json`.
+
+| metric | r | R² | slope t | t crit (df=7) | verdict |
+|---|---|---|---|---|---|
+| OLD fixed-K log-loss | +0.5263 | 0.277 | +1.64 | 2.36 | not significant |
+| NEW calibrated log-loss | +0.4207 | 0.177 | +1.23 | 2.36 | not significant |
+| NEW ranking AUC | +0.5719 | 0.327 | +1.84 | 2.36 | **not significant** |
+
+**None of the three is a significant predictor of measured Elo.** The best of
+them (AUC, R² = 0.33) still leaves two-thirds of the variance unexplained, and
+the calibrated *loss* is actually a slightly **worse** correlate than the metric
+it replaces.
+
+So the honest conclusion is narrower than "fixed the gate":
+
+- ✅ The scale exploit is **removed** — a pure rescale now scores ≈ 0, verified by
+  property tests in CI, and a real ablation gets the correct sign.
+- ❌ That does **not** make it a strength proxy. Fixing an exploit in a metric
+  does not establish that the metric measures Elo.
+
+This is exactly the trap §6 warns about, now demonstrated on the replacement
+rather than only on the original. **`scripts/eval_accuracy.py` is a sanity check
+that rejects degenerate "improvements", not a selection criterion.**
+
+Reinforced conclusion: **select on fixed-time 40+4 games.** The ledger already
+said screens are the only trustworthy bullet filter; this is a second,
+independent reason not to gate on accuracy. n = 9 is small, so this is a screen
+comparison and not a calibration — but a metric that cannot clear significance
+even in-sample has no business gating a +75 Elo mission.
