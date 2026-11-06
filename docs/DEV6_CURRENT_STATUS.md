@@ -520,8 +520,28 @@ Mission ACTIVE / NOT COMPLETE. Zero strength games played in this cycle.**
   UNSATISFIABLE for any accuracy-driven candidate**: a structural blocker, not a
   candidate failure. Report `docs/DEV6_ACCURACY_ELO_LINK_AUDIT.md`, evidence
   `benchmarks/dev6-baseline/accuracy_elo_anchor/`.
+- **METRIC DEFECT (audit, zero strength games): the frozen accuracy gate is
+  PASSABLE BY A PURE RESCALE.** It uses a fixed K=400 link, so it rewards score
+  magnitude. Multiplying **every** champion parameter by **0.80** clears the
+  frozen gate on **both** independent corpora (**+3.043 %**, **+3.109 %**, Brier
+  non-worsening) — the bar two 6,000-game corpora and two fitted 768-parameter
+  tables failed — while pairwise ordering is essentially unchanged (**0.54 %**
+  sign flips from integer rounding, Spearman **0.99984**). Proved with a control:
+  against a scale-invariant reference (champion optimally rescaled on the same
+  rows) u80 flips to **−1.10 % / −1.26 %** and every factor 0.80–1.10 is negative
+  on both corpora, which is correct since rescaling adds no information.
+  Independent corroboration with **measured Elo**: `params_abc_s095` is verified
+  byte-for-byte a pure 0.95 rescale and has better log-loss (+0.764 %) but lower
+  Elo (+44.9 vs +48.2). **Caveats:** a rescale is not a strength no-op
+  (cp-calibrated search margins), u80 was never played, and the −3.3 Elo gap is
+  inside ±25 screen noise. **exp-0048/0049 verdicts are UNCHANGED** — nothing was
+  re-scored — but the bar was never a valid strength proxy. Report
+  `docs/DEV6_ACCURACY_GATE_VALIDITY.md`; reusable negative control
+  `scripts/dev6_accuracy_scale_audit.py`.
 - Next concrete action: **resolve the accuracy→Elo blocker before spending any
-  further corpus on an evaluator candidate.** Either preregister a calibration
+  further corpus on an evaluator candidate.** Any future accuracy-style gate must
+  be scale-invariant (or calibrate the link for both arms) and must pass the
+  rescale negative control, or else be replaced by fixed-time 40+4 screens. Either preregister a calibration
   experiment measuring BOTH accuracy (one common corpus) AND fixed-time 40+4 Elo
   for several variants spanning a range of accuracy deltas, or abandon accuracy
   as the gate variable and select on fixed-time strength screens (already the
