@@ -2353,3 +2353,57 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
 - **Gates:** 1 **UNMET**, 2 direction-supported (exp-0036, unchanged), 3 **PASS**,
   4 **UNMET**. Mission **ACTIVE / NOT COMPLETE**; exp-0047 **DORMANT**; exp-0050
   verdict untouched. No PR strength claim, merge, tag, release or deploy.
+
+## exp-0052 — quadratic king-danger concentration — VALID MEASUREMENT / CLOSED AS INCONCLUSIVE (2026-11-06)
+
+- **Design:** ONE default-off param `KingSafetyQuadratic`; units = Σ weight[pt] ·
+  |attacks(pt) ∩ KingZone|, weights {N2,B2,R3,Q5}, curve `min(u,32)²/16`,
+  middlegame-only, per-side queen gate, fused into the existing king-danger loop.
+  Arm B = **exact released dev5 artifact** `391cb50e…5bdb918`, not a local
+  ablation. Fixed time 40+4 ms, Hash 16, Threads 1. Prereg
+  `c3a022d5686d4d5485f890ea23884dcc10e36e209e5a9902626c2a505f74d578`, pinned
+  source `2927c50`, run **42231550633**, export **42233030585**.
+- **Independent raw recomputation** (new auditor, shares no code with
+  `match_stats.py`): batchA 360/300/334 **+8.7933 [−7.4260,+25.0509]**; batchB
+  329/339/330 **−0.3488 [−15.7768,+15.0777]**; **FROZEN COMBINED 689/639/664,
+  992 clusters, +4.2031 [−6.9678,+15.3826]**, bootstrap [−7.0057,+15.2451].
+- **Validity PASS:** 0 forfeits / 0 illegal / 0 engine failures in all 5 jobs;
+  both nulls include 0; **3,200/3,200 PGN games replayed, 0 inconsistent**; 67/67
+  blobs, 55/55 sums; per-arm `EvalParams LOAD VERIFIED` cross-checked against the
+  frozen plan at the pinned SHA; arm digests match the declared design.
+  **TOTAL ISSUES 0.**
+- **Baseline-equivalence diagnostic:** candidate knob-OFF vs exact dev5
+  **+0.8686 [−20.8079,+22.5519]**, CI includes 0 ⇒ attribution to the knob is
+  clean. Never pooled.
+- **Verdict by the frozen rules:** ADVANCE needs point ≥ +20 AND LCB > 0 → NO.
+  CLOSE needs UCB < +10 OR point ≤ 0 → NO (UCB +15.38). Therefore
+  **CLOSED AS INCONCLUSIVE**. No strength claim in either direction.
+- **Why it is informative anyway:** the mechanism is correct (oracle 1,000/0),
+  consistent (invariant 3,997/0), cheap (**+0.65%** paired A/A-calibrated eval
+  cost), live (10/11 trees change) and default-off bit-exact — and still
+  indistinguishable from zero. **Pre-game checks are necessary, not sufficient.**
+  The conservative scale (RMS 13.87 cp, max 64 cp/side) deliberately avoided
+  exp-0049's pruning detuning and, as predicted in prereg §8, left an effect too
+  small for a ~±13 Elo screen to resolve.
+- **Non-repeatable / dead ends:** do NOT re-run exp-0052, do NOT re-scale the
+  coefficient/cap/divisor and re-measure (that is a strength sweep), do NOT pool
+  its games, do NOT stack it post-hoc with other screened numbers. Its 1,600
+  openings (seed 2026110652) and 3,200 games are burned for selection. This does
+  **not** prove a larger scale would fail — untested, and it would need its own
+  prereg and a defensible answer to the pruning-margin interaction.
+- **Instruments fixed at zero games:** the `king_safety` group had no
+  `add_test()` entry, so **ctest reported 14/14 PASS while the test binary
+  failed**; and `EvalParams` shares `PstFile`'s silent-fallback hole (missing
+  file ⇒ "could not load" ⇒ plays on with the previous table ⇒ fake result). The
+  runner now asserts positive per-arm load proof for every file-valued option;
+  all four guard branches exercised on the real runner with zero games. The
+  independent auditor was generalised likewise and given a frozen-plan
+  cross-check; it still reproduces exp-0051's verdict exactly with 0 issues.
+- **Auditor correction disclosed:** the initial 3 issues ("arms use different
+  binaries") were a same-binary-ablation assumption invalid for a dev5-baseline
+  design. Replaced with a stronger per-arm role/digest check. It does not change
+  the verdict, which is INCONCLUSIVE either way.
+- **Gates:** 1 **UNMET**, 2 direction-supported (exp-0036 +21.52 unchanged),
+  3 **PASS**, 4 **UNMET**. Mission **ACTIVE / NOT COMPLETE**; exp-0047 **DORMANT**;
+  exp-0048/0049/0050/0051 verdicts untouched. Feature stays default-OFF. No
+  default change, no PR strength claim, no merge, tag, release or deploy.

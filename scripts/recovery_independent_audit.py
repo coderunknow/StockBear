@@ -346,8 +346,37 @@ def audit_job(job: Path, replay: bool) -> dict:
         issues.append(f"{name}: node budget used instead of fixed time")
     if tc["max_plies"] != 240 or tc["hash"] != 16 or tc["threads"] != 1:
         issues.append(f"{name}: max_plies/hash/threads deviate from the frozen control")
-    if cfg["engine_a_sha256"] != cfg["engine_b_sha256"]:
-        issues.append(f"{name}: arms use different binaries (not an ablation)")
+    # Binary identity must match the DECLARED design, not merely be equal.
+    # exp-0051 was a same-binary ablation; exp-0052 deliberately plays the
+    # candidate against the EXACT released dev5 artifact, which is the
+    # project's required baseline. Requiring equality would reject the correct
+    # design, so instead verify each arm against the digest it should have.
+    fp_path = job / "fingerprint.json"
+    fp = json.loads(fp_path.read_text()) if fp_path.is_file() else {}
+    plan_job = fp.get("plan_job") or {}
+    cand_sha = fp.get("packaged_binary_sha256")
+    dev5_sha = fp.get("dev5_sha256")
+    if not plan_job:
+        issues.append(f"{name}: no plan_job; cannot verify arm binary identity")
+    else:
+        for side, key in (("a", "engine_a"), ("b", "engine_b")):
+            want_role = plan_job.get(key, "candidate" if side == "a" else "baseline")
+            if plan_job.get("null") and side == "b":
+                want_role = plan_job.get(key, "candidate")
+                if want_role == "baseline":
+                    want_role = "candidate"   # null forces both arms to candidate
+            want = cand_sha if want_role == "candidate" else dev5_sha
+            got = cfg[f"engine_{side}_sha256"]
+            if not want:
+                issues.append(f"{name}: no expected digest for arm {side} ({want_role})")
+            elif got != want:
+                issues.append(
+                    f"{name}: arm {side} binary {str(got)[:12]} != expected "
+                    f"{want_role} digest {str(want)[:12]}")
+        if plan_job.get("engine_a") == plan_job.get("engine_b") == "candidate" \
+                and not plan_job.get("null") \
+                and cfg["engine_a_sha256"] != cfg["engine_b_sha256"]:
+            issues.append(f"{name}: declared same-binary ablation but arms differ")
 
     # ---- 6. terminations / forfeits / clock starvation -------------------
     terms = Counter(g["termination"].split(" (")[0] for g in games)

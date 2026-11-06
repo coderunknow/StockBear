@@ -1,6 +1,12 @@
 # StockBear — Recovery Research
 
 **Branch:** `arena/6a6a2ba3-stockbear` · **Status:** mission ACTIVE, Gate 1 UNMET
+**Update 2026-11-06 (post-game):** Direction 1 was implemented, preregistered and
+played as exp-0052. Result **+4.2031 Elo [−6.9678, +15.3826]** over 2,000 games —
+**VALID MEASUREMENT / CLOSED AS INCONCLUSIVE** by the frozen rules. It neither
+advances nor is rejected. See `docs/DEV6_EXP0052_REPORT.md`. The ranking below is
+retained as written pre-game; §3 Direction 1's "Next action" is now discharged,
+and **Direction 2 is the strongest next action**.
 **Baseline (unchanged):** released `v0.1.0-dev5`, binary SHA256
 `391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918`, champion
 config `EvalParams=research-data/params_abc.txt`, `TTEval=true`, Hash 16,
@@ -147,8 +153,10 @@ quality × cost to falsify — not by ease of implementation or profile share.
   bound < +10 Elo.** Anything between is INCONCLUSIVE and does not advance.
   A negative or null result closes this direction; it is not re-scaled and
   re-run, because that would be a strength sweep.
-- **Next action.** Freeze the prereg, then run the screen. Implementation and
-  pre-game evidence are complete (§4–5).
+- **Next action.** ~~Freeze the prereg, then run the screen.~~ **DONE.** Played as
+  exp-0052: **+4.2031 [−6.9678, +15.3826]**, CLOSED AS INCONCLUSIVE. Not rejected,
+  not advanced; may not be re-run or re-scaled. The conservative scale that made
+  the result attributable also made it too small for a ±13 Elo screen to resolve.
 
 ### Direction 2 — Threat / hanging-piece awareness · **RANK 2**
 

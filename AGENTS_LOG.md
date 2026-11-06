@@ -2042,3 +2042,34 @@ ADVANCE >= +20 & LCB>0, CLOSE if UCB<+10, else INCONCLUSIVE. No games played yet
 at the time of this entry. Gates: 1 UNMET, 2 direction-supported, 3 PASS,
 4 UNMET. Mission ACTIVE; exp-0047 DORMANT; no default change, no PR strength
 claim, no merge/tag/release.
+
+## 2026-11-06 — exp-0052 played and audited: VALID / CLOSED AS INCONCLUSIVE
+
+Tier-1 SCREEN run 42231550633 (5 isolated VMs, 3,200 games), export 42233030585.
+Arm B was the EXACT released dev5 artifact. Independent raw-JSONL recomputation:
+batchA +8.7933 [−7.4260,+25.0509], batchB −0.3488 [−15.7768,+15.0777],
+**combined 689/639/664 over 992 clusters, +4.2031 [−6.9678,+15.3826]**, bootstrap
+[−7.0057,+15.2451].
+
+Frozen rules: ADVANCE needs ≥+20 and LCB>0 → no. CLOSE needs UCB<+10 or point≤0
+→ no (UCB +15.38). **CLOSED AS INCONCLUSIVE.** No strength claim either way.
+
+Validity PASS, 0 issues: 0 forfeits/illegal/failures across all jobs, both nulls
+include 0, 3,200/3,200 PGN replay with 0 inconsistencies, 67/67 blobs, 55/55 sums,
+per-arm EvalParams LOAD VERIFIED cross-checked against the frozen plan at the
+pinned SHA, arm digests match the declared design. Baseline-equivalence job
++0.8686 [−20.8079,+22.5519] includes 0 ⇒ attribution to the knob is clean.
+
+Auditor generalised to all file-valued options and given a frozen-plan
+cross-check; one same-binary-ablation assumption replaced with a stronger
+per-arm role/digest check (disclosed; verdict unchanged either way). Regression:
+exp-0051 re-audits at 0 issues with identical numbers — CLOSED/NEGATIVE stands.
+
+Feature stays shipped 0 (default-OFF); all three bench signatures bit-exact.
+exp-0052 may NOT be re-run, re-scaled or pooled; its openings/games are burned
+for selection. Report `docs/DEV6_EXP0052_REPORT.md`.
+
+Gates: 1 UNMET, 2 direction-supported, 3 PASS, 4 UNMET. Mission ACTIVE.
+Strongest next action: Direction 2 (threats/hanging pieces) under its own
+prereg — with the caveat that three eval-side candidates have now produced no
+confirmed gain and no single term credibly reaches +75.
