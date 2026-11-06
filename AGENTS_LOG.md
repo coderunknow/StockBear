@@ -2002,3 +2002,43 @@ No refit, no cap relaxation, no re-run, no pooling. Gates unchanged: 1 UNMET,
 2 direction-supported, 3 PASS, 4 UNMET. Mission ACTIVE / NOT COMPLETE; exp-0047
 DORMANT. Report `docs/DEV6_EXP0051_REPORT.md`; bundle
 `benchmarks/dev6-baseline/exp0051_results/`.
+
+## 2026-11-06 — recovery mission Phases I–V (exp-0052 frozen, not yet played)
+
+Phase I: exp-0051 independently re-audited from raw per-game records with a new
+auditor. **VALID; CLOSED/NEGATIVE stands** (combined −159.54 [−173.45,−146.10],
+992 clusters, 2800/2800 PGN replay, 0 forfeits, 0 suite overlap). Two auditor
+false positives were fixed rather than used to overturn the negative verdict.
+
+Phase II: median depth **5** at 40+4 ms; eval ≈33% of node time; king danger is
+**linear** in attacker count (ceilings 6/21/69/103 cp, constant marginal cp) — a
+representational limit no retune can fix. Speed alone caps out near +41 Elo, so
+it cannot reach Gate 1.
+
+Phase III: `docs/STOCKBEAR_RECOVERY_RESEARCH.md` ranks 3 distinct directions
+(king-danger concentration / threats / attack-set dedup as funding). Honest
+external anchor +27…+63 (upper confounded); **no single term is a credible +75**.
+
+Phase IV: ONE default-off param `KingSafetyQuadratic`, curve min(u,32)^2/16,
+MG-only, queen-gated, fused into the existing king-danger loop. All three bench
+signatures unchanged and reproduced by the dev5 artifact itself. ctest 15/15,
+ASan+UBSan 15/15, oracle 1000/0 mismatches, invariant 3997/0, cost +0.65%
+(A/A-calibrated), liveness 10/11. Three mutants applied, all KILLED.
+
+Scale fixed BEFORE games by a declared criterion (p99<=120, RMS<40). RMS 187.85
+and then 31.31/p99 138 were REJECTED; the criterion was never relaxed — the cap
+was tightened to 32, giving RMS 13.87 / p99 56 / max 64 cp.
+
+Fixed at zero games: missing `add_test()` meant ctest silently skipped the whole
+king_safety group (14/14 PASS while the binary failed); and `EvalParams` shares
+PstFile's silent-fallback hole, so the runner now asserts positive load
+verification for every file-valued option per arm.
+
+Phase V: prereg `docs/DEV6_PREREG_EXP0052.md` SHA c3a022d5…f74d578, plan
+`benchmarks/exp-runs/tier1-plan-exp0052.json`, 1,600 fresh openings seed
+2026110652 independently verified disjoint. Arm B = exact dev5 artifact; plus a
+400-game baseline-equivalence diagnostic for attribution. **SCREEN only**:
+ADVANCE >= +20 & LCB>0, CLOSE if UCB<+10, else INCONCLUSIVE. No games played yet
+at the time of this entry. Gates: 1 UNMET, 2 direction-supported, 3 PASS,
+4 UNMET. Mission ACTIVE; exp-0047 DORMANT; no default change, no PR strength
+claim, no merge/tag/release.

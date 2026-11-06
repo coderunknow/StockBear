@@ -1055,3 +1055,76 @@ NPS band, one fit with no sweep, and one 2,000-game diagnostic screen that is
 explicitly NOT the decisive gate. If the accuracy or cost evidence fails, the
 candidate is recorded as a negative candidate-development outcome and exp-0047
 stays dormant.
+
+## 2026-11-06 — Strength-recovery mission, Phases I–V: exp-0052 king-danger concentration
+
+**Phase I (independent audit).** exp-0051 was re-audited from raw per-game JSONL
+with a NEW auditor (`scripts/recovery_independent_audit.py`), not by re-running
+the summary script that produced the reported numbers. Verdict **VALID**:
+combined 373/389/1230 over 992 opening clusters, CR1 **−159.54
+[−173.45, −146.10]**, design effect 1.0, 2,800/2,800 PGN moves replayed, 0
+forfeits, all 50 blob digests and 40 sums verified, 6 suite intersections 0.
+**CLOSED / NEGATIVE stands.** Two initial auditor findings were diagnosed as
+auditor false positives (the repo's `_t95` is conservative for df>120; the
+tournament shuffles openings with the job seed) and fixed, not used to overturn
+a negative result. Report: `docs/STOCKBEAR_RECOVERY_AUDIT.md`.
+
+**Phase II (bottleneck).** `evaluate()` 166.5 ns/call ≈ 33% of node time;
+**median depth 5 at 40+4 ms**. A free evaluation would buy ~1.37x nodes ≈ +41
+Elo, while +75 needs 1.78x — so speed alone cannot reach Gate 1. Core diagnosis:
+king danger is `KingDanger<pt> x popcount(attacks & KingZone)`, **linear in each
+attacker count**, giving ceilings 6/21/69/103 cp with a CONSTANT marginal cp per
+attacker. Concentration can never be punished super-linearly at any parameter
+value. That is a representational limit, not a mis-tune.
+
+**Phase III (directions).** Three conceptually distinct directions ranked by
+expected research value in `docs/STOCKBEAR_RECOVERY_RESEARCH.md`: (1) non-linear
+king-danger concentration, (2) threat/hanging-piece awareness (no threat term
+exists at all), (3) attack-set dedup as runtime *funding*, explicitly not a gate
+strategy. Learned evaluation stays ruled out by measurement (NNUE −652/−720,
+distillation −30.6, learned PST −159.5), not by fashion. External anchors:
+MadChess 2.0 **+27**, MadChess 3.0 **+63** but confounded (2min+1s, bundled with
+an aspiration-window change); SF's +2 Elo deltas are NOT transferable because SF
+already has non-linear danger. **No single eval term credibly reaches +75.**
+
+**Phase IV (implementation).** ONE appended param `KingSafetyQuadratic`, shipped
+0, default-OFF bit-exact (all three signatures unchanged, and the dev5 artifact
+re-run reproduces all three). Weights {N2,B2,R3,Q5}, curve `min(u,32)^2/16`,
+middlegame-only, per-side queen gate. Units accumulate inside the EXISTING
+king-danger loop: the first prototype recomputed attacks and cost ~20% of eval;
+fusing cut it to a paired, A/A-calibrated **+0.65%**. A second bundled knob
+(`KingSemiOpenFile`) was REMOVED because two knobs repeat exp-0026's attribution
+failure.
+
+**Scale is the exp-0049 lesson, applied pre-game.** A criterion was declared
+before any game (p99 |delta| <= 120 cp AND RMS < 40 cp, against the smallest
+pruning margin of 85 cp). Divisor-8/coef-6 measured RMS **187.85 cp** — worse
+than exp-0049's 111.83 that lost 160 Elo — and was REJECTED. Divisor-16/coef-1
+still failed p99 (138). The criterion was **not relaxed**; the cap was tightened
+to 32 units (the p99 of the observed per-side distribution), giving RMS **13.87**,
+p99 **56**, max **64 cp**, sd ratio 1.0072. This deliberately lowers the expected
+effect size in exchange for an attributable result.
+
+**Verification.** ctest 15/15; ASan+UBSan 15/15; independent python-chess oracle
+1,000 positions 0 mismatches; breakdown invariant 3,997 positions 0 mismatches;
+liveness 10/11 trees change. Three mutants physically applied and all KILLED
+(never-applied, linear curve, queen-gate removed) — the last two initially
+SURVIVED, so shape and gate assertions were added with oracle-derived pins.
+
+**Two instrument defects found and fixed at zero games.** (a) The `king_safety`
+group had no `add_test()` entry, so **ctest reported 14/14 PASS while the test
+binary reported a failure**. (b) `EvalParams` has the SAME silent-fallback hole
+`PstFile` had: a missing file emits "could not load" and returns, playing on with
+the previous table — which would fake a result. The runner's load assertion now
+covers every file-valued option, per arm, with positive `LOAD VERIFIED` proof.
+
+**Phase V (frozen screen).** `docs/DEV6_PREREG_EXP0052.md`, SHA
+`c3a022d5686d4d5485f890ea23884dcc10e36e209e5a9902626c2a505f74d578`. Arm B is the
+**exact released dev5 artifact**, not a local ablation. 1,600 fresh openings,
+seed 2026110652, independently re-verified (0 overlap vs 51,241 earlier positions
+in 182 files, all 10 slice pairs disjoint). A dedicated 400-game
+**baseline-equivalence** job makes attribution honest: if candidate-default is
+not play-equivalent to dev5, the batch effect may not be claimed as this knob's.
+SCREEN rules: ADVANCE >= +20 with LCB > 0; CLOSE if UCB < +10; else INCONCLUSIVE.
+**This is not a Gate-1 run and cannot satisfy Gate 1.** Gates: 1 UNMET,
+2 direction-supported, 3 PASS, 4 UNMET. Mission ACTIVE; exp-0047 DORMANT.

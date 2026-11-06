@@ -202,30 +202,42 @@ def main():
     say("candidate UCI default switches:",
         [l for l in uci.stdout.splitlines() if "ProbCut" in l or "BadCapturePruning" in l])
 
-    # A PstFile that cannot be read is NOT fatal to the engine: it emits an
-    # `info string ... could not load` and then plays on with the FORMULAIC
-    # tables. In a same-binary ablation that makes the candidate bit-identical
-    # to the control and manufactures a convincing fake null. Assert positively
-    # that every declared PstFile really loaded, on the exact binary and with
-    # the exact option list that arm will use.
+    # An option that names a FILE is not fatal to the engine when the file is
+    # missing or unreadable: both PstFile and EvalParams emit
+    # `info string ... could not load` and then RETURN, playing on with whatever
+    # was already active (formulaic PST / shipped eval table). In an ablation
+    # that silently makes the candidate the control and manufactures a
+    # convincing fake result. exp-0051 fixed this for PstFile; exp-0052 extends
+    # the identical assertion to EvalParams, which carries the candidate knob.
+    # Assert positively, per arm, on the exact binary and exact option list.
     probe_opts = {"A": job.get("a_options", CHAMPION),
                   "B": job.get("b_options", CHAMPION)}
     if job.get("null", False):
         probe_opts["B"] = list(probe_opts["A"])
     probe_engines = {"A": job.get("engine_a", "candidate"),
                      "B": job.get("engine_b", "baseline")}
+    # params_abc.txt is copied into every package unconditionally above, so it
+    # is self-contained without an explicit declaration.
+    IMPLICIT_ASSETS = {"research-data/params_abc.txt"}
+    FILE_OPTS = {"pstfile": "PstFile", "evalparams": "EvalParams"}
     for arm, opts in probe_opts.items():
-        psts = [o.split("=", 1)[1] for o in opts
-                if o.split("=", 1)[0].strip().lower() == "pstfile" and "=" in o]
-        if not psts:
+        refs = []
+        for o in opts:
+            if "=" not in o:
+                continue
+            k, v = o.split("=", 1)
+            label = FILE_OPTS.get(k.strip().lower())
+            if label and v.strip() and v.strip().lower() != "<empty>":
+                refs.append((label, v.strip()))
+        if not refs:
             continue
-        # The probe runs with cwd=ROOT, so a repo-relative PstFile would load
-        # from the CHECKOUT even if the package never carried it. Require every
-        # referenced PstFile to be a declared asset, so the exported package is
-        # self-contained evidence and not an incomplete mirror.
-        for path in psts:
-            assert path in assets, (
-                f"arm {arm}: PstFile {path} is not declared in job['assets']; "
+        # The probe runs with cwd=ROOT, so a repo-relative path would load from
+        # the CHECKOUT even if the package never carried it. Require every
+        # referenced file to travel inside the package, so the exported package
+        # is self-contained evidence and not an incomplete mirror.
+        for label, path in refs:
+            assert path in assets or path in IMPLICIT_ASSETS, (
+                f"arm {arm}: {label} {path} is not declared in job['assets']; "
                 f"it would load from the checkout but be absent from the package")
         binary = {"candidate": candidate, "baseline": DEV5}.get(
             probe_engines[arm], probe_engines[arm])
@@ -233,14 +245,14 @@ def main():
                                    for o in opts) + "isready\nquit\n"
         pr = subprocess.run([str(binary)], cwd=ROOT, input=script,
                             capture_output=True, text=True, timeout=60)
-        (out / f"pst_probe_{arm}.txt").write_text(pr.stdout)
+        (out / f"option_probe_{arm}.txt").write_text(pr.stdout)
         assert "could not load" not in pr.stdout, (
-            f"arm {arm}: PstFile FAILED to load; engine would silently use "
-            f"formulaic tables and fake a null: {pr.stdout}")
-        for path in psts:
-            assert f"PstFile loaded: {path}" in pr.stdout, (
+            f"arm {arm}: a file-valued option FAILED to load; the engine would "
+            f"silently play with fallback tables and fake a result: {pr.stdout}")
+        for label, path in refs:
+            assert f"{label} loaded: {path}" in pr.stdout, (
                 f"arm {arm}: no positive confirmation that {path} loaded")
-            say(f"arm {arm} PstFile LOAD VERIFIED", path)
+            say(f"arm {arm} {label} LOAD VERIFIED", path)
 
     # ---- 5. match ----------------------------------------------------------
     games = int(job.get("games", 0))
