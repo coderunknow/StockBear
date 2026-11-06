@@ -1,0 +1,142 @@
+{
+  "experiment_id": "exp0049",
+  "shard": "s00",
+  "purpose": "evaluator-fitting-only",
+  "source_sha": "5a4dad750f3accd3a556300eea0ff1a1901d07b4",
+  "prereg_sha256": "05a43ca5afcae55d115c381225132b21e155e780a1c3dda43fe1f3e594c75265",
+  "workflow_run_id": "42171974318",
+  "run_attempt": "1",
+  "baseline_binary": "benchmarks/binaries/stockbear-dev5-release",
+  "baseline_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "both_sides": "immutable dev5 champion (self-play)",
+  "options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "base_ms": 40,
+  "inc_ms": 4,
+  "hash_mb": 16,
+  "threads": 1,
+  "max_plies": 240,
+  "seed": 2026110613,
+  "games": 750,
+  "openings": "benchmarks/positions/openings_exp0049_corpus_s00.txt",
+  "openings_sha256": "1c41f3543771d7195776fae6096ec02b642d78ce4bf9807e796fc3ba5c19a39b",
+  "opening_count": 375,
+  "engine_failures": 0,
+  "time_forfeits": 0,
+  "terminations": {
+    "CHECKMATE": 512,
+    "THREEFOLD_REPETITION": 216,
+    "INSUFFICIENT_MATERIAL": 20,
+    "UNADJUDICATED_MAX_PLIES": 2
+  },
+  "extractor": "scripts/build_tuning_data.py",
+  "extractor_sha256": "0d68fdbaff58af584fd160e55929d0ebc7329fb3cd3c2ff7995da61fcb3ac38e",
+  "extractor_args": [
+    "--min-ply",
+    "12",
+    "--sample-every",
+    "2",
+    "--max-positions-per-game",
+    "60",
+    "--min-pieces",
+    "6",
+    "--max-abs-material",
+    "1500"
+  ],
+  "positions": 32502,
+  "games_contributing": 746,
+  "skipped": {
+    "opening": 0,
+    "material": 1389,
+    "pieces": 4970,
+    "in_check": 8800,
+    "cap_per_game": 622,
+    "unfinished": 2
+  },
+  "runner": {
+    "os": "Linux",
+    "nproc": 4,
+    "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43"
+  },
+  "files": {
+    "games.pgn": "bbdbe01eb33b97076f8737bfb3997c58f8fd6a91caf68f2cc5cf8159029a51de",
+    "games.jsonl": "e6a0f7f03b18714d075523f5a0f3cf7c7d96747b34c40943bb74aaabcd86ddae",
+    "games.csv": "8860b73ddfc5d82cc496f33e1469fcd90501af8efb4ae8c75bf691b2a38f4ca9",
+    "positions.epd": "c7266687b1c60b4bbff02312c4053e8928a0f358aa8258104cbb2ff5e7db2023",
+    "positions.meta.json": "5723bf1fca626fb3c3619e791d1fe3c95021f6bcdf56b244858ddd362de97653"
+  },
+  "tournament_summary": {
+    "games": 748,
+    "wins": 244,
+    "draws": 236,
+    "losses": 268,
+    "naive": {
+      "games": 748,
+      "score": 0.4839572192513369,
+      "ci95": [
+        0.44831746190590893,
+        0.5197609145677091
+      ],
+      "method": "Wilson on fractional game scores (ignores pair dependence)"
+    },
+    "paired": {
+      "pairs": 373,
+      "score": 0.48257372654155495,
+      "pair_score_mean": 0.9651474530831099,
+      "pair_score_stderr": 0.020365034242365052,
+      "pentanomial_counts_2_1.5_1_0.5_0": [
+        14,
+        44,
+        234,
+        64,
+        17
+      ],
+      "elo_difference": -12.11392156178708,
+      "method": "pentanomial over opening pairs; normal interval on the pair mean",
+      "elo_ci95": [
+        -26.025381639183777,
+        1.7587988383627347
+      ]
+    },
+    "opening_clustered": {
+      "clusters": 373,
+      "pair_score_mean": 0.9651474530831099,
+      "pair_score_stderr": 0.02036503424236506,
+      "critical_value": 1.98,
+      "elo_difference": -12.11392156178708,
+      "method": "opening-clustered (CR1) variance of the pair mean with a Student-t interval on G-1 degrees of freedom",
+      "elo_ci95": [
+        -26.16794854704437,
+        1.9005683526745893
+      ]
+    },
+    "sprt": {
+      "llr": -1.4589383633305628,
+      "lower_bound": -2.9444389791664403,
+      "upper_bound": 2.9444389791664403,
+      "h0_elo": 0.0,
+      "h1_elo": 5.0,
+      "sigma_pair_scores": 0.3933141405357523,
+      "decision": "continue",
+      "method": "normal-approximation SPRT on paired scores (approximation)"
+    },
+    "unadjudicated": 2,
+    "engine_failures": 0,
+    "time_forfeits": 0,
+    "config": {
+      "engine_a": "StockBear 0.1.0-dev5",
+      "engine_b": "StockBear 0.1.0-dev5",
+      "base_ms": 40,
+      "increment_ms": 4,
+      "nodes_per_move": 0,
+      "nodes_jitter": 0.0,
+      "hash_mb_each": 16,
+      "threads_each": 1,
+      "openings": "/home/runner/work/StockBear/StockBear/benchmarks/positions/openings_exp0049_corpus_s00.txt",
+      "seed": 2026110613,
+      "max_plies": 240
+    }
+  }
+}

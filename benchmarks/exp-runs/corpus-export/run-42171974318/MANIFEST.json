@@ -1,0 +1,303 @@
+{
+  "experiment_id": "exp0049",
+  "purpose": "evaluator-fitting-only; NEVER a strength batch",
+  "source_sha": "5a4dad750f3accd3a556300eea0ff1a1901d07b4",
+  "source_run_id": "42171974318",
+  "prereg": "docs/DEV6_PREREG_EXP0049.md",
+  "prereg_sha256": "05a43ca5afcae55d115c381225132b21e155e780a1c3dda43fe1f3e594c75265",
+  "baseline_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "conditions": {
+    "base_ms": 40,
+    "inc_ms": 4,
+    "hash_mb": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "seeds": [
+      2026110613
+    ]
+  },
+  "shards": [
+    "s00",
+    "s01",
+    "s02",
+    "s03",
+    "s04",
+    "s05",
+    "s06",
+    "s07"
+  ],
+  "games": 6000,
+  "positions": 261641,
+  "games_contributing_positions": 5952,
+  "engine_failures": 0,
+  "time_forfeits": 0,
+  "split_policy": {
+    "by": "game",
+    "holdout_fraction": 0.2,
+    "seed": 2026110612,
+    "rule": "sorted unique game ids, random.Random(seed).shuffle, first ceil(0.2*G) ids are holdout"
+  },
+  "game_id_format": "<shard>:<per-shard game index from build_tuning_data>",
+  "files": {
+    "corpus.epd.gz": {
+      "bytes": 14535320,
+      "sha256": "233540ecf6db1e289b92aaa808cb41def77b121f2adbab2567053637455f8359",
+      "gz_bytes": 2684473,
+      "gz_sha256": "6af94f26e0e699490577f497fe86a4d150f8f870111f8260afd4365abafde66b"
+    },
+    "corpus.records.json.gz": {
+      "bytes": 10729569,
+      "sha256": "2379bf623e80779f16fd84f75330c16e9e517c4afe4a03ac16965d2f90b0e4b4",
+      "gz_bytes": 728712,
+      "gz_sha256": "a3730570c983c1c6dceb78d909142dd632a2d379de196ef6637e71fdb39a2f82"
+    },
+    "corpus.pgn.gz": {
+      "bytes": 6008306,
+      "sha256": "be4a4ea83994a46b323905bf73a3df340ac9ba588915454e17869c6ba877005b",
+      "gz_bytes": 1524623,
+      "gz_sha256": "9dd249eb21c51ed615ce27578b3f1085fa23d319b217d00ca33ef7e8b40d9fef"
+    },
+    "corpus.jsonl.gz": {
+      "bytes": 1781406,
+      "sha256": "35a15755fce3cdc83b52b9ccdfb1b3990a583cf02665d3035ffb4dd7f7563519",
+      "gz_bytes": 133492,
+      "gz_sha256": "f3895fb5d96c7e7e072e97d63bfec99d491cc5c16006c0e4c2b759307edd3fcd"
+    }
+  },
+  "per_shard": {
+    "s00": {
+      "games": 750,
+      "positions": 32502,
+      "openings": "benchmarks/positions/openings_exp0049_corpus_s00.txt",
+      "openings_sha256": "1c41f3543771d7195776fae6096ec02b642d78ce4bf9807e796fc3ba5c19a39b",
+      "engine_failures": 0,
+      "time_forfeits": 0,
+      "terminations": {
+        "CHECKMATE": 512,
+        "THREEFOLD_REPETITION": 216,
+        "INSUFFICIENT_MATERIAL": 20,
+        "UNADJUDICATED_MAX_PLIES": 2
+      },
+      "skipped": {
+        "opening": 0,
+        "material": 1389,
+        "pieces": 4970,
+        "in_check": 8800,
+        "cap_per_game": 622,
+        "unfinished": 2
+      },
+      "runner": {
+        "os": "Linux",
+        "nproc": 4,
+        "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43"
+      },
+      "workflow_run_id": "42171974318"
+    },
+    "s01": {
+      "games": 750,
+      "positions": 32714,
+      "openings": "benchmarks/positions/openings_exp0049_corpus_s01.txt",
+      "openings_sha256": "1215caff5c2a9e94c7f71cd57e7fec0e882b731f5c6c0f7404df805876652220",
+      "engine_failures": 0,
+      "time_forfeits": 0,
+      "terminations": {
+        "CHECKMATE": 516,
+        "THREEFOLD_REPETITION": 213,
+        "INSUFFICIENT_MATERIAL": 18,
+        "UNADJUDICATED_MAX_PLIES": 1,
+        "FIFTY_MOVES": 2
+      },
+      "skipped": {
+        "opening": 0,
+        "material": 1188,
+        "pieces": 4584,
+        "in_check": 9094,
+        "cap_per_game": 508,
+        "unfinished": 1
+      },
+      "runner": {
+        "os": "Linux",
+        "nproc": 4,
+        "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43"
+      },
+      "workflow_run_id": "42171974318"
+    },
+    "s02": {
+      "games": 750,
+      "positions": 33142,
+      "openings": "benchmarks/positions/openings_exp0049_corpus_s02.txt",
+      "openings_sha256": "60b4cabb5ecaab1a4b6a5d8c921759be28f65b0c4b3d635e5a5d8dfab6c37ddb",
+      "engine_failures": 0,
+      "time_forfeits": 0,
+      "terminations": {
+        "CHECKMATE": 524,
+        "THREEFOLD_REPETITION": 209,
+        "INSUFFICIENT_MATERIAL": 15,
+        "FIFTY_MOVES": 1,
+        "UNADJUDICATED_MAX_PLIES": 1
+      },
+      "skipped": {
+        "opening": 0,
+        "material": 1144,
+        "pieces": 4782,
+        "in_check": 8974,
+        "cap_per_game": 770,
+        "unfinished": 1
+      },
+      "runner": {
+        "os": "Linux",
+        "nproc": 4,
+        "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43"
+      },
+      "workflow_run_id": "42171974318"
+    },
+    "s03": {
+      "games": 750,
+      "positions": 32511,
+      "openings": "benchmarks/positions/openings_exp0049_corpus_s03.txt",
+      "openings_sha256": "a4839693160dfae51326ed5a3e2112b15c223a97677a1bd6985931b4c99a9487",
+      "engine_failures": 0,
+      "time_forfeits": 0,
+      "terminations": {
+        "CHECKMATE": 509,
+        "THREEFOLD_REPETITION": 220,
+        "INSUFFICIENT_MATERIAL": 17,
+        "UNADJUDICATED_MAX_PLIES": 2,
+        "FIFTY_MOVES": 2
+      },
+      "skipped": {
+        "opening": 0,
+        "material": 1117,
+        "pieces": 4934,
+        "in_check": 8825,
+        "cap_per_game": 546,
+        "unfinished": 2
+      },
+      "runner": {
+        "os": "Linux",
+        "nproc": 4,
+        "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43"
+      },
+      "workflow_run_id": "42171974318"
+    },
+    "s04": {
+      "games": 750,
+      "positions": 32712,
+      "openings": "benchmarks/positions/openings_exp0049_corpus_s04.txt",
+      "openings_sha256": "28cd061eafd892da4ebf8d755169ffdffe8606e668c3268e937a40dfe731a317",
+      "engine_failures": 0,
+      "time_forfeits": 0,
+      "terminations": {
+        "THREEFOLD_REPETITION": 225,
+        "CHECKMATE": 505,
+        "INSUFFICIENT_MATERIAL": 19,
+        "FIFTY_MOVES": 1
+      },
+      "skipped": {
+        "opening": 0,
+        "material": 1066,
+        "pieces": 4388,
+        "in_check": 8590,
+        "cap_per_game": 691,
+        "unfinished": 0
+      },
+      "runner": {
+        "os": "Linux",
+        "nproc": 4,
+        "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43"
+      },
+      "workflow_run_id": "42171974318"
+    },
+    "s05": {
+      "games": 750,
+      "positions": 33173,
+      "openings": "benchmarks/positions/openings_exp0049_corpus_s05.txt",
+      "openings_sha256": "4feb8ae0895a21756e384140b434d9b095e51f8a0de34ce9a35e95e35f81af7d",
+      "engine_failures": 0,
+      "time_forfeits": 0,
+      "terminations": {
+        "CHECKMATE": 489,
+        "THREEFOLD_REPETITION": 237,
+        "INSUFFICIENT_MATERIAL": 19,
+        "UNADJUDICATED_MAX_PLIES": 4,
+        "FIFTY_MOVES": 1
+      },
+      "skipped": {
+        "opening": 0,
+        "material": 1131,
+        "pieces": 4129,
+        "in_check": 8778,
+        "cap_per_game": 681,
+        "unfinished": 4
+      },
+      "runner": {
+        "os": "Linux",
+        "nproc": 4,
+        "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43"
+      },
+      "workflow_run_id": "42171974318"
+    },
+    "s06": {
+      "games": 750,
+      "positions": 32554,
+      "openings": "benchmarks/positions/openings_exp0049_corpus_s06.txt",
+      "openings_sha256": "cf479aa003e9f96bd913628847ba61658259a33c32e7b56529edacd84bed82fa",
+      "engine_failures": 0,
+      "time_forfeits": 0,
+      "terminations": {
+        "CHECKMATE": 517,
+        "THREEFOLD_REPETITION": 214,
+        "INSUFFICIENT_MATERIAL": 15,
+        "UNADJUDICATED_MAX_PLIES": 1,
+        "FIFTY_MOVES": 3
+      },
+      "skipped": {
+        "opening": 0,
+        "material": 1333,
+        "pieces": 4759,
+        "in_check": 9003,
+        "cap_per_game": 541,
+        "unfinished": 1
+      },
+      "runner": {
+        "os": "Linux",
+        "nproc": 4,
+        "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43"
+      },
+      "workflow_run_id": "42171974318"
+    },
+    "s07": {
+      "games": 750,
+      "positions": 32333,
+      "openings": "benchmarks/positions/openings_exp0049_corpus_s07.txt",
+      "openings_sha256": "b7b8e5a7922919cba5b6ca95d812aff9df93a92250cc180c6a286c2fc1fa35e2",
+      "engine_failures": 0,
+      "time_forfeits": 0,
+      "terminations": {
+        "CHECKMATE": 504,
+        "THREEFOLD_REPETITION": 222,
+        "INSUFFICIENT_MATERIAL": 21,
+        "UNADJUDICATED_MAX_PLIES": 3
+      },
+      "skipped": {
+        "opening": 0,
+        "material": 1296,
+        "pieces": 4271,
+        "in_check": 8837,
+        "cap_per_game": 636,
+        "unfinished": 3
+      },
+      "runner": {
+        "os": "Linux",
+        "nproc": 4,
+        "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43"
+      },
+      "workflow_run_id": "42171974318"
+    }
+  },
+  "license": "original data generated by this project; Apache-2.0"
+}

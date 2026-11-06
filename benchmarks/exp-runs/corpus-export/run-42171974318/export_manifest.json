@@ -1,0 +1,49 @@
+{
+  "exported_at_utc": "2026-11-06T08:28:37.432733+00:00",
+  "source_run_id": "42171974318",
+  "export_workflow_run_id": "42187907151",
+  "experiment_id": "exp0049",
+  "artifacts": [
+    {
+      "id": 13481842776,
+      "name": "corpus-exp0049-s03-run42171974318",
+      "size_in_bytes": 735381
+    },
+    {
+      "id": 13481768023,
+      "name": "corpus-exp0049-s05-run42171974318",
+      "size_in_bytes": 680967
+    },
+    {
+      "id": 13481753083,
+      "name": "corpus-exp0049-s06-run42171974318",
+      "size_in_bytes": 641013
+    },
+    {
+      "id": 13481712207,
+      "name": "corpus-exp0049-s01-run42171974318",
+      "size_in_bytes": 741205
+    },
+    {
+      "id": 13481372987,
+      "name": "corpus-exp0049-s07-run42171974318",
+      "size_in_bytes": 694385
+    },
+    {
+      "id": 13481169523,
+      "name": "corpus-exp0049-s04-run42171974318",
+      "size_in_bytes": 659723
+    },
+    {
+      "id": 13480948661,
+      "name": "corpus-exp0049-s00-run42171974318",
+      "size_in_bytes": 645038
+    },
+    {
+      "id": 13480829205,
+      "name": "corpus-exp0049-s02-run42171974318",
+      "size_in_bytes": 658307
+    }
+  ],
+  "channel": "git + GitHub Contents API (blob CDN unreachable from sandbox)"
+}
