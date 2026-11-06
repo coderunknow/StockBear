@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0052",
   "source_sha": "2927c50fff072817f27d7e05cb3e3a44c659256f",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0052.json",
-  "source_run_id": "",
-  "note": "exp-0052 Tier-1 SCREEN (NOT a Gate-1 decisive run) of ONE default-off eval term, KingSafetyQuadratic: curve min(units,32)^2/16, weights N2 B2 R3 Q5, MG-only, per-side queen gate, fused into the existing king-danger loop. Arm B is the EXACT released dev5 artifact 391cb50e...5bdb918. Prereg c3a022d5...f74d578 pinned in every job. Scale fixed pre-game by a declared criterion (p99<=120cp, RMS<40cp): RMS 13.87, p99 56, max 64. EvalParams now carries the same per-arm LOAD VERIFIED assertion as PstFile, because a missing params file silently falls back and would fake a result; all four guard branches exercised at zero games. 1600 fresh openings seed 2026110652 independently verified disjoint (0 overlap vs 51241 earlier positions, all 10 slice pairs). Frozen combined = batchA+batchB only; the equiv job is an attribution diagnostic and is never pooled. ADVANCE >= +20 with LCB>0; CLOSE if UCB<+10; else INCONCLUSIVE.",
+  "source_run_id": "42231550633",
+  "note": "exp-0052: export the raw evidence bundle of Tier-1 SCREEN run 42231550633 (5 jobs, 3200 games) via the in-workflow git mirror, because artifact/log CDN downloads are blocked in the sandbox. No games are played by an export. Raw per-game JSONL/PGN will be independently re-audited before any verdict.",
   "attempt": 1
 }
