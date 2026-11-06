@@ -176,6 +176,8 @@ jobs:
         run: python tests/integration/test_tournament.py ./build/stockbear
       - name: Verify tournament game-integrity classification
         run: python tests/integration/test_tournament_integrity.py
+      - name: Verify PstFile / --pst research-evaluator plumbing
+        run: python tests/integration/test_pst_pipeline.py ./build/stockbear
       - name: Verify match statistics against known values
         run: python tests/integration/test_statistics.py
       - name: Dead-position corpus (expected verdicts, witnesses, timings)

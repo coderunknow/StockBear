@@ -1,0 +1,21 @@
+{
+  "seed": 2026110601,
+  "count": 3000,
+  "plies": 8,
+  "shards": 8,
+  "disjoint_overlap": 0,
+  "purpose": "evaluator-fitting-only",
+  "excluded_file_count": 150,
+  "excluded_positions": 40441,
+  "master_sha256": "5edf5d1905d7170f34492773bc4b1d5ca4acc428ca802168c267a58391d3222f",
+  "slices": {
+    "s00": "9244a24136e8c57fb0f35cb4353f0dda8681016b821043d22d7a000f276d35ec",
+    "s01": "8aaecb9b1a5c9d5fb711da2367619c07597fdcad97348ef841f1cb6e9f28254e",
+    "s02": "f64efa78237f9adb574f6761464b4b007b4af870767ab71f664f578efacca861",
+    "s03": "5b8e49330b7bbd383a13cfe01ae47b7dadee940001b47ba3c351bb8d285e2ff8",
+    "s04": "504f3af89d3fce4abf1a075ffdc2cbbf00acbc3a67ed20bcbdf28166d3e8a30a",
+    "s05": "af18741cb41fc4eafda2429051d2269d7556f463af756741eca85209a34381e6",
+    "s06": "5995b3720952dcbb3ffc7c2a4320eb7b988ce84529e7f8402ef155b4e2de5c88",
+    "s07": "2245915cc64b1d3a5273a14c8ca0147b841462232572da5716025571d6adcbe1"
+  }
+}

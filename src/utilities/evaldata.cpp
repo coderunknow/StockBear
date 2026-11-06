@@ -5,7 +5,7 @@
 //       explain a tuned parameter set and to debug the breakdown/evaluate
 //       agreement.
 //
-//   evaldata --input FILE [--output FILE] [--params FILE] [--check]
+//   evaldata --input FILE [--output FILE] [--params FILE] [--pst FILE] [--check]
 //       Emit the tuner's design matrix: for every FEN, the phase and the
 //       per-parameter counts (White minus Black) that multiply the parameter
 //       values. `--check` instead verifies that the counts reproduce
@@ -146,7 +146,7 @@ int eval_cli(int argc, char** argv) {
 }
 
 int evaldata_cli(int argc, char** argv) {
-    std::string input, output;
+    std::string input, output, pstPath;
     EvalParams params = default_eval_params();
     bool applyLater = false, check = false;
     for (int i = 0; i < argc; ++i) {
@@ -154,6 +154,7 @@ int evaldata_cli(int argc, char** argv) {
         if (arg == "--input" && i + 1 < argc) input = argv[++i];
         else if (arg == "--output" && i + 1 < argc) output = argv[++i];
         else if (arg == "--check") check = true;
+        else if (arg == "--pst" && i + 1 < argc) pstPath = argv[++i];
         else if (arg == "--params" && i + 1 < argc) {
             if (!parse_params(argc, argv, &i, &params)) return 2;
             applyLater = true;
@@ -163,13 +164,32 @@ int evaldata_cli(int argc, char** argv) {
         }
     }
     if (input.empty()) {
-        std::cerr << "Usage: stockbear evaldata --input FILE [--output FILE] [--params FILE] [--check]\n";
+        std::cerr << "Usage: stockbear evaldata --input FILE [--output FILE] [--params FILE]"
+                     " [--pst FILE] [--check]\n";
+        return 2;
+    }
+    // The per-parameter counts describe the FORMULAIC piece-square term (a
+    // handful of rank/file/centre coefficients). An explicit per-square table
+    // has no such decomposition, so `--check` would compare apples to oranges
+    // and report a mismatch for every position. Refuse the combination loudly
+    // instead of emitting a misleading verdict; the `score` column is still
+    // exact with --pst, which is what a table fitter needs to verify against.
+    if (!pstPath.empty() && check) {
+        std::cerr << "--check is only valid for the formulaic evaluation; "
+                     "remove --pst or remove --check\n";
         return 2;
     }
     std::string error;
     init_evaluation();
     if (applyLater && !apply_eval_params(params, &error)) {
         std::cerr << "Invalid parameter set: " << error << '\n';
+        return 2;
+    }
+    // Load AFTER the parameters: evaluation_rebuild_tables() re-applies the
+    // override on every parameter change, but loading last keeps the intent
+    // obvious and makes the order independent of that implementation detail.
+    if (!pstPath.empty() && !load_pst_file(pstPath, &error)) {
+        std::cerr << "Invalid PST file " << pstPath << ": " << error << '\n';
         return 2;
     }
     std::vector<std::string> lines;
@@ -206,7 +226,11 @@ int evaldata_cli(int argc, char** argv) {
     }
 
     *out << "# stockbear evaldata; params_checksum " << std::hex << eval_params_checksum(active)
-         << std::dec << "; entries " << EvalParamNB << '\n';
+         << std::dec << "; entries " << EvalParamNB;
+    if (pst_file_active())
+        *out << "; pst_file " << pstPath << " (mg_*/eg_* counts describe the FORMULAIC "
+                "piece-square term only; the score column is the exact evaluation)";
+    *out << '\n';
     *out << "fen,phase";
     for (int i = 0; i < EvalParamNB; ++i) *out << ",mg_" << eval_param_table()[std::size_t(i)].name;
     for (int i = 0; i < EvalParamNB; ++i) *out << ",eg_" << eval_param_table()[std::size_t(i)].name;

@@ -246,6 +246,26 @@ void UciEngine::handle_setoption(const std::string& arguments) {
         emit("info string EvalParams loaded: " + value);
         return;
     }
+    if (key == "pstfile") {
+        // exp-0048 research evaluator: load explicit per-square piece-square
+        // tables. Empty clears back to the shipped formulaic tables. The TT is
+        // cleared because stored static evaluations were produced under the
+        // previous piece-square term.
+        if (value.empty() || lower(value) == "<empty>") {
+            clear_pst_file();
+            table_.clear();
+            emit("info string PstFile cleared: formulaic tables");
+            return;
+        }
+        std::string pstError;
+        if (!load_pst_file(value, &pstError)) {
+            emit("info string setoption: PstFile could not load " + value + ": " + pstError);
+            return;
+        }
+        table_.clear();
+        emit("info string PstFile loaded: " + value);
+        return;
+    }
     if (key == "hash") {
         std::uint64_t mb = 0;
         if ((in >> extra) || !number(value, mb, 512) || mb < 1) {
@@ -511,6 +531,7 @@ void UciEngine::loop() {
             emit("option name DeltaMargin type spin default 200 min 0 max 2000");
             emit("option name MultiPV type spin default 1 min 1 max 8");
             emit("option name EvalParams type string default <empty>");
+            emit("option name PstFile type string default <empty>");
             emit(std::string("option name NNUE type check default ") + check(useNnue_));
             emit("option name NnueFile type string default <empty>");
             emit("uciok");

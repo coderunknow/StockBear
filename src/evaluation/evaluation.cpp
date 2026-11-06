@@ -12,7 +12,9 @@
 #include "evaluation/nnue.hpp"
 #include <algorithm>
 #include <cstdlib>
+#include <fstream>
 #include <mutex>
+#include <string>
 
 namespace stockbear {
 #ifndef SB_INCREMENTAL_EVAL
@@ -23,6 +25,61 @@ int PieceValueMg[PieceTypeNB] = {0, 100, 320, 335, 500, 975, 0};
 int PieceValueEg[PieceTypeNB] = {0, 120, 305, 330, 520, 950, 0};
 int PieceSquareMg[PieceTypeNB][SQ_NB] = {};
 int PieceSquareEg[PieceTypeNB][SQ_NB] = {};
+
+// DEV6 exp-0048: explicit per-square tables loaded from a PST file. Inactive
+// by default; when active they override the formulaic tables in
+// evaluation_rebuild_tables(). Kept separate so clearing restores the exact
+// shipped formulaic values.
+namespace {
+int gFullPstMg[PieceTypeNB][SQ_NB] = {};
+int gFullPstEg[PieceTypeNB][SQ_NB] = {};
+bool gPstFileActive = false;
+// Bound a single PST entry so a hostile file cannot overflow the accumulator.
+constexpr int PstEntryLimit = 2000;
+} // namespace
+
+bool pst_file_active() { return gPstFileActive; }
+
+void clear_pst_file() {
+    gPstFileActive = false;
+    evaluation_rebuild_tables();
+}
+
+bool load_pst_file(const std::string& path, std::string* error) {
+    auto fail = [&](const std::string& msg) {
+        if (error) *error = msg;
+        return false;
+    };
+    std::ifstream in(path);
+    if (!in) return fail("cannot open PST file: " + path);
+    std::string magic;
+    if (!(in >> magic) || magic != "SBPST1") return fail("PST file must start with SBPST1");
+    int mg[PieceTypeNB][SQ_NB];
+    int eg[PieceTypeNB][SQ_NB];
+    // Piece order in the file: Pawn, Knight, Bishop, Rook, Queen, King.
+    const PieceType order[6] = {Pawn, Knight, Bishop, Rook, Queen, King};
+    for (PieceType pt : order) {
+        for (int idx = 0; idx < SQ_NB; ++idx) {
+            long long m, e;
+            if (!(in >> m >> e)) return fail("PST file truncated for piece " + std::to_string(int(pt)));
+            if (m < -PstEntryLimit || m > PstEntryLimit || e < -PstEntryLimit || e > PstEntryLimit)
+                return fail("PST entry out of range [-2000,2000]");
+            mg[pt][idx] = int(m);
+            eg[pt][idx] = int(e);
+        }
+    }
+    std::string trailing;
+    if (in >> trailing) return fail("PST file has trailing content after 384 entries");
+    for (PieceType pt : order)
+        for (int idx = 0; idx < SQ_NB; ++idx) {
+            gFullPstMg[pt][idx] = mg[pt][idx];
+            gFullPstEg[pt][idx] = eg[pt][idx];
+        }
+    gPstFileActive = true;
+    evaluation_rebuild_tables();
+    if (error) error->clear();
+    return true;
+}
 
 namespace {
 
@@ -578,6 +635,17 @@ void init_evaluation() {
 
 void evaluation_rebuild_tables() {
     build_tables(active_eval_params());
+    // exp-0048: a loaded PST file replaces only the piece-square term. The
+    // material values and every non-PST feature stay exactly as the active
+    // parameter set defines them. Inactive (the default) leaves the formulaic
+    // tables untouched, so the shipped search remains bit-identical.
+    if (gPstFileActive) {
+        for (int pt = 0; pt < PieceTypeNB; ++pt)
+            for (int idx = 0; idx < SQ_NB; ++idx) {
+                PieceSquareMg[pt][idx] = gFullPstMg[pt][idx];
+                PieceSquareEg[pt][idx] = gFullPstEg[pt][idx];
+            }
+    }
     const EvalParams& p = active_eval_params();
     // The extended features are computed only when at least one of their
     // parameters is non-zero. With the shipped def6 default set and with the

@@ -1,4 +1,5 @@
 #include "utilities/bench.hpp"
+#include "evaluation/evaluation.hpp"
 #include "evaluation/eval_params.hpp"
 #include "evaluation/nnue.hpp"
 #include "evaluation/nnue_forward.hpp"
@@ -219,7 +220,7 @@ int benchmark_cli(int argc, char** argv) {
     std::size_t hash = 16;
     SearchParams params;
     std::vector<std::pair<std::string, std::string>> overrides;
-    std::string evalParamsPath;
+    std::string evalParamsPath, pstPath;
     bool perft = false, gotDepth = false, gotNodes = false, gotMoveTime = false;
     bool noNnue = false;
     std::string nnuePath;
@@ -251,6 +252,16 @@ int benchmark_cli(int argc, char** argv) {
                 return 2;
             }
             evalParamsPath = argv[++i];
+            continue;
+        }
+        if (arg == "--pst") {
+            // exp-0048: bench an explicit per-square piece-square table without
+            // rebuilding. Same file format as the PstFile UCI option. An empty
+            // path is an error, never a silent fallback to the shipped tables.
+            if (i + 1 >= argc || std::string(argv[i + 1]).empty()) {
+                std::cerr << "--pst needs a file path\n"; return 2;
+            }
+            pstPath = argv[++i];
             continue;
         }
         if ((arg == "--depth" || arg == "--nodes" || arg == "--hash" || arg == "--movetime") && i + 1 < argc) {
@@ -288,6 +299,14 @@ int benchmark_cli(int argc, char** argv) {
             return 2;
         }
     }
+    if (!pstPath.empty()) {
+        // After the parameters, so the override survives the rebuild they trigger.
+        std::string pstError;
+        if (!load_pst_file(pstPath, &pstError)) {
+            std::cerr << "Invalid PST file " << pstPath << ": " << pstError << '\n';
+            return 2;
+        }
+    }
 
     // Use the compiled-in network when the build has one, so a `bench` run
     // measures the configuration the released binary actually plays with.
@@ -307,6 +326,7 @@ int benchmark_cli(int argc, char** argv) {
     TranspositionTable table(hash);
     std::cout << "# StockBear " << kEngineVersion << "; threads=1; network=" << nnue::network_identity()
               << "; kernel=" << nnue::forward_kernel_name()
+              << "; pst=" << (pstPath.empty() ? "formulaic" : pstPath)
               << "; hash_requested_mb=" << hash
               << "; hash_allocated_bytes=" << table.allocated_bytes() << "; mode="
               << (gotNodes ? "nodes" : gotMoveTime ? "movetime" : "depth") << ';'

@@ -146,6 +146,7 @@ if(STOCKBEAR_BUILD_TESTS)
         tests/unit/test_nnue.cpp
         tests/unit/test_position.cpp
         tests/unit/test_position_extra.cpp
+        tests/unit/test_pst.cpp
         tests/unit/test_search.cpp
         tests/unit/test_timeman.cpp
         tests/unit/test_uci_parsing.cpp
@@ -163,6 +164,9 @@ if(STOCKBEAR_BUILD_TESTS)
     # The neural-evaluation group has its own entry: it installs and clears the
     # process-wide network, so it is kept separate from the rest of `unit`.
     add_test(NAME nnue        COMMAND stockbear_tests nnue)
+    # exp-0048 PST loader mutates process-wide evaluation tables, so it runs in
+    # its own entry, isolated from the rest of `unit`.
+    add_test(NAME pst         COMMAND stockbear_tests pst)
     # The runner filters by group name, so every group needs its own entry;
     # without this the position_extra group would never run under CTest.
     add_test(NAME position_extra COMMAND stockbear_tests position_extra)

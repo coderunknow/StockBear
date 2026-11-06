@@ -1019,3 +1019,39 @@ release, deploy or dev7.
   Regression: `tests/integration/test_tournament_integrity.py` (fake engines,
   deterministic flag fall via base_ms=0). No game semantics or adjudication
   changed; only the failure category and provenance fields.
+
+## 2026-11-06 — exp-0048: why a full per-square PST is the next hypothesis
+
+Append-only design note. No result is claimed here.
+
+The DEV6 failure ledger has now closed: small CPU NNUE (exp-0001, -652/-720 Elo,
+~4x slower), cp distillation, incremental eval (bit-exact but -27% NPS), six
+extended pawn/coordination features (exp-0026, -17), every search-switch
+ablation (exp-0033..0046, all within noise or negative), and repeated scalar
+retunes of the existing feature weights (exp-0005/0012, plateau). Profiling
+attributed 17.8% to feature computation and showed a dedup ceiling of only
++3..8 Elo with an NPS ratio of 1.0289 (noise), which eliminated the
+"make the same evaluation faster" family.
+
+What has never been tried is increasing the *expressiveness* of a term whose
+per-node cost is already paid. The champion's piece-square term is formulaic:
+`rank`, `fileCenter = min(f, 7-f)` and `center`, combined by ~15 scalar
+coefficients. That basis cannot represent a knight being bad on a specific
+rim square versus a good rim square, a rook on a specific 7th-rank file, or
+square-specific king shelter. A full 6x64x2 table can, and the engine already
+indexes `PieceSquareMg[pt][idx]` inside its material accumulator, so the
+candidate changes only the numbers in that lookup — no new per-node work.
+
+This is a different feature family from exp-0026 (which added pawn-structure
+and coordination *counts*) and from exp-0005/0012 (which re-fitted the existing
+scalars, including the formulaic PST coefficients). It is not a neural network,
+not incremental-eval bookkeeping, and not a search change.
+
+The risk is honest and pre-registered: 768 free parameters fitted to ~6,000
+bullet self-play games can overfit, and a better outcome predictor is not
+automatically a stronger fixed-time player. Hence a by-game holdout, a frozen
+3% relative log-loss threshold plus a non-worsening Brier requirement, a frozen
+NPS band, one fit with no sweep, and one 2,000-game diagnostic screen that is
+explicitly NOT the decisive gate. If the accuracy or cost evidence fails, the
+candidate is recorded as a negative candidate-development outcome and exp-0047
+stays dormant.

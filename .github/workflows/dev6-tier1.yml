@@ -157,7 +157,7 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: arena/3e6dd5b6-stockbear
+          ref: ${{ github.ref_name }}
           persist-credentials: true
           fetch-depth: 0
       - name: Download artifacts from the pinned run (supported interface)
@@ -201,7 +201,7 @@ jobs:
           # mirror robust; a persistent failure still fails the job loudly.
           ok=0
           for attempt in 1 2 3 4; do
-            if git push origin HEAD:arena/3e6dd5b6-stockbear; then ok=1; break; fi
+            if git push origin HEAD:"${{ github.ref_name }}"; then ok=1; break; fi
             echo "export push attempt $attempt failed; retrying" >&2
             sleep 15
           done

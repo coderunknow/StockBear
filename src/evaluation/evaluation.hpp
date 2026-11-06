@@ -18,6 +18,27 @@ extern int PieceSquareEg[PieceTypeNB][SQ_NB];
 // exists, because Position accumulators are initialized from these tables.
 void init_evaluation();
 
+// --- DEV6 exp-0048: full per-square piece-square tables (default OFF) --------
+// A research evaluator variant. When a PST file is loaded, the formulaic
+// piece-square tables (rank/file/centre coefficients) are replaced by explicit
+// per-square middlegame/endgame values for every piece type. The material and
+// all non-PST features are unchanged, so the variant differs from the champion
+// ONLY in its piece-placement term. With no file loaded the tables are exactly
+// the shipped formulaic ones and the engine is bit-identical (bench
+// 243f9a1c1ba5b36f). The file is original StockBear data fitted to StockBear
+// self-play; no external engine's tables are embedded.
+//
+// Format (text): first line `SBPST1`, then for each piece in the order
+// Pawn, Knight, Bishop, Rook, Queen, King, 64 lines of `mg eg` integers in
+// table-index order (index 0 = a8, index 63 = h1, White's viewpoint). Values
+// are centipawns added to the material accumulator and tapered by phase.
+// Loading rebuilds the derived tables; it must happen before Positions are
+// constructed (UCI setoption precedes `position`). Returns false + error on a
+// malformed or out-of-range file, leaving the previous state untouched.
+bool load_pst_file(const std::string& path, std::string* error = nullptr);
+void clear_pst_file();
+bool pst_file_active();
+
 // Relative to the side to move; never returns a mate score.
 int evaluate(const Position& position);
 

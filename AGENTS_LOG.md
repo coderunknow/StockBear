@@ -1275,3 +1275,84 @@ with LCB > +50 exists; exp-0047 dormant). No PR opened yet (no validated
 candidate). No merge/tag/release/prerelease/deploy. Next: continue engineering
 audit + pursue the materially-stronger-evaluator research direction with a fresh
 bullet-matched corpus and frozen activation evidence.
+
+## 2026-11-06 — exp-0048 candidate mechanism + corpus/fit/cost pipeline (branch `arena/6a6a2ba3-stockbear`)
+
+Continuation of the DEV6 mission. Still **zero strength games**, **no PR**,
+**no merge/tag/release/deploy**. exp-0047 remains DORMANT with an empty
+Activation Record.
+
+Research direction: the failure ledger closes every scalar-retune, neural and
+search-switch direction; profiling left "materially stronger evaluator at
+unchanged per-node cost" as the only unbounded hypothesis. exp-0048 is a NEW
+feature family — a full 6x64x2 per-square piece-square table replacing the
+champion's ~15 formulaic rank/file/centre coefficients. The engine already pays
+for a `PieceSquare*[pt][idx]` lookup in its material accumulator, so only the
+*numbers* change, not the work: this is the one evaluator direction that can
+pass exp-0047's `[0.97,1.03]` NPS gate.
+
+Engine changes (all default-OFF, bit-exact when unused):
+- `PstFile` UCI string option + `load_pst_file` / `clear_pst_file` /
+  `pst_file_active`. Format `SBPST1` + 384 `mg eg` entries, bounded +-2000,
+  validated (magic / truncation / range / trailing content) BEFORE any
+  mutation; the override lives inside `evaluation_rebuild_tables()` so a later
+  `EvalParams` reload cannot silently drop it. Both setoption paths clear the TT.
+- `stockbear bench --pst FILE` and `stockbear evaldata --pst FILE`, so a table
+  can be measured without rebuilding. `evaldata --pst --check` is REFUSED:
+  the per-parameter counts describe the formulaic term and cannot decompose an
+  explicit table, so the old check would have reported a false mismatch on
+  every row. The score column stays exact and is what the fitter verifies against.
+- Tests: unit group `pst` (4 tests: formulaic round-trip bit-exact, zero tables
+  change eval + clear restores, malformed rejected without mutation, override
+  survives a parameter rebuild) and `tests/integration/test_pst_pipeline.py`
+  (5 black-box checks over UCI / bench / evaldata, wired into the CI
+  independent-reference job, NOT into global ctest — the standing rule after
+  the 162186fb regression). ctest 12/12; all three shipped bench signatures
+  reproduced exactly: `243f9a1c1ba5b36f`, `a14ab62224f837e5`, `e45fa2ec2287eb41`.
+
+Frozen preregistration `docs/DEV6_PREREG_EXP0048.md`, written before any real
+exp-0048 game: corpus seed 2026110601 (3,000 openings x2 = 6,000 dev5-vs-dev5
+games, 40+4 ms, 8 isolated shards, ZERO overlap with 150 earlier suites /
+40,441 positions); match seed 2026110603; by-game holdout 0.2 seed 2026110602;
+metric held-out Texel log-loss with threshold `L_cand <= 0.97*L_champ` AND
+`B_cand <= B_champ`; full-batch Adam 300 iters / lr 5.0 / L2 1e-5 toward the
+formulaic init, one fit, no sweep; cost gate `[0.97,1.03]`; ONE 2x1,000-game
+diagnostic screen on fresh disjoint suites (batchA/B, seeds 2026110604/5), which
+is NOT Gate 1 and cannot authorise a decisive run on its own.
+
+Pipeline (all smoke-tested end to end on throwaway synthetic data):
+`scripts/dev6_corpus_job.py` (one shard, zero-engine-failure requirement,
+manifest + SHA256SUMS), `scripts/dev6_corpus_combine.py` (verifies every shard
+checksum, rejects missing/duplicate/tampered shards, emits a gzip corpus with
+shard-prefixed game ids), `scripts/dev6_exp0048_fit.py`,
+`scripts/dev6_exp0048_nps.py`, `.github/workflows/dev6-corpus.yml`
+(push-triggered generate/export, same discipline as Tier-1: benchmark jobs
+never push; one deliberate export commit).
+
+Two real defects found and fixed by the smoke tests, both recorded:
+1. The shard manifest hashed `run.log` while it was still open, so the final
+   log line invalidated its own checksum and export verification failed. The
+   log is now closed before hashing.
+2. The first cost-gate draft used a UCI `go nodes` loop. The UCI `info` line
+   reports the last COMPLETED iteration's node count, so the two arms reported
+   different totals (1,853,814 vs 1,393,400) and "bit-identical node counts" was
+   unsatisfiable. Switched to `bench --nodes`, which reports the true searched
+   count. The correction is documented in the prereg WITH its reason and was
+   made on synthetic data before the corpus existed — not in response to any
+   exp-0048 result.
+
+The fitter asserts three exact identities on every corpus row before reporting
+any metric: (a) the champion design matrix reproduces `evaluate()`, (b) the
+Python rebuild of the formulaic PST equals the engine's PST term, (c) the
+engine loaded with the fitted `--pst` equals the fitted model. Without (c) the
+holdout number would describe a Python model rather than the evaluator that
+would actually play.
+
+Also this session: `.github/workflows/dev6-tier1.yml`'s export job no longer
+pushes to the hardcoded `arena/3e6dd5b6-stockbear`; it uses `github.ref_name`,
+so evidence lands on the branch that ran the benchmark.
+
+Mission status: ACTIVE / NOT COMPLETE. Gate 1 UNMET, Gate 2 direction-only,
+Gate 3 PASS, Gate 4 UNMET. Next: commit + push this pipeline, dispatch the
+6,000-game corpus on isolated runners, fit once, evaluate the frozen accuracy
+and cost gates, and only then consider the diagnostic screen.
