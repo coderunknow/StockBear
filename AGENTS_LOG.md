@@ -1557,3 +1557,55 @@ ceiled 12.706205 with a comment, preserving the test's purpose.
 Verification: `test_statistics.py` 15/15, `ctest` 13/13, PST pipeline 5/5,
 tournament integrity PASS. Zero strength games; exp-0047 DORMANT; gates
 unchanged (1 UNMET, 2 direction-only, 3 PASS, 4 UNMET).
+
+## 2026-11-06 — exp-0049 EXECUTED and CLOSED as NEGATIVE (both gates failed)
+
+**Sandbox reset recovery first.** The local checkout had reverted to `main`
+(`6e7c2e0`) with build artifacts and pip packages gone. Detected before doing any
+work, not after. All commits were already pushed; verified remote head
+`37c1cd1`, then `git fetch origin arena/6a6a2ba3-stockbear` +
+`git merge --ff-only` restored it. Restore VERIFIED rather than assumed: prereg
+SHA-256 matched the frozen `05a43ca5…`, fresh Release rebuild reproduced all three
+bench signatures exactly (`243f9a1c1ba5b36f` / `a14ab62224f837e5` /
+`e45fa2ec2287eb41`), ctest 13/13, dev5 binary and params hashes matched. No
+experiment state lost; no measurement repeated because of the reset.
+
+**Corpus.** Exported the completed generation run `42171974318` (8/8 shards
+SUCCESS) via export run `42187907151`; pinned `source_sha` to the ORIGINAL
+generation commit `5a4dad7…`, not the export commit, so shard manifests verify
+against the commit that produced them. 5/5 checksums OK. **6,000 games, 261,641
+positions, 0 engine failures, 0 time forfeits.** Verified disjointness
+EMPIRICALLY: 0 shared positions and 0 shared openings with the burned exp-0048
+corpus, 0 overlap between corpus and screen suites.
+
+**ONE fit, frozen hyperparameters, no sweep.** Split 4,761 train / 1,191 holdout
+games. All three engine/model identity checks passed on all 261,641 rows.
+**Accuracy gate FAILED: 2.4712 % held-out log-loss reduction vs 3 % required**
+(`L_cand` 0.2358740 vs ceiling 0.2345951; shortfall 1.214x). Brier improved, so
+that sub-gate passed, but the rule is a conjunction. **Threshold not relaxed.**
+
+**Cost gate FAILED as measured:** median NPS ratio 0.93931, node counts
+bit-identical. Recorded with an honest caveat: the champion arm varied 19.2 %
+against itself across reps — more than the ~6 % effect — so this sandbox cannot
+resolve a 3 % band, and exp-0048 measured 1.00967 on the same mechanism. **Not
+re-run**; no retry authorised, and re-rolling for a better number is precisely
+the selective measurement the protocol forbids. The accuracy gate closes the
+candidate independently, so the ambiguity changes no decision.
+
+**The methodological fix worked.** RMS delta 111.83 cp vs exp-0048's 0.124 cp;
+train loss 0.550637 → 0.517245. The post-exp-0048 recurrence condition was
+satisfied, so this candidate failed on measured merit rather than a degenerate
+objective. **291/768 entries hit the +-150 cp cap** and the raw optimum wanted
+1,288.7 cp — the obvious tuning lever, deliberately NOT pulled: relaxing it on
+the confirmation corpus would be post-hoc selection.
+
+Provenance bug fixed: the reused NPS script hardcoded `experiment_id=exp0048`.
+It now takes `--experiment-id`; this run's label was corrected AFTER measurement
+with an explicit note, and every timing/node/ratio/verdict field was asserted
+unchanged.
+
+Report `docs/DEV6_EXP0049_REPORT.md`; artifacts + `GATE_DIAGNOSIS.json` under
+`benchmarks/dev6-baseline/exp0049_results/` (checksummed); ledger entry appended.
+**No screen, zero strength games, exp-0047 DORMANT with empty Activation Record.**
+Gates unchanged: 1 UNMET, 2 direction-only, 3 PASS, 4 UNMET. No PR strength
+claim, no merge/tag/release/deploy.

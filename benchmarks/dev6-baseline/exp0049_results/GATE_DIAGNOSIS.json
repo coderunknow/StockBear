@@ -1,0 +1,66 @@
+{
+  "experiment_id": "exp0049",
+  "verdict": "NEGATIVE / CLOSED - both frozen gates failed; no screen authorised, no screen run",
+  "accuracy_gate": {
+    "required_relative_logloss_reduction": 0.03,
+    "achieved_relative_logloss_reduction": 0.024712147502536697,
+    "L_champ": 0.2418506267596444,
+    "L_cand": 0.23587397839757912,
+    "required_L_cand_ceiling": 0.23459510795685504,
+    "B_champ": 0.1036815581470491,
+    "B_cand": 0.10146357949630391,
+    "brier_subgate_passed": true,
+    "logloss_subgate_passed": false,
+    "conjunction_passed": false,
+    "shortfall_factor": 1.2139778623820736
+  },
+  "cost_gate": {
+    "ratio": 0.939314210124502,
+    "band": [
+      0.97,
+      1.03
+    ],
+    "passed": false,
+    "node_counts_bit_identical": true,
+    "included_positions": 7,
+    "champion_nps": [
+      3421354.465356342,
+      4073548.895195346,
+      4076799.1302828523
+    ],
+    "candidate_nps": [
+      3430329.997745783,
+      3826342.362893954,
+      3865972.2644104115
+    ],
+    "measurement_caveat": "The champion arm varied 19.2% across repetitions against ITSELF (same binary, same options), which exceeds the ~6% difference being measured. Per-rep ratios were 1.00262 / 0.93931 / 0.94829. This shared 2-core sandbox cannot resolve a 3% NPS band, so the recorded FAIL is the frozen statistic as measured but is NOT evidence that the PST costs 6% per node. exp-0048 measured 1.00967 on the same mechanism. NOT re-run: no retry is authorised, and the accuracy gate already closes the candidate independently."
+  },
+  "objective_was_not_degenerate": {
+    "exp0048_delta_rms_cp": 0.1235,
+    "exp0048_delta_abs_max_cp": 1.2207,
+    "exp0049_delta_rms_cp": 111.82830729515672,
+    "exp0049_delta_abs_max_cp": 150.0,
+    "raw_delta_abs_max_before_postprocessing": 1288.6529958149908,
+    "train_loss_start": 0.550637,
+    "train_loss_end": 0.517245,
+    "note": "The recurrence condition was satisfied: the table genuinely moved (RMS 111.8 cp vs exp-0048's 0.12 cp) and training loss fell. The exp-0048 failure mode was fixed. This candidate failed on measured merit, not on a degenerate objective."
+  },
+  "binding_constraint": {
+    "deviation_capped_entries": 291,
+    "total_phase_entries": 768,
+    "support_floor_entries_reset": 62,
+    "note": "291 of 768 phase entries hit the +-150 cp cap and the unconstrained optimum wanted up to 1288.7 cp, so the pre-declared cap is strongly binding. It was NOT relaxed after seeing this: that would be post-hoc tuning on the confirmation corpus. Any cap change requires a NEW prereg and a NEW fresh corpus."
+  },
+  "identities": {
+    "a_champion_counts_reproduce_evaluate": true,
+    "b_python_formulaic_equals_engine_pst": true,
+    "c_engine_with_fitted_pst_equals_model": true,
+    "rows_checked": 261641
+  },
+  "limits": [
+    "No screen run; zero strength games; exp-0047 NOT activated.",
+    "A 2.47% accuracy gain is not evidence of +75 Elo and none is claimed.",
+    "The exp-0049 corpus and holdout are now BURNED for confirmation purposes.",
+    "No hyperparameter was changed after seeing this result."
+  ]
+}

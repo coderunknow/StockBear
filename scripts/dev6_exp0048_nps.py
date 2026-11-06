@@ -69,6 +69,9 @@ def run_arm(engine: str, nodes: int, hash_mb: int, pst: str | None, tag: str,
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--engine", required=True)
+    ap.add_argument("--experiment-id", default="exp0048",
+                    help="recorded in the report; the measurement protocol is "
+                         "identical across experiments reusing this gate")
     ap.add_argument("--pst", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--nodes", type=int, default=300000)
@@ -127,7 +130,7 @@ def main() -> None:
     ratio = md / mc
     passed = bool(identical and 0.97 <= ratio <= 1.03)
     report = {
-        "experiment_id": "exp0048", "gate": "prereg §5 / exp-0047 §3.2",
+        "experiment_id": a.experiment_id, "gate": "prereg §5 / exp-0047 §3.2",
         "engine_sha256": sha(Path(engine)), "pst_sha256": sha(Path(a.pst)),
         "champion_params_sha256": sha(ROOT / CHAMPION_PARAMS),
         "nodes_per_position": a.nodes, "hash_mb": a.hash, "threads": 1,

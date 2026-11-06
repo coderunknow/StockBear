@@ -1,0 +1,59 @@
+{
+  "experiment_id": "exp0049",
+  "corpus_manifest_sha256": "ce7e2e0761d9fb9ea438265485852458ce58c3074dcd4a618b94c6d2c60b2641",
+  "corpus_source_sha": "5a4dad750f3accd3a556300eea0ff1a1901d07b4",
+  "corpus_games": 6000,
+  "corpus_positions": 261641,
+  "params_file": "research-data/params_abc.txt",
+  "params_sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be",
+  "engine_sha256": "0b6b2005dd6252a27d90e988decf8fadd515ec45586df01289c18908d002aca8",
+  "prereg_sha256": "05a43ca5afcae55d115c381225132b21e155e780a1c3dda43fe1f3e594c75265",
+  "hyperparameters": {
+    "iterations": 600,
+    "learning_rate": 5.0,
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "eps": 1e-08,
+    "l2": 0.0,
+    "min_support": 200,
+    "max_deviation_cp": 150,
+    "init": "champion formulaic tables",
+    "batch": "full"
+  },
+  "support_floor_entries_reset": 62,
+  "deviation_capped_entries": 291,
+  "raw_delta_abs_max_before_postprocessing": 1288.6529958149908,
+  "min_training_support": 0,
+  "median_training_support": 2398.0,
+  "split": {
+    "by": "game",
+    "seed": 2026110612,
+    "holdout_fraction": 0.2
+  },
+  "identity_checks": {
+    "champion_counts_reproduce_evaluate": true,
+    "formulaic_pst_rebuild_exact": true,
+    "initialised_candidate_equals_champion": true,
+    "engine_with_pst_equals_fitted_model": true
+  },
+  "max_clamped_training_rows": 0,
+  "entries_clipped_to_limit": 0,
+  "delta_abs_max": 150.0,
+  "delta_rms": 111.82830729515672,
+  "metrics": {
+    "holdout_rows": 51391,
+    "train_rows": 210250,
+    "holdout_games": 1191,
+    "train_games": 4761,
+    "L_champ": 0.2418506267596444,
+    "L_cand": 0.23587397839757912,
+    "B_champ": 0.1036815581470491,
+    "B_cand": 0.10146357949630391,
+    "L_champ_train": 0.23908905156821206,
+    "L_cand_train": 0.22990818858062123,
+    "relative_logloss_reduction": 0.024712147502536697,
+    "accuracy_threshold_met": false
+  },
+  "pst_file": "exp0049.sbpst",
+  "pst_sha256": "6e31a01a6988fd2192259a101a1e089320e9ddeb8d414acf4ed3d05740d6c733"
+}

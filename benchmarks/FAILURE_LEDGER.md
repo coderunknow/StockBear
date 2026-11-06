@@ -1954,3 +1954,58 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
   fresh corpus, not a retune of this one. Gates 1/4 UNMET, 2 direction-only,
   3 PASS. Mission ACTIVE / NOT COMPLETE. No PR strength claim, no merge, tag,
   release, prerelease or deploy.
+
+## exp-0049 — expressive per-square PST, correctly scaled objective — NEGATIVE / CLOSED
+
+- **Hypothesis:** a 768-parameter per-square placement table (default-OFF
+  `PstFile`), fitted to self-play outcomes with the degenerate exp-0048
+  regulariser removed, improves held-out outcome prediction enough to clear the
+  frozen accuracy gate at zero added per-node cost.
+- **Prereg:** `docs/DEV6_PREREG_EXP0049.md`, SHA-256
+  `05a43ca5afcae55d115c381225132b21e155e780a1c3dda43fe1f3e594c75265`, committed
+  before its corpus existed and verified byte-identical afterwards. NEW
+  hypothesis, not a retune: `L2=0`, a <200-occurrence support floor, and a
+  pre-declared **+-150 cp** deviation cap. The `L2=0` exploratory provenance was
+  disclosed; the exp-0048 corpus was BURNED and a FRESH corpus was used.
+- **Corpus:** run `42171974318` (8/8 isolated shards) / export `42187907151`,
+  **6,000 games, 261,641 positions, 0 engine failures, 0 time forfeits**; split
+  seed 2026110612 ⇒ 4,761 train / 1,191 holdout games (210,250 / 51,391 rows).
+  Disjointness verified EMPIRICALLY: **0** shared positions and **0** shared
+  openings with the burned exp-0048 corpus; 0 overlap between its own corpus and
+  screen suites.
+- **Accuracy gate FAILED:** `L_champ` 0.2418506268 → `L_cand` 0.2358739784 vs a
+  required ceiling of 0.2345951080 ⇒ **2.4712 %** reduction against **3 %**
+  required (shortfall **1.214x**). Brier improved (0.10368 → 0.10146) so that
+  sub-gate passed, but the frozen rule is a conjunction. Threshold NOT relaxed.
+  All three engine/model identities passed on **all 261,641 rows**.
+- **The exp-0048 failure mode WAS fixed:** RMS delta **111.83 cp** (vs 0.124 cp),
+  max 150 cp, train loss 0.550637 → 0.517245. The post-exp-0048 recurrence
+  condition (prove the table moves and loss falls BEFORE freezing) was met, so
+  this candidate failed on **measured merit**, not on a degenerate objective.
+  That is a real methodological gain over exp-0048.
+- **Cost gate FAILED as measured:** node counts bit-identical, 7/12 included,
+  median ratio **0.93931** outside `[0.97,1.03]`. **Caveat recorded, not used as
+  an excuse:** the champion arm varied **19.2 %** against ITSELF across reps,
+  more than the ~6 % effect, so this 2-core sandbox cannot resolve a 3 % band;
+  exp-0048 measured 1.00967 on the same mechanism. **NOT re-run** — no retry is
+  authorised and re-rolling until it looked better is the selective measurement
+  this protocol forbids. The accuracy gate closes the candidate regardless.
+- **Binding constraint (NOT acted on):** **291 of 768** phase entries hit the
+  +-150 cp cap; the unconstrained optimum wanted up to **1,288.7 cp**; 62 entries
+  were reset by the support floor. Relaxing the cap after seeing it bind would
+  be post-hoc selection on the confirmation corpus. It was left alone.
+- **What was NOT done:** no hyperparameter change, no second fit, no sweep, no
+  best-of-N, no cap or threshold relaxation, **no screen** (gated on both
+  gates), **zero strength games**, exp-0047 NOT activated, Activation Record
+  empty, no pooling, no historical result rewritten.
+- **Continue / abandon / revisit:** ABANDON this frozen configuration as a route
+  to Gate 1. Two independent fresh corpora now show the expressive-PST mechanism
+  does not clear a 3 % held-out accuracy bar under chess-plausible bounds
+  (exp-0048 degenerate; exp-0049 genuinely fitted and 21 % short). The
+  default-OFF mechanism and the corpus/fit/cost infrastructure remain sound,
+  bit-exact-when-unused engineering assets. A larger cap is NOT foreclosed but
+  is a NEW hypothesis needing its OWN prereg and OWN fresh corpus — and better
+  self-play outcome prediction at 1,000+ cp placement values is NOT established
+  to be better play. **The exp-0049 corpus and holdout are BURNED.** Gates 1/4
+  UNMET, 2 direction-only, 3 PASS. Mission ACTIVE / NOT COMPLETE. No PR strength
+  claim, no merge, tag, release, prerelease or deploy.
