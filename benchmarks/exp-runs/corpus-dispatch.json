@@ -1,0 +1,8 @@
+{
+  "mode": "generate",
+  "experiment_id": "exp0048",
+  "source_sha": "49018e96a6abdba5091c1b39d2473b6f14819894",
+  "source_run_id": "",
+  "note": "Deliberate dispatch of the frozen exp-0048 evaluator-fitting corpus: 8 isolated shards x 750 dev5-vs-dev5 self-play games at 40+4 ms, seed 2026110603. Training data ONLY - never a strength batch, never pooled with a match. Prereg docs/DEV6_PREREG_EXP0048.md and all opening shards are frozen in the pinned source commit.",
+  "attempt": 1
+}
