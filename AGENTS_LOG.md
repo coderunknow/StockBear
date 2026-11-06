@@ -1672,3 +1672,38 @@ then deleted). All smoke artifacts removed; all 10 workflows parse.
 A host that cannot resolve the band is reported as a legitimate informative
 result, not a job failure. Zero strength games; no candidate measured; exp-0047
 DORMANT; gates unchanged.
+
+## 2026-11-06 — isolated-runner A/A calibration PASSES: the instrument fix is verified
+
+Ran the lane built in the previous entry. Run **42191869178** on a dedicated
+`ubuntu-latest` VM (AMD EPYC 7763, nproc 4), engine built from the pinned source
+with frozen flags. At the **same frozen 3 reps**: **0 false rejects / 6** A/A
+evaluations, ratios **0.99116–1.00254**, half-range **0.00569** vs a 0.030 band
+half-width. Versus the sandbox's **80 %** false-reject rate at identical protocol,
+A/A scatter tightened **12.4x**. **The ±3 % cost band is resolvable on an isolated
+runner and never was on the sandbox.** Validates host+protocol only; no candidate
+measured, and exp-0048's withdrawn "free per node" claim stays withdrawn.
+
+Getting the evidence out required a git export mode (artifact CDN and job logs
+are both blocked from this sandbox). Mirroring it exposed **three real defects in
+my new lane**, each found by verifying rather than trusting a green job:
+1. `run.log` silently dropped — `.gitignore` has `*.log`, `git add -A` skipped it,
+   yet `SHA256SUMS.txt` listed it. The runner's check passed because the file
+   existed in its working tree; it was never committed. The tier1 lane already
+   solved this with `git add -f`; mine had omitted it.
+2. My new completeness guard then failed spuriously on the RE-export: it tested
+   `git diff --cached`, which omits already-committed unchanged files. Corrected
+   to test the INDEX (`git ls-files`). Verified locally that the fixed logic flags
+   exactly the one genuinely missing file and nothing else.
+3. Added **post-push committed-blob hash verification**, since the working-tree
+   check had passed on an incomplete mirror. Final export **42192830961**:
+   **39/39 committed blobs verified**, `run.log` present.
+
+Also caught a self-inflicted dispatch failure: a push triggered no workflows
+because its commit message BODY quoted a literal CI-suppression token while
+describing the export commit. GitHub honours it anywhere in the message. Diagnosed
+from the message itself rather than assuming a GitHub outage; re-dispatched clean.
+
+Summary updated at `benchmarks/dev6-baseline/nps_gate_calibration/CALIBRATION_SUMMARY.json`
+(checksummed); ledger entry appended. Zero strength games; no candidate measured;
+exp-0047 DORMANT; gates unchanged (1 UNMET, 2 direction-only, 3 PASS, 4 UNMET).

@@ -48,7 +48,7 @@
   "conclusions": [
     "No statistic rescues the gate on this host: the best (median of paired ratios) still false-rejects 4/12.",
     "Between-rep host drift (median arm CV 5.3%) exceeds the 3% band half-width, so more reps alone is not a fix on a drifting host.",
-    "A PASS is as uninformative as a FAIL here: exp-0048's recorded 1.00967 'PASS' does NOT establish that the PST is free per node.",
+    "A PASS is as uninformative as a FAIL on the SANDBOX: exp-0048's recorded 1.00967 'PASS' does NOT establish that the PST is free per node. This is now resolved for FUTURE work: an isolated runner false-rejected 0/6 at the same 3 reps, so the gate is usable THERE. The historical sandbox numbers remain uninformative and were not re-run.",
     "exp-0049's recorded 0.93931 'FAIL' does NOT establish a 6% per-node cost.",
     "Neither experiment's VERDICT changes: both closed on the ACCURACY gate, which is timing-independent."
   ],
@@ -62,5 +62,56 @@
     "Does NOT reopen, re-run or re-score exp-0048 or exp-0049; both remain CLOSED NEGATIVE.",
     "Does NOT license any claim that a candidate is free per node.",
     "Instrument validation only; zero strength games."
-  ]
+  ],
+  "isolated_runner_validation": {
+    "status": "COMPLETED - the required fix is verified",
+    "run_id": "42191869178",
+    "export_run_id": "42192830961",
+    "evidence": "benchmarks/exp-runs/cost-gate-export/run-42191869178/ (39/39 committed blobs hash-verified)",
+    "host": {
+      "cpu_model": "AMD EPYC 7763 64-Core Processor",
+      "nproc": 4,
+      "runner_image": "ubuntu26",
+      "runner_os": "20261101.186.1",
+      "isolated_runner": true
+    },
+    "engine_sha256": "9d1483f27e7378a33c30008afc7f0c524a89225c191e2adb2fff335e6b944653",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "reps_per_evaluation": 3,
+    "evaluations": 6,
+    "false_rejects": 0,
+    "false_reject_rate": 0.0,
+    "aa_ratio_range": [
+      0.9911603528000168,
+      1.0025384828404156
+    ],
+    "observed_aa_half_range": 0.005689065020199391,
+    "band_half_width": 0.030000000000000027,
+    "max_arm_self_spread": 0.05866857967550265,
+    "verdict": "ISOLATED RUNNER CAN RESOLVE THE BAND",
+    "comparison": {
+      "sandbox_3rep_false_reject_rate": 0.8,
+      "isolated_3rep_false_reject_rate": 0.0,
+      "sandbox_aa_half_range_5rep": 0.07037950862781267,
+      "isolated_aa_half_range_3rep": 0.005689065020199391,
+      "improvement_factor": 12.3710149871597
+    },
+    "interpretation": [
+      "At the SAME frozen 3 reps, the isolated runner false-rejected 0/6 while the sandbox false-rejected 80%.",
+      "A/A scatter on the runner (half-range 0.0057) is ~5x tighter than the 0.03 band half-width, so the +/-3% band is resolvable there.",
+      "Residual arm self-spread of 5.87% still exists on the runner, but the median-of-3 statistic absorbs it; the band decision was correct in all 6 evaluations.",
+      "This validates the HOST and the PROTOCOL, not any candidate. No candidate was measured."
+    ],
+    "required_for_any_future_cost_gate": [
+      "Run on an isolated GitHub-hosted runner via .github/workflows/dev6-cost-gate.yml, never on the shared sandbox.",
+      "Re-run the A/A null on the runner in the SAME session as the candidate measurement and require zero false rejects over >=5 evaluations before trusting the candidate ratio.",
+      "Freeze statistic, reps and band in the candidate's own prereg before its corpus exists.",
+      "One A/A pass does not permanently certify the host: runner hardware/images vary, so validate per session."
+    ],
+    "export_lane_defects_found_and_fixed": [
+      "run.log was silently dropped: .gitignore has *.log and 'git add -A' skipped it while SHA256SUMS.txt still listed it. Fixed by force-adding logs, as the tier1 lane already did.",
+      "The new completeness guard first tested 'git diff --cached', which omits already-committed unchanged files on a RE-export and failed spuriously. Corrected to test the INDEX via git ls-files.",
+      "Added post-push verification of the COMMITTED blobs, which is what a consumer actually retrieves; the working-tree check alone had passed on an incomplete mirror."
+    ]
+  }
 }

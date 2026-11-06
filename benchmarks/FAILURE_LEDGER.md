@@ -2054,3 +2054,46 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
 - **Continue / abandon:** ABANDON sandbox-hosted NPS gating. The calibration
   script is retained as a reusable instrument check. Gates 1/4 UNMET,
   2 direction-only, 3 PASS. Mission ACTIVE / NOT COMPLETE.
+
+## INSTRUMENT FIX VERIFIED — isolated runner resolves the NPS band (A/A 0/6 false rejects)
+
+- **Implements the requirement** in the `NPS cost gate INVALID on the shared
+  sandbox` entry above. New lane `.github/workflows/dev6-cost-gate.yml` +
+  `scripts/dev6_cost_gate_calibrate_job.py`; run **42191869178** (calibration) /
+  **42192830961** (verified git export).
+- **Result on a dedicated `ubuntu-latest` VM** (AMD EPYC 7763, nproc 4, image
+  ubuntu26 20261101.186.1), engine built from pinned source with the frozen
+  flags: at the **same frozen 3 reps**, **0 false rejects out of 6** A/A
+  evaluations. A/A ratios **0.99116 – 1.00254**, half-range **0.00569** against a
+  band half-width of **0.030** — ~5x margin. Verdict: **ISOLATED RUNNER CAN
+  RESOLVE THE BAND**.
+- **Comparison at identical protocol:** sandbox false-reject rate **80 %** vs
+  isolated **0 %**; A/A scatter tightened **12.4x** (half-range 0.0704 → 0.0057).
+  Residual arm self-spread of 5.87 % still exists on the runner, but the
+  median-of-3 statistic absorbed it and every band decision was correct.
+- **Scope:** validates the HOST and the PROTOCOL, **not any candidate**. No
+  candidate was measured; the lane has no `--pst` input and no code path that
+  loads one, so it cannot re-score, reopen or re-roll exp-0048/exp-0049. The
+  historical sandbox numbers stay uninformative and were **not** re-run;
+  exp-0048's withdrawn "free per node" claim stays withdrawn.
+- **Required for any future cost gate:** run on an isolated runner; re-run the
+  A/A null **in the same session** as the candidate measurement and require zero
+  false rejects over >= 5 evaluations; freeze statistic/reps/band in that
+  candidate's prereg before its corpus exists. **One A/A pass does not
+  permanently certify a host** — runner hardware and images vary.
+- **Three export-lane defects found and fixed while mirroring the evidence:**
+  (1) `run.log` was silently dropped because `.gitignore` has `*.log` and
+  `git add -A` skipped it while `SHA256SUMS.txt` still listed it — fixed by
+  force-adding logs, as the tier1 lane already did; (2) the new completeness
+  guard first tested `git diff --cached`, which omits already-committed unchanged
+  files on a RE-export and failed spuriously — corrected to test the INDEX via
+  `git ls-files`; (3) added **post-push verification of the COMMITTED blobs**,
+  because the working-tree check alone had passed on an incomplete mirror. Final
+  mirror: **39/39 committed blobs hash-verified**.
+- **Also self-inflicted, recorded honestly:** one dispatch push triggered nothing
+  because its commit message *body* quoted a literal CI-suppression token while
+  describing the export commit; GitHub honours that token anywhere in the
+  message. Not an outage. Re-dispatched without it.
+- **Continue / abandon:** sandbox-hosted NPS gating stays ABANDONED; isolated
+  gating is now validated and available. Gates 1/4 UNMET, 2 direction-only,
+  3 PASS. Mission ACTIVE / NOT COMPLETE. Zero strength games; exp-0047 DORMANT.
