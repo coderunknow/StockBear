@@ -1,10 +1,10 @@
 {
   "mode": "export",
   "source_sha": "HEAD",
-  "note": "Re-export of isolated-runner A/A calibration run 42191869178 with the export lane's log-handling defect FIXED. The first mirror omitted run.log because .gitignore contains *.log and 'git add -A' silently skipped it while SHA256SUMS.txt still listed it; the runner's check passed only because the file existed in its working tree. Now logs are force-added (as the tier1 lane already did), every checksummed path must be STAGED, and the COMMITTED blobs are hash-verified after push. Instrument validation only: no candidate measured, no --pst path, cannot re-run or reopen exp-0048/exp-0049.",
+  "note": "Re-export of isolated-runner A/A calibration run 42191869178. Fixes two export-lane defects found by verifying the mirror locally: (1) .gitignore *.log made 'git add -A' silently drop run.log while SHA256SUMS.txt still listed it -> logs are now force-added as the tier1 lane does; (2) the new completeness guard tested 'git diff --cached', which omits already-committed unchanged files on a RE-export and so failed spuriously -> it now tests the INDEX (git ls-files). Committed blobs are still hash-verified after push. Instrument validation only: no candidate measured, no --pst path, cannot re-run or reopen exp-0048/exp-0049.",
   "nodes": 300000,
   "reps": 3,
   "evaluations": 6,
-  "attempt": 4,
+  "attempt": 5,
   "source_run_id": "42191869178"
 }
