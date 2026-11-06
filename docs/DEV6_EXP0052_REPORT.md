@@ -9,6 +9,8 @@ any game, verified against the plan by the runner in every job)
 **Tier-1 run:** 42231550633 (SUCCESS, 5 isolated VMs) · **Export run:** 42233030585
 **Raw evidence:** `benchmarks/exp-runs/tier1-export/run-42231550633/`
 **Independent audit:** `benchmarks/recovery/exp0052_independent_raw_audit.json`
+**CI on the verdict commit:** run 42233902775, **9/9 SUCCESS**, headSha
+`33fca3dc14f3dfb497ae0a7c5cfefa3664fabb3b` verified equal to the local HEAD.
 
 ---
 
@@ -70,6 +72,9 @@ resolution.
 - Unadjudicated max-plies games (6/2/0/1/0) are excluded pairwise, never counted
   as draws; 1,984 of 1,992 scored games enter the primary combined estimate.
 - **TOTAL ISSUES: 0 — INDEPENDENT AUDIT PASS.**
+- Post-verdict tree re-verified locally: shipped `KingSafetyQuadratic 0 0`, all
+  three bench signatures exact, **ctest 15/15**, dev5 digest unchanged,
+  `origin/main` still `6e7c2e02…`. CI **9/9** on the exact verdict commit.
 
 ### 3.1 Baseline-equivalence: attribution is clean
 
