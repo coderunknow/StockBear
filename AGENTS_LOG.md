@@ -1817,3 +1817,45 @@ check that rejects degenerate "improvements", NOT a selection criterion.
 Reinforced, by a second independent route: **select on fixed-time 40+4 games.**
 Evidence `METRIC_VS_MEASURED_ELO.json` added to the checksummed bundle (5/5).
 No verdict changed; zero strength games; exp-0047 DORMANT.
+
+## 2026-11-06 — exp-0050 REGISTERED: pawn-structure correction history (search, not accuracy)
+
+Both accuracy audits pointed the same way: select on fixed-time games. So instead
+of more metric work I looked for an actual untried strength direction and found
+one. `correction history` appears **nowhere** in the failure ledger, and
+`src/search/` had **no** eval-bias table. (A keyword grep also said "check
+extension absent" — that was a FALSE NEGATIVE, `params_.checkExtension` is very
+much present at search.cpp:486. Verified before claiming a gap.)
+
+**Mechanism:** decaying running mean of `(search score − raw static eval)`,
+indexed by a hash of the two pawn bitboards, added to the eval used for
+**pruning margins only**. The **RAW** eval still goes into the TT, so the bias
+cannot compound through TT reuse. Writes guarded to completed, non-check,
+non-mate nodes with a quiet/absent best move and a consistent bound. All six
+constants frozen from theory before any game. Default OFF.
+
+**This is deliberately NOT accuracy-gated.** It is a search change measured only
+by fixed-time 40+4 games, so it needs neither the scale-broken gate nor the
+nonexistent accuracy→Elo conversion.
+
+**Verified before registering:** 3/3 default-OFF bench signatures bit-exact;
+release ctest **14/14**; ASan+UBSan ctest **14/14**; new group 5/5. Liveness at
+fixed depth 10: 1,418,459 → 1,410,036 nodes (−0.59 %), live on **7/12** positions,
+signature changes — not inert.
+
+**Mutation-tested the test.** Built two deliberate mutants: update removed
+(never written) and apply site disabled (never read). The liveness assertion
+**FAILED for both** while every correctness assertion still PASSED — exactly the
+exp-0038 lesson. Both reverted, 14/14 and all three signatures re-verified.
+
+**One test of mine was wrong, and the probe proved it.** My "table cleared
+between runs" test failed. Rather than assume a leak I probed with the switch
+**OFF**: the same discrepancy appeared (28,309 vs 49,064), so the cause was the
+shared **TT**, not my table; after `tt.clear()` both arms returned exactly to
+baseline. Fixed the test to clear the TT and documented the confound in it.
+
+1,400 fresh openings, seed 2026120801, **0 overlap** with 48,441 positions in 172
+files, 4 disjoint slices (independently re-verified). Prereg
+`docs/DEV6_PREREG_EXP0050.md` SHA `e80375135cf991cd…` FROZEN before any game;
+4-job Tier-1 plan written. **Zero exp-0050 games played yet.** Gates unchanged;
+exp-0047 still DORMANT; exp-0048/0049 untouched.

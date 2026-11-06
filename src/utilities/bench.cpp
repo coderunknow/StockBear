@@ -176,6 +176,7 @@ bool apply_param(SearchParams& params, const std::string& key, const std::string
     else if (key == "badCaptureOrdering") params.badCaptureOrdering = on;
     else if (key == "skipDeadTTEval") params.skipDeadTTEval = on;
     else if (key == "adaptiveNullR") params.adaptiveNullR = on;
+    else if (key == "correctionHistory") params.correctionHistory = on;
     else return false;
     return true;
 }
@@ -209,7 +210,8 @@ std::string params_text(const SearchParams& params) {
         << ",ttSingularExtension=" << int(params.ttSingularExtension)
         << ",badCaptureOrdering=" << int(params.badCaptureOrdering)
         << ",skipDeadTTEval=" << int(params.skipDeadTTEval)
-        << ",adaptiveNullR=" << int(params.adaptiveNullR);
+        << ",adaptiveNullR=" << int(params.adaptiveNullR)
+        << ",correctionHistory=" << int(params.correctionHistory);
     return out.str();
 }
 }

@@ -327,6 +327,7 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     else if (key == "badcaptureordering") flag = &params_.badCaptureOrdering;
     else if (key == "skipdeadtteval") flag = &params_.skipDeadTTEval;
     else if (key == "adaptivenullr") flag = &params_.adaptiveNullR;
+    else if (key == "correctionhistory") flag = &params_.correctionHistory;
     if (flag == nullptr) {
         emit("info string setoption: unknown option " + name); return;
     }
@@ -523,6 +524,9 @@ void UciEngine::loop() {
             // exp-0046: default off; isolated same-binary ablation.
             emit(std::string("option name AdaptiveNullR type check default ") +
                  check(params_.adaptiveNullR));
+            // exp-0050: default off; isolated same-binary ablation.
+            emit(std::string("option name CorrectionHistory type check default ") +
+                 check(params_.correctionHistory));
             // exp-0019: cp-denominated margins and the aspiration half-window as
             // integer options so they can be screened without rebuilding.
             emit("option name AspirationWindow type spin default 16 min 1 max 1200");

@@ -139,6 +139,7 @@ if(STOCKBEAR_BUILD_TESTS)
         tests/unit/test_bitboard.cpp
         tests/unit/test_dead_position.cpp
         tests/unit/test_draws.cpp
+        tests/unit/test_correction_history.cpp
         tests/unit/test_eval.cpp
         tests/unit/test_eval_baseline.cpp
         tests/unit/test_fen.cpp
@@ -174,6 +175,9 @@ if(STOCKBEAR_BUILD_TESTS)
     # exp-0038 qsearch cache: exercised with the switch explicitly ON, which
     # the shipped default never does, so it gets its own entry.
     add_test(NAME qsearch_tt COMMAND stockbear_tests qsearch_tt)
+    # exp-0050 correction history: exercised with the switch explicitly ON,
+    # which the shipped default never does, so it gets its own entry.
+    add_test(NAME correction_history COMMAND stockbear_tests correction_history)
     add_test(NAME regression  COMMAND stockbear_tests regression)
     add_test(NAME perft_quick COMMAND stockbear_tests perft_quick)
     add_test(NAME stress      COMMAND stockbear_tests stress)

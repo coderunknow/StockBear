@@ -148,6 +148,18 @@ struct SearchParams {
     // beta, adds NO evaluate/SEE/movegen call, NO extra ply and NO per-node
     // work. Frozen in docs/DEV6_PREREG_EXP0046.md.
     bool adaptiveNullR = false;
+    // --- dev6 exp-0050 (default off; isolated same-binary ablation) ---------
+    // Correction history: the static evaluation is systematically biased in a
+    // way that depends on the PAWN STRUCTURE (the tapered handcrafted eval
+    // cannot see passed-pawn races, blocked chains or colour-complex holes).
+    // Keep a decaying running average of (search score - raw static eval)
+    // indexed by a pawn-structure hash, and add it to the eval used for
+    // PRUNING decisions. The RAW eval is still what goes into the TT, so the
+    // correction can never compound through TT reuse. This is a NEW signal
+    // derived from the search's own verdicts, not a constant retune, not an
+    // eval-parameter refit and not an accuracy-gated change: it is judged by
+    // FIXED-TIME games only. Frozen in docs/DEV6_PREREG_EXP0050.md.
+    bool correctionHistory = false;
 };
 
 // One instance per search. Search is single-threaded; asynchronous UCI control
@@ -189,6 +201,12 @@ private:
         return continuation_[(((std::size_t(previousType) * SQ_NB + std::size_t(previousTo)) *
                               PieceTypeNB + std::size_t(type)) * SQ_NB) + std::size_t(to)];
     }
+    // exp-0050 correction history. `correction_index` hashes ONLY the pawn
+    // structure (both colours' pawn bitboards) so the learned bias generalises
+    // across piece placements. `correction_of` is the current scaled estimate.
+    std::size_t correction_index(const Position& pos, Color us) const;
+    void update_correction(const Position& pos, Color us, int staticEval,
+                           int best, int depth);
     void update_quiet_stats(const Position& pos, Move move, int depth, int ply, int bonus);
     void update_capture_stats(const Position& pos, Move move, int depth);
     void penalise_quiets(const Position& pos, const Move* moves, int count, int depth, int ply);
@@ -214,12 +232,16 @@ private:
     static constexpr std::size_t PvSlots = std::size_t(MAX_PLY) * MAX_PLY;
     static constexpr std::size_t ContinuationSlots =
         std::size_t(PieceTypeNB) * SQ_NB * PieceTypeNB * SQ_NB;
+    // exp-0050: pawn-structure correction table, power of two so the index is a
+    // mask. One entry per (colour, pawn hash); scaled centipawns.
+    static constexpr std::size_t CorrectionSlots = 16384;
     // Static evaluation of the position at each ply of the current line, so the
     // "improving" heuristic can compare against two plies ago without threading
     // another parameter through every call.
     int evalStack_[MAX_PLY + 2] = {};
     std::unique_ptr<Move[]> pv_{new Move[PvSlots]()};
     std::unique_ptr<int[]> continuation_{new int[ContinuationSlots]()};
+    std::unique_ptr<int[]> correction_{new int[CorrectionSlots * ColorNB]()};
     int pvLength_[MAX_PLY] = {};
     Move killers_[MAX_PLY][2] = {};
     int history_[ColorNB][SQ_NB][SQ_NB] = {};

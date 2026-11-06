@@ -56,6 +56,17 @@ constexpr int BadCaptureOrderScore = -2000000;
 // tuned on a test suite or Elo result). See docs/DEV6_PREREG_EXP0046.md §3.
 constexpr int AdaptiveNullMarginDivisor = 200; // cp per extra reduction ply
 constexpr int AdaptiveNullExtraCap = 2;        // hard cap on extra plies
+// exp-0050 correction history. ALL constants frozen from theory BEFORE any
+// game (docs/DEV6_PREREG_EXP0050.md); none is tuned on a suite or an Elo result.
+// The table stores scaled centipawns so the decaying update stays integral.
+constexpr int CorrectionScale = 256;            // fixed-point per cp
+constexpr int CorrectionLimit = 32 * CorrectionScale;  // clamp at +/-32 cp
+constexpr int CorrectionUpdateCap = 8 * CorrectionScale;  // one-step cap
+constexpr int CorrectionDepthDivisor = 8;      // weight -> depth/8 of the error
+#ifdef SB_CORRECTION_DEBUG
+static std::uint64_t correction_updates = 0, correction_applied = 0,
+                     correction_nonzero = 0, correction_clamped = 0;
+#endif
 #ifdef SB_ADAPTIVE_NULL_DEBUG
 static std::uint64_t adaptive_null_nodes = 0, adaptive_null_extra = 0,
                      adaptive_null_changed = 0;
@@ -312,6 +323,42 @@ void Search::update_pv(int ply, Move move) {
     pvLength_[ply] = count + 1;
 }
 
+// exp-0050: index the correction table by PAWN STRUCTURE only. Two 64-bit pawn
+// bitboards are mixed with odd multipliers and folded; no allocation, no loop,
+// no evaluation call. Pieces are deliberately excluded so the learned bias
+// generalises across piece placements sharing the same pawn skeleton.
+std::size_t Search::correction_index(const Position& pos, Color us) const {
+    const Bitboard wp = pos.pieces(White, Pawn);
+    const Bitboard bp = pos.pieces(Black, Pawn);
+    std::uint64_t h = wp * 0x9E3779B97F4A7C15ULL;
+    h ^= (bp * 0xC2B2AE3D27D4EB4FULL) + 0x165667B19E3779F9ULL + (h << 6) + (h >> 2);
+    h ^= h >> 29;
+    h *= 0xBF58476D1CE4E5B9ULL;
+    h ^= h >> 32;
+    return (std::size_t(h) & (CorrectionSlots - 1)) + std::size_t(us) * CorrectionSlots;
+}
+
+// exp-0050: fold the observed (search - raw static eval) error into the table
+// with a decaying update, so the entry tracks a running mean rather than the
+// last node. Called ONLY on a completed, non-mate, non-check node whose best
+// move was quiet (a capture's score reflects the capture, not the eval bias).
+void Search::update_correction(const Position& pos, Color us, int staticEval,
+                              int best, int depth) {
+    const int error = (best - staticEval) * CorrectionScale;
+    const int weight = std::min(depth, CorrectionDepthDivisor);
+    int delta = error * weight / CorrectionDepthDivisor;
+    delta = std::clamp(delta, -CorrectionUpdateCap, CorrectionUpdateCap);
+    int& entry = correction_[correction_index(pos, us)];
+    // Exponential decay towards the new observation: entry += (delta-entry)/8.
+    entry += (delta - entry) / 8;
+    const int clamped = std::clamp(entry, -CorrectionLimit, CorrectionLimit);
+#ifdef SB_CORRECTION_DEBUG
+    ++correction_updates;
+    if (clamped != entry) ++correction_clamped;
+#endif
+    entry = clamped;
+}
+
 void Search::update_quiet_stats(const Position& pos, Move move, int depth, int ply, int bonus) {
     const Color us = pos.side_to_move();
     const Move previous = previous_move(ply);
@@ -551,6 +598,23 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
 #endif
         if (ttEvalUsable) staticEval = int(entry->eval);
     }
+    // exp-0050 (frozen before results): the RAW evaluation is what the TT stores
+    // and what the update below learns against. Only the copy used for the
+    // heuristic pruning margins is corrected, so the learned bias can never
+    // compound through TT reuse. With the switch OFF this block is unreachable
+    // and every value below is bit-identical to the shipped search.
+    const int rawStaticEval = staticEval;
+    const Color us = pos.side_to_move();
+    if (params_.correctionHistory && !inCheck && std::abs(rawStaticEval) < MATE_BOUND) {
+        const int scaled = correction_[correction_index(pos, us)];
+        const int adjusted = rawStaticEval + scaled / CorrectionScale;
+        // Never let a heuristic correction reach a mate score.
+        staticEval = std::clamp(adjusted, -MATE_BOUND + 1, MATE_BOUND - 1);
+#ifdef SB_CORRECTION_DEBUG
+        ++correction_applied;
+        if (scaled != 0) ++correction_nonzero;
+#endif
+    }
     evalStack_[ply] = staticEval;
     // "Improving": is the side to move better off than it was two plies ago?
     // Used only to widen or narrow heuristic margins, never to bound a proven
@@ -769,8 +833,18 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
     const Bound stored = best >= beta ? Bound::Lower
                         : best <= originalAlpha ? Bound::Upper
                         : Bound::Exact;
+    // exp-0050: learn from this node's own verdict. Only when the node completed,
+    // is not a mate/check node, and the best move was quiet -- a capture's score
+    // reflects the material change, not a bias in the static evaluation.
+    if (params_.correctionHistory && !aborted_ && !inCheck &&
+        std::abs(best) < MATE_BOUND && std::abs(rawStaticEval) < MATE_BOUND &&
+        (bestMove == MOVE_NONE || quiet(pos, bestMove)) &&
+        !(stored == Bound::Lower && best <= rawStaticEval) &&
+        !(stored == Bound::Upper && best > rawStaticEval))
+        update_correction(pos, us, rawStaticEval, best, depth);
+    // The RAW eval is stored, never the corrected one (see exp-0050 above).
     tt_.store(pos.key(), pos.rule50(), context, extensions, bestMove, best, depth, stored, ply,
-              params_.ttEval ? staticEval : VALUE_NONE);
+              params_.ttEval ? rawStaticEval : VALUE_NONE);
     return best;
 }
 
@@ -859,6 +933,7 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
         for (auto& row : color) std::fill(std::begin(row), std::end(row), 0);
     for (auto& row : counterMoves_) std::fill(std::begin(row), std::end(row), MOVE_NONE);
     std::fill_n(continuation_.get(), ContinuationSlots, 0);
+    std::fill_n(correction_.get(), CorrectionSlots * ColorNB, 0);
     for (auto& a : captureHistory_)
         for (auto& b : a) std::fill(std::begin(b), std::end(b), 0);
     std::fill(std::begin(moveStack_), std::end(moveStack_), MOVE_NONE);
@@ -870,6 +945,9 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
 #endif
 #ifdef SB_ADAPTIVE_NULL_DEBUG
     adaptive_null_nodes = adaptive_null_extra = adaptive_null_changed = 0;
+#endif
+#ifdef SB_CORRECTION_DEBUG
+    correction_updates = correction_applied = correction_nonzero = correction_clamped = 0;
 #endif
 #ifdef SB_DEADEVAL_DEBUG
     deadeval_skipped = deadeval_evaluated = 0;

@@ -1,0 +1,15 @@
+{
+  "seed": 2026120801,
+  "count": 1400,
+  "disjoint_overlap": 0,
+  "no_pooling_with_earlier_experiments": true,
+  "excluded_file_count": 172,
+  "excluded_positions": 48441,
+  "master_sha256": "ea699cc44610c4c0ce6c9aa6c5396be530a9d8214e118ae4bfc179ea976dd399",
+  "slices": {
+    "stage0": "f05382ebcb301a4a57d8b4aa1d696331be5f81c4e17f0a730365c3dc97df198e",
+    "null": "4623d3138f7f43f6077a3fe7ffc02844e5f59ef615d77dbf90d2b4dc4f0efbd9",
+    "batchA": "3ba5f26d41c91eb52d6a735a8be9e72b0698b04e73fea67e4f8dcae6cc41b007",
+    "batchB": "a91b8016bccda64d925c7e2be479e0bc7d1096e26f0a2fe1e84b6ba912f1b68d"
+  }
+}
