@@ -1,0 +1,62 @@
+{
+  "fingerprint_sha256": "6cdf3cbeb3318f00138d3e824a6839bf75317b71f588f194b0bb8c1934611af6",
+  "source_sha": "0dec094f43f6aea17ce7aaf46d62cf4d2033a45d",
+  "prereg_sha256": "94673e910b0dd8f1676ee90db1784524244f08a9df7fec399fb2038485318ae3",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0051.md",
+    "prereg_sha256": "94673e910b0dd8f1676ee90db1784524244f08a9df7fec399fb2038485318ae3",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "id": "tier1-exp0051-null",
+    "games": 400,
+    "seed": 2026120913,
+    "openings": "benchmarks/positions/openings_exp0051_null.txt",
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "null": true,
+    "ctest": false,
+    "a_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true",
+      "PstFile=benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true",
+      "PstFile=benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+    ],
+    "engine_a": "candidate",
+    "engine_b": "candidate",
+    "note": "candidate-options null (frozen PST both sides); CI must include 0",
+    "assets": [
+      "benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+    ]
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "7b80ce37ee1977e881f7228ae4cb6caf252efa7d2b6c42fdf12af17836303ed8",
+  "packaged_binary_sha256": "7b80ce37ee1977e881f7228ae4cb6caf252efa7d2b6c42fdf12af17836303ed8",
+  "package_sha256": "a0105573998a00217b7bda32d3a175b9e5c98387d9fb6a4fc5410172fc5d4993",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "4c4197a10ca1bab328d10137b13dbc44548b8dd119a2c2894e57a87e102d57c7",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true",
+    "PstFile=benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true",
+    "PstFile=benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0051-null/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0051-null/stockbear",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}
