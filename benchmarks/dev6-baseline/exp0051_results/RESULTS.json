@@ -1,0 +1,161 @@
+{
+  "experiment_id": "exp-0051",
+  "mechanism": "FROZEN exp-0049 piece-square table, loaded read-only via PstFile; NOT a refit",
+  "verdict": "CLOSED / NEGATIVE",
+  "decided_by": "frozen prereg rule: CLOSE if combined 95% UCB < +10 OR combined point <= 0",
+  "both_close_triggers_fired": true,
+  "prereg": "docs/DEV6_PREREG_EXP0051.md",
+  "prereg_sha256": "94673e910b0dd8f1676ee90db1784524244f08a9df7fec399fb2038485318ae3",
+  "prereg_sha_enforced_by_runner": true,
+  "source_sha": "0dec094f43f6aea17ce7aaf46d62cf4d2033a45d",
+  "tier1_run_id": "42217333693",
+  "export_run_id": "42218620021",
+  "control": "FIXED TIME 40+4 ms, Hash16, Threads1, max-plies 240; never --nodes",
+  "artefact_under_test": "benchmarks/dev6-baseline/exp0049_results/exp0049.sbpst",
+  "artefact_sha256": "6e31a01a6988fd2192259a101a1e089320e9ddeb8d414acf4ed3d05740d6c733",
+  "artefact_unmodified": true,
+  "binary_sha256": "7b80ce37ee1977e881f7228ae4cb6caf252efa7d2b6c42fdf12af17836303ed8",
+  "binary_identical_across_all_four_jobs": true,
+  "package_sha_differs_only_by_job_id_in_BUILD_INFO": true,
+  "frozen_combined": {
+    "wins": 373,
+    "draws": 389,
+    "losses": 1230,
+    "games": 1992,
+    "score": 0.2848896,
+    "clusters": 992,
+    "cr1_t_elo": -159.5439,
+    "ci95": [
+      -173.5745,
+      -145.9839
+    ],
+    "independent_elo_from_score": -159.8786,
+    "independent_cluster_bootstrap_ci95": [
+      -173.5307,
+      -146.2328
+    ],
+    "scope": "batchA + batchB ONLY; nulls never pooled"
+  },
+  "per_job": {
+    "batchA": {
+      "games": 997,
+      "unadjudicated": 3,
+      "wins": 199,
+      "draws": 194,
+      "losses": 604,
+      "score": 0.29689067201604813,
+      "elo": -149.86206390700735,
+      "ci95": [
+        -170.04980347768895,
+        -130.585765520633
+      ],
+      "clusters": 497,
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0
+    },
+    "batchB": {
+      "games": 995,
+      "unadjudicated": 5,
+      "wins": 174,
+      "draws": 195,
+      "losses": 626,
+      "score": 0.2728643216080402,
+      "elo": -169.50383980339078,
+      "ci95": [
+        -189.27363279647352,
+        -150.70325632092573
+      ],
+      "clusters": 495,
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0
+    },
+    "null": {
+      "games": 398,
+      "unadjudicated": 2,
+      "wins": 134,
+      "draws": 136,
+      "losses": 128,
+      "score": 0.507537688442211,
+      "elo": 4.387046089726161,
+      "ci95": [
+        -14.28670813136694,
+        23.086204359378225
+      ],
+      "clusters": 198,
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0
+    },
+    "stage0": {
+      "games": 398,
+      "unadjudicated": 2,
+      "wins": 132,
+      "draws": 127,
+      "losses": 139,
+      "score": 0.49120603015075376,
+      "elo": -5.26457842318834,
+      "ci95": [
+        -21.612034515426533,
+        11.059585341198657
+      ],
+      "clusters": 198,
+      "time_forfeit": 0,
+      "illegal": 0,
+      "engine_failure": 0
+    }
+  },
+  "validity": {
+    "time_forfeit": 0,
+    "illegal": 0,
+    "engine_failure": 0,
+    "stage0_null_ci_includes_0": true,
+    "candidate_null_ci_includes_0": true,
+    "stage0_ctest_on_packaged_binary": "14/14",
+    "committed_blobs_verified": "50/50",
+    "per_job_sha256sums_verified": "40/40",
+    "independent_audit": "44 stored values checked, 0 issues, AUDIT PASS",
+    "pst_load_verified_every_pst_arm": true,
+    "pst_load_evidence": "run.log 'arm A PstFile LOAD VERIFIED' in batchA/batchB/null (arm B too in null); pst_probe_*.txt show 'info string PstFile loaded:'; packaged PST bytes re-hashed from each tar.gz match the frozen digest",
+    "unadjudicated_max_plies_excluded": 12
+  },
+  "liveness_before_games": {
+    "fixed_depth": 10,
+    "nodes_off": 1418459,
+    "nodes_on": 1621265,
+    "tree_change_pct": 14.3,
+    "positions_live": "11/12",
+    "bestmoves_changed": "2/12",
+    "note": "tree-change proxy only, NOT a strength or speed measurement"
+  },
+  "interpretation": [
+    "The frozen exp-0049 PST is decisively WORSE than the formulaic champion tables: combined -159.54 Elo, CI [-173.57,-145.98], both close triggers fired.",
+    "The effect is far outside noise and consistent across both independently seeded batches (-149.86 and -169.50), so this is not a slice artefact.",
+    "This is a genuine mechanism rejection, NOT an instrument failure: the table verifiably loaded in every PST arm, fixed-time games charge all per-node cost, validity was clean, and both nulls include zero.",
+    "The accuracy gate would have been misleading in BOTH directions here: 2.4712% log-loss improvement coexists with a ~160 Elo strength LOSS. A better fit to the corpus objective is not better play.",
+    "The exp-0049 gate failure therefore protected the engine, but for the wrong reason: it rejected on a metric that carries no strength information, not on measured play.",
+    "Consistent with the diagnosed fitting pathology: 291/768 entries pinned at the +/-150 cap and RMS delta 111.83 cp distort cp-calibrated pruning margins."
+  ],
+  "not_claimed": [
+    "no strength gain",
+    "no default change",
+    "no refit or rescore of exp-0049",
+    "no reopening of exp-0049 (its CLOSED/NEGATIVE verdict stands; corpus stays BURNED)",
+    "no validation of accuracy gating",
+    "no NPS/speedup claim",
+    "no absolute/CCRL/FIDE Elo",
+    "no gap-to-3000",
+    "no Gate 1 or Gate 4 pass",
+    "no claim that a larger cap or a different corpus would also fail"
+  ],
+  "gates_after": {
+    "1": "UNMET",
+    "2": "direction-supported (exp-0036, unchanged)",
+    "3": "PASS",
+    "4": "UNMET"
+  },
+  "mission": "ACTIVE / NOT COMPLETE",
+  "exp0047": "DORMANT, Activation Record empty",
+  "next": "Do NOT refit this table, do NOT relax the +/-150 cap, do NOT re-run exp-0051, do NOT pool. This artefact is rejected on measured strength."
+}

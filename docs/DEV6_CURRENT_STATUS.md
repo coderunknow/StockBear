@@ -3,11 +3,14 @@
 Older reports `docs/DEV6_STATUS_REPORT.md` and
 `docs/DEV6_POST_AUTHORIZATION_REPORT.md` are superseded for this cycle; they
 remain historical records. This document is the current gate verdict.
-**LATEST: see the "LATEST (2026-11-06, exp-0050 RESULT)" section at the very end.
-exp-0050 (pawn-structure correction history) is CLOSED / NEGATIVE on 2,800 new
-fixed-time games on isolated VMs: combined `-1.5713 [-10.1225, +6.9780]`. Gates
-are unchanged; `docs/DEV6_PREREG_EXP0047.md` remains a DORMANT frozen
-preregistration with an empty Activation Record.**
+**LATEST: see the "LATEST (2026-11-06, exp-0051 RESULT)" section at the very end.
+exp-0051 measured the FROZEN exp-0049 piece-square table at fixed time for the
+first time and it is CLOSED / NEGATIVE: combined `-159.5439 [-173.5745,
+-145.9839]` on 1,992 adjudicated games. The table improved its corpus objective
+2.4712 % yet lost ~160 Elo — better fit is not better play. exp-0049's verdict
+stands and its corpus stays BURNED; the artefact was tested read-only. Gates are
+unchanged; `docs/DEV6_PREREG_EXP0047.md` remains a DORMANT frozen preregistration
+with an empty Activation Record.**
 
 ## Verdict: MISSION ACTIVE — NOT COMPLETE
 `docs/DEV6_PREREG.md` §8 gates are **unchanged and unweakened**.
@@ -637,3 +640,93 @@ default change, no PR / merge / tag / release / deploy. `origin/main` untouched.
 direction since exp-0046 is now closed. Any further candidate needs its own
 prereg, fresh disjoint openings, and a fixed-time screen — **not** a retune of a
 closed switch and **not** a relaxed threshold.
+
+---
+
+# LATEST (2026-11-06, exp-0051 RESULT) — SUPERSEDES THE ABOVE FOR THIS CYCLE
+
+**exp-0051 measured the FROZEN exp-0049 piece-square table at fixed time for the
+first time. Verdict: CLOSED / NEGATIVE.** Combined **−159.5439 Elo,
+95 % CI [−173.5745, −145.9839]** on 1,992 adjudicated games in 992 opening
+clusters. Both frozen CLOSE triggers fired. No default change.
+
+## Why an artefact from a closed experiment was tested
+
+exp-0049 §7 gated its fixed-time screen on §5 (accuracy) **and** §6 (NPS cost) —
+both subsequently proven invalid instruments — so a genuinely fitted
+768-parameter table had been discarded with **zero strength games**. The protocol
+tension was surfaced to the user rather than resolved silently, and the user
+approved testing the frozen artefact.
+
+This was a **new id against an existing artefact, read-only**: no refit, no entry
+edited, no cap changed, no corpus read. Table SHA re-verified
+`6e31a01a6988fd21…d05740d6c733`, byte-identical to the exp-0049 commit.
+**exp-0049's CLOSED / NEGATIVE verdict stands and its corpus stays BURNED.**
+
+## Result
+
+| slice | W/D/L | games | CR1/t Elo | 95 % CI |
+|---|---|---|---|---|
+| **combined (batchA+batchB)** | **373/389/1230** | **1,992** | **−159.5439** | **[−173.5745, −145.9839]** |
+| batchA | 199/194/604 | 997 | −149.8621 | [−170.0498, −130.5858] |
+| batchB | 174/195/626 | 995 | −169.5038 | [−189.2736, −150.7033] |
+| stage0 null | 132/127/139 | 398 | −5.2646 | [−21.6120, +11.0596] |
+| candidate null | 134/136/128 | 398 | +4.3870 | [−14.2867, +23.0862] |
+
+Fixed time **40+4 ms**, Hash16, Threads1, 240 plies, four isolated VMs, never a
+node budget. Same packaged binary both arms
+(`7b80ce37ee1977e8…36303ed8`); arm A adds only `PstFile`. 1,400 fresh openings
+seed 2026120901, **0 overlap** with 49,841 positions in 177 files. Prereg
+`94673e910b0dd8f1…` frozen before any game and **enforced** in all four jobs.
+Tier-1 **42217333693** (4/4), export **42218620021**. Independent Elo-from-score
+−159.8786; cluster bootstrap [−173.5307, −146.2328].
+
+## Validity
+
+0 time forfeits / 0 illegal / 0 engine failures in all four jobs; both nulls
+include 0; ctest **14/14** on the packaged binary; **50/50** committed blobs
+re-hashed; **40/40** per-job SHA256SUMS; independent audit **44 values, 0 issues,
+PASS**; 12 UNADJUDICATED_MAX_PLIES excluded as preregistered.
+
+**The table verifiably loaded.** A missing `PstFile` is **not fatal** — the engine
+prints `could not load` and plays on with formulaic tables, which in a same-binary
+ablation makes arm A bit-identical to B and yields a clean, plausible **fake
+null**. The runner now requires the PST to be a declared packaged asset **and**
+the probe to print `PstFile loaded:`; both negative branches were exercised before
+dispatch. Confirmed from committed bytes: `arm A PstFile LOAD VERIFIED` in
+batchA/batchB/null (arm B too in null), and the PST extracted from every tar.gz
+re-hashes to the frozen digest.
+
+## What this means
+
+The table **improved its corpus objective by 2.4712 % and lost ~160 Elo**. A better
+fit to the log-loss objective is **not** better play. The accuracy gate was
+misleading in both directions: it rejected a genuinely bad artefact but had no way
+to know that, and the same gate is passable by a ×0.80 rescale that is not a
+strength no-op. **exp-0049's gate failure protected the engine for the wrong
+reason** — right outcome, wrong instrument. This reinforces that selection must be
+on fixed-time games.
+
+Magnitude is consistent with the diagnosed fitting pathology: **291/768 entries
+pinned at the ±150 cap**, RMS δ **111.83 cp**, distorting the cp-calibrated
+futility, reverse-futility and delta margins. Far too large to be per-node lookup
+cost alone.
+
+## Gates and mission (unchanged)
+
+| gate | verdict |
+|---|---|
+| 1 | **UNMET** — best preregistered fixed-time evidence remains exp-0036 `+21.5238 [10.2819, 32.8108]` |
+| 2 | direction-supported (exp-0036, unchanged) |
+| 3 | **PASS** — exp-0051's two nulls also include 0 |
+| 4 | **UNMET** for a final candidate |
+
+Mission **ACTIVE / NOT COMPLETE**. exp-0047 **DORMANT**, Activation Record empty.
+exp-0048/0049/0050 verdicts untouched. No strength claim, no default change, no
+PR / merge / tag / release / deploy. `origin/main` untouched.
+
+**Next:** do NOT refit this table, relax the ±150 cap, re-run exp-0051, or pool its
+games. This artefact is rejected on measured strength. Whether a larger cap or a
+different corpus would fare better is **untested** and would need its own prereg.
+Report `docs/DEV6_EXP0051_REPORT.md`; bundle
+`benchmarks/dev6-baseline/exp0051_results/`.

@@ -1974,3 +1974,31 @@ generator's own printout. Prereg `docs/DEV6_PREREG_EXP0051.md` SHA
 the PST as a packaged **asset** in every job, so the §3.1 load assertion applies.
 
 **Zero exp-0051 games played at registration.** Gates unchanged; exp-0047 DORMANT.
+
+## 2026-11-06 — exp-0051 RESULT: frozen exp-0049 PST CLOSED / NEGATIVE, −159.54 Elo
+
+Dispatched benchmark run **42217333693** (4/4 SUCCESS), exported **42218620021**,
+ff-merged the evidence mirror. **FROZEN COMBINED** batchA+batchB: W/D/L
+373/389/1230, 1,992 adjudicated, 992 clusters, **−159.5439 [−173.5745, −145.9839]**.
+Both CLOSE triggers fired (UCB < +10 AND point ≤ 0). batchA −149.86 and batchB
+−169.50 agree across independent seeds. Nulls −5.26 and +4.39 both include 0;
+0 forfeits / 0 illegal / 0 failures; ctest 14/14; 50/50 committed blobs; 40/40
+SHA256SUMS; audit 44 values / 0 issues / PASS.
+
+**The load assertion earned its keep.** Verified from committed bytes that arm A
+printed `PstFile LOAD VERIFIED` in batchA/batchB/null (arm B too in null), each
+`BUILD_INFO.assets_sha256` pins the frozen digest, and the PST extracted from every
+tar.gz re-hashes to `6e31a01a…6c733`. Without that check a missing PST would have
+silently fallen back to formulaic tables and produced a clean fake null.
+
+**Finding:** the table improved its corpus objective **2.4712 %** and lost
+**~160 Elo**. Better fit ≠ better play. exp-0049's accuracy gate protected the
+engine **for the wrong reason** — right outcome, wrong instrument. Consistent with
+291/768 entries pinned at the ±150 cap and RMS δ 111.83 cp distorting cp-calibrated
+pruning margins.
+
+exp-0049's CLOSED/NEGATIVE verdict stands, corpus still BURNED, table unmodified.
+No refit, no cap relaxation, no re-run, no pooling. Gates unchanged: 1 UNMET,
+2 direction-supported, 3 PASS, 4 UNMET. Mission ACTIVE / NOT COMPLETE; exp-0047
+DORMANT. Report `docs/DEV6_EXP0051_REPORT.md`; bundle
+`benchmarks/dev6-baseline/exp0051_results/`.

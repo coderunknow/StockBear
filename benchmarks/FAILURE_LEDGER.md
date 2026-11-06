@@ -2292,3 +2292,64 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
 - **Lesson:** a digest that is only *recorded* is provenance theatre. Any value a
   plan freezes must be **asserted** at the point of use, and the assertion itself
   must be exercised in both directions.
+
+---
+
+## exp-0051 — the FROZEN exp-0049 PST measured at fixed time: CLOSED / NEGATIVE (−159.54 Elo)
+
+- **Why this ran at all.** exp-0049 §7 gated its fixed-time screen on §5 (accuracy)
+  **AND** §6 (NPS cost) — both later proven invalid instruments — so a genuinely
+  fitted 768-parameter table was discarded with **zero strength games**. Its
+  2.4712 % figure carried no strength information in either direction. The
+  protocol tension was surfaced to the user rather than resolved silently; the
+  user approved testing the frozen artefact. **NEW id, EXISTING artefact read
+  only:** no refit, no entry edited, no cap changed, no corpus read. Table SHA
+  re-verified `6e31a01a…6c733`, byte-identical to the exp-0049 commit.
+  **exp-0049's CLOSED / NEGATIVE verdict stands; its corpus stays BURNED.**
+- **Design.** Both arms the SAME packaged binary
+  `7b80ce37ee1977e8…36303ed8`, `EvalParams=params_abc` + `TTEval=true`; arm A adds
+  only `PstFile=…/exp0049.sbpst`. **Fixed time 40+4 ms**, Hash16, Threads1,
+  240 plies, four isolated VMs, never `--nodes`. 1,400 fresh openings seed
+  2026120901, **0 overlap** with 49,841 positions in 177 files, independently
+  re-verified. Prereg `94673e910b0dd8f1…` frozen before any game and **enforced**
+  by the runner in all four jobs. Tier-1 **42217333693** 4/4; export **42218620021**.
+- **FROZEN COMBINED (batchA+batchB only, nulls never pooled):** W/D/L
+  **373/389/1230**, 1,992 adjudicated, 992 clusters, score 0.2848896,
+  **CR1/t −159.5439, 95 % CI [−173.5745, −145.9839]**. Independent Elo-from-score
+  −159.8786; cluster bootstrap [−173.5307, −146.2328]. batchA −149.8621
+  [−170.0498, −130.5858]; batchB −169.5038 [−189.2736, −150.7033]. Both
+  independently seeded replications agree — **not a slice artefact**.
+- **Both CLOSE triggers fired:** UCB −145.98 < +10 **and** point −159.54 ≤ 0.
+  ADVANCE conditions all false. 12 UNADJUDICATED_MAX_PLIES excluded as preregistered.
+- **Validity clean:** 0 time forfeits / 0 illegal / 0 engine failures in all four
+  jobs; stage0 null −5.26 [−21.61, +11.06] and candidate null +4.39
+  [−14.29, +23.09] both include 0; ctest **14/14** on the packaged binary;
+  **50/50** committed blobs re-hashed; **40/40** per-job SHA256SUMS; independent
+  audit **44 values, 0 issues, PASS**.
+- **The fake-null trap was closed first.** A missing `PstFile` is **not fatal** —
+  the engine prints `could not load` and plays on with **formulaic tables**, which
+  in a same-binary ablation makes A bit-identical to B and yields a clean,
+  plausible **fake null** with everything green. The runner now requires the PST
+  to be a **declared packaged asset** AND the probe to print `PstFile loaded:`;
+  both negative branches exercised locally. A load probe alone was insufficient
+  because it runs with `cwd=ROOT`, where an undeclared repo-relative path still
+  resolves from the checkout. Verified from committed bytes: `arm A PstFile LOAD
+  VERIFIED` in batchA/batchB/null (arm B too in null), and the PST extracted from
+  **every** tar.gz re-hashes to the frozen digest.
+- **Root cause / lesson.** The table **improved its corpus objective 2.4712 % and
+  lost ~160 Elo**. A better fit to the log-loss objective is **not** better play.
+  The accuracy gate was misleading in *both* directions: it rejected a genuinely
+  bad artefact, but had no way to know that, and the same gate is passable by a
+  ×0.80 rescale that is not a strength no-op. **exp-0049's gate failure protected
+  the engine for the wrong reason** — right outcome, wrong instrument. Magnitude
+  is consistent with the diagnosed pathology: **291/768 entries pinned at the
+  ±150 cap**, RMS δ **111.83 cp**, distorting cp-calibrated futility / reverse-
+  futility / delta margins. Far too large to be per-node lookup cost alone.
+- **Non-repeatable / dead ends:** do NOT refit this table, do NOT relax the ±150
+  cap, do NOT re-run exp-0051, do NOT pool its games, do NOT stack post-hoc
+  pruning retunes. This artefact is rejected on measured strength. This does
+  **not** show a larger cap or different corpus would also fail — untested, and
+  would need its own prereg.
+- **Gates:** 1 **UNMET**, 2 direction-supported (exp-0036, unchanged), 3 **PASS**,
+  4 **UNMET**. Mission **ACTIVE / NOT COMPLETE**; exp-0047 **DORMANT**; exp-0050
+  verdict untouched. No PR strength claim, merge, tag, release or deploy.
