@@ -275,8 +275,16 @@ and research logs. An incomplete checklist means an incomplete mission.
       afterwards). Earlier mechanisms: threats 7/7 KILLED, king-safety 3/3 KILLED.
 - [ ] **6.8** Performance/resource overhead measured with a calibrated instrument and within the declared budget.
       *Evidence:* paired A/A-calibrated cost measurement JSON.
-- [ ] **6.9** No unintended regression in existing engine functionality.
-      *Evidence:* full test suite + signature + self-play sanity results.
+- [x] **6.9** No unintended regression in existing engine functionality.
+      *Evidence:* 2026-11-07 at HEAD `1ea329c` (engine tree unchanged since
+      `2594479`): `benchmarks/recovery/exp0060_ctest.log` — **17/17 passed,
+      ctest_exit=0**; `benchmarks/recovery/exp0060_bench_signatures.log` — exact
+      depth-4 `243f9a1c1ba5b36f`, depth-6 `e06c4352681ae8eb`, depth-7
+      `5bceff035f2a4ae4`. Node-budget self-play sanity (not strength evidence):
+      `exp0060_selfplay_sanity.log` reports 2 games / 101 positions / 0 discarded;
+      `exp0060_selfplay_sanity_validation.json` validates all 101 emitted FEN rows
+      with python-chess, 0 invalid. Initial `.pgn` extension was a labeling error
+      and was corrected to `.txt` before any strength claim.
 
 ## 7. Final artifact and reproducibility audit
 

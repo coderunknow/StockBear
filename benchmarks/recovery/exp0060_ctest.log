@@ -1,0 +1,43 @@
+Test project /home/user/StockBear/build-rel
+      Start  1: unit
+ 1/17 Test  #1: unit .............................   Passed    0.45 sec
+      Start  2: nnue
+ 2/17 Test  #2: nnue .............................   Passed    0.01 sec
+      Start  3: pst
+ 3/17 Test  #3: pst ..............................   Passed    0.00 sec
+      Start  4: position_extra
+ 4/17 Test  #4: position_extra ...................   Passed    0.00 sec
+      Start  5: qsearch_tt
+ 5/17 Test  #5: qsearch_tt .......................   Passed    0.14 sec
+      Start  6: correction_history
+ 6/17 Test  #6: correction_history ...............   Passed    0.65 sec
+      Start  7: king_safety
+ 7/17 Test  #7: king_safety ......................   Passed    0.29 sec
+      Start  8: threats
+ 8/17 Test  #8: threats ..........................   Passed    0.29 sec
+      Start  9: passed_pawn_race
+ 9/17 Test  #9: passed_pawn_race .................   Passed    0.14 sec
+      Start 10: regression
+10/17 Test #10: regression .......................   Passed    0.01 sec
+      Start 11: perft_quick
+11/17 Test #11: perft_quick ......................   Passed    0.01 sec
+      Start 12: stress
+12/17 Test #12: stress ...........................   Passed    0.07 sec
+      Start 13: perft_full
+13/17 Test #13: perft_full .......................   Passed    0.06 sec
+      Start 14: deadpos
+14/17 Test #14: deadpos ..........................   Passed    4.95 sec
+      Start 15: uci_integration
+15/17 Test #15: uci_integration ..................   Passed    0.47 sec
+      Start 16: uci_fuzz
+16/17 Test #16: uci_fuzz .........................   Passed    0.07 sec
+      Start 17: nnue_features
+17/17 Test #17: nnue_features ....................   Passed    0.03 sec
+
+100% tests passed out of 17
+
+Label Time Summary:
+slow    =   5.01 sec*proc (2 tests)
+
+Total Test time (real) =   7.64 sec
+ctest_exit=0

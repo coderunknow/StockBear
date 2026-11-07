@@ -1,11 +1,11 @@
 {
-  "head": "9461d5721ce63ea65f0d9782335056a6c756a21b",
+  "head": "1ea329c64e66f45bec83583ef7cfb1c3f57f356b",
   "branch": "arena/6a6a2ba3-stockbear",
   "main_sha": "6e7c2e02881faf93a84990a8345c41ad28bcae11",
   "version_branch": "0.1.0-dev6",
   "version_main": "0.1.0-dev5",
-  "checked": 20,
-  "open": 38,
+  "checked": 21,
+  "open": 37,
   "total": 58,
   "items": [
     {
@@ -373,9 +373,17 @@
     },
     {
       "id": "6.9",
-      "checked": false,
-      "cited_filelike": [],
-      "missing_paths": []
+      "checked": true,
+      "cited_filelike": [
+        "benchmarks/recovery/exp0060_ctest.log",
+        "benchmarks/recovery/exp0060_bench_signatures.log",
+        "exp0060_selfplay_sanity_validation.json",
+        ".txt"
+      ],
+      "missing_paths": [
+        "exp0060_selfplay_sanity_validation.json",
+        ".txt"
+      ]
     },
     {
       "id": "7.1",
