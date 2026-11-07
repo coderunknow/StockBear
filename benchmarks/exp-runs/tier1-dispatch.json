@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0054",
-  "source_sha": "dfb4838912aec3e6426c55b7728d6fefe77aca82",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0054.json",
-  "source_run_id": "42244166583",
-  "note": "exp-0054: export the raw evidence bundle of CONFIRMATION run 42244166583 (4 jobs, 4800 games) via the in-workflow git mirror; artifact/log CDN downloads are blocked in the sandbox. An export plays no games. Raw per-game JSONL/PGN will be independently recomputed and fully PGN-replayed before any verdict. Screen (exp-0053) games are never pooled with this confirmation.",
+  "mode": "benchmark",
+  "experiment_id": "exp0055",
+  "source_sha": "2594479ac8965f0c87b4f1e72d61a87b71984cd3",
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0055.json",
+  "source_run_id": "",
+  "note": "exp-0055 SCREEN: passed-pawn promotion race INCREMENT via SAME-BINARY ablation (A=candidate+threats+race(0,2), B=SAME candidate binary+threats only). 4 jobs / 3800 games, 3000 primary. Prereg 1fe7fd18f6df871d65fadfaf7d9b9dda94553cee3c231a0d84988b43502c24ea frozen before any game. Not a Gate-1 quantity; never pooled with or summed against exp-0053/exp-0054. Raw JSONL/PGN will be independently recomputed and fully replayed before any verdict.",
   "attempt": 1
 }
