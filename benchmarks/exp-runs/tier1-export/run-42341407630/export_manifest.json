@@ -1,0 +1,29 @@
+{
+  "exported_at_utc": "2026-11-07T05:27:24.225189+00:00",
+  "source_run_id": "42341407630",
+  "experiment_id": "exp0057",
+  "export_workflow_run_id": "42342776434",
+  "artifacts": [
+    {
+      "id": 13562171132,
+      "name": "tier1-exp0057-tier1-exp0057-null-run42341407630",
+      "size_in_bytes": 1006294
+    },
+    {
+      "id": 13562007778,
+      "name": "tier1-exp0057-tier1-exp0057-batchA-run42341407630",
+      "size_in_bytes": 1340493
+    },
+    {
+      "id": 13561744712,
+      "name": "tier1-exp0057-tier1-exp0057-batchB-run42341407630",
+      "size_in_bytes": 1359804
+    },
+    {
+      "id": 13561577536,
+      "name": "tier1-exp0057-tier1-exp0057-stage0-run42341407630",
+      "size_in_bytes": 847117
+    }
+  ],
+  "channel": "git + GitHub Contents API (blob CDN unreachable from sandbox)"
+}
