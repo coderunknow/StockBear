@@ -1,0 +1,58 @@
+{
+  "fingerprint_sha256": "8ccdce505c5aab3e3e7bb11de8e3980ace4d8a7bb91b1b38aabfe37f634619ce",
+  "source_sha": "95606a513c4cc96231fbbba89e04165348c23fbb",
+  "prereg_sha256": "b7bab412fe0a2c6ca992e188c4d42b14cf9450e86dbdefb1e8004363c6a90365",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0062.md",
+    "prereg_sha256": "b7bab412fe0a2c6ca992e188c4d42b14cf9450e86dbdefb1e8004363c6a90365",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "assets": [
+      "research-data/params_exp0055_race.txt"
+    ],
+    "id": "tier1-exp0062-batchA",
+    "games": 6600,
+    "seed": 2026110703,
+    "openings": "benchmarks/positions/openings_exp0062_batchA.txt",
+    "engine_a": "candidate",
+    "engine_b": "baseline",
+    "a_options": [
+      "EvalParams=research-data/params_exp0055_race.txt",
+      "TTEval=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "null": false,
+    "ctest": false,
+    "note": "GATE batchA; integrated threats+race vs EXACT published dev5 champion"
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+  "packaged_binary_sha256": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+  "package_sha256": "be7d5ed78e6713d8bb03bae7aa675e33029846788b7ca9ee677f8a48cdc504e4",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "efeaac4db6de67a67b4783eabc776e5cdbded519ad7aacae09f3a8c3b58d5d62",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_exp0055_race.txt",
+    "TTEval=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0062-batchA/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/benchmarks/binaries/stockbear-dev5-release",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}

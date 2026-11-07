@@ -1,0 +1,58 @@
+{
+  "fingerprint_sha256": "98129bcd9871c6fccd332aaa30029916b2d9425c4c590688e0e19718f749df62",
+  "source_sha": "95606a513c4cc96231fbbba89e04165348c23fbb",
+  "prereg_sha256": "b7bab412fe0a2c6ca992e188c4d42b14cf9450e86dbdefb1e8004363c6a90365",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0062.md",
+    "prereg_sha256": "b7bab412fe0a2c6ca992e188c4d42b14cf9450e86dbdefb1e8004363c6a90365",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "assets": [
+      "research-data/params_exp0055_race.txt"
+    ],
+    "id": "tier1-exp0062-stage0",
+    "games": 600,
+    "seed": 2026110702,
+    "openings": "benchmarks/positions/openings_exp0062_stage0.txt",
+    "engine_a": "candidate",
+    "engine_b": "candidate",
+    "a_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "null": true,
+    "ctest": true,
+    "note": "Stage-0 candidate/champion control null; fresh ctest 18 groups"
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+  "packaged_binary_sha256": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+  "package_sha256": "d37e15d31453c6177de21660665ef2b441ba0baff7f9a96ef97101418dace870",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "12be22cceaa76258e62b7fb7bc249a18c69eddde0d2809fbdd15921fa0689ff8",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0062-stage0/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0062-stage0/stockbear",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}
