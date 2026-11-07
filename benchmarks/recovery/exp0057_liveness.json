@@ -1,0 +1,20 @@
+{
+  "switch": "BadCapturePruning",
+  "fixed_depth": 10,
+  "positions": 12,
+  "positions_live": 12,
+  "bestmoves_changed": 5,
+  "nodes_off": 1626651,
+  "nodes_on": 1606192,
+  "total_node_delta_pct": -1.26,
+  "evalparams_both_arms": "research-data/params_exp0055_race.txt",
+  "probe": "scripts/probes/switch_liveness.cpp",
+  "positions_source": "first 12 final positions of benchmarks/positions/openings_exp0055_batchA.txt",
+  "comparator_screen": {
+    "countermoves": "+9.20% nodes",
+    "continuationhistory": "+7.18% nodes",
+    "capturehistory": "-4.65% nodes",
+    "badcapturepruning": "-1.26% nodes"
+  },
+  "note": "tree-change proxy only; NOT a strength or speed measurement. All four switches are live; BadCapturePruning chosen for its existing Tier-2 anchor."
+}

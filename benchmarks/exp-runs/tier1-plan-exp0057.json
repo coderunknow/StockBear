@@ -1,0 +1,154 @@
+{
+  "experiment_id": "exp0057",
+  "frozen_before_evaluation_games": true,
+  "prereg": "docs/DEV6_PREREG_EXP0057.md",
+  "prereg_sha256": "cdbf6dbe59a0ce9f7bb4992623a93ea830e060118c7c4329d9ac78966e3e39e3",
+  "control": "FIXED TIME 40+4 ms; never --nodes",
+  "tier": "SCREEN of the BadCapturePruning search switch (not a Gate-1 decisive run)",
+  "design": "SAME-BINARY ablation; identical EvalParams both arms; only BadCapturePruning differs. BadCaptureAllDepths stays false.",
+  "no_pooling_with_earlier_experiments": true,
+  "never_summed_with_other_estimates": true,
+  "frozen_combined": "batchA + batchB ONLY (4000 games)",
+  "candidate_config": "research-data/params_exp0055_race.txt",
+  "candidate_config_sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01",
+  "null_power_correction": "null raised to 1200 games and stage0 to 600 because exp-0056 was invalidated by a 400-game null (~5% chance failure). Criterion unchanged.",
+  "openings_seed": 2026110657,
+  "jobs": [
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0057.md",
+      "prereg_sha256": "cdbf6dbe59a0ce9f7bb4992623a93ea830e060118c7c4329d9ac78966e3e39e3",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0057-stage0",
+      "games": 600,
+      "seed": 2026110710,
+      "openings": "benchmarks/positions/openings_exp0057_stage0.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": true,
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "BadCapturePruning=false"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "BadCapturePruning=false"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Stage-0 control/control null (switch OFF both arms); fresh ctest; 0 forfeits required",
+      "assets": [
+        "research-data/params_exp0055_race.txt"
+      ]
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0057.md",
+      "prereg_sha256": "cdbf6dbe59a0ce9f7bb4992623a93ea830e060118c7c4329d9ac78966e3e39e3",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0057-batchA",
+      "games": 2000,
+      "seed": 2026110711,
+      "openings": "benchmarks/positions/openings_exp0057_batchA.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "BadCapturePruning=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "BadCapturePruning=false"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "SCREEN batchA; A=BadCapturePruning true, B=false; identical binary and EvalParams",
+      "assets": [
+        "research-data/params_exp0055_race.txt"
+      ]
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0057.md",
+      "prereg_sha256": "cdbf6dbe59a0ce9f7bb4992623a93ea830e060118c7c4329d9ac78966e3e39e3",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0057-batchB",
+      "games": 2000,
+      "seed": 2026110712,
+      "openings": "benchmarks/positions/openings_exp0057_batchB.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "BadCapturePruning=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "BadCapturePruning=false"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "SCREEN batchB; independent seed, disjoint openings; same arms",
+      "assets": [
+        "research-data/params_exp0055_race.txt"
+      ]
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0057.md",
+      "prereg_sha256": "cdbf6dbe59a0ce9f7bb4992623a93ea830e060118c7c4329d9ac78966e3e39e3",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0057-null",
+      "games": 1200,
+      "seed": 2026110713,
+      "openings": "benchmarks/positions/openings_exp0057_null.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "BadCapturePruning=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "BadCapturePruning=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "POWERED candidate-options null (switch ON both arms, 1200 g); CI must include 0",
+      "assets": [
+        "research-data/params_exp0055_race.txt"
+      ]
+    }
+  ]
+}
