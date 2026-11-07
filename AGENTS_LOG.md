@@ -2162,3 +2162,36 @@ Gate 1 UNMET: +23.54 meets neither +75 point nor +50 LCB. ThreatDetection stays
 shipped 0. Next direction: passed-pawn evaluation (no king proximity, no blocker,
 no safe-advance terms exist; only advance² × PassedPawnAdvance), distinct from the
 abandoned exp-0026 ConnectedPassed/RookBehindPassed counts. Mission ACTIVE.
+
+## 2026-11-07 — exp-0055 pre-game gates, dispatch, checklist audit
+
+- Implemented `PassedPawnRace` across all three eval paths via one shared
+  `race_passer_units()` formula; appended 41st param row (shipped 0); updated the
+  default checksum pin to `0x849cc5a968fd9b1eULL`. 3 bench sigs unchanged.
+- Wrote `tests/unit/test_passed_pawn_race.cpp` (7 tests) from **oracle-derived**
+  endgame pins, and registered it with `add_test` (ctest 16 -> 17). One assertion
+  was wrong, not the engine: mg cannot act at phase 0. Corrected to pin the taper.
+- Extended `recovery_mutation_check.py` with `--mechanism race` and 10 mutants;
+  verified every anchor is unique before applying. **10/10 KILLED**, source
+  restoration verified. Includes `live_path_disabled` and both clamp paths.
+- Measured cost with the A/A control first (spread 0.0380 < 0.10). Found +12.36 %,
+  fused into the existing pawn walk, re-measured **+1.97 %**, and proved the
+  refactor value-identical on 4,000 positions against the pre-fusion binary.
+- Recreated the lost liveness probe as committed code
+  (`scripts/probes/liveness.cpp` + `scripts/recovery_liveness.py`). UCI emits no
+  node counts, so the probe drives the Search API directly. **11/11 LIVE.**
+- Froze scale eg=2 a priori (0 games played), criterion unchanged, amendment
+  appended rather than overwriting the pre-declared record.
+- Generated openings seed 2026110655 (1,900, 0 overlap vs 56,841); suite verify
+  PASS; option guard 4/4 PASS with 0 games played.
+- Wrote and committed prereg `1fe7fd18…` at `2594479`, froze the 4-job/3,800-game
+  plan, dispatched at `de20f5f` -> run **42336347904**. CI **42336347927 9/9
+  SUCCESS** incl. ThreadSanitizer.
+- Audited the completion checklist against real repository state and checked
+  **1.1, 1.2, 1.3, 1.4, 1.6, 1.7, 1.8, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7** with
+  cited evidence (hashes, per-group exit codes, numstat, run ids). **1.9 held
+  open**: `VERSION` reads `0.1.0-dev6` (internal, pre-existing commit `a7bf00f`)
+  while no dev6 release/tag exists — a real discrepancy, not checked on an
+  interpretation. **6.8 held open**: cost was measured with a calibrated
+  instrument but no numeric budget was pre-declared.
+- Mission remains **INCOMPLETE**; Gate 1 **UNMET**; no completion push.

@@ -66,24 +66,50 @@ and research logs. An incomplete checklist means an incomplete mission.
 
 ## 1. Repository and baseline integrity
 
-- [ ] **1.1** `origin/main` is unchanged at `6e7c2e02881faf93a84990a8345c41ad28bcae11`.
-      *Evidence:* `git rev-parse origin/main` output recorded in the final report.
-- [ ] **1.2** All work is on `arena/6a6a2ba3-stockbear`; no other branch created, renamed or pushed.
-      *Evidence:* `git reflog` / `git branch` inspection recorded.
-- [ ] **1.3** The immutable dev4 binary is unmodified: SHA-256 `1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae`.
-      *Evidence:* `sha256sum` output at final SHA.
-- [ ] **1.4** The immutable dev5 binary is unmodified: SHA-256 `391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918`.
-      *Evidence:* `sha256sum` output at final SHA.
+- [x] **1.1** `origin/main` is unchanged at `6e7c2e02881faf93a84990a8345c41ad28bcae11`.
+      *Evidence:* `git rev-parse origin/main` at 2026-11-07 (HEAD `de20f5f`) returned
+      exactly `6e7c2e02881faf93a84990a8345c41ad28bcae11`.
+- [x] **1.2** All work is on `arena/6a6a2ba3-stockbear`; no other branch created, renamed or pushed.
+      *Evidence:* `git branch` lists only `arena/6a6a2ba3-stockbear` (current) and the
+      pre-existing local `main`; `git rev-parse --abbrev-ref HEAD` = the session branch.
+      Every push used the explicit refspec `git push origin arena/6a6a2ba3-stockbear`
+      (latest: `2ed8955..de20f5f`), and local HEAD == `origin/arena/6a6a2ba3-stockbear`
+      == `de20f5faf58bc928a63dff2ed9980b7bcaedb7b1`. Other `arena/*` branches visible
+      on the remote pre-date this session and were never fetched, created or pushed here.
+- [x] **1.3** The immutable dev4 binary is unmodified: SHA-256 `1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae`.
+      *Evidence:* `sha256sum benchmarks/binaries/stockbear-dev4-1c5b61a7` at 2026-11-07
+      returned exactly that digest. (Provenance of this file as a *tag rebuild* is
+      tracked separately under 0.2 / 1.5, which remain open.)
+- [x] **1.4** The immutable dev5 binary is unmodified: SHA-256 `391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918`.
+      *Evidence:* `sha256sum benchmarks/binaries/stockbear-dev5-release` at 2026-11-07
+      returned exactly that digest; re-verified after the sandbox reset and `chmod +x`.
 - [ ] **1.5** The designated gate baseline's provenance is verified as the bit-identical released artifact (not an unverified local rebuild).
       *Evidence:* release-asset checksum verification or documented tag-rebuild equivalence, cited.
-- [ ] **1.6** `DESIGN_LOG.md`, `AGENTS_LOG.md`, `benchmarks/FAILURE_LEDGER.md` were only appended to; no historical entry rewritten or deleted.
-      *Evidence:* `git diff` of those paths across the mission range showing additions only.
-- [ ] **1.7** No historical benchmark artifact, raw record or PGN was modified or deleted.
-      *Evidence:* `git diff --stat` over `benchmarks/exp-runs/` showing additions only.
-- [ ] **1.8** Closed experiments exp-0049/0050/0051/0052 were not reopened, rescored or reinterpreted.
-      *Evidence:* their verdict files unchanged; cited diff.
+- [x] **1.6** `DESIGN_LOG.md`, `AGENTS_LOG.md`, `benchmarks/FAILURE_LEDGER.md` were only appended to; no historical entry rewritten or deleted.
+      *Evidence:* `git diff --numstat origin/main..HEAD` gives
+      `DESIGN_LOG.md 923 added / 0 removed`, `AGENTS_LOG.md 1718 / 0`,
+      `benchmarks/FAILURE_LEDGER.md 1988 / 0`; a grep for removed lines
+      (`^-[^-]`) across all three diffs returns **0**.
+- [x] **1.7** No historical benchmark artifact, raw record or PGN was modified or deleted.
+      *Evidence:* `git diff --name-status origin/main..HEAD -- benchmarks/exp-runs/`
+      contains **no `M` or `D` entries** (additions only). Across all of `benchmarks/`
+      the only modified paths are `FAILURE_LEDGER.md` (proven append-only in 1.6) and
+      `params/dev3-shipped.txt` (the shipped parameter table, extended by appending new
+      default-zero rows — not a raw record). `research-data/` has no `M`/`D` entries.
+- [x] **1.8** Closed experiments exp-0049/0050/0051/0052 were not reopened, rescored or reinterpreted.
+      *Evidence:* `git diff --name-status origin/main..HEAD` over their four reports and
+      the exp-0051/0052 independent-audit JSONs shows **`A` (added) only** — never `M`.
+      No later prereg reuses their openings; exp-0055's suite generator excludes all
+      199 earlier files / 56,841 positions with verified 0 overlap.
 - [ ] **1.9** Public release identity remains `v0.1.0-dev5`; no version bump, no dev6/dev7 tag, no release, no deploy, no merge to main.
-      *Evidence:* `VERSION` contents, `gh api` tag/release listing at final SHA.
+      *Evidence so far:* `gh api repos/coderunknow/StockBear/releases` lists
+      `v0.1.0-dev5` as the newest release — **no dev6/dev7 tag or release exists**, and
+      `origin/main` is untouched (1.1). **HELD OPEN deliberately:** the working-tree
+      `VERSION` file reads `0.1.0-dev6`, bumped by the pre-existing branch commit
+      `a7bf00f` ("dev6 cycle start"), so the engine advertises `StockBear 0.1.0-dev6`
+      over UCI while `origin/main:VERSION` is `0.1.0-dev5`. That is an *internal*
+      development marker, but the item says "no version bump" and the discrepancy is
+      real, so it is **not** checked on an interpretation. Requires explicit resolution.
 
 ## 2. Research and experiment discipline
 
@@ -153,20 +179,60 @@ and research logs. An incomplete checklist means an incomplete mission.
 
 ## 6. Engine correctness and regression testing
 
-- [ ] **6.1** Perft and move-generation correctness tests pass.
-      *Evidence:* test names, actual output, exit codes.
-- [ ] **6.2** Every registered automated test EXECUTES and returns a successful exit code — verified individually, not inferred from a green CTest summary.
-      *Evidence:* per-test output and exit status; explicit confirmation that each intended test binary ran.
-- [ ] **6.3** Every new test group is actually registered with `add_test()` and appears in CTest output.
-      *Evidence:* CTest test listing showing the group by name.
-- [ ] **6.4** King-safety, threat-evaluation, parameter-loading and file-loading branches are directly exercised.
-      *Evidence:* named tests + independent oracle results.
-- [ ] **6.5** Differential/regression tests pass; default shipped behaviour is bit-exact (all established bench signatures).
-      *Evidence:* signature values at final SHA.
-- [ ] **6.6** Sanitizer runs (ASan/UBSan, and TSan where registered) pass.
-      *Evidence:* sanitizer test output and exit codes.
-- [ ] **6.7** Mutation testing demonstrates the new mechanism's tests actually detect a dead/incorrect implementation.
-      *Evidence:* mutants applied, each KILLED, with output.
+- [x] **6.1** Perft and move-generation correctness tests pass.
+      *Evidence:* run individually at 2026-11-07: `perft_quick` exit **0** (`Tests: 2,
+      failures: 0`), `perft_full` exit **0** (`Tests: 1, failures: 0`), `position_extra`
+      exit **0** (`Tests: 4, failures: 0`), `unit` exit **0** (`Tests: 41, failures: 0`,
+      includes move-generation/geometry).
+- [x] **6.2** Every registered automated test EXECUTES and returns a successful exit code — verified individually, not inferred from a green CTest summary.
+      *Evidence:* all **17** registered groups invoked one-by-one with `$?` captured
+      immediately (never through a pipe). 14 C++ groups via `stockbear_tests`:
+      unit 41, nnue 7, pst 4, position_extra 4, qsearch_tt 4, correction_history 5,
+      king_safety 7, threats 8, passed_pawn_race 7, regression 6, perft_quick 2,
+      stress 1, perft_full 1, deadpos 13 — **110 assertions, every exit=0, 0 failures**.
+      3 Python integration tests run directly against `./build-rel/stockbear`, each
+      exit=0: `uci_integration` ("PASS UCI EvalParams loading, spaced paths, invalid
+      file and reset"), `uci_fuzz` ("PASS 300 deterministic malformed/cancellation
+      cases; 101 legal-format bestmoves for 101 accepted go commands"),
+      `nnue_features` ("11 positions, 2 perspectives each, 0 mismatches").
+      Aggregate `ANY_FAILURE=0`.
+- [x] **6.3** Every new test group is actually registered with `add_test()` and appears in CTest output.
+      *Evidence:* `CMakeLists.txt:190` `add_test(NAME passed_pawn_race COMMAND
+      stockbear_tests passed_pawn_race)`; `ctest -N` lists **`Test #9: passed_pawn_race`**
+      and `Total Tests: 17`. The group also appears as `9/17 ... Passed` in the
+      ASan/UBSan ctest run. (This check exists because exp-0052's `king_safety` group
+      was initially never registered and CTest silently skipped it.)
+- [x] **6.4** King-safety, threat-evaluation, parameter-loading and file-loading branches are directly exercised.
+      *Evidence:* `king_safety` 7 tests exit 0, `threats` 8 tests exit 0,
+      `passed_pawn_race` 7 tests exit 0. Parameter/file loading is exercised by
+      `uci_integration` (explicitly covers "EvalParams loading, spaced paths, invalid
+      file and reset") and by `tests/unit/test_eval_baseline.cpp` (checksum pin
+      `0x849cc5a968fd9b1eULL`, malformed-row rejection). Independent oracles:
+      `check_king_safety.py`, `check_threats.py` (800/0), `check_passed_pawn_race.py`
+      (800 positions, **0 mismatches**, 352 non-zero).
+- [x] **6.5** Differential/regression tests pass; default shipped behaviour is bit-exact (all established bench signatures).
+      *Evidence:* at 2026-11-07 with `PassedPawnRace` shipped 0, all three established
+      signatures reproduce **exactly**: depth-4 `243f9a1c1ba5b36f`, depth-6
+      `e06c4352681ae8eb`, depth-7 `5bceff035f2a4ae4` (documented in
+      `docs/DEV5_BENCHMARKS.md:14` and `docs/DEV4_BENCHMARKS.md:79`). `regression`
+      6 tests exit 0; `nnue_features` differential 0 mismatches. The race-ON vs
+      pre-fusion refactor was additionally proven value-identical on 4,000 positions.
+- [x] **6.6** Sanitizer runs (ASan/UBSan, and TSan where registered) pass.
+      *Evidence:* local `build-asan` (`-fsanitize=address,undefined`) ctest run:
+      **17/17 passed, process exit 0**, total 84.80 s, with `passed_pawn_race`
+      appearing as `9/17 ... Passed 1.66 sec`. TSan **is** registered
+      (`.github/workflows/ci.yml:198` "Linux ThreadSanitizer"), and CI run
+      **42336347927** on `de20f5fa` completed **success** with all 9 jobs green,
+      including `Linux ThreadSanitizer` and `Linux ASan + UBSan`.
+- [x] **6.7** Mutation testing demonstrates the new mechanism's tests actually detect a dead/incorrect implementation.
+      *Evidence:* `benchmarks/recovery/exp0055_mutation_matrix.json` — **10/10 KILLED,
+      `survivors: []`, verdict PASS**, each mutant physically written to the source,
+      rebuilt and the suite re-run: computed_but_never_applied, own_king_escort_removed,
+      enemy_king_blockade_removed, blocked_path_penalty_removed,
+      advance_weighting_removed, live_path_cap_removed, breakdown_path_cap_removed,
+      chebyshev_replaced_by_manhattan, live_path_scores_non_passers,
+      **live_path_disabled**. Source restoration verified (bench depth-4 sig unchanged
+      afterwards). Earlier mechanisms: threats 7/7 KILLED, king-safety 3/3 KILLED.
 - [ ] **6.8** Performance/resource overhead measured with a calibrated instrument and within the declared budget.
       *Evidence:* paired A/A-calibrated cost measurement JSON.
 - [ ] **6.9** No unintended regression in existing engine functionality.

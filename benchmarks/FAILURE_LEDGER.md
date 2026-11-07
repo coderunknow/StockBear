@@ -2478,3 +2478,55 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
 - **Gates:** 1 **UNMET**, 2 **SUPPORTED** (exp-0054 confirmed), 3 **PASS**,
   4 **UNMET**. Mission **ACTIVE / NOT COMPLETE**; exp-0047 **DORMANT**. No default
   change, no PR strength claim, no merge, tag, release or deploy.
+
+---
+
+## exp-0055 — pre-game phase (2026-11-07): cost dead end found and fixed; NO verdict yet
+
+- **Status at this entry: PREREGISTERED, GAMES RUNNING. No strength claim.**
+  Prereg `docs/DEV6_PREREG_EXP0055.md` sha256
+  `1fe7fd18f6df871d65fadfaf7d9b9dda94553cee3c231a0d84988b43502c24ea`, committed
+  at `2594479` **before** any exp-0055 game. Plan
+  `benchmarks/exp-runs/tier1-plan-exp0055.json`; run **42336347904**.
+- **Mechanism:** `PassedPawnRace` (41st param, shipped **0**). The shipped eval
+  scores a passer only as `advance² × PassedPawnAdvance` and had **no king-proximity
+  term of any kind**. New term scores own-king escort, enemy-king blockade and a
+  blocked path, Chebyshev distance, clamped ±64, one scale knob.
+- **MEASURED DEAD END — naive second pawn scan.** Implemented as its own walk over
+  all pawns, the term cost **+12.36 %** on `evaluate()` (90 paired blocks, A/A
+  control spread 0.0558). At ~33 % of node time that is a material handicap.
+  **Fix:** fuse into the pawn walk that *already exists* in `features()` and
+  already detects passers by the identical rule. Cost fell to **+1.97 %** — a 6×
+  reduction. Proven **value-identical on all 4,000 positions** (pre-fusion vs fused
+  Δ vectors equal element-wise; race-OFF baseline unchanged), so it is a pure
+  optimisation. **Lesson reinforced: never add a second scan for information the
+  evaluator already computes** (same lesson as the threat term's attack unions).
+- **SCALE CHOICE, made a priori with ZERO games played.** The magnitude criterion
+  (p99 ≤ 120, RMS < 40) was written *before* measurement. eg=1 gave overall RMS
+  **7.14** — *half* of exp-0052's 13.87, which was INCONCLUSIVE at 3,200 games.
+  Repeating a magnitude already known to be unresolvable would burn the corpus, so
+  **eg=2** was frozen: overall RMS **14.28** / p99 58, endgame RMS **35.66** / p99 106
+  — both inside the **unchanged** envelope, and close to the CONFIRMED threat term's
+  16.88. Original pre-declared values preserved verbatim; change recorded as an
+  appended amendment with `thresholds_changed: false`. **No criterion was relaxed.**
+- **Pre-game gates, all executed and individually inspected:** oracle 800 positions
+  **0 mismatches** (352 non-zero); breakdown/live invariant **4,000/0** with the race
+  ON *and* OFF; ctest **17/17**; all 17 groups run one-by-one with real exit codes
+  (**110** C++ assertions + 3 integration, all exit 0); ASan+UBSan **17/17 exit 0**;
+  mutation matrix **10/10 KILLED, 0 survivors** including `live_path_disabled` and
+  *both* clamp paths; liveness **11/11** positions change the tree at depth 10;
+  3 bench signatures **unchanged**; option guard **4/4 PASS, 0 games played**.
+- **A test bug worth recording:** the first version of
+  `mg_and_eg_rows_are_wired_through_the_taper` asserted that the mg row changes the
+  score in a pure pawn endgame. It failed — **the engine was right**: `phase_of()`
+  is 0 there, so mg has no weight. The assertion was corrected to pin the *taper*
+  in both directions (mg inert at phase 0, mg active at phase 16). Recording this
+  because a failing test is not automatically an engine defect.
+- **Openings:** seed **2026110655**, 1,900 paired 8-ply openings, **0** exact
+  final-position overlap against **199** earlier files / **56,841** positions;
+  suite verification PASS.
+- **Design integrity:** SAME-BINARY ABLATION (A = threats+race, B = *same candidate
+  binary* + threats only) isolates the race **increment**. This is a **SCREEN**, is
+  **not** a Gate-1 quantity, and must **never** be summed with exp-0054's +23.54.
+- **Gate 1 remains UNMET; mission ACTIVE / INCOMPLETE.** `PassedPawnRace` stays
+  shipped **0**. No default change, no merge, tag, release or deploy.

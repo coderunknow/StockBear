@@ -1195,3 +1195,29 @@ against 52,841 earlier positions in 188 files, all 10 slice pairs disjoint.
 SCREEN rules: ADVANCE >= +20 with LCB > 0; CLOSE if UCB < +10; else INCONCLUSIVE.
 **Not a Gate-1 run.** Mission remains ACTIVE and is governed solely by
 `STOCKBEAR_COMPLETION_CHECKLIST.md`.
+
+## 2026-11-07 — exp-0055: passed-pawn promotion race (preregistered, games running)
+
+Direction chosen after exp-0054 banked the mission's first confirmed gain
+(+23.54 [+15.69,+31.41], still far short of the +75 / LCB>+50 gate). Survey showed
+the evaluator scores a passed pawn solely as `advance² × PassedPawnAdvance` and
+contains **no king-proximity term at all**, so it cannot distinguish a passer its
+own king escorts from one the enemy king blockades — often the whole game in an
+endgame. Distinct from the abandoned exp-0026 bundle, which touched
+`ConnectedPassed`/`RookBehindPassed` but never king geometry or the `advance²` core.
+
+One knob (`PassedPawnRace`, shipped 0), fixed internal weights 2/2/6, symmetric
+clamp ±64, frozen mg=0 eg=2. Chebyshev king distance because kings move diagonally.
+
+Two engineering decisions worth keeping:
+1. **Fuse, don't re-scan.** A standalone pawn walk cost +12.36 %; fusing into the
+   existing passer-detecting walk cost +1.97 %, proven value-identical on 4,000
+   positions. The evaluator already knew which pawns were passed.
+2. **Don't be too conservative to measure.** eg=1 (RMS 7.14) was rejected *before
+   any game* because exp-0052 showed RMS 13.87 was already unresolvable at 3,200
+   games. eg=2 matches the magnitude of the term that actually worked, inside the
+   pre-declared and unmodified safety envelope.
+
+Screen is a same-binary ablation isolating the increment; any integral claim will
+require a separate direct measurement against released dev5. Estimates are never
+summed. Gate 1 remains UNMET.
