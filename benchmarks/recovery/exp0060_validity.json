@@ -1,0 +1,253 @@
+{
+  "experiment": "exp0060",
+  "run_id": 42352690063,
+  "export_run_id": 42354629242,
+  "source_sha": "8e77e0fec3ee4d919b6aedfc02f89cb9d5c19950",
+  "valid": true,
+  "checks": {
+    "cost_gate_before_games": {
+      "pass": true,
+      "detail": {
+        "aa_spread": {
+          "value": 0.015509368857609118,
+          "limit_exclusive": 0.1,
+          "pass": true
+        },
+        "aa_median": {
+          "value": 0.9997653924805473,
+          "range": [
+            0.98,
+            1.02
+          ],
+          "pass": true
+        },
+        "increment_median": {
+          "value": 1.020661610711107,
+          "limit": 1.05,
+          "pass": true
+        },
+        "combined_median": {
+          "value": 1.0902513921804975,
+          "limit": 1.1,
+          "pass": true
+        }
+      }
+    },
+    "cost_gate_checksums": {
+      "pass": true,
+      "detail": "13/13"
+    },
+    "source_prereg_protocol": {
+      "pass": true,
+      "detail": {
+        "batchA": "8e77e0fec3ee4d919b6aedfc02f89cb9d5c19950",
+        "batchB": "8e77e0fec3ee4d919b6aedfc02f89cb9d5c19950",
+        "null": "8e77e0fec3ee4d919b6aedfc02f89cb9d5c19950",
+        "stage0": "8e77e0fec3ee4d919b6aedfc02f89cb9d5c19950"
+      }
+    },
+    "same_binary_arms": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "a": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+          "b": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+          "built": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+          "packaged": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4"
+        },
+        "batchB": {
+          "a": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+          "b": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+          "built": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+          "packaged": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4"
+        },
+        "null": {
+          "a": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+          "b": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+          "built": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+          "packaged": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4"
+        },
+        "stage0": {
+          "a": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+          "b": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+          "built": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+          "packaged": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4"
+        }
+      }
+    },
+    "explicit_options": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0053_threats.txt",
+            "tteval": "true"
+          }
+        },
+        "batchB": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0053_threats.txt",
+            "tteval": "true"
+          }
+        },
+        "null": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true"
+          }
+        },
+        "stage0": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_abc.txt",
+            "tteval": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_abc.txt",
+            "tteval": "true"
+          }
+        }
+      }
+    },
+    "identical_recorded_defaults": {
+      "pass": true,
+      "detail": "engine_a_defaults == engine_b_defaults in every job"
+    },
+    "stage0_null_includes_zero": {
+      "pass": true,
+      "detail": [
+        -18.342353113041753,
+        11.35742327951305
+      ]
+    },
+    "null_null_includes_zero": {
+      "pass": true,
+      "detail": [
+        -11.601061935129852,
+        9.847612576358546
+      ]
+    },
+    "auditor_issues_zero": {
+      "pass": true,
+      "detail": []
+    },
+    "committed_blobs": {
+      "pass": true,
+      "detail": "68/68"
+    },
+    "per_job_checksums": {
+      "pass": true,
+      "detail": "44/44"
+    },
+    "option_load_proof": {
+      "pass": true,
+      "detail": {
+        "batchA": [
+          "arm A EvalParams: research-data/params_exp0055_race.txt",
+          "arm B EvalParams: research-data/params_exp0053_threats.txt"
+        ],
+        "batchB": [
+          "arm A EvalParams: research-data/params_exp0055_race.txt",
+          "arm B EvalParams: research-data/params_exp0053_threats.txt"
+        ],
+        "null": [
+          "arm A EvalParams: research-data/params_exp0055_race.txt",
+          "arm B EvalParams: research-data/params_exp0055_race.txt"
+        ],
+        "stage0": [
+          "arm A EvalParams: research-data/params_abc.txt",
+          "arm B EvalParams: research-data/params_abc.txt"
+        ]
+      }
+    },
+    "pgn_replay_7800": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "games_replayed": 3000,
+          "inconsistent": 0
+        },
+        "batchB": {
+          "games_replayed": 3000,
+          "inconsistent": 0
+        },
+        "null": {
+          "games_replayed": 1200,
+          "inconsistent": 0
+        },
+        "stage0": {
+          "games_replayed": 600,
+          "inconsistent": 0
+        }
+      }
+    },
+    "zero_failures": {
+      "pass": true,
+      "detail": true
+    },
+    "openings_disjoint": {
+      "pass": true,
+      "detail": []
+    },
+    "stage0_ctest_17": {
+      "pass": true,
+      "detail": "stage0 run.log"
+    }
+  },
+  "combined": {
+    "pairs": 2984,
+    "clusters": 2984,
+    "pair_mean": 1.0775804289544235,
+    "score": 0.5387902144772118,
+    "cr1_stderr": 0.00896113948993216,
+    "naive_stderr": 0.00896113948993216,
+    "design_effect": 1.0,
+    "t_critical_0975": 1.9607595654025274,
+    "df": 2983,
+    "elo": 27.00847450999888,
+    "elo_ci95": [
+      20.874617996937488,
+      33.159181483342586
+    ],
+    "elo_ci95_repo_convention": [
+      20.814714185978335,
+      33.21941652399317
+    ],
+    "t_critical_repo_convention": 1.979931,
+    "obs_per_cluster": {
+      "1": 2984
+    }
+  },
+  "batchA_elo": 29.00068640487471,
+  "batchB_elo": 25.026018558456503,
+  "verdict": "CONFIRMED_INCREMENT",
+  "gate1_met": false,
+  "note": "Confirms race increment only; not integral vs dev5 and not Gate 1."
+}

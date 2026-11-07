@@ -5,8 +5,8 @@ and research logs. An incomplete checklist means an incomplete mission.
 
 - **Branch:** `arena/6a6a2ba3-stockbear`
 - **Checklist created:** 2026-11-06 at HEAD `d3d40d59ff8b627ae7ce541a8ed59598da8c5898`
-- **Status:** **MISSION INCOMPLETE** — one improvement CONFIRMED (exp-0054, +23.54 [+15.69,+31.41]); the +75 / LCB>+50 strength gate is **NOT** met.
-- **Latest:** exp-0058 (CaptureHistory Tier-1 screen, 5,800 games) is a **VALID MEASUREMENT / CLOSE — mechanism rejected**: −2.5342 [−9.8828,+4.8123]; both rejection limbs hold (UCB < +5 and point ≤ 0). All validity conditions pass. Its −4.65 % fixed-depth node saving did **not** translate into strength — node efficiency is not a strength proxy. Evidence: `docs/DEV6_EXP0058_REPORT.md`, `benchmarks/recovery/exp0058_independent_raw_audit.json` (run 42343201120). Preceding: exp-0057 **INCONCLUSIVE** (+11.70), exp-0056 **INVALID** (threats+race cannot reach the gate). Banked evidence remains **exp-0054 only**; **~+35 Elo more is still required**.
+- **Status:** **MISSION INCOMPLETE** — two components CONFIRMED (exp-0054 threats +23.54 [+15.69,+31.41]; exp-0060 race increment +27.01 [+20.87,+33.16]); the +75 / LCB>+50 strength gate is **NOT** met and no valid integral dev5 estimate exists yet.
+- **Latest:** exp-0060 (passed-pawn race confirmation, 7,800 games) is a **VALID MEASUREMENT / CONFIRMED INCREMENT**: combined **+27.0085 [+20.8746,+33.1592]**, batchA +29.0007, batchB +25.0260; both powered nulls include zero; 16/16 validity checks PASS; 7,800/7,800 PGN replay. Prospective CI cost gate passed before games (A/A spread 0.0155; increment 1.0207; combined 1.0903). Evidence: `docs/DEV6_EXP0060_REPORT.md`, `benchmarks/recovery/exp0060_validity.json`, `benchmarks/recovery/exp0060_independent_raw_audit.json` (run 42352690063). exp-0059 closed pre-game on cost-instrument noise; exp-0058 REJECTED; exp-0057 INCONCLUSIVE; exp-0056 INVALID. Individual Elo estimates are **never summed**; integrated direct-dev5 measurement remains required.
 
 ## Checkbox rules (binding)
 
@@ -280,8 +280,16 @@ and research logs. An incomplete checklist means an incomplete mission.
       chebyshev_replaced_by_manhattan, live_path_scores_non_passers,
       **live_path_disabled**. Source restoration verified (bench depth-4 sig unchanged
       afterwards). Earlier mechanisms: threats 7/7 KILLED, king-safety 3/3 KILLED.
-- [ ] **6.8** Performance/resource overhead measured with a calibrated instrument and within the declared budget.
-      *Evidence:* paired A/A-calibrated cost measurement JSON.
+- [x] **6.8** Performance/resource overhead measured with a calibrated instrument and within the declared budget.
+      *Evidence:* exp-0060 prospective fail-closed CI cost gate,
+      `benchmarks/exp-runs/tier1-export/run-42352690063/cost-gate-exp0060-run42352690063/verdict.json`
+      and raw `aa_raw.json` / `increment_raw.json` / `combined_raw.json`.
+      Median-of-3 paired instrument: A/A spread **0.01551 < 0.10**, A/A median
+      **0.99977** in [0.98,1.02]; race increment median **1.02066 ≤ 1.05**;
+      threats+race vs champion median **1.09025 ≤ 1.10**. All 13 cost-gate
+      checksums verify; gate ran before any game. Historical exp-0055 cost JSON
+      was not retroactively budgeted; exp-0059’s failed local calibrations are
+      preserved as a pre-game instrument failure, not a pass.
 - [x] **6.9** No unintended regression in existing engine functionality.
       *Evidence:* 2026-11-07 at HEAD `1ea329c` (engine tree unchanged since
       `2594479`): `benchmarks/recovery/exp0060_ctest.log` — **17/17 passed,
@@ -335,11 +343,12 @@ and research logs. An incomplete checklist means an incomplete mission.
 two-sided opening-clustered 95% LCB strictly > +50 vs the released dev5
 champion** at 40+4 ms.
 
-Progress: exp-0050 closed negative; exp-0051 closed negative; exp-0052 closed
-inconclusive (+4.20 [-6.97,+15.38]); exp-0053 SCREEN ADVANCE (+24.63
-[+13.10,+36.22]); **exp-0054 CONFIRMED IMPROVEMENT (+23.54 [+15.69,+31.41])** —
-the mission's first banked gain. One ~+23.5 Elo term reaches neither the +75
-point requirement nor the +50 LCB requirement. Further distinct confirmed
-improvements are required, and the integrated candidate must then be measured
-DIRECTLY against the released baseline (never inferred by adding estimates).
-Execution continues with passed-pawn evaluation.
+Progress: exp-0050/0051 closed negative; exp-0052 inconclusive; exp-0053 screen
+advance; **exp-0054 CONFIRMED threats (+23.54 [+15.69,+31.41])**; exp-0055 screen
+advance; exp-0056 INVALID integral; exp-0057 inconclusive; exp-0058 rejected;
+exp-0059 pre-game cost failure; **exp-0060 CONFIRMED race increment (+27.01
+[+20.87,+33.16])**. Two components are now individually confirmed, but their
+Elo estimates are not additive and the integrated candidate has no valid direct
+dev5 measurement. Further distinct improvements and/or a direct integrated gate
+run are still required. Execution continues with source-grounded architecture
+candidates and staged validation.

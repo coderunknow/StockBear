@@ -1,11 +1,11 @@
 {
-  "head": "234e6743e2486e42e56407139f6eafdee9532bd9",
+  "head": "cbdc2b09380c13bee17238a1a7e1844a8cfd4fac",
   "branch": "arena/6a6a2ba3-stockbear",
   "main_sha": "6e7c2e02881faf93a84990a8345c41ad28bcae11",
   "version_branch": "0.1.0-dev6",
   "version_main": "0.1.0-dev5",
-  "checked": 22,
-  "open": 36,
+  "checked": 23,
+  "open": 35,
   "total": 58,
   "items": [
     {
@@ -369,9 +369,18 @@
     },
     {
       "id": "6.8",
-      "checked": false,
-      "cited_filelike": [],
-      "missing_paths": []
+      "checked": true,
+      "cited_filelike": [
+        "benchmarks/exp-runs/tier1-export/run-42352690063/cost-gate-exp0060-run42352690063/verdict.json",
+        "aa_raw.json",
+        "increment_raw.json",
+        "combined_raw.json"
+      ],
+      "missing_paths": [
+        "aa_raw.json",
+        "increment_raw.json",
+        "combined_raw.json"
+      ]
     },
     {
       "id": "6.9",

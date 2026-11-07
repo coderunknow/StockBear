@@ -2674,3 +2674,26 @@ from every decision. See `docs/DEV6_EXP0059_REPORT.md` and raw cost JSONs.
 Do not reuse this measurement as a budget pass. The race confirmation remains
 open; a replacement needs a new preregistered noise-resistant cost instrument,
 not a relaxed threshold or a favorable rerun.
+
+## exp-0060 — VALID MEASUREMENT / CONFIRMED INCREMENT (2026-11-07)
+
+- **Prereg** `docs/DEV6_PREREG_EXP0060.md` sha `24f143cc…e2a18` frozen at
+  `8e77e0f` before dispatch `7bdf21c`. Run **42352690063** (7,800 g), export
+  **42354629242**. Technical replacement for exp-0059's failed pre-game cost
+  instrument; no exp-0059 strength data existed.
+- **Prospective cost gate PASS before games:** median-of-3 paired CI instrument;
+  A/A spread 0.01551 (<0.10), A/A median 0.99977, race increment median 1.02066
+  (≤1.05), combined vs champion 1.09025 (≤1.10). Raw cost evidence exported.
+- **Result:** batchA +29.0007 [+20.2491,+37.7892]; batchB +25.0260
+  [+16.4271,+33.6557]; **combined +27.0085 [+20.8746,+33.1592]**,
+  W/D/L 2344/1758/1882, 2,984 clusters. Candidate null −0.8759
+  [−11.6011,+9.8476]; stage0 −3.4861 [−18.3424,+11.3574]; both include 0.
+- **Validity:** 16/16 condition checks PASS (`exp0060_validity.json`); auditor
+  issues 0; 68/68 blobs, 44/44 job sums, 13/13 cost sums; 7,800/7,800 PGN replay,
+  0 inconsistent; identical arm binaries; positive load proofs; fresh ctest 17/17.
+- **Verdict: CONFIRMED INCREMENT.** Frozen rule point ≥ +20, LCB > 0, both
+  batches ≥ −5 satisfied. This confirms the race component only; it is NOT an
+  integral dev5 estimate and NOT Gate 1. Never sum with exp-0054.
+- **Gates:** 1 UNMET, 2 supported by two confirmed components, 3 PASS, 4 UNMET.
+  Mission ACTIVE / INCOMPLETE; direct integrated measurement and further
+  evidence-backed improvement remain required.
