@@ -1,0 +1,33 @@
+{
+  "experiment": "exp0060",
+  "declared_before_games_and_new_cost_measurements": true,
+  "prereg_sha256": "24f143ccb4e524469e322626e14f8690e226ab29ee9d537f15ddf345353e2a18",
+  "policy_sha256": "33747373bcfb7b89ac6d55206786e02f475464efe9c9b76255a2904e3aec0e7a",
+  "historical_budget_retroactively_claimed": false,
+  "corpus": "benchmarks/positions/diagnostic_exp0059_eval.epd",
+  "corpus_seed": 20261116,
+  "corpus_n": 4000,
+  "corpus_sha256": "a1046aa3e7e3bfac3b016203e8d9dafef99432e3552a2719204a19da28ec1cb3",
+  "aa_blocks": 60,
+  "ab_blocks": 90,
+  "repeats": 3,
+  "passes_per_block": 12,
+  "max_aa_spread_exclusive": 0.1,
+  "aa_median_range": [
+    0.98,
+    1.02
+  ],
+  "cost_gate_max_attempts": 1,
+  "increment_median_max": 1.05,
+  "combined_median_max": 1.1,
+  "games_total": 7800,
+  "games_primary": 6000,
+  "benchmark_jobs": 4,
+  "job_timeout_minutes": 420,
+  "prepare_timeout_minutes": 10,
+  "export_timeout_minutes": 10,
+  "workflow_vm_minutes_max": 1700,
+  "benchmark_dispatches": 1,
+  "export_dispatches": 1,
+  "result_driven_retries": 0
+}

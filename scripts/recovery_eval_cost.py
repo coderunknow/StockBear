@@ -33,44 +33,53 @@ def main() -> int:
     ap.add_argument("--a", required=True)
     ap.add_argument("--b", required=True)
     ap.add_argument("--blocks", type=int, default=40)
+    ap.add_argument("--repeats", type=int, default=1,
+                    help="paired repetitions per block; block statistic is median ratio")
     ap.add_argument("--epd", help="explicit diagnostic corpus (recommended)")
     ap.add_argument("--json")
     ap.add_argument("--raw-json", help="preserve every block plus input identities")
     args = ap.parse_args()
     if args.blocks < 1:
         ap.error("--blocks must be positive")
+    if args.repeats < 1:
+        ap.error("--repeats must be positive")
 
     ratios = []
     aa = []
     raw = []
     for i in range(args.blocks):
-        # alternate order to cancel any systematic warm-up advantage
-        first, second = (args.a, args.b) if i % 2 == 0 else (args.b, args.a)
-        vals = {}
-        for tag, path in (("first", first), ("second", second)):
-            cmd = [args.probe, path]
-            if args.epd:
-                cmd.append(args.epd)
-            r = subprocess.run(cmd, capture_output=True, text=True)
-            if r.returncode != 0:
-                print("probe failed:", r.stderr[-500:])
-                return 2
-            vals[tag] = float(r.stdout.split()[1])
-        a_ns = vals["first"] if i % 2 == 0 else vals["second"]
-        b_ns = vals["second"] if i % 2 == 0 else vals["first"]
-        ratios.append(b_ns / a_ns)
-        raw.append({"block": i, "a_first": i % 2 == 0,
-                    "a_ns": a_ns, "b_ns": b_ns, "ratio": b_ns / a_ns})
-        # A/A control from the same pair of measurements when both arms are the
-        # same file (caller can pass --a == --b to calibrate).
+        pairs = []
+        for j in range(args.repeats):
+            # Alternate order across both blocks and repetitions to cancel
+            # systematic warm-up advantage. No outlier is discarded.
+            a_first = (i + j) % 2 == 0
+            first, second = (args.a, args.b) if a_first else (args.b, args.a)
+            vals = {}
+            for tag, path in (("first", first), ("second", second)):
+                cmd = [args.probe, path]
+                if args.epd:
+                    cmd.append(args.epd)
+                r = subprocess.run(cmd, capture_output=True, text=True)
+                if r.returncode != 0:
+                    print("probe failed:", r.stderr[-500:])
+                    return 2
+                vals[tag] = float(r.stdout.split()[1])
+            a_ns = vals["first"] if a_first else vals["second"]
+            b_ns = vals["second"] if a_first else vals["first"]
+            pairs.append({"repeat": j, "a_first": a_first,
+                          "a_ns": a_ns, "b_ns": b_ns, "ratio": b_ns / a_ns})
+        block_ratio = statistics.median(p["ratio"] for p in pairs)
+        ratios.append(block_ratio)
+        raw.append({"block": i, "ratio": block_ratio, "pairs": pairs})
+        # A/A control uses the same block statistic when both arms are identical.
         if args.a == args.b:
-            aa.append(b_ns / a_ns)
+            aa.append(block_ratio)
 
     ratios.sort()
     med = statistics.median(ratios)
     lo = ratios[int(0.10 * len(ratios))]
     hi = ratios[int(0.90 * len(ratios)) - 1]
-    out = {"blocks": args.blocks, "median_b_over_a": med,
+    out = {"blocks": args.blocks, "repeats": args.repeats, "median_b_over_a": med,
            "p10": lo, "p90": hi, "min": ratios[0], "max": ratios[-1],
            "a_params": args.a, "b_params": args.b}
     print(f"paired B/A cost ratio: median {med:.4f}  p10 {lo:.4f}  p90 {hi:.4f}  "

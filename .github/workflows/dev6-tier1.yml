@@ -61,6 +61,7 @@ jobs:
   prepare:
     name: Resolve dispatch / verify pinned plan
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     outputs:
       mode: ${{ steps.cfg.outputs.mode }}
       experiment_id: ${{ steps.cfg.outputs.experiment_id }}
@@ -104,6 +105,37 @@ jobs:
             echo "source_run_id=$SRID"
             echo "jobs=$(python3 -c 'import json;print(json.dumps(json.load(open("/tmp/plan.json"))["jobs"]))')"
           } >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        if: steps.cfg.outputs.mode == 'benchmark'
+        with:
+          python-version: '3.12'
+      - name: Install cost-gate build tools
+        if: steps.cfg.outputs.mode == 'benchmark'
+        run: python3 -m pip install --disable-pip-version-check -q 'cmake' 'ninja'
+      - name: Prospective cost gate (fail-closed before any game)
+        if: steps.cfg.outputs.mode == 'benchmark'
+        shell: bash
+        run: |
+          set -euo pipefail
+          SHA='${{ steps.cfg.outputs.source_sha }}'
+          EXP='${{ steps.cfg.outputs.experiment_id }}'
+          PLAN='${{ steps.cfg.outputs.plan_path }}'
+          git show "$SHA:$PLAN" > /tmp/plan-cost.json
+          if python3 -c 'import json,sys;sys.exit(0 if "cost_gate" in json.load(open("/tmp/plan-cost.json")) else 1)'; then
+            git checkout --detach "$SHA"
+            python3 scripts/dev6_cost_gate.py --plan /tmp/plan-cost.json --source-sha "$SHA" --experiment-id "$EXP" --out "benchmarks/recovery/cost-gate-$EXP"
+          else
+            echo "plan has no cost_gate; legacy plan proceeds without this new gate"
+          fi
+      - name: Upload cost-gate evidence
+        if: always() && steps.cfg.outputs.mode == 'benchmark'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: cost-gate-${{ steps.cfg.outputs.experiment_id }}-run${{ github.run_id }}
+          path: benchmarks/recovery/cost-gate-${{ steps.cfg.outputs.experiment_id }}/
+          if-no-files-found: ignore
+          retention-days: 90
+          compression-level: 6
 
   benchmark:
     name: ${{ matrix.job.id }}
@@ -150,6 +182,7 @@ jobs:
     if: needs.prepare.outputs.mode == 'export'
     needs: prepare
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     env:
       SOURCE_RUN_ID: ${{ needs.prepare.outputs.source_run_id }}
       EXPERIMENT_ID: ${{ needs.prepare.outputs.experiment_id }}
