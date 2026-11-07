@@ -1,0 +1,21 @@
+{
+  "purpose": "Checklist 0.2 - provenance of the PUBLISHED v0.1.0-dev4 release asset",
+  "tag": "v0.1.0-dev4",
+  "fetched_via": "GitHub-hosted runner, releases/download URL",
+  "utc": "2026-11-07T04:23:02.857351+00:00",
+  "assets_sha256": {
+    "SHA256SUMS.txt": "60a1458f4af5df977e79968702bb56f172717115bcf02792a05ff3f8e0dd6aaf",
+    "stockbear-0.1.0-dev4-linux-x64.tar.gz": "bc847d7e29be20abd19e17274a1996d2559a3f6cdfcc175b3f96c02de676d721",
+    "stockbear-0.1.0-dev4-windows-x64.zip": "185ef6afde387dec7acc0394f496d7199c7adf0e9fc443d91c087798d311c7e1"
+  },
+  "published_SHA256SUMS": "bc847d7e29be20abd19e17274a1996d2559a3f6cdfcc175b3f96c02de676d721  stockbear-0.1.0-dev4-linux-x64.tar.gz\n185ef6afde387dec7acc0394f496d7199c7adf0e9fc443d91c087798d311c7e1  stockbear-0.1.0-dev4-windows-x64.zip\n",
+  "sha256sum_c_output": "stockbear-0.1.0-dev4-linux-x64.tar.gz: OK\nstockbear-0.1.0-dev4-windows-x64.zip: OK\n",
+  "all_published_checksums_ok": true,
+  "released_linux_binary_sha256": "96dad79551e648177a8fb3a45aebecb3ed331a7d0caca6f1a1908073e2ee57c3",
+  "in_repo_tag_rebuild_sha256": "1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae",
+  "released_equals_tag_rebuild": false,
+  "released_bench_signature": "243f9a1c1ba5b36f",
+  "released_bench_depth4_signature": "243f9a1c1ba5b36f",
+  "released_uci_identity": "id name StockBear 0.1.0-dev4",
+  "note": "dev4 is a verified historical/reference anchor only. The dev6 gate baseline is released dev5, per the user's 2026-11-06 decision. A differing digest here would mean the in-repo dev4 file is a rebuild, not the published artifact, and must be recorded as such."
+}
