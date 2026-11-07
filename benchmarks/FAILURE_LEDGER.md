@@ -2554,3 +2554,49 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
 - **Gate 1 still UNMET** (+75 point and LCB>+50 vs dev5 both unmet). Mission
   **ACTIVE / INCOMPLETE**; exp-0047 **DORMANT**. No default change, no merge, tag,
   release or deploy.
+
+---
+
+## exp-0056 — INVALID MEASUREMENT (2026-11-07): null failed; configuration cannot reach the gate
+
+- **Verdict: INVALID MEASUREMENT. No strength claim.** Prereg
+  `docs/DEV6_PREREG_EXP0056.md` sha `6437c2cf71ee8483be707f6fc1b2c624b33fd9551be1e316846862d904c6e90f`
+  frozen at `ec7c9c4` before any game. Run **42338019422** (6,800 g), export
+  **42340004695**.
+- **Failed condition (§5.4):** candidate-options null **+19.2246 [+0.6520,+37.9077]**
+  **excludes 0**. §6 states any §5 failure ⇒ INVALID, no strength claim of any
+  kind. Applied as written.
+- **NEW FAILURE MODE — a green audit banner is not a validity verdict.** The
+  auditor printed `TOTAL ISSUES: 0` / `INDEPENDENT AUDIT PASS`, but null adequacy
+  lives in a **separate** `nulls_ok` field, which was **False**. Reading only the
+  banner would have manufactured a false strength claim. Always evaluate the
+  preregistered validity conditions explicitly.
+- **Face value WITHHELD:** batchA +31.8538 [+22.48,+41.27]; batchB +50.2476
+  [+40.83,+59.74]; combined +41.0128 [+34.36,+47.69]. Also **batch-inconsistent**
+  (18.4 Elo gap; CIs overlap only in [40.83,41.27]).
+- **Bias diagnostic (does not rescue the run):** six recent nulls are
+  −3.53, −3.47, −5.21, +3.47, +14.92, +19.22 → mean +4.23, signs `---+++`. No fixed
+  arm-A bias. Colour split shows only the ordinary White advantage, which pairing
+  cancels. Consistent with the **~5% false-positive rate of a 400-game null** — a
+  **design weakness**: a ±19 Elo instrument should not be a hard gate. Future
+  preregs must power the null.
+- **DECISIVE STRATEGIC FINDING:** even at face value this configuration **cannot**
+  satisfy Gate 1 — point +41.01 < +75, and the CI's **upper** bound +47.69 is below
+  the required **LCB > +50**. No sample size or re-analysis fixes it. **Threats +
+  passed-pawn race is not a sufficient basis for the gate; ~+35 Elo more of
+  independent strength is required.** The prereg predicted this in advance.
+- **Integrity:** 0 forfeits/illegal/failures; **6,800/6,800 PGN replayed, 0
+  inconsistent**; 54/54 blobs; 44/44 sums; per-arm load proof correct (B = released
+  dev5 at params_abc). The invalidity is the null, not data corruption.
+- **INFRASTRUCTURE — sandbox reset lost an unpushed verdict.** After the verdict
+  was first written, the sandbox reset the checkout to `origin/main`
+  (`6e7c2e0`) and wiped the local-only commit. Recovery: `git fetch origin
+  arena/6a6a2ba3-stockbear` + `merge --ff-only` restored `104f34a` with the **raw
+  export intact**; the audit was **regenerated from raw records** and reproduced
+  every number exactly, including the failing null CI. **Lesson: push derived
+  verdicts promptly; raw evidence in git is what makes recovery possible.**
+- **Disposition:** CLOSED/INVALID; 3,400 openings and 6,800 games **burned**, never
+  pooled. Both new params stay shipped **0**. Banked evidence remains **exp-0054
+  only**.
+- **Gates:** 1 **UNMET**, 2 **SUPPORTED** (exp-0054), 3 **PASS**, 4 **UNMET**.
+  Mission **ACTIVE / INCOMPLETE**; exp-0047 **DORMANT**.

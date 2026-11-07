@@ -2210,3 +2210,29 @@ abandoned exp-0026 ConnectedPassed/RookBehindPassed counts. Mission ACTIVE.
 - Wrote `docs/DEV6_EXP0055_REPORT.md`. Gate 1 still UNMET; no default change.
 - Next: new preregistered CONFIRMATION of the INTEGRAL candidate (threats+race)
   measured DIRECTLY against released dev5 — never by summing estimates.
+
+## 2026-11-07 (later) — exp-0056 INVALID; reset recovery; next-direction survey
+
+- Evaluated the preregistered validity conditions explicitly rather than trusting
+  the auditor's `TOTAL ISSUES: 0` banner: the **candidate null [+0.65,+37.91]
+  excludes 0** ⇒ **INVALID** per frozen §5.4/§6. Withheld the face-value estimate.
+- Diagnosed runner bias from raw records: colour split shows only the normal White
+  advantage; six nulls average +4.23 with mixed signs ⇒ no fixed arm-A bias, most
+  likely the ~5% false-positive rate of a 400-game null. Did not use this to
+  overturn the frozen criterion; recorded it as a null-power DESIGN lesson.
+- Strategic conclusion: threats+race **cannot** reach the gate (point < +75 and CI
+  upper bound < +50). ~+35 Elo more is needed.
+- **Sandbox reset** reverted the checkout to `origin/main` and wiped the unpushed
+  verdict commit plus all pip packages. Recovered via fetch + `merge --ff-only` to
+  `104f34a`, reinstalled numpy/chess/cmake/ninja/pyyaml, re-chmod'd dev5 and
+  re-verified its digest, and **regenerated the audit from the intact raw export**
+  (every number reproduced exactly). Verdict pushed promptly this time.
+- Surveyed the next direction. Verified dev5 and the candidate have **identical
+  UCI defaults** (0 differences), ruling out a silent handicap. Found that
+  `counterMoves`, `continuationHistory`, `captureHistory`, `lmrHistory`,
+  `historyMaluses`, `moveCountPruning`, `modernLMR`, `iir`, `improving` are all
+  **shipped OFF in both binaries**, and that exp-0014's "-off" ablations were
+  therefore likely **no-ops** on already-off switches (all classified neutral
+  within ±25 screen noise at 480 g). These ordering mechanisms are fully
+  implemented (real tables, real updates) but have **never had a proper Tier-1
+  turn-ON test** — a genuinely untested, credible direction.
