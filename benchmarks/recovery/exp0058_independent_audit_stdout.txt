@@ -1,0 +1,62 @@
+=== batchA ===
+  W/D/L [663, 675, 656]  scored=1994 unscored=6
+  complete pairs=994 incomplete=6 orphan scored games=6 games in primary estimate=1988
+  clusters=994 obs/cluster={1: 994} design effect=1.000000
+  pentanomial [2,1.5,1,0.5,0]=[70, 179, 495, 190, 60]
+  CR1 Elo +1.5729 CI [-8.6591, +11.8077]  t(993)=1.962356
+  Elo-from-score(all scored) +1.2197  bootstrap [-8.5653, +11.7138]
+  forfeits=0 illegal=0 failures=0 clock={'min_remaining_ms': 13.4, 'max_remaining_ms': 42.97, 'negative_clocks': 0}
+  PGN replay: {'games_replayed': 2000, 'inconsistent': 0}
+  issues: 0
+=== batchB ===
+  W/D/L [662, 631, 701]  scored=1994 unscored=6
+  complete pairs=994 incomplete=6 orphan scored games=6 games in primary estimate=1988
+  clusters=994 obs/cluster={1: 994} design effect=1.000000
+  pentanomial [2,1.5,1,0.5,0]=[67, 180, 469, 204, 74]
+  CR1 Elo -6.6419 CI [-17.2118, +3.9157]  t(993)=1.962356
+  Elo-from-score(all scored) -6.7962  bootstrap [-17.1410, +3.8450]
+  forfeits=0 illegal=0 failures=0 clock={'min_remaining_ms': 12.85, 'max_remaining_ms': 43.91, 'negative_clocks': 0}
+  PGN replay: {'games_replayed': 2000, 'inconsistent': 0}
+  issues: 0
+=== null ===
+  W/D/L [399, 380, 414]  scored=1193 unscored=7
+  complete pairs=593 incomplete=7 orphan scored games=7 games in primary estimate=1186
+  clusters=593 obs/cluster={1: 593} design effect=1.000000
+  pentanomial [2,1.5,1,0.5,0]=[19, 93, 362, 91, 28]
+  CR1 Elo -4.6874 CI [-15.7978, +6.4133]  t(592)=1.963979
+  Elo-from-score(all scored) -4.3687  bootstrap [-16.1237, +6.4456]
+  forfeits=0 illegal=0 failures=0 clock={'min_remaining_ms': 9.87, 'max_remaining_ms': 43.84, 'negative_clocks': 0}
+  PGN replay: {'games_replayed': 1200, 'inconsistent': 0}
+  issues: 0
+=== stage0 ===
+  W/D/L [207, 200, 192]  scored=599 unscored=1
+  complete pairs=299 incomplete=1 orphan scored games=1 games in primary estimate=598
+  clusters=299 obs/cluster={1: 299} design effect=1.000000
+  pentanomial [2,1.5,1,0.5,0]=[21, 46, 176, 39, 17]
+  CR1 Elo +8.7168 CI [-8.8905, +26.3690]  t(298)=1.967957
+  Elo-from-score(all scored) +8.7022  bootstrap [-9.2982, +26.1943]
+  forfeits=0 illegal=0 failures=0 clock={'min_remaining_ms': 13.48, 'max_remaining_ms': 41.83, 'negative_clocks': 0}
+  PGN replay: {'games_replayed': 600, 'inconsistent': 0}
+  issues: 0
+
+=== FROZEN COMBINED batchA+batchB (independent recomputation) ===
+  W/D/L 1325/1306/1357  scored=3988  clusters=1988
+  games in primary estimate=3976
+  CR1 Elo -2.5342  CI [-9.8828, +4.8123]
+  bootstrap [-9.8770, +4.8064]
+  batch label overlap: 0
+
+=== integrity ===
+  committed blobs: 54/54 match
+  per-job SHA256SUMS: 44/44 verified
+  batchA: ['arm A EvalParams: research-data/params_exp0055_race.txt', 'arm B EvalParams: research-data/params_exp0055_race.txt']
+  batchB: ['arm A EvalParams: research-data/params_exp0055_race.txt', 'arm B EvalParams: research-data/params_exp0055_race.txt']
+  null: ['arm A EvalParams: research-data/params_exp0055_race.txt', 'arm B EvalParams: research-data/params_exp0055_race.txt']
+  stage0: ['arm A EvalParams: research-data/params_exp0055_race.txt', 'arm B EvalParams: research-data/params_exp0055_race.txt']
+
+=== null controls ===
+  stage0: CI [-8.8905, +26.3690] includes 0: True
+  null: CI [-15.7978, +6.4133] includes 0: True
+
+TOTAL ISSUES: 0
+INDEPENDENT AUDIT PASS

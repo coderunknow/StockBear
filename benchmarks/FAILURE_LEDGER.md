@@ -2635,3 +2635,30 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
   continuationhistory +7.18 %, capturehistory −4.65 %, badcapturepruning −1.26 %.
 - **Gates:** 1 **UNMET**, 2 **SUPPORTED** (exp-0054), 3 **PASS**, 4 **UNMET**.
   Mission **ACTIVE / INCOMPLETE**; ~+35 Elo still required.
+
+---
+
+## exp-0058 — VALID MEASUREMENT / CLOSE, mechanism rejected (2026-11-07)
+
+- **Prereg** `docs/DEV6_PREREG_EXP0058.md` sha `8722b108…f3d5` frozen at `520f854`
+  before any game. Run **42343201120** (5,800 g), export **42344477938**.
+- **Result:** batchA +1.5729 [−8.66,+11.81]; batchB −6.6419 [−17.21,+3.92];
+  **combined −2.5342 [−9.8828,+4.8123]**, 1325/1306/1357, 1,988 clusters.
+- **All validity conditions PASS**; 0 forfeits/illegal/failures; **5,800/5,800 PGN
+  replayed, 0 inconsistent**; both powered nulls include 0; per-arm switch proof;
+  identical arm binaries; stage0 fresh ctest.
+- **Verdict: CLOSE (mechanism rejected).** The frozen rule was `UCB < +5` OR
+  `point ≤ 0`; **both** limbs hold. No rescale, no retune, no re-run.
+  `CaptureHistory` stays shipped **false**.
+- **KEY LESSON — node efficiency is NOT strength.** This switch was selected
+  because it needed **4.65 % fewer nodes at fixed depth**, the best of four
+  probed. In games it is worth **−2.53**. The node count was only ever a
+  liveness/mechanism check; fewer nodes to the same depth ≠ better moves.
+- **CHECK BUG (not a criterion change):** the first validity pass read `None`
+  for `badcapturepruning` because it inspected only the EXPLICIT options dict.
+  Corrected to explicit-or-RECORDED-default; both it and `badcapturealldepths`
+  are `false` for both arms in all jobs. Recorded as `validity_check_correction`.
+- **Three consecutive non-gains:** exp-0056 INVALID, exp-0057 INCONCLUSIVE
+  (+11.70), exp-0058 REJECTED (−2.53). Banked evidence remains **exp-0054 only**.
+- **Gates:** 1 **UNMET**, 2 **SUPPORTED** (exp-0054), 3 **PASS**, 4 **UNMET**.
+  Mission **ACTIVE / INCOMPLETE**; ~+35 Elo still required.
