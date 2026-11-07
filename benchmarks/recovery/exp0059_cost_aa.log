@@ -1,0 +1,3 @@
+paired B/A cost ratio: median 1.0014  p10 0.9385  p90 1.0553  range [0.8377, 1.2638]  (60 blocks)
+A/A CONTROL: spread(p90-p10) = 0.1167
+A/A control TOO WIDE — this environment cannot resolve the cost; do NOT quote a ratio

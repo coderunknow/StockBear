@@ -17,7 +17,11 @@ Usage: recovery_eval_cost.py --probe BIN --a PARAMS --b PARAMS [--blocks 40]
 """
 from __future__ import annotations
 import argparse
+import hashlib
 import json
+import os
+import platform
+import sys
 import statistics
 import subprocess
 from pathlib import Path
@@ -29,17 +33,25 @@ def main() -> int:
     ap.add_argument("--a", required=True)
     ap.add_argument("--b", required=True)
     ap.add_argument("--blocks", type=int, default=40)
+    ap.add_argument("--epd", help="explicit diagnostic corpus (recommended)")
     ap.add_argument("--json")
+    ap.add_argument("--raw-json", help="preserve every block plus input identities")
     args = ap.parse_args()
+    if args.blocks < 1:
+        ap.error("--blocks must be positive")
 
     ratios = []
     aa = []
+    raw = []
     for i in range(args.blocks):
         # alternate order to cancel any systematic warm-up advantage
         first, second = (args.a, args.b) if i % 2 == 0 else (args.b, args.a)
         vals = {}
         for tag, path in (("first", first), ("second", second)):
-            r = subprocess.run([args.probe, path], capture_output=True, text=True)
+            cmd = [args.probe, path]
+            if args.epd:
+                cmd.append(args.epd)
+            r = subprocess.run(cmd, capture_output=True, text=True)
             if r.returncode != 0:
                 print("probe failed:", r.stderr[-500:])
                 return 2
@@ -47,6 +59,8 @@ def main() -> int:
         a_ns = vals["first"] if i % 2 == 0 else vals["second"]
         b_ns = vals["second"] if i % 2 == 0 else vals["first"]
         ratios.append(b_ns / a_ns)
+        raw.append({"block": i, "a_first": i % 2 == 0,
+                    "a_ns": a_ns, "b_ns": b_ns, "ratio": b_ns / a_ns})
         # A/A control from the same pair of measurements when both arms are the
         # same file (caller can pass --a == --b to calibrate).
         if args.a == args.b:
@@ -71,6 +85,19 @@ def main() -> int:
         out["usable"] = usable
     if args.json:
         Path(args.json).write_text(json.dumps(out, indent=2) + "\n")
+    if args.raw_json:
+        paths = {str(Path(args.probe).resolve()), str(Path(args.a).resolve()),
+                 str(Path(args.b).resolve()), str(Path(__file__).resolve()),
+                 str((Path(__file__).parent / "probes/evalprof.cpp").resolve())}
+        if args.epd:
+            paths.add(str(Path(args.epd).resolve()))
+        raw_out = {"argv": sys.argv, "blocks_raw": raw, "summary": out,
+                   "runtime": {"python": platform.python_version(),
+                               "platform": platform.platform(),
+                               "cpu_affinity": sorted(os.sched_getaffinity(0))},
+                   "sha256": {p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+                              for p in sorted(paths)}}
+        Path(args.raw_json).write_text(json.dumps(raw_out, indent=2) + "\n")
     return 0
 
 

@@ -1,0 +1,12 @@
+{
+  "blocks": 60,
+  "median_b_over_a": 1.0031971761078162,
+  "p10": 0.9600308252090263,
+  "p90": 1.0742882608024955,
+  "min": 0.888817367341259,
+  "max": 1.5595873018869706,
+  "a_params": "research-data/params_exp0053_threats.txt",
+  "b_params": "research-data/params_exp0053_threats.txt",
+  "aa_spread": 0.11425743559346924,
+  "usable": false
+}

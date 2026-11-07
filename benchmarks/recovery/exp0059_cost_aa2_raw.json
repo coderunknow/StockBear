@@ -1,0 +1,467 @@
+{
+  "argv": [
+    "scripts/recovery_eval_cost.py",
+    "--probe",
+    "build-rel/evalprof-exp59",
+    "--a",
+    "research-data/params_exp0053_threats.txt",
+    "--b",
+    "research-data/params_exp0053_threats.txt",
+    "--blocks",
+    "60",
+    "--epd",
+    "benchmarks/positions/diagnostic_exp0059_eval.epd",
+    "--json",
+    "benchmarks/recovery/exp0059_cost_aa2_summary.json",
+    "--raw-json",
+    "benchmarks/recovery/exp0059_cost_aa2_raw.json"
+  ],
+  "blocks_raw": [
+    {
+      "block": 0,
+      "a_first": true,
+      "a_ns": 367.3457,
+      "b_ns": 366.4391,
+      "ratio": 0.9975320250107732
+    },
+    {
+      "block": 1,
+      "a_first": false,
+      "a_ns": 233.0614,
+      "b_ns": 363.4796,
+      "ratio": 1.5595873018869706
+    },
+    {
+      "block": 2,
+      "a_first": true,
+      "a_ns": 233.7476,
+      "b_ns": 232.1636,
+      "ratio": 0.9932234598344539
+    },
+    {
+      "block": 3,
+      "a_first": false,
+      "a_ns": 233.2655,
+      "b_ns": 251.9286,
+      "ratio": 1.0800079737466535
+    },
+    {
+      "block": 4,
+      "a_first": true,
+      "a_ns": 234.4764,
+      "b_ns": 233.4671,
+      "ratio": 0.995695515625453
+    },
+    {
+      "block": 5,
+      "a_first": false,
+      "a_ns": 263.0132,
+      "b_ns": 233.7707,
+      "ratio": 0.888817367341259
+    },
+    {
+      "block": 6,
+      "a_first": true,
+      "a_ns": 235.6891,
+      "b_ns": 250.9957,
+      "ratio": 1.064944030080305
+    },
+    {
+      "block": 7,
+      "a_first": false,
+      "a_ns": 232.351,
+      "b_ns": 247.5332,
+      "ratio": 1.0653416598163985
+    },
+    {
+      "block": 8,
+      "a_first": true,
+      "a_ns": 233.2177,
+      "b_ns": 254.97,
+      "ratio": 1.0932703649851618
+    },
+    {
+      "block": 9,
+      "a_first": false,
+      "a_ns": 250.0182,
+      "b_ns": 242.7062,
+      "ratio": 0.9707541290994015
+    },
+    {
+      "block": 10,
+      "a_first": true,
+      "a_ns": 249.0881,
+      "b_ns": 258.5849,
+      "ratio": 1.0381262693801911
+    },
+    {
+      "block": 11,
+      "a_first": false,
+      "a_ns": 232.035,
+      "b_ns": 247.8154,
+      "ratio": 1.0680087055832095
+    },
+    {
+      "block": 12,
+      "a_first": true,
+      "a_ns": 234.4125,
+      "b_ns": 232.1448,
+      "ratio": 0.9903260278355464
+    },
+    {
+      "block": 13,
+      "a_first": false,
+      "a_ns": 232.3632,
+      "b_ns": 233.4165,
+      "ratio": 1.0045329897333142
+    },
+    {
+      "block": 14,
+      "a_first": true,
+      "a_ns": 232.8846,
+      "b_ns": 236.3655,
+      "ratio": 1.014946887857763
+    },
+    {
+      "block": 15,
+      "a_first": false,
+      "a_ns": 232.279,
+      "b_ns": 233.7083,
+      "ratio": 1.0061533758970893
+    },
+    {
+      "block": 16,
+      "a_first": true,
+      "a_ns": 233.2861,
+      "b_ns": 231.9793,
+      "ratio": 0.9943982946262121
+    },
+    {
+      "block": 17,
+      "a_first": false,
+      "a_ns": 232.4237,
+      "b_ns": 239.0039,
+      "ratio": 1.0283112264368908
+    },
+    {
+      "block": 18,
+      "a_first": true,
+      "a_ns": 234.7142,
+      "b_ns": 234.6438,
+      "ratio": 0.9997000607547392
+    },
+    {
+      "block": 19,
+      "a_first": false,
+      "a_ns": 233.1124,
+      "b_ns": 234.8877,
+      "ratio": 1.007615639494081
+    },
+    {
+      "block": 20,
+      "a_first": true,
+      "a_ns": 235.003,
+      "b_ns": 260.0685,
+      "ratio": 1.1066603405062914
+    },
+    {
+      "block": 21,
+      "a_first": false,
+      "a_ns": 266.6658,
+      "b_ns": 276.2185,
+      "ratio": 1.0358227414239096
+    },
+    {
+      "block": 22,
+      "a_first": true,
+      "a_ns": 258.4884,
+      "b_ns": 240.1834,
+      "ratio": 0.9291844430929975
+    },
+    {
+      "block": 23,
+      "a_first": false,
+      "a_ns": 238.2078,
+      "b_ns": 247.7528,
+      "ratio": 1.0400700564800984
+    },
+    {
+      "block": 24,
+      "a_first": true,
+      "a_ns": 233.1876,
+      "b_ns": 232.6229,
+      "ratio": 0.9975783446461132
+    },
+    {
+      "block": 25,
+      "a_first": false,
+      "a_ns": 233.5511,
+      "b_ns": 244.8558,
+      "ratio": 1.048403539953355
+    },
+    {
+      "block": 26,
+      "a_first": true,
+      "a_ns": 233.2591,
+      "b_ns": 236.383,
+      "ratio": 1.0133924035546737
+    },
+    {
+      "block": 27,
+      "a_first": false,
+      "a_ns": 233.4487,
+      "b_ns": 250.3906,
+      "ratio": 1.0725722610577828
+    },
+    {
+      "block": 28,
+      "a_first": true,
+      "a_ns": 233.3605,
+      "b_ns": 233.8332,
+      "ratio": 1.0020256213026626
+    },
+    {
+      "block": 29,
+      "a_first": false,
+      "a_ns": 237.5362,
+      "b_ns": 241.4034,
+      "ratio": 1.0162804658826738
+    },
+    {
+      "block": 30,
+      "a_first": true,
+      "a_ns": 232.6384,
+      "b_ns": 241.1053,
+      "ratio": 1.0363951093198716
+    },
+    {
+      "block": 31,
+      "a_first": false,
+      "a_ns": 232.4934,
+      "b_ns": 244.2383,
+      "ratio": 1.0505171329594734
+    },
+    {
+      "block": 32,
+      "a_first": true,
+      "a_ns": 257.6691,
+      "b_ns": 233.7972,
+      "ratio": 0.9073544324872481
+    },
+    {
+      "block": 33,
+      "a_first": false,
+      "a_ns": 234.3254,
+      "b_ns": 239.0568,
+      "ratio": 1.0201915797433825
+    },
+    {
+      "block": 34,
+      "a_first": true,
+      "a_ns": 236.2582,
+      "b_ns": 233.8975,
+      "ratio": 0.9900079658610792
+    },
+    {
+      "block": 35,
+      "a_first": false,
+      "a_ns": 233.5531,
+      "b_ns": 243.3166,
+      "ratio": 1.0418041978462285
+    },
+    {
+      "block": 36,
+      "a_first": true,
+      "a_ns": 234.975,
+      "b_ns": 253.4672,
+      "ratio": 1.0786985849558464
+    },
+    {
+      "block": 37,
+      "a_first": false,
+      "a_ns": 253.5457,
+      "b_ns": 252.4858,
+      "ratio": 0.9958196885216354
+    },
+    {
+      "block": 38,
+      "a_first": true,
+      "a_ns": 239.6682,
+      "b_ns": 232.9066,
+      "ratio": 0.9717876631109175
+    },
+    {
+      "block": 39,
+      "a_first": false,
+      "a_ns": 232.3211,
+      "b_ns": 232.9485,
+      "ratio": 1.0027005726126468
+    },
+    {
+      "block": 40,
+      "a_first": true,
+      "a_ns": 244.2157,
+      "b_ns": 234.4546,
+      "ratio": 0.9600308252090263
+    },
+    {
+      "block": 41,
+      "a_first": false,
+      "a_ns": 247.9637,
+      "b_ns": 233.8556,
+      "ratio": 0.9431041721026102
+    },
+    {
+      "block": 42,
+      "a_first": true,
+      "a_ns": 232.9206,
+      "b_ns": 252.1885,
+      "ratio": 1.082723039525057
+    },
+    {
+      "block": 43,
+      "a_first": false,
+      "a_ns": 234.8884,
+      "b_ns": 234.1342,
+      "ratio": 0.9967891134683535
+    },
+    {
+      "block": 44,
+      "a_first": true,
+      "a_ns": 247.9494,
+      "b_ns": 233.1797,
+      "ratio": 0.9404326043942837
+    },
+    {
+      "block": 45,
+      "a_first": false,
+      "a_ns": 234.6227,
+      "b_ns": 235.0617,
+      "ratio": 1.0018710891998088
+    },
+    {
+      "block": 46,
+      "a_first": true,
+      "a_ns": 234.5285,
+      "b_ns": 235.2843,
+      "ratio": 1.003222636054893
+    },
+    {
+      "block": 47,
+      "a_first": false,
+      "a_ns": 231.7988,
+      "b_ns": 232.534,
+      "ratio": 1.0031717161607394
+    },
+    {
+      "block": 48,
+      "a_first": true,
+      "a_ns": 234.1144,
+      "b_ns": 236.8351,
+      "ratio": 1.011621241581039
+    },
+    {
+      "block": 49,
+      "a_first": false,
+      "a_ns": 251.439,
+      "b_ns": 236.285,
+      "ratio": 0.9397309088884381
+    },
+    {
+      "block": 50,
+      "a_first": true,
+      "a_ns": 233.7293,
+      "b_ns": 233.101,
+      "ratio": 0.9973118475090629
+    },
+    {
+      "block": 51,
+      "a_first": false,
+      "a_ns": 233.7463,
+      "b_ns": 233.6538,
+      "ratio": 0.9996042718109335
+    },
+    {
+      "block": 52,
+      "a_first": true,
+      "a_ns": 233.372,
+      "b_ns": 250.7088,
+      "ratio": 1.0742882608024955
+    },
+    {
+      "block": 53,
+      "a_first": false,
+      "a_ns": 233.8438,
+      "b_ns": 239.3425,
+      "ratio": 1.0235144143227233
+    },
+    {
+      "block": 54,
+      "a_first": true,
+      "a_ns": 233.7909,
+      "b_ns": 233.1139,
+      "ratio": 0.9971042499943326
+    },
+    {
+      "block": 55,
+      "a_first": false,
+      "a_ns": 232.3251,
+      "b_ns": 233.1746,
+      "ratio": 1.0036565140830673
+    },
+    {
+      "block": 56,
+      "a_first": true,
+      "a_ns": 233.9725,
+      "b_ns": 233.0714,
+      "ratio": 0.9961486926882434
+    },
+    {
+      "block": 57,
+      "a_first": false,
+      "a_ns": 232.2885,
+      "b_ns": 231.8428,
+      "ratio": 0.998081265323079
+    },
+    {
+      "block": 58,
+      "a_first": true,
+      "a_ns": 233.1989,
+      "b_ns": 231.6257,
+      "ratio": 0.9932538275266306
+    },
+    {
+      "block": 59,
+      "a_first": false,
+      "a_ns": 235.5537,
+      "b_ns": 233.006,
+      "ratio": 0.9891842072529534
+    }
+  ],
+  "summary": {
+    "blocks": 60,
+    "median_b_over_a": 1.0031971761078162,
+    "p10": 0.9600308252090263,
+    "p90": 1.0742882608024955,
+    "min": 0.888817367341259,
+    "max": 1.5595873018869706,
+    "a_params": "research-data/params_exp0053_threats.txt",
+    "b_params": "research-data/params_exp0053_threats.txt",
+    "aa_spread": 0.11425743559346924,
+    "usable": false
+  },
+  "runtime": {
+    "python": "3.11.2",
+    "platform": "Linux-6.1.158+-x86_64-with-glibc2.36",
+    "cpu_affinity": [
+      0
+    ]
+  },
+  "sha256": {
+    "/home/user/StockBear/benchmarks/positions/diagnostic_exp0059_eval.epd": "a1046aa3e7e3bfac3b016203e8d9dafef99432e3552a2719204a19da28ec1cb3",
+    "/home/user/StockBear/build-rel/evalprof-exp59": "7f68b4164d2726ca59ff55bc695fe56836c8922244a055415ca9c1637249fcd1",
+    "/home/user/StockBear/research-data/params_exp0053_threats.txt": "7266eb4c2d17f226b31e8e435c118be1abd06b412e07256c4f793c2f8e097548",
+    "/home/user/StockBear/scripts/probes/evalprof.cpp": "f39b5756308680858f32a8342c5f8d91a9282273a489a607e5f4b0cd068bdb9f",
+    "/home/user/StockBear/scripts/recovery_eval_cost.py": "2df0d83b1b5b8d7e9a5172fb9a30535dc7f0e6ed923ead98dd494e36b7291697"
+  }
+}

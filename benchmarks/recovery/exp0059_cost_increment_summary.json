@@ -1,0 +1,10 @@
+{
+  "blocks": 90,
+  "median_b_over_a": 1.0205541665951245,
+  "p10": 0.9604156886842037,
+  "p90": 1.0745666651898491,
+  "min": 0.8522951378007221,
+  "max": 1.3631023267130218,
+  "a_params": "research-data/params_exp0053_threats.txt",
+  "b_params": "research-data/params_exp0055_race.txt"
+}

@@ -2662,3 +2662,15 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
   (+11.70), exp-0058 REJECTED (−2.53). Banked evidence remains **exp-0054 only**.
 - **Gates:** 1 **UNMET**, 2 **SUPPORTED** (exp-0054), 3 **PASS**, 4 **UNMET**.
   Mission **ACTIVE / INCOMPLETE**; ~+35 Elo still required.
+
+
+## exp-0059 — pre-game cost instrument failure (2026-11-07)
+
+**BLOCKED BEFORE GAMES; no strength verdict.** Prospective A/A spread limit
+<0.10 failed twice (0.1167 unpinned; 0.1143 CPU-pinned), exhausting the frozen
+two-attempt calibration budget. Zero games/dispatches. Initial exploratory A/B
+runs after the first failed control are retained as UNINTERPRETABLE and excluded
+from every decision. See `docs/DEV6_EXP0059_REPORT.md` and raw cost JSONs.
+Do not reuse this measurement as a budget pass. The race confirmation remains
+open; a replacement needs a new preregistered noise-resistant cost instrument,
+not a relaxed threshold or a favorable rerun.

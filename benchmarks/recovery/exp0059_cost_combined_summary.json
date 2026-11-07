@@ -1,0 +1,10 @@
+{
+  "blocks": 90,
+  "median_b_over_a": 1.0354779080931995,
+  "p10": 1.0090909129303824,
+  "p90": 1.081795681466282,
+  "min": 0.9272128885695893,
+  "max": 1.6363028875497667,
+  "a_params": "research-data/params_abc.txt",
+  "b_params": "research-data/params_exp0055_race.txt"
+}

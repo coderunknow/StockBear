@@ -28,13 +28,17 @@ int main(int argc, char** argv) {
         if (line.empty()) continue;
         std::string err;
         Position p;
-        if (!parse_fen(line, p, &err)) continue;
+        if (!parse_fen(line, p, &err)) {
+            std::fprintf(stderr, "invalid corpus position: %s\n", err.c_str());
+            return 2;
+        }
         positions.push_back(p);
     }
     if (positions.empty()) { std::fprintf(stderr, "no positions\n"); return 2; }
     volatile int sink = 0;
     for (const auto& p : positions) sink += evaluate(p);   // warm
     const int reps = 12;
+    std::fprintf(stderr, "corpus=%s positions=%zu reps=%d\n", epd, positions.size(), reps);
     auto t0 = std::chrono::steady_clock::now();
     for (int r = 0; r < reps; ++r)
         for (const auto& p : positions) sink += evaluate(p);
