@@ -1,0 +1,59 @@
+{
+  "fingerprint_sha256": "b9cf0adb546f0c95c2223334803d609ec4b2cb258e9eba40589e2373df12c7f4",
+  "source_sha": "2594479ac8965f0c87b4f1e72d61a87b71984cd3",
+  "prereg_sha256": "1fe7fd18f6df871d65fadfaf7d9b9dda94553cee3c231a0d84988b43502c24ea",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0055.md",
+    "prereg_sha256": "1fe7fd18f6df871d65fadfaf7d9b9dda94553cee3c231a0d84988b43502c24ea",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "id": "tier1-exp0055-stage0",
+    "games": 400,
+    "seed": 2026110690,
+    "openings": "benchmarks/positions/openings_exp0055_stage0.txt",
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "null": true,
+    "ctest": true,
+    "a_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "engine_a": "candidate",
+    "engine_b": "candidate",
+    "note": "Stage-0 control/control validity null on the packaged candidate; fresh ctest; 0 forfeits required",
+    "assets": [
+      "research-data/params_exp0055_race.txt",
+      "research-data/params_exp0053_threats.txt"
+    ]
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+  "packaged_binary_sha256": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+  "package_sha256": "76f57636cce2d5ef8d60a89131d84d22b8b291f0fd6748c139e83344f00c8f7c",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "e94936d42adabfaf848126669b8d80bb952676c166e42d451ad117efccb40db8",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0055-stage0/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0055-stage0/stockbear",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}
