@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0064",
   "source_sha": "48a6110104448b3e3197286c2216d21cf047aba0",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0064.json",
-  "source_run_id": "",
-  "note": "exp-0064: frozen 7800-game same-binary SCREEN of TTExtensionAgnostic on threats+race. Prereg 0f29d36b frozen at 48a6110 BEFORE any game. Primary batchA+batchB 6000 games; powered null 1200; stage0 600 with fresh ctest 19 groups. Cannot satisfy Gate 1.",
+  "source_run_id": "42379450457",
+  "note": "exp-0064: export the 7800-game TT-identity screen raw evidence from successful run 42379450457; one explicit evidence commit. Prereg 0f29d36b frozen at 48a6110 before any game.",
   "attempt": 1
 }
