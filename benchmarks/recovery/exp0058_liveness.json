@@ -1,0 +1,14 @@
+{
+  "switch": "CaptureHistory",
+  "fixed_depth": 10,
+  "positions": 12,
+  "positions_live": 12,
+  "bestmoves_changed": 3,
+  "nodes_off": 1626651,
+  "nodes_on": 1550976,
+  "total_node_delta_pct": -4.65,
+  "evalparams_both_arms": "research-data/params_exp0055_race.txt",
+  "probe": "scripts/probes/switch_liveness.cpp",
+  "mechanism": "src/search/search.cpp:214 - bounded +/-1024 tie-break among captures, keyed by (attacker type, target square, victim type); updated at :293-298",
+  "note": "tree-change proxy only; NOT a strength or speed measurement. Fewest nodes at fixed depth of the four switches probed."
+}
