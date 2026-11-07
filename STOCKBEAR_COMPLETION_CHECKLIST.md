@@ -36,11 +36,27 @@ and research logs. An incomplete checklist means an incomplete mission.
       `391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918`
       at champion options (`EvalParams=research-data/params_abc.txt`,
       `TTEval=true`), fixed time 40+4 ms, Hash 16, Threads 1.
-- [ ] **0.2** The published `v0.1.0-dev4` release asset is downloaded via CI and
+- [x] **0.2** The published `v0.1.0-dev4` release asset is downloaded via CI and
       its checksum verified, per the user's explicit provenance choice
       ("fetch_release"). dev4 is retained as a verified historical/reference
       anchor, NOT as the dev6 gate baseline.
-      *Evidence required:* CI job log + asset SHA-256 + committed provenance record.
+      *Evidence:* new lane `.github/workflows/dev4-provenance.yml`, run
+      **42338201855** — **success**, every step green. It downloaded all three
+      published assets and ran `sha256sum -c`:
+      `stockbear-0.1.0-dev4-linux-x64.tar.gz: OK`,
+      `stockbear-0.1.0-dev4-windows-x64.zip: OK`. Committed record
+      `benchmarks/dev6-baseline/exp_dev4_release_provenance.json` (CI commit
+      `b2664f1`) with `all_published_checksums_ok: true` and asset digests
+      `bc847d7e…` / `185ef6af…` / `60a1458f…`.
+      **Material finding:** the released linux executable is
+      `96dad79551e648177a8fb3a45aebecb3ed331a7d0caca6f1a1908073e2ee57c3`, which is
+      **NOT** bit-identical to the in-repo tag rebuild
+      `1c5b61a755215134…` (`released_equals_tag_rebuild: false`). Both report
+      `id name StockBear 0.1.0-dev4` and the same bench signature
+      `243f9a1c1ba5b36f`, so they are functionally equivalent but built by
+      different toolchains. The in-repo dev4 file is therefore recorded as a
+      **rebuild**, exactly as the user's provenance choice was meant to expose.
+      This does not affect the gate, whose baseline is dev5 (see 1.5).
 
 ---
 
@@ -84,8 +100,21 @@ and research logs. An incomplete checklist means an incomplete mission.
 - [x] **1.4** The immutable dev5 binary is unmodified: SHA-256 `391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918`.
       *Evidence:* `sha256sum benchmarks/binaries/stockbear-dev5-release` at 2026-11-07
       returned exactly that digest; re-verified after the sandbox reset and `chmod +x`.
-- [ ] **1.5** The designated gate baseline's provenance is verified as the bit-identical released artifact (not an unverified local rebuild).
-      *Evidence:* release-asset checksum verification or documented tag-rebuild equivalence, cited.
+- [x] **1.5** The designated gate baseline's provenance is verified as the bit-identical released artifact (not an unverified local rebuild).
+      *Evidence:* the gate baseline is **dev5**. `benchmarks/dev6-baseline/manifest.json`
+      records task `verify-baseline` executed on a GitHub-hosted runner
+      (2026-11-03T12:24:22Z) downloading
+      `releases/download/v0.1.0-dev5/stockbear-0.1.0-dev5-linux-x64.tar.gz`
+      (release commit `c94571313a1667048468cf6d4e070400dc5ab228`), with raw
+      `sha256sum -c` output preserved at
+      `benchmarks/exp-runs/exp0025-baseline/checksums.txt`
+      (`…linux-x64.tar.gz: OK`, `…windows-x64.zip: OK`). The extracted executable
+      digest `391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918`
+      was re-verified locally today (1.4), and the champion `params_abc.txt`
+      digest `8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be`
+      matches both the shipped and repo copies. See also
+      `benchmarks/dev6-baseline/PROVENANCE.md`. Unlike dev4, this baseline is the
+      actual published artifact, not a rebuild.
 - [x] **1.6** `DESIGN_LOG.md`, `AGENTS_LOG.md`, `benchmarks/FAILURE_LEDGER.md` were only appended to; no historical entry rewritten or deleted.
       *Evidence:* `git diff --numstat origin/main..HEAD` gives
       `DESIGN_LOG.md 923 added / 0 removed`, `AGENTS_LOG.md 1718 / 0`,
