@@ -1,0 +1,38 @@
+{
+  "experiment_id": "exp0061",
+  "source_sha": "91166e5fbbec5ffba1566bd80a43f8bb80199928",
+  "prereg_sha256": "2c518e70a312aa4793fae695860d7fae9d8392d377f0b5ee894643f00aa67617",
+  "budget_sha256": "9887f6eb23e55908ae1ffcfab6d3ce52477824f11a13052a551aa64be9c72bba",
+  "pass": false,
+  "stage": "complete",
+  "checks": {
+    "aa_spread": {
+      "value": 0.027915049635479194,
+      "limit_exclusive": 0.1,
+      "pass": true
+    },
+    "aa_median": {
+      "value": 0.9995397127072008,
+      "range": [
+        0.98,
+        1.02
+      ],
+      "pass": true
+    },
+    "increment_median": {
+      "value": 1.1709358675588133,
+      "limit": 1.05,
+      "pass": false
+    },
+    "combined_median": {
+      "value": 1.2506341871461353,
+      "limit": 1.1,
+      "pass": false
+    }
+  },
+  "games_dispatched": 0,
+  "instrument": "median of paired repeats per block",
+  "repeats": 3,
+  "aa_blocks": 60,
+  "ab_blocks": 90
+}

@@ -1,0 +1,13 @@
+{
+  "blocks": 60,
+  "repeats": 3,
+  "median_b_over_a": 0.9995397127072008,
+  "p10": 0.9855876442061688,
+  "p90": 1.013502693841648,
+  "min": 0.9770703827223248,
+  "max": 1.0571544668605373,
+  "a_params": "research-data/params_exp0055_race.txt",
+  "b_params": "research-data/params_exp0055_race.txt",
+  "aa_spread": 0.027915049635479194,
+  "usable": true
+}
