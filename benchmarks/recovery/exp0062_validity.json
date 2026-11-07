@@ -1,0 +1,286 @@
+{
+  "experiment": "exp0062",
+  "run_id": 42356232866,
+  "export_run_id": 42364780824,
+  "source_sha": "95606a513c4cc96231fbbba89e04165348c23fbb",
+  "valid": true,
+  "checks": {
+    "source_prereg_protocol": {
+      "pass": true,
+      "detail": {
+        "batchA": "95606a513c4cc96231fbbba89e04165348c23fbb",
+        "batchB": "95606a513c4cc96231fbbba89e04165348c23fbb",
+        "null": "95606a513c4cc96231fbbba89e04165348c23fbb",
+        "stage0": "95606a513c4cc96231fbbba89e04165348c23fbb"
+      }
+    },
+    "binary_identities": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "a": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+          "b": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+          "built": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+          "packaged": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d"
+        },
+        "batchB": {
+          "a": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+          "b": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+          "built": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+          "packaged": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d"
+        },
+        "null": {
+          "a": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+          "b": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+          "built": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+          "packaged": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d"
+        },
+        "stage0": {
+          "a": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+          "b": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+          "built": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d",
+          "packaged": "a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d"
+        }
+      }
+    },
+    "explicit_options": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_abc.txt",
+            "tteval": "true"
+          }
+        },
+        "batchB": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_abc.txt",
+            "tteval": "true"
+          }
+        },
+        "null": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true"
+          }
+        },
+        "stage0": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_abc.txt",
+            "tteval": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_abc.txt",
+            "tteval": "true"
+          }
+        }
+      }
+    },
+    "recorded_defaults": {
+      "pass": true,
+      "detail": {
+        "null_stage0_identical": true,
+        "candidate_battery_default": null
+      }
+    },
+    "per_job_checksums_independent": {
+      "pass": true,
+      "detail": "44/44"
+    },
+    "frozen_config_assets": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "a": {
+            "path": "research-data/params_exp0055_race.txt",
+            "sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01"
+          },
+          "b": {
+            "path": "research-data/params_abc.txt",
+            "sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be"
+          }
+        },
+        "batchB": {
+          "a": {
+            "path": "research-data/params_exp0055_race.txt",
+            "sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01"
+          },
+          "b": {
+            "path": "research-data/params_abc.txt",
+            "sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be"
+          }
+        },
+        "null": {
+          "a": {
+            "path": "research-data/params_exp0055_race.txt",
+            "sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01"
+          },
+          "b": {
+            "path": "research-data/params_exp0055_race.txt",
+            "sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01"
+          }
+        },
+        "stage0": {
+          "a": {
+            "path": "research-data/params_abc.txt",
+            "sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be"
+          },
+          "b": {
+            "path": "research-data/params_abc.txt",
+            "sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be"
+          }
+        }
+      }
+    },
+    "stage0_null_includes_zero": {
+      "pass": true,
+      "detail": [
+        -22.79837908919859,
+        7.661059561193576
+      ]
+    },
+    "null_null_includes_zero": {
+      "pass": true,
+      "detail": [
+        -11.830452730530249,
+        7.753385290057954
+      ]
+    },
+    "auditor_issues_zero": {
+      "pass": true,
+      "detail": []
+    },
+    "committed_blobs": {
+      "pass": true,
+      "detail": "54/54"
+    },
+    "auditor_checksums": {
+      "pass": true,
+      "detail": "44/44"
+    },
+    "option_load_proof": {
+      "pass": true,
+      "detail": {
+        "batchA": [
+          "arm A EvalParams: research-data/params_exp0055_race.txt",
+          "arm B EvalParams: research-data/params_abc.txt"
+        ],
+        "batchB": [
+          "arm A EvalParams: research-data/params_exp0055_race.txt",
+          "arm B EvalParams: research-data/params_abc.txt"
+        ],
+        "null": [
+          "arm A EvalParams: research-data/params_exp0055_race.txt",
+          "arm B EvalParams: research-data/params_exp0055_race.txt"
+        ],
+        "stage0": [
+          "arm A EvalParams: research-data/params_abc.txt",
+          "arm B EvalParams: research-data/params_abc.txt"
+        ]
+      }
+    },
+    "pgn_replay_15000": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "games_replayed": 6600,
+          "inconsistent": 0
+        },
+        "batchB": {
+          "games_replayed": 6600,
+          "inconsistent": 0
+        },
+        "null": {
+          "games_replayed": 1200,
+          "inconsistent": 0
+        },
+        "stage0": {
+          "games_replayed": 600,
+          "inconsistent": 0
+        }
+      }
+    },
+    "zero_failures": {
+      "pass": true,
+      "detail": true
+    },
+    "openings_disjoint": {
+      "pass": true,
+      "detail": []
+    },
+    "stage0_ctest_18": {
+      "pass": true,
+      "detail": "stage0 run.log"
+    },
+    "budget_games": {
+      "pass": true,
+      "detail": {
+        "tier1-exp0062-stage0": 600,
+        "tier1-exp0062-batchA": 6600,
+        "tier1-exp0062-batchB": 6600,
+        "tier1-exp0062-null": 1200
+      }
+    }
+  },
+  "combined": {
+    "pairs": 6570,
+    "clusters": 6570,
+    "pair_mean": 1.1168188736681888,
+    "score": 0.5584094368340944,
+    "cr1_stderr": 0.00661948126364036,
+    "naive_stderr": 0.00661948126364036,
+    "design_effect": 1.0,
+    "t_critical_0975": 1.9603251812140279,
+    "df": 6569,
+    "elo": 40.77318605108623,
+    "elo_ci95": [
+      36.209120265674436,
+      45.351303657561374
+    ],
+    "elo_ci95_repo_convention": [
+      36.16353905312699,
+      45.39716739944428
+    ],
+    "t_critical_repo_convention": 1.979931,
+    "obs_per_cluster": {
+      "1": 6570
+    }
+  },
+  "batchA_elo": 38.3421796129623,
+  "batchB_elo": 43.214115432186894,
+  "verdict": "GATE_UNMET",
+  "gate1_met": false,
+  "gate": {
+    "point_min": 75,
+    "lcb_strictly_greater": 50
+  },
+  "note": "Direct integrated threats+race vs exact published dev5; no component summation."
+}

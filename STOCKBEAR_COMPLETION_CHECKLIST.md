@@ -5,8 +5,8 @@ and research logs. An incomplete checklist means an incomplete mission.
 
 - **Branch:** `arena/6a6a2ba3-stockbear`
 - **Checklist created:** 2026-11-06 at HEAD `d3d40d59ff8b627ae7ce541a8ed59598da8c5898`
-- **Status:** **MISSION INCOMPLETE** — two components CONFIRMED (exp-0054 threats +23.54 [+15.69,+31.41]; exp-0060 race increment +27.01 [+20.87,+33.16]); the +75 / LCB>+50 strength gate is **NOT** met and no valid integral dev5 estimate exists yet.
-- **Latest:** exp-0061 (king-slider battery) is **BLOCKED BEFORE GAMES** by the prospective CI cost gate (increment 1.17094 > 1.05; combined 1.25063 > 1.10; A/A calibrated), zero games, no strength verdict; see `docs/DEV6_EXP0061_REPORT.md`. exp-0062 is a decisive integrated threats+race measurement vs exact published dev5 (frozen, running). Previous confirmed increment: exp-0060 (passed-pawn race confirmation, 7,800 games) is a **VALID MEASUREMENT / CONFIRMED INCREMENT**: combined **+27.0085 [+20.8746,+33.1592]**, batchA +29.0007, batchB +25.0260; both powered nulls include zero; 16/16 validity checks PASS; 7,800/7,800 PGN replay. Prospective CI cost gate passed before games (A/A spread 0.0155; increment 1.0207; combined 1.0903). Evidence: `docs/DEV6_EXP0060_REPORT.md`, `benchmarks/recovery/exp0060_validity.json`, `benchmarks/recovery/exp0060_independent_raw_audit.json` (run 42352690063). exp-0059 closed pre-game on cost-instrument noise; exp-0058 REJECTED; exp-0057 INCONCLUSIVE; exp-0056 INVALID. Individual Elo estimates are **never summed**; integrated direct-dev5 measurement remains required.
+- **Status:** **MISSION INCOMPLETE** — two components CONFIRMED (exp-0054 threats +23.54 [+15.69,+31.41]; exp-0060 race increment +27.01 [+20.87,+33.16]); exp-0062 provides the first VALID direct integral dev5 estimate for threats+race: **+40.7732 [+36.2091,+45.3513]**. The +75 / LCB>+50 strength gate is **NOT** met (point and LCB both fail; UCB +45.35 < +75).
+- **Latest:** exp-0062 (decisive integrated threats+race vs exact published dev5, 15,000 games) is a **VALID MEASUREMENT / GATE UNMET**: primary combined **+40.7732 [+36.2091,+45.3513]**, batchA +38.3422, batchB +43.2141; both powered nulls include zero; 17/17 validity checks PASS; auditor issues 0; 15,000/15,000 PGN replay. Evidence: `docs/DEV6_EXP0062_REPORT.md`, `benchmarks/recovery/exp0062_validity.json`, `benchmarks/recovery/exp0062_independent_raw_audit.json` (run 42356232866, export 42364780824). exp-0061 (king-slider battery) remains **BLOCKED BEFORE GAMES** by the prospective CI cost gate (increment 1.17094 > 1.05; combined 1.25063 > 1.10), zero games, no strength verdict; see `docs/DEV6_EXP0061_REPORT.md`. Previous confirmed increment: exp-0060 (passed-pawn race confirmation, 7,800 games) is a **VALID MEASUREMENT / CONFIRMED INCREMENT**: combined **+27.0085 [+20.8746,+33.1592]**, batchA +29.0007, batchB +25.0260; both powered nulls include zero; 16/16 validity checks PASS; 7,800/7,800 PGN replay. Prospective CI cost gate passed before games (A/A spread 0.0155; increment 1.0207; combined 1.0903). Evidence: `docs/DEV6_EXP0060_REPORT.md`, `benchmarks/recovery/exp0060_validity.json`, `benchmarks/recovery/exp0060_independent_raw_audit.json` (run 42352690063). exp-0059 closed pre-game on cost-instrument noise; exp-0058 REJECTED; exp-0057 INCONCLUSIVE; exp-0056 INVALID. Individual Elo estimates are **never summed**; integrated direct-dev5 measurement remains required.
 
 ## Checkbox rules (binding)
 
@@ -165,15 +165,18 @@ and research logs. An incomplete checklist means an incomplete mission.
       was made with **0 games played**, recorded as an appended amendment with
       `thresholds_changed: false` and the original values preserved verbatim; and
       exp-0056's failing null was **honoured**, not relaxed, producing an INVALID
-      verdict against the mission's own interest.
+      verdict against the mission's own interest. The same single-commit freeze
+      holds for exp-0058/0059/0060/0061/0062 preregs and plans; exp-0062 prereg
+      `b7bab412…` was created at `95606a5` before dispatch `619088f` and never
+      edited after the 15,000-game result.
 - [ ] **2.4** Cheap pre-game checks (correctness oracle, scale, cost, liveness, mutation) preceded every substantial compute spend.
       *Evidence:* per-experiment pre-game evidence JSON paths.
-- [ ] **2.5** Inconclusive/rejected experiments were preserved with full verdicts and the mission continued to a distinct next direction.
-      *Evidence:* ledger entries + subsequent experiment IDs.
-- [ ] **2.6** No inconclusive experiment was re-run without a justified preregistered reason.
-      *Evidence:* experiment ledger cross-check.
-- [ ] **2.7** The strategy is not blind summation of individually inconclusive candidates.
-      *Evidence:* final integration measured directly, not inferred (§3.3).
+- [x] **2.5** Inconclusive/rejected experiments were preserved with full verdicts and the mission continued to a distinct next direction.
+      *Evidence:* `benchmarks/FAILURE_LEDGER.md` preserves exp-0050/0051 negative, exp-0052 inconclusive, exp-0056 INVALID, exp-0057 inconclusive, exp-0058 rejected, exp-0059/0061 pre-game cost blocks and exp-0062 GATE UNMET; each was followed by a distinct next direction (exp-0053→0054→0055→0060→0061→0062). No closed verdict was rescored.
+- [x] **2.6** No inconclusive experiment was re-run without a justified preregistered reason.
+      *Evidence:* Ledger cross-check: exp-0052 was not rerun; exp-0056 INVALID was not retried as the same integral claim; exp-0057/0058 closed; exp-0060 was a preregistered technical replacement for exp-0059’s failed pre-game cost instrument with zero exp-0059 strength data; exp-0062 is a new direct integral design, not a rerun of an inconclusive experiment.
+- [x] **2.7** The strategy is not blind summation of individually inconclusive candidates.
+      *Evidence:* exp-0062 measured the integrated threats+race candidate DIRECTLY vs published dev5 (`docs/DEV6_EXP0062_REPORT.md`, run 42356232866): +40.7732 [+36.2091,+45.3513]. The report explicitly forbids summing exp-0054 +23.5374 and exp-0060 +27.0085; exp-0056’s invalid face value remains withheld.
 
 ## 3. Confirmed improvements and final candidate integration
 
@@ -185,44 +188,44 @@ and research logs. An incomplete checklist means an incomplete mission.
       issues 0, 4,800/4,800 PGN replayed. Prereg SHA
       `48e800e804dbaa27b32d369c368b3c7baed42c931a6d6236bc1166a4d5b993ea` committed
       at `dfb4838` before run 42244166583. NOT pooled with the exp-0053 screen.
-- [ ] **3.2** Every component of the final candidate is individually supported by adequate independent evidence.
-      *Evidence:* per-component confirmation citations.
-- [ ] **3.3** The final integrated candidate was measured DIRECTLY against the gate baseline; its strength was not inferred by adding individual Elo estimates.
-      *Evidence:* final match raw records + audit.
-- [ ] **3.4** All non-qualifying experimental features remain default-OFF in the shipped configuration.
-      *Evidence:* shipped parameter file + default bench signatures.
+- [x] **3.2** Every component of the final candidate is individually supported by adequate independent evidence.
+      *Evidence:* ThreatDetection: exp-0054 CONFIRMED +23.5374 [+15.6937,+31.4052] vs dev5 (`docs/DEV6_EXP0054_REPORT.md`). PassedPawnRace increment: exp-0060 CONFIRMED +27.0085 [+20.8746,+33.1592] over threats in the identical binary (`docs/DEV6_EXP0060_REPORT.md`). Both had powered nulls and independent audits; the final candidate contains only these two enabled components.
+- [x] **3.3** The final integrated candidate was measured DIRECTLY against the gate baseline; its strength was not inferred by adding individual Elo estimates.
+      *Evidence:* exp-0062 raw records + independent audit: `benchmarks/exp-runs/tier1-export/run-42356232866`, `benchmarks/recovery/exp0062_independent_raw_audit.json`, `docs/DEV6_EXP0062_REPORT.md`. Direct candidate-vs-dev5 primary combined +40.7732 [+36.2091,+45.3513]; no component summation.
+- [x] **3.4** All non-qualifying experimental features remain default-OFF in the shipped configuration.
+      *Evidence:* Shipped/default configuration remains bit-exact: all three established bench signatures exact with experimental rows default-zero (`exp0061_bench_signatures.log`, `tests/unit/test_eval_baseline.cpp` pin `0x64662610d489aade`). KingSliderBattery is default 0/0 and was not enabled in exp-0062; candidate race config sha `82f93ba7…` enables only ThreatDetection/PassedPawnRace.
 
 ## 4. Final strength measurement (the non-waivable gate)
 
 - [ ] **4.1** The final candidate achieves a **two-sided opening-clustered 95% CI lower bound STRICTLY GREATER THAN +50 Elo** against the designated bit-identical released baseline under fixed-time **40+4 ms**.
-      *Evidence:* final audit JSON with the exact LCB value; a lower bound equal to +50 FAILS.
-- [ ] **4.2** The comparison used the established frozen protocol: Hash 16, Threads 1, max-plies 240, fixed time (never node budget), established opening-cluster methodology and CR1/t interval.
-      *Evidence:* per-job config records independently verified.
-- [ ] **4.3** No frozen rule (openings, time control, clustering, CI method, adjudication) was changed after observing results.
-      *Evidence:* prereg vs run-config comparison.
-- [ ] **4.4** The final sample size meets or exceeds the preregistered final size.
-      *Evidence:* game counts reconciled from raw JSONL.
-- [ ] **4.5** Both independent batches are positive and reasonably consistent (if the frozen rule requires it).
-      *Evidence:* per-batch independently recomputed estimates.
+      *Evidence:* **FAIL / UNMET** — exp-0062 independent audit LCB = **+36.2091** (point +40.7732, CI [+36.2091,+45.3513]) vs exact dev5; gate also requires point ≥ +75. `benchmarks/recovery/exp0062_validity.json` verdict GATE_UNMET, gate1_met=false. A lower bound equal to +50 would also fail; this is strictly below.
+- [x] **4.2** The comparison used the established frozen protocol: Hash 16, Threads 1, max-plies 240, fixed time (never node budget), established opening-cluster methodology and CR1/t interval.
+      *Evidence:* exp-0062 per-job `fingerprint.json`/`match.jsonl` independently verified by `recovery_exp0062_validity.py` (17/17): control {base_ms:40,inc_ms:4}, hash 16, threads 1, max_plies 240, TTEval=true; CR1/t opening-clustered interval; fresh disjoint opening suites; no node budget.
+- [x] **4.3** No frozen rule (openings, time control, clustering, CI method, adjudication) was changed after observing results.
+      *Evidence:* Prereg `docs/DEV6_PREREG_EXP0062.md` sha `b7bab412…` frozen at `95606a5` before dispatch; exported fingerprints carry the same prereg sha and plan jobs. No post-result edit: validity check `source_prereg_protocol` PASS; git history shows the prereg/plan created before run 42356232866.
+- [x] **4.4** The final sample size meets or exceeds the preregistered final size.
+      *Evidence:* Raw JSONL reconciliation: 15,000 games dispatched/replayed (6,600+6,600+1,200+600). Primary dispatched 13,200 as preregistered; 13,170 scored after the pre-declared symmetric max-ply exclusions (batchA 11, batchB 19). Nulls 1,197 and 599 scored. Auditor replay counts match exactly.
+- [x] **4.5** Both independent batches are positive and reasonably consistent (if the frozen rule requires it).
+      *Evidence:* Independent per-batch estimates: batchA +38.3422 [+31.8866,+44.8242], batchB +43.2141 [+36.7652,+49.6928]; both positive, gap 4.87 Elo, combined +40.7732. No batch-label overlap (auditor).
 
 ## 5. Statistical and data-integrity validation
 
-- [ ] **5.1** All final game records were independently recomputed from raw per-game JSONL by an auditor sharing no code with the summary producer.
-      *Evidence:* auditor script path + output JSON.
-- [ ] **5.2** Every final PGN was fully replayed; all moves legal; all outcomes consistent with records.
-      *Evidence:* replay counts and inconsistency count (must be 0).
-- [ ] **5.3** Zero time forfeits, illegal moves, engine failures or unexplained game failures in the final run (or each is explicitly accounted for under a pre-declared symmetric policy).
-      *Evidence:* termination histogram from raw records.
-- [ ] **5.4** All validity nulls have CIs including zero.
-      *Evidence:* null-job recomputed intervals.
-- [ ] **5.5** All committed blob digests and per-job `SHA256SUMS` verify.
-      *Evidence:* `verified/total` counts from the auditor.
-- [ ] **5.6** Every file-valued UCI option has positive per-arm load proof; no silent fallback occurred.
-      *Evidence:* per-arm `LOAD VERIFIED` lines cross-checked against raw probe output and the frozen plan.
-- [ ] **5.7** Arm binary identities match the declared design and the pinned baseline digest.
-      *Evidence:* fingerprint/config digests vs plan.
-- [ ] **5.8** Auditor total issues = 0.
-      *Evidence:* final audit JSON `issues: []`.
+- [x] **5.1** All final game records were independently recomputed from raw per-game JSONL by an auditor sharing no code with the summary producer.
+      *Evidence:* `scripts/recovery_independent_audit.py` (shares no code with summary producer) recomputed all exp-0062 jobs from raw `match.jsonl`; output `benchmarks/recovery/exp0062_independent_raw_audit.json`, log `exp0062_independent_audit.log`; TOTAL ISSUES 0.
+- [x] **5.2** Every final PGN was fully replayed; all moves legal; all outcomes consistent with records.
+      *Evidence:* Auditor PGN replay: batchA 6,600, batchB 6,600, null 1,200, stage0 600 = **15,000/15,000**, inconsistent=0 in every job (`exp0062_independent_raw_audit.json`).
+- [x] **5.3** Zero time forfeits, illegal moves, engine failures or unexplained game failures in the final run (or each is explicitly accounted for under a pre-declared symmetric policy).
+      *Evidence:* Raw termination histograms: TIME_FORFEIT=0, ILLEGAL=0, ENGINE_FAILURE=0 in all four jobs. The only primary exclusions are 30 pre-declared symmetric UNADJUDICATED_MAX_PLIES games (11+19); null exclusions 3+1 under the same policy.
+- [x] **5.4** All validity nulls have CIs including zero.
+      *Evidence:* Candidate null −2.0369 [−11.8305,+7.7534] and stage0 null −7.5541 [−22.7984,+7.6611] both include zero (independent auditor; validity checks `null_null_includes_zero` and `stage0_null_includes_zero` PASS).
+- [x] **5.5** All committed blob digests and per-job `SHA256SUMS` verify.
+      *Evidence:* Auditor: committed blobs **54/54** match; per-job SHA256SUMS **44/44** verified. Validity script independently re-hashed all 44 per-job files and matched recorded input-file digests for both configs.
+- [x] **5.6** Every file-valued UCI option has positive per-arm load proof; no silent fallback occurred.
+      *Evidence:* Per-arm positive load proofs in exported `option_probe_A/B.txt` and auditor `option_load_proof`: batchA/B race vs champion, null race/race, stage0 champion/champion; no `could not load` fallback. Validity check PASS.
+- [x] **5.7** Arm binary identities match the declared design and the pinned baseline digest.
+      *Evidence:* Fingerprints/configs: candidate arms built==packaged==tested sha `a32f082b869e…`; primary baseline arms sha `391cb50e13ab…` exactly equal pinned published dev5; null/stage0 arms identical candidate binary. Validity `binary_identities` PASS.
+- [x] **5.8** Auditor total issues = 0.
+      *Evidence:* `benchmarks/recovery/exp0062_independent_raw_audit.json` has `issues: []`; auditor log ends `TOTAL ISSUES: 0 / INDEPENDENT AUDIT PASS`.
 
 ## 6. Engine correctness and regression testing
 
@@ -298,16 +301,16 @@ and research logs. An incomplete checklist means an incomplete mission.
 
 ## 7. Final artifact and reproducibility audit
 
-- [ ] **7.1** The final executable identity is verified and its hash recorded.
-      *Evidence:* SHA-256 of the packaged binary, matched to the tested binary.
-- [ ] **7.2** The baseline executable identity is verified and its hash recorded.
-      *Evidence:* SHA-256 matched to the pinned digest.
-- [ ] **7.3** The final source SHA, prereg SHA and opening-suite SHA are pinned and enforced in the run.
-      *Evidence:* fingerprint fields + runner assertions.
-- [ ] **7.4** Raw records, PGNs, checksums, configs and analysis scripts are committed and reproducible.
-      *Evidence:* export directory listing + re-run of the analysis reproducing the numbers.
-- [ ] **7.5** Results reproduce on the actual execution environment.
-      *Evidence:* documented environment + reproducibility check.
+- [x] **7.1** The final executable identity is verified and its hash recorded.
+      *Evidence:* Packaged candidate binary SHA-256 `a32f082b869e6bd2f318691e6760026aaad2c23cbcee201205f598b1eaf1da3d`, equal to built and tested binary in every candidate arm (`fingerprint.json`, validity `binary_identities`).
+- [x] **7.2** The baseline executable identity is verified and its hash recorded.
+      *Evidence:* Baseline executable SHA-256 `391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918`, matched to the pinned published dev5 digest in fingerprints and runner assertion (`dev5 baseline sha256 … VERIFIED`).
+- [x] **7.3** The final source SHA, prereg SHA and opening-suite SHA are pinned and enforced in the run.
+      *Evidence:* Fingerprints enforce source sha `95606a513c4cc96231fbbba89e04165348c23fbb`, prereg sha `b7bab412…`, opening-suite shas (batchA `efeaac4d…`, batchB `8761cc60…`, null `e33350c2…`, stage0 `12be22cc…`); runner verifies pinned plan/prereg/baseline before games.
+- [x] **7.4** Raw records, PGNs, checksums, configs and analysis scripts are committed and reproducible.
+      *Evidence:* Export directory `benchmarks/exp-runs/tier1-export/run-42356232866` contains raw JSONL/PGN/CSV, configs, fingerprints, probes, checksums and packages; analysis scripts `recovery_independent_audit.py` and `recovery_exp0062_validity.py` are committed and were re-run locally to reproduce the audit/validity JSONs.
+- [x] **7.5** Results reproduce on the actual execution environment.
+      *Evidence:* Execution environment documented in each `match.jsonl` configuration (host/machine/python_chess) and `export_manifest.json`; GitHub-hosted ubuntu-latest run 42356232866 succeeded. Independent local re-analysis of the exported raw records reproduces the combined +40.7732 [+36.2091,+45.3513] and all null intervals.
 - [ ] **7.6** No build artifacts, large datasets or unclear-licensing assets were committed.
       *Evidence:* `git ls-files` inspection + patch size.
 
@@ -342,8 +345,10 @@ Progress: exp-0050/0051 closed negative; exp-0052 inconclusive; exp-0053 screen
 advance; **exp-0054 CONFIRMED threats (+23.54 [+15.69,+31.41])**; exp-0055 screen
 advance; exp-0056 INVALID integral; exp-0057 inconclusive; exp-0058 rejected;
 exp-0059 pre-game cost failure; **exp-0060 CONFIRMED race increment (+27.01
-[+20.87,+33.16])**. Two components are now individually confirmed, but their
-Elo estimates are not additive and the integrated candidate has no valid direct
-dev5 measurement. Further distinct improvements and/or a direct integrated gate
-run are still required. Execution continues with source-grounded architecture
-candidates and staged validation.
+[+20.87,+33.16])**; exp-0061 battery BLOCKED pre-game on cost; **exp-0062 VALID
+direct integral threats+race vs dev5: +40.7732 [+36.2091,+45.3513], GATE UNMET**.
+The integrated candidate now has a valid direct dev5 estimate, but it is far
+below the +75 / LCB>+50 gate (UCB +45.35 < +75). Component Elo is not additive.
+Further distinct source-grounded improvements and a new direct integrated gate
+measurement are required before any completion push. No merge/tag/release is
+authorized.

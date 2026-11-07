@@ -1,0 +1,134 @@
+{
+  "conclusion": "success",
+  "jobs": [
+    {
+      "completedAt": "2026-11-07T10:38:20Z",
+      "conclusion": "success",
+      "databaseId": 128380431311,
+      "name": "Resolve dispatch / verify pinned plan",
+      "startedAt": "2026-11-07T10:38:07Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 2,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run set -euo pipefail",
+          "number": 3,
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "number": 4,
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Install cost-gate build tools",
+          "number": 5,
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Prospective cost gate (fail-closed before any game)",
+          "number": 6,
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Upload cost-gate evidence",
+          "number": 7,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 14,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 15,
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/coderunknow/StockBear/actions/runs/42364780824/job/128380431311"
+    },
+    {
+      "completedAt": "2026-11-07T10:38:20Z",
+      "conclusion": "success",
+      "databaseId": 128380480880,
+      "name": "Export evidence (deliberate, explicit)",
+      "startedAt": "2026-11-07T10:38:21Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 2,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Download artifacts from the pinned run (supported interface)",
+          "number": 3,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Verify checksums and build export manifest",
+          "number": 4,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Commit ONE deliberate evidence export",
+          "number": 5,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 10,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 11,
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/coderunknow/StockBear/actions/runs/42364780824/job/128380480880"
+    },
+    {
+      "completedAt": "2026-11-07T10:38:20Z",
+      "conclusion": "skipped",
+      "databaseId": 128380481824,
+      "name": "matrix.job.id",
+      "startedAt": "2026-11-07T10:38:20Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/coderunknow/StockBear/actions/runs/42364780824/job/128380481824"
+    }
+  ],
+  "status": "completed"
+}

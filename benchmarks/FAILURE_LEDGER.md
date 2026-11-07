@@ -2706,3 +2706,23 @@ prospective CI cost gate failed: increment median 1.17094 (>1.05) and combined
 median 1.25063 (>1.10), with calibrated A/A spread 0.02792. Zero games. Raw cost
 evidence exported from run 42355810868 via export 42355938905. Do not reuse as a
 budget pass; a future variant needs a new identity and the same limits.
+
+## exp-0062 — VALID DIRECT INTEGRAL MEASUREMENT / GATE UNMET (2026-11-07)
+
+- **Prereg** `docs/DEV6_PREREG_EXP0062.md` sha `b7bab412…90365` frozen at
+  `95606a5` before dispatch `619088f`. Run **42356232866** (15,000 g), export
+  **42364780824**. Direct integrated threats+race vs exact published dev5; no
+  pooling with exp-0054/0060 and no reuse of exp-0056's INVALID face value.
+- **Result:** primary combined **+40.7732 [+36.2091,+45.3513]**, W/D/L
+  5352/4007/3811, 13,170 scored of 13,200 primary games (30 symmetric max-ply
+  exclusions). batchA +38.3422, batchB +43.2141. Candidate null −2.0369
+  [−11.8305,+7.7534]; stage0 −7.5541 [−22.7984,+7.6611]; both include 0.
+- **Validity:** 17/17 condition checks PASS (`exp0062_validity.json`); auditor
+  issues 0; 54/54 blobs, 44/44 job sums; 15,000/15,000 PGN replay, 0 inconsistent;
+  zero forfeits/illegal/failures; positive load proofs; exact dev5 baseline digest;
+  fresh ctest 18/18. No new feature enabled; exp-0060 prospective cost evidence
+  covers the enabled config; default-off battery preserves bench signatures.
+- **Verdict: GATE UNMET.** Frozen Gate 1 requires point ≥ +75 AND LCB > +50.
+  Point +40.77 and LCB +36.21 fail; UCB +45.35 is also below +75. This is a valid
+  integral estimate, not a component increment. Do not sum component Elo or
+  rescale after close. Mission remains incomplete; no merge/tag/release.

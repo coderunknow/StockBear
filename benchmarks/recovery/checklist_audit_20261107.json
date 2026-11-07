@@ -1,11 +1,11 @@
 {
-  "head": "cbdc2b09380c13bee17238a1a7e1844a8cfd4fac",
+  "head": "c6dab73bfe5809c80878c6be7ab7c3fc518d8b98",
   "branch": "arena/6a6a2ba3-stockbear",
   "main_sha": "6e7c2e02881faf93a84990a8345c41ad28bcae11",
   "version_branch": "0.1.0-dev6",
   "version_main": "0.1.0-dev5",
-  "checked": 23,
-  "open": 35,
+  "checked": 46,
+  "open": 12,
   "total": 58,
   "items": [
     {
@@ -182,20 +182,24 @@
     },
     {
       "id": "2.5",
-      "checked": false,
-      "cited_filelike": [],
+      "checked": true,
+      "cited_filelike": [
+        "benchmarks/FAILURE_LEDGER.md"
+      ],
       "missing_paths": []
     },
     {
       "id": "2.6",
-      "checked": false,
+      "checked": true,
       "cited_filelike": [],
       "missing_paths": []
     },
     {
       "id": "2.7",
-      "checked": false,
-      "cited_filelike": [],
+      "checked": true,
+      "cited_filelike": [
+        "docs/DEV6_EXP0062_REPORT.md"
+      ],
       "missing_paths": []
     },
     {
@@ -209,103 +213,132 @@
     },
     {
       "id": "3.2",
-      "checked": false,
-      "cited_filelike": [],
+      "checked": true,
+      "cited_filelike": [
+        "docs/DEV6_EXP0054_REPORT.md",
+        "docs/DEV6_EXP0060_REPORT.md"
+      ],
       "missing_paths": []
     },
     {
       "id": "3.3",
-      "checked": false,
-      "cited_filelike": [],
+      "checked": true,
+      "cited_filelike": [
+        "benchmarks/exp-runs/tier1-export/run-42356232866",
+        "benchmarks/recovery/exp0062_independent_raw_audit.json",
+        "docs/DEV6_EXP0062_REPORT.md"
+      ],
       "missing_paths": []
     },
     {
       "id": "3.4",
-      "checked": false,
-      "cited_filelike": [],
+      "checked": true,
+      "cited_filelike": [
+        "tests/unit/test_eval_baseline.cpp"
+      ],
       "missing_paths": []
     },
     {
       "id": "4.1",
       "checked": false,
-      "cited_filelike": [],
+      "cited_filelike": [
+        "benchmarks/recovery/exp0062_validity.json"
+      ],
       "missing_paths": []
     },
     {
       "id": "4.2",
-      "checked": false,
-      "cited_filelike": [],
-      "missing_paths": []
+      "checked": true,
+      "cited_filelike": [
+        "fingerprint.json"
+      ],
+      "missing_paths": [
+        "fingerprint.json"
+      ]
     },
     {
       "id": "4.3",
-      "checked": false,
-      "cited_filelike": [],
+      "checked": true,
+      "cited_filelike": [
+        "docs/DEV6_PREREG_EXP0062.md"
+      ],
       "missing_paths": []
     },
     {
       "id": "4.4",
-      "checked": false,
+      "checked": true,
       "cited_filelike": [],
       "missing_paths": []
     },
     {
       "id": "4.5",
-      "checked": false,
+      "checked": true,
       "cited_filelike": [],
       "missing_paths": []
     },
     {
       "id": "5.1",
-      "checked": false,
-      "cited_filelike": [],
+      "checked": true,
+      "cited_filelike": [
+        "scripts/recovery_independent_audit.py",
+        "benchmarks/recovery/exp0062_independent_raw_audit.json"
+      ],
       "missing_paths": []
     },
     {
       "id": "5.2",
-      "checked": false,
-      "cited_filelike": [],
-      "missing_paths": []
+      "checked": true,
+      "cited_filelike": [
+        "exp0062_independent_raw_audit.json"
+      ],
+      "missing_paths": [
+        "exp0062_independent_raw_audit.json"
+      ]
     },
     {
       "id": "5.3",
-      "checked": false,
+      "checked": true,
       "cited_filelike": [],
       "missing_paths": []
     },
     {
       "id": "5.4",
-      "checked": false,
+      "checked": true,
       "cited_filelike": [],
       "missing_paths": []
     },
     {
       "id": "5.5",
-      "checked": false,
-      "cited_filelike": [
-        "verified/total"
-      ],
-      "missing_paths": [
-        "verified/total"
-      ]
-    },
-    {
-      "id": "5.6",
-      "checked": false,
+      "checked": true,
       "cited_filelike": [],
       "missing_paths": []
     },
     {
+      "id": "5.6",
+      "checked": true,
+      "cited_filelike": [
+        "option_probe_A/B.txt"
+      ],
+      "missing_paths": [
+        "option_probe_A/B.txt"
+      ]
+    },
+    {
       "id": "5.7",
-      "checked": false,
+      "checked": true,
       "cited_filelike": [],
       "missing_paths": []
     },
     {
       "id": "5.8",
-      "checked": false,
-      "cited_filelike": [],
-      "missing_paths": []
+      "checked": true,
+      "cited_filelike": [
+        "benchmarks/recovery/exp0062_independent_raw_audit.json",
+        "TOTAL ISSUES: 0 / INDEPENDENT AUDIT PASS"
+      ],
+      "missing_paths": [
+        "TOTAL ISSUES: 0 / INDEPENDENT AUDIT PASS"
+      ]
     },
     {
       "id": "6.1",
@@ -317,7 +350,7 @@
       "id": "6.2",
       "checked": true,
       "cited_filelike": [
-        "./build-rel/stockbear"
+        "benchmarks/recovery/exp0061_individual_ctest.log"
       ],
       "missing_paths": []
     },
@@ -325,11 +358,9 @@
       "id": "6.3",
       "checked": true,
       "cited_filelike": [
-        "9/17 ... Passed"
+        "CMakeLists.txt"
       ],
-      "missing_paths": [
-        "9/17 ... Passed"
-      ]
+      "missing_paths": []
     },
     {
       "id": "6.4",
@@ -398,33 +429,43 @@
     },
     {
       "id": "7.1",
-      "checked": false,
-      "cited_filelike": [],
-      "missing_paths": []
+      "checked": true,
+      "cited_filelike": [
+        "fingerprint.json"
+      ],
+      "missing_paths": [
+        "fingerprint.json"
+      ]
     },
     {
       "id": "7.2",
-      "checked": false,
+      "checked": true,
       "cited_filelike": [],
       "missing_paths": []
     },
     {
       "id": "7.3",
-      "checked": false,
+      "checked": true,
       "cited_filelike": [],
       "missing_paths": []
     },
     {
       "id": "7.4",
-      "checked": false,
-      "cited_filelike": [],
+      "checked": true,
+      "cited_filelike": [
+        "benchmarks/exp-runs/tier1-export/run-42356232866"
+      ],
       "missing_paths": []
     },
     {
       "id": "7.5",
-      "checked": false,
-      "cited_filelike": [],
-      "missing_paths": []
+      "checked": true,
+      "cited_filelike": [
+        "export_manifest.json"
+      ],
+      "missing_paths": [
+        "export_manifest.json"
+      ]
     },
     {
       "id": "7.6",
@@ -483,7 +524,7 @@
     "dev5": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
     "dev4_rebuild": "1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae"
   },
-  "append_only_numstat": "1792\t0\tAGENTS_LOG.md\n949\t0\tDESIGN_LOG.md\n2184\t0\tbenchmarks/FAILURE_LEDGER.md",
+  "append_only_numstat": "1792\t0\tAGENTS_LOG.md\n949\t0\tDESIGN_LOG.md\n2216\t0\tbenchmarks/FAILURE_LEDGER.md",
   "append_only_violation": false,
   "raw_artifact_non_additions": []
 }

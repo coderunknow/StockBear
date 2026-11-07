@@ -17,7 +17,7 @@ component confirmation followed by direct integrated measurement.
 
 ## Ranked candidates
 
-### 1. ACTIVE: passed-pawn race confirmation and later integration
+### 1. COMPLETE: passed-pawn race confirmation and direct integration (exp-0060 / exp-0062)
 
 - **Weakness:** shipped passer score is advance-only; no king escort/blockade or
   blocked-path geometry. `evaluation.cpp:368–427` documents the gap; live path in
@@ -34,8 +34,16 @@ component confirmation followed by direct integrated measurement.
 - **Implementation/validation:** already implemented at `2594479`; 7 tests,
   oracle 800/0, invariant 4000/0, 10/10 mutants, liveness 11/11. exp-0060 uses
   unchanged source/config checksums and fresh disjoint openings.
-- **Rank rationale:** only pending component with a valid positive screen and a
-  direct confirmation path. Highest priority by evidence, not convenience.
+- **Rank rationale / outcome:** was the only pending component with a valid
+  positive screen and a direct confirmation path. exp-0060 CONFIRMED the race
+  increment (+27.0085 [+20.8746,+33.1592]) over threats. exp-0062 then measured
+  the integrated threats+race candidate DIRECTLY vs published dev5 (15,000
+  games): **+40.7732 [+36.2091,+45.3513]**, valid but **GATE UNMET** (point < +75,
+  LCB < +50, UCB +45.35 < +75). This closes the race/integration direction as
+  insufficient for the gate; it does not authorize summing component estimates.
+  Next work must be a distinct source-grounded improvement or a
+  semantics-preserving optimization of a cost-blocked mechanism, followed by a
+  new direct integrated measurement.
 
 ### 2. NEW eval candidate: king-facing slider battery / x-ray alignment
 
