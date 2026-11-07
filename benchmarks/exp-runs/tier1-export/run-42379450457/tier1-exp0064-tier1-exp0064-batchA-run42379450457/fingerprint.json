@@ -1,0 +1,62 @@
+{
+  "fingerprint_sha256": "90cf32d7368cf415a121892cdec4a6e9037efc51cef5ef86e0a265e0e5aa17d3",
+  "source_sha": "48a6110104448b3e3197286c2216d21cf047aba0",
+  "prereg_sha256": "0f29d36bb5725df062f293cdfaa6237914ec8b44af7778c622931d26890d0cfc",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0064.md",
+    "prereg_sha256": "0f29d36bb5725df062f293cdfaa6237914ec8b44af7778c622931d26890d0cfc",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "assets": [
+      "research-data/params_exp0055_race.txt"
+    ],
+    "engine_a": "candidate",
+    "engine_b": "candidate",
+    "id": "tier1-exp0064-batchA",
+    "games": 3000,
+    "seed": 2026110765,
+    "openings": "benchmarks/positions/openings_exp0064_batchA.txt",
+    "null": false,
+    "ctest": false,
+    "a_options": [
+      "EvalParams=research-data/params_exp0055_race.txt",
+      "TTEval=true",
+      "TTExtensionAgnostic=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_exp0055_race.txt",
+      "TTEval=true",
+      "TTExtensionAgnostic=false"
+    ],
+    "note": "SCREEN batchA; TT-identity increment over threats+race, same binary"
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "655fbbcc9ec13f0ff437cd844bedb970e32362289399f7c690a2424848380542",
+  "packaged_binary_sha256": "655fbbcc9ec13f0ff437cd844bedb970e32362289399f7c690a2424848380542",
+  "package_sha256": "d47154aad58c8c95aac0b4f76c31f224a9d61dbeb00c331f1b75e11033d59503",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "60f7ddc3236a8d2334affea0006e3dcba1109be37ae424ff74ec2f24a3cb6b1d",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_exp0055_race.txt",
+    "TTEval=true",
+    "TTExtensionAgnostic=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_exp0055_race.txt",
+    "TTEval=true",
+    "TTExtensionAgnostic=false"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0064-batchA/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0064-batchA/stockbear",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}
