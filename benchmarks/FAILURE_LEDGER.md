@@ -2600,3 +2600,38 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
   only**.
 - **Gates:** 1 **UNMET**, 2 **SUPPORTED** (exp-0054), 3 **PASS**, 4 **UNMET**.
   Mission **ACTIVE / INCOMPLETE**; exp-0047 **DORMANT**.
+
+---
+
+## exp-0057 — VALID MEASUREMENT / CLOSED AS INCONCLUSIVE (2026-11-07)
+
+- **Prereg** `docs/DEV6_PREREG_EXP0057.md` sha `cdbf6dbe…39e3` frozen at `0f60282`
+  before any game. Run **42341407630** (5,800 g), export **42342776434**.
+- **Result:** batchA +10.2832 [−0.90,+21.48]; batchB +13.1269 [+2.39,+23.89];
+  **combined +11.7020 [+3.9577,+19.4580]**, 1432/1258/1300, 1,990 clusters,
+  bootstrap [+3.93,+19.49]. **Batch gap only 2.84 Elo.**
+- **All 11 validity conditions PASS**, including per-arm switch proof (A=true,
+  B=false in primaries; equal within nulls) and identical arm binaries in all
+  jobs. 0 forfeits/illegal/failures; **5,800/5,800 PGN replayed, 0 inconsistent**;
+  54/54 blobs; 44/44 sums; stage0 fresh ctest.
+- **Verdict: CLOSED AS INCONCLUSIVE.** ADVANCE needed point ≥ +15; +11.70 is below
+  it. CLOSE needed UCB < +5 or point ≤ 0; neither. No claim, no default change,
+  no rescale, no retune, no re-run, no sample increase. Switch stays **false**.
+- **POWERED NULL WORKED — design fix validated.** Raising the candidate null to
+  1,200 g gave [−17.03,+1.88] and stage0 (600 g) [−21.44,+9.80]; both include 0.
+  exp-0056's spurious null rejection did not recur, confirming a 400-game null
+  (~±19 Elo) was an under-powered validity instrument. Criterion never relaxed.
+- **TIER-2 ANCHOR REGRESSED.** exp-0036's local-core +21.52 [+10.28,+32.81] became
+  +11.70 [+3.96,+19.46] on isolated Tier-1 VMs — the exp-0017 regression pattern
+  again, and the reason Tier-2 screens were never banked.
+- **Survey finding (recorded for the next direction):** dev5 and the candidate
+  have **identical UCI defaults** (0 differences). `counterMoves`,
+  `continuationHistory`, `captureHistory`, `lmrHistory`, `historyMaluses`,
+  `moveCountPruning`, `modernLMR`, `iir`, `improving` are shipped **OFF in both**,
+  so exp-0014's "-off" ablations were **no-ops** on already-off switches (all
+  classified neutral within ±25 noise at 480 g). These are fully implemented but
+  have **never had a proper Tier-1 turn-ON test**. Liveness at depth 10: all four
+  probed switches change the tree 12/12; node deltas countermoves +9.20 %,
+  continuationhistory +7.18 %, capturehistory −4.65 %, badcapturepruning −1.26 %.
+- **Gates:** 1 **UNMET**, 2 **SUPPORTED** (exp-0054), 3 **PASS**, 4 **UNMET**.
+  Mission **ACTIVE / INCOMPLETE**; ~+35 Elo still required.
