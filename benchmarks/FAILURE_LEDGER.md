@@ -2530,3 +2530,27 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
   **not** a Gate-1 quantity, and must **never** be summed with exp-0054's +23.54.
 - **Gate 1 remains UNMET; mission ACTIVE / INCOMPLETE.** `PassedPawnRace` stays
   shipped **0**. No default change, no merge, tag, release or deploy.
+
+### exp-0055 verdict — VALID MEASUREMENT / SCREEN ADVANCE (2026-11-07)
+
+- **Result (independently recomputed from raw JSONL):** batchA **+28.0044**
+  [+16.2507,+39.8223]; batchB **+23.9268** [+11.9705,+35.9401];
+  **FROZEN COMBINED +25.9606 [+17.5818,+34.3697]**, W/D/L 1188/844/963,
+  1,495 clusters, design effect 1.0, bootstrap [+17.5610,+34.3906].
+- **All 11 frozen conditions PASS ⇒ SCREEN ADVANCE.** Audit **0 issues**;
+  0 forfeits/illegal/failures; **3,800/3,800 PGN replayed, 0 inconsistent**;
+  54/54 blobs, 44/44 sums; both nulls include 0; stage0 fresh ctest 17/17;
+  per-arm `EvalParams LOAD VERIFIED` with per-role digests; auditor confirmed the
+  declared same-binary ablation had equal arm digests.
+- **Five unscored games are NOT failures:** all `UNADJUDICATED_MAX_PLIES`
+  (result `*`, 240 plies, `engine_failure=false`) under the pre-declared symmetric
+  policy "capped games unadjudicated"; excluded via complete pairs.
+- **What it measures:** the race **INCREMENT** on top of the confirmed threat
+  term, by same-binary ablation. **Never** to be summed with exp-0054's +23.5374.
+  An integral claim requires a separate DIRECT measurement vs released dev5.
+- **Disposition:** `PassedPawnRace` stays shipped **0**. Screen ADVANCE authorizes
+  only a new preregistered confirmation. exp-0055's 1,900 openings and 3,800 games
+  are **burned for selection**; no re-run, no pooling, no rescale.
+- **Gate 1 still UNMET** (+75 point and LCB>+50 vs dev5 both unmet). Mission
+  **ACTIVE / INCOMPLETE**; exp-0047 **DORMANT**. No default change, no merge, tag,
+  release or deploy.

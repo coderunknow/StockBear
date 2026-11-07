@@ -6,6 +6,7 @@ and research logs. An incomplete checklist means an incomplete mission.
 - **Branch:** `arena/6a6a2ba3-stockbear`
 - **Checklist created:** 2026-11-06 at HEAD `d3d40d59ff8b627ae7ce541a8ed59598da8c5898`
 - **Status:** **MISSION INCOMPLETE** — one improvement CONFIRMED (exp-0054, +23.54 [+15.69,+31.41]); the +75 / LCB>+50 strength gate is **NOT** met.
+- **Latest:** exp-0055 passed-pawn race **SCREEN ADVANCE** (+25.9606 [+17.5818,+34.3697], 3,000 primary games, audit 0 issues). This is an **increment** over the threat term measured by same-binary ablation — **not** a Gate-1 quantity and **never** to be summed with exp-0054. Next: a direct integral confirmation vs released dev5. Evidence: `docs/DEV6_EXP0055_REPORT.md`, `benchmarks/recovery/exp0055_independent_raw_audit.json` (`frozen_decision`, run 42336347904).
 
 ## Checkbox rules (binding)
 

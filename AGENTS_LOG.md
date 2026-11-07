@@ -2195,3 +2195,18 @@ abandoned exp-0026 ConnectedPassed/RookBehindPassed counts. Mission ACTIVE.
   interpretation. **6.8 held open**: cost was measured with a calibrated
   instrument but no numeric budget was pre-declared.
 - Mission remains **INCOMPLETE**; Gate 1 **UNMET**; no completion push.
+
+## 2026-11-07 (later) — exp-0055 screen result: ADVANCE
+
+- Watched run **42336347904** to completion via `gh run watch` (the per-job Actions
+  API durations are the known negative/zero defect and were not used). All 4 jobs
+  SUCCESS. Exported via run **42337431542**, ff-merged to `b59e96b`.
+- `recovery_independent_audit.py --pgn-replay`: **TOTAL ISSUES 0, PASS**.
+  Combined **+25.9606 [+17.5818,+34.3697]**, 1,495 clusters. Investigated the 5
+  unscored games directly in the raw JSONL: all `UNADJUDICATED_MAX_PLIES` under the
+  pre-declared capped-game policy, `engine_failure=false` — not forfeits.
+- Applied prereg §7 mechanically: **all 11 conditions PASS ⇒ SCREEN ADVANCE**.
+  `frozen_decision` written into the audit JSON; auditor stdout preserved.
+- Wrote `docs/DEV6_EXP0055_REPORT.md`. Gate 1 still UNMET; no default change.
+- Next: new preregistered CONFIRMATION of the INTEGRAL candidate (threats+race)
+  measured DIRECTLY against released dev5 — never by summing estimates.
