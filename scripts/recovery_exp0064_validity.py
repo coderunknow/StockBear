@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN_ID = 42379450457
-EXPORT_RUN_ID = 0  # set after the explicit export run; asserted before closure
+EXPORT_RUN_ID = 42381671293
 D = ROOT / f"benchmarks/exp-runs/tier1-export/run-{RUN_ID}"
 SOURCE = "48a6110104448b3e3197286c2216d21cf047aba0"
 PREREG = "0f29d36bb5725df062f293cdfaa6237914ec8b44af7778c622931d26890d0cfc"

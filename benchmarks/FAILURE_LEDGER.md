@@ -2747,3 +2747,42 @@ budget pass; a future variant needs a new identity and the same limits.
   UCB <+5 satisfied (point −6.03, UCB +2.08). No rescale/retune/pooling. The
   battery direction is closed by game evidence. Best integral candidate remains
   threats+race +40.7732 [+36.2091,+45.3513], Gate 1 UNMET. No merge/tag/release.
+
+## exp-0064 — extension-agnostic main-TT identity — VALID / INCONCLUSIVE (2026-11-07)
+
+- **Hypothesis:** the main TT mixes the per-path check-extension BUDGET into both
+  the bucket index and the entry comparison, so identical positions reached with
+  a different remaining budget are unreachable. Measured pre-game on 250
+  positions at Hash 16: 2.73 % / 4.59 % / 4.40 % of ALL probes at depths 5/7/9
+  blocked only by that field by a deep-enough entry (+9.6/+19.4/+20.0 % relative
+  hit gain available); rule50-only ≤0.021 %, context-only ≤0.0001 %.
+- **Implementation:** one default-OFF switch `TTExtensionAgnostic`, one shared
+  helper used at BOTH probe and store. `rule50` and `historyContext` unchanged, so
+  draw/repetition soundness untouched. No new evaluate/SEE/movegen call site.
+- **Pre-game gates:** ctest 19/19; bench d4/d6/d7 all exact; model oracle 720,000
+  checks / 0 mismatches; python-chess soundness oracle 155 positions / 2,453 PV
+  moves / 10 mates per arm / 0 problems; mutation matrix 13/13 KILLED with the
+  equivalence control SURVIVING; switch liveness 242/250 positions and d7 nodes
+  0.9119×; frozen fixed-depth wall-time guard 0.9593 (d5) / 0.8679 (d7) ≤1.10 with
+  A/A spread <0.10; fresh openings seed 2026110664, 3,900, overlap 0.
+- **Freeze:** prereg `0f29d36b…`, plan, budget and implementation committed at
+  `48a6110` BEFORE any game; run 42379450457 (4/4 success), export 42381671293.
+- **Result (6,000 primary games, 2,984 complete clusters):** batchA +6.4045
+  [−0.9887,+13.8035]; batchB +4.0753 [−3.2934,+11.4477];
+  **combined +5.2399 [+0.0235,+10.4586]**; bootstrap [+0.0582,+10.3656].
+  Candidate null −1.1581 [−11.2137,+8.8955]; stage0 null −0.0000
+  [−14.1309,+14.1309] — both include zero.
+- **Validity:** 22/22 checks PASS; auditor issues 0; blobs 54/54; per-job sums
+  44/44; 7,800/7,800 PGN replay, 0 inconsistent; 0 forfeits/illegal/failures;
+  identical binary in every arm; explicit per-arm switch values; primary arms
+  differ only by the switch; shipped default recorded false; ctest 19/19.
+- **Verdict: INCONCLUSIVE.** Frozen ADVANCE needed point ≥+10 (got +5.24); frozen
+  CLOSE needed UCB <+3 or point ≤0 (got UCB +10.46, point +5.24). Neither rule
+  fires, so the preregistered otherwise-branch applies. **No extra games, no
+  rescale, no pooling, no criterion change.** The interval excludes zero but that
+  does not license promotion: `TTExtensionAgnostic` **remains default OFF**.
+- **Lesson:** the mechanism behaved as diagnosed (8.8 % fewer nodes at equal
+  depth) but the lever is small; ~9 % node efficiency maps to roughly +11 Elo by
+  exp-0015's law and the game evidence landed lower. Structural TT reuse alone is
+  not a path to +75. Best integral candidate remains threats+race +40.7732
+  [+36.2091,+45.3513]; **Gate 1 UNMET; mission ACTIVE.** No merge/tag/release.

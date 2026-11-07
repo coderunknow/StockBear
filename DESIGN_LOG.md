@@ -1261,3 +1261,27 @@ Fixed-depth node counts are **not** strength. exp-0015's scaling law (~2× nodes
 ≈ +90 Elo) makes the mechanism plausible; only the frozen 6,000-game fixed-time
 screen decides. Gate 1 still requires a direct integrated measurement against
 the exact published dev5, and component estimates are never summed.
+
+## exp-0064 verdict — what an INCONCLUSIVE result is allowed to mean
+
+The screen landed at **+5.24 [+0.02, +10.46]**. The interval excludes zero, which
+is tempting: it would be easy to write "positive effect, mechanism supported" and
+enable the switch. The preregistration said ADVANCE requires **point ≥ +10**, and
++5.24 is not +10. The rule was written before the games precisely so that this
+moment would be decided by the protocol and not by the mood of the result.
+Verdict: **INCONCLUSIVE**, switch stays **default OFF**.
+
+Two things are worth keeping. First, the *engineering* prediction was accurate:
+the diagnostic said 2.7–4.6 % of probes were blocked only by the extension
+counter, the fixed-depth node count fell 8.8 %, and the wall-time guard showed the
+candidate genuinely faster at equal depth. The mechanism is real. Second, the
+*strength* conversion was weaker than the naive scaling law suggests (~+11 Elo
+predicted from 1.09× effective nodes, ~+5 observed). Extra TT cutoffs return
+shallower stored values, so recovered hits are not free nodes. That is a useful
+calibration for every future "efficiency" hypothesis in this codebase: discount
+the node-to-Elo mapping, and do not treat a sub-10 % node gain as a gate lever.
+
+The methodological point generalises: an inconclusive screen is a *budget* outcome
+as much as a mechanism outcome. The honest responses are to record it, leave the
+feature off, and move to a different mechanism — not to spend more games on the
+same sample until the interval cooperates.

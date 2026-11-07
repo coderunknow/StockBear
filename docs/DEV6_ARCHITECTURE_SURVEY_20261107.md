@@ -143,7 +143,7 @@ prospective cost/correctness gates and a new direct integrated measurement; it
 must not reinterpret closed verdicts. The current blocker is the non-waivable
 strength gate, not infrastructure or correctness.
 
-### 7. ACTIVE: extension-agnostic main-TT identity (exp-0064)
+### 7. INCONCLUSIVE: extension-agnostic main-TT identity (exp-0064)
 
 - **Mechanism + source location:** `src/search/transposition_table.cpp:11–19,
   68–101` mixes the per-path check-extension **budget** into the bucket index and
@@ -174,9 +174,13 @@ strength gate, not infrastructure or correctness.
   all three bench signatures exact.
 - **Runtime risk + controls:** no new evaluate/SEE/movegen call site; frozen
   fixed-depth wall-time guard ≤1.10× passed at 0.9593 (d5) / 0.8679 (d7).
-- **Priority / disposition:** highest remaining — the only direction in this
-  survey backed by a *direct measurement of lost work*. Preregistered screen
-  running; verdict pending.
+- **Priority / disposition:** **INCONCLUSIVE / default OFF.** Screen measured
+  **+5.2399 [+0.0235,+10.4586]** over 6,000 primary games; frozen ADVANCE bar
+  was point ≥+10, frozen CLOSE bar was UCB <+3 or point ≤0, so neither fired.
+  The mechanism is real (8.8 % fewer nodes at equal depth) but the lever is
+  small. No extra games bought, no promotion. Calibration for future
+  efficiency hypotheses: discount the node→Elo mapping, because recovered TT
+  hits return shallower values.
 
 ## Disposition update after the exp-0064 investigation (append-only)
 

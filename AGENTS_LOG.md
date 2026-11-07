@@ -2325,3 +2325,26 @@ Screen is a same-binary ablation on threats+race; it cannot satisfy Gate 1.
   per-game evidence and **12.75 MB** of frozen suites. That is mandated durable
   evidence and is not deleted; it is still a large dataset as worded, so
   **7.6 stays unchecked**. No evidence deleted, no pass fabricated.
+
+### exp-0064 measured and closed (2026-11-07)
+
+Run **42379450457** succeeded 4/4; export **42381671293** succeeded → evidence
+commit `04a9312`. Independent raw audit recomputed everything from `match.jsonl`
+and PGN: **TOTAL ISSUES 0**. Primary combined **+5.2399 [+0.0235,+10.4586]**
+(batchA +6.4045, batchB +4.0753; 5,968 games in 2,984 complete clusters; bootstrap
+[+0.0582,+10.3656]). Both powered nulls include zero. 7,800/7,800 PGNs replayed
+with 0 inconsistencies; 0 forfeits/illegal/failures; blobs 54/54, sums 44/44.
+
+Validity script: **22/22 PASS**, including explicit per-arm switch values,
+primary arms differing ONLY by the switch, recorded shipped default false, and
+fresh ctest 19/19 on the packaged candidate.
+
+**Frozen decision applied mechanically → INCONCLUSIVE.** ADVANCE required point
+≥+10 (observed +5.24); CLOSE required UCB <+3 or point ≤0 (observed UCB +10.46,
+point +5.24). Neither fires. I did not buy more games, rescale, pool, or reinterpret
+the barely-positive LCB as a pass. `TTExtensionAgnostic` stays **default OFF**.
+Closure: `docs/DEV6_EXP0064_REPORT.md`. Ledger and backlog updated.
+
+The mechanism did what the diagnostic said (8.8 % fewer nodes at equal depth) but
+the lever is small. Gate 1 remains UNMET; continuing immediately to the next
+source-grounded hypothesis rather than stopping.
