@@ -131,15 +131,16 @@ and research logs. An incomplete checklist means an incomplete mission.
       the exp-0051/0052 independent-audit JSONs shows **`A` (added) only** — never `M`.
       No later prereg reuses their openings; exp-0055's suite generator excludes all
       199 earlier files / 56,841 positions with verified 0 overlap.
-- [ ] **1.9** Public release identity remains `v0.1.0-dev5`; no version bump, no dev6/dev7 tag, no release, no deploy, no merge to main.
-      *Evidence so far:* `gh api repos/coderunknow/StockBear/releases` lists
-      `v0.1.0-dev5` as the newest release — **no dev6/dev7 tag or release exists**, and
-      `origin/main` is untouched (1.1). **HELD OPEN deliberately:** the working-tree
-      `VERSION` file reads `0.1.0-dev6`, bumped by the pre-existing branch commit
-      `a7bf00f` ("dev6 cycle start"), so the engine advertises `StockBear 0.1.0-dev6`
-      over UCI while `origin/main:VERSION` is `0.1.0-dev5`. That is an *internal*
-      development marker, but the item says "no version bump" and the discrepancy is
-      real, so it is **not** checked on an interpretation. Requires explicit resolution.
+- [x] **1.9** Published release identity remains `v0.1.0-dev5`; no public version bump, dev6/dev7 tag, release, deploy, or merge to main. The pre-existing internal DEV6 marker is preserved, not silently changed.
+      *Reconciliation:* `docs/DEV6_CONTINUATION_POLICY.md` §1 follows the existing
+      internal-cycle/public-release distinction in DESIGN_LOG, CHANGELOG, README,
+      recovery audit and exp-0055 §9. `benchmarks/recovery/version/exp0059_identity_audit.json`,
+      raw `exp0059_releases.json` and `exp0059_tags.json` verify newest public release
+      dev5, no dev6/dev7 tag, main VERSION dev5 and main SHA unchanged. Branch VERSION
+      remains the pre-existing dev6 marker introduced by `a7bf00f`; no identity file
+      changed. No release action, merge, deploy or new PR was performed. Existing
+      PR #2 belongs to a different older branch and was not touched. This is a
+      repository-policy reconciliation, not a waiver of the strength gate.
 
 ## 2. Research and experiment discipline
 

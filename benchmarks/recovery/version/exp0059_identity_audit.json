@@ -1,0 +1,14 @@
+{
+  "latest_release": "v0.1.0-dev5",
+  "public_dev5_only_newest": true,
+  "no_dev6_dev7_tag": true,
+  "main_version": "0.1.0-dev5",
+  "main_sha": "6e7c2e02881faf93a84990a8345c41ad28bcae11",
+  "branch_version": "0.1.0-dev6",
+  "internal_marker_commit": "a7bf00ffad95a6038888c66ebefa32cdf140670a",
+  "policy": "docs/DEV6_CONTINUATION_POLICY.md",
+  "identity_files_changed": false,
+  "release_or_deploy_or_merge_performed": false,
+  "open_pr_2_is_unrelated_existing_branch": "arena/071accaf-stockbear",
+  "no_new_pr_created": true
+}
