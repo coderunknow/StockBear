@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0058",
-  "source_sha": "520f8541f4caa8226eec450e9f0db8ef41348e31",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0058.json",
-  "source_run_id": "42343201120",
-  "note": "exp-0058: export raw evidence of SCREEN run 42343201120 (4 jobs, 5800 games). Export plays no games. Validity checked condition-by-condition, not via the audit banner.",
+  "mode": "benchmark",
+  "experiment_id": "exp0060",
+  "source_sha": "8e77e0fec3ee4d919b6aedfc02f89cb9d5c19950",
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0060.json",
+  "source_run_id": "",
+  "note": "exp-0060: confirmation of exp-0055 race increment. Fail-closed CI cost gate before games; 7800 games max; no pooling; powered nulls.",
   "attempt": 1
 }
