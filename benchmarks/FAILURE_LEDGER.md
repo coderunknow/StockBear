@@ -2444,3 +2444,37 @@ claim / PR / merge / tag / release / deploy / dev7. Full report
   confirmation), 3 **PASS**, 4 **UNMET**. Mission **ACTIVE / NOT COMPLETE**;
   exp-0047 **DORMANT**. Feature stays default-OFF. No default change, no PR
   strength claim, no merge, tag, release or deploy.
+
+## exp-0054 — CONFIRMATION of threat detection — VALID MEASUREMENT / CONFIRMED IMPROVEMENT (2026-11-06)
+
+- **First independently confirmed strength gain of the recovery mission.**
+  Configuration UNCHANGED from the exp-0053 screen (`ThreatDetection 1 1`,
+  weights 10/16, cap 64). Arm B = exact released dev5 artifact `391cb50e…5bdb918`.
+  Prereg `48e800e804dbaa27b32d369c368b3c7baed42c931a6d6236bc1166a4d5b993ea`,
+  pinned source `dfb4838`, run **42244166583**, export **42334347915**.
+- **Independent raw recomputation:** batchA 729/651/610 **+20.3781
+  [+9.0853,+31.7141]**; batchB 762/622/607 **+26.6973 [+15.8012,+37.6461]**;
+  **FROZEN COMBINED 1491/1273/1217, 1,981 clusters, +23.5374
+  [+15.6937,+31.4052]**, bootstrap [+15.6197,+31.3912].
+- **All 7 frozen CONFIRMED conditions PASS** (point ≥ +10; LCB > 0; both batches
+  ≥ −5; both nulls include 0; audit issues 0) ⇒ **CONFIRMED IMPROVEMENT**.
+- **Validity PASS, 0 issues:** 0 forfeits / 0 illegal / 0 engine failures in all
+  four jobs; stage0 [−21.50,+14.42] and candidate [−20.83,+13.87] nulls both
+  include 0; **4,800/4,800 PGN replayed, 0 inconsistent**; 54/54 blobs, 44/44
+  sums; per-arm `EvalParams LOAD VERIFIED` cross-checked against the frozen plan
+  at the pinned SHA; arm digests match the declared design.
+- **Replication, NOT pooling:** screen +24.6338 (2,000 g) vs confirmation +23.5374
+  (4,000 g) differ by **1.10 Elo** on entirely disjoint openings (confirmation
+  suite verified 0 overlap against 54,441 earlier positions). The estimates are
+  never averaged or pooled; the confirmation stands alone as banked evidence.
+- **Gate 1 still UNMET.** +23.54 [+15.69,+31.41] meets neither the +75 point
+  requirement nor the +50 LCB requirement. Combined strength of future components
+  may NOT be inferred by addition; the integrated candidate must be measured
+  directly against the released baseline.
+- **Disposition:** `ThreatDetection` stays shipped **0** (default-OFF). Banking a
+  confirmed gain does not authorize a default change. exp-0054 CLOSED/CONFIRMED;
+  its 2,400 openings and 4,800 games are burned for selection; no re-run, no
+  pooling.
+- **Gates:** 1 **UNMET**, 2 **SUPPORTED** (exp-0054 confirmed), 3 **PASS**,
+  4 **UNMET**. Mission **ACTIVE / NOT COMPLETE**; exp-0047 **DORMANT**. No default
+  change, no PR strength claim, no merge, tag, release or deploy.

@@ -2136,3 +2136,29 @@ batches ≥ −5; REJECTED if UCB < +5 or point ≤ 0; else INCONCLUSIVE. Power 
 
 Gates: 1 UNMET, 2 direction-supported, 3 PASS, 4 UNMET. Mission ACTIVE.
 ThreatDetection stays shipped 0. No default change, merge, tag, release or deploy.
+
+## 2026-11-06 — exp-0054 CONFIRMED IMPROVEMENT (+23.54); sandbox reset recovered
+
+Sandbox reset found HEAD at origin/main with a clean tree. Recovered by fetching
+own branch and `merge --ff-only` to 6b8edee; reinstalled numpy/chess/cmake/ninja;
+rebuilt and RE-VERIFIED integrity: dev5 sha 391cb50e…5bdb918 exact, all three
+bench signatures exact, ctest 16/16.
+
+exp-0054 CONFIRMATION played (run 42244166583, export 42334347915, 4,800 games).
+Independent raw recomputation: batchA +20.3781 [+9.0853,+31.7141], batchB
++26.6973 [+15.8012,+37.6461], **combined 1491/1273/1217 over 1,981 clusters,
++23.5374 [+15.6937,+31.4052]**, bootstrap [+15.6197,+31.3912]. **All 7 frozen
+conditions PASS ⇒ CONFIRMED IMPROVEMENT** — the mission's first banked gain.
+
+Validity PASS, 0 issues: 0 forfeits/illegal/failures, both nulls include 0,
+4,800/4,800 PGN replay with 0 inconsistencies, 54/54 blobs, 44/44 sums, per-arm
+EvalParams LOAD VERIFIED, arm digests match the declared design.
+
+Screen (+24.6338) vs confirmation (+23.5374) differ by 1.10 Elo on disjoint
+openings; NEVER pooled. Report `docs/DEV6_EXP0054_REPORT.md`. Checklist §3.1 now
+checked with traceable evidence; the strength gate items remain unchecked.
+
+Gate 1 UNMET: +23.54 meets neither +75 point nor +50 LCB. ThreatDetection stays
+shipped 0. Next direction: passed-pawn evaluation (no king proximity, no blocker,
+no safe-advance terms exist; only advance² × PassedPawnAdvance), distinct from the
+abandoned exp-0026 ConnectedPassed/RookBehindPassed counts. Mission ACTIVE.

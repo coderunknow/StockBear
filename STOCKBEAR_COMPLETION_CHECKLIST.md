@@ -5,7 +5,7 @@ and research logs. An incomplete checklist means an incomplete mission.
 
 - **Branch:** `arena/6a6a2ba3-stockbear`
 - **Checklist created:** 2026-11-06 at HEAD `d3d40d59ff8b627ae7ce541a8ed59598da8c5898`
-- **Status:** **MISSION INCOMPLETE** — gate specification resolved (§0.1); strength gate NOT met.
+- **Status:** **MISSION INCOMPLETE** — one improvement CONFIRMED (exp-0054, +23.54 [+15.69,+31.41]); the +75 / LCB>+50 strength gate is **NOT** met.
 
 ## Checkbox rules (binding)
 
@@ -104,8 +104,14 @@ and research logs. An incomplete checklist means an incomplete mission.
 
 ## 3. Confirmed improvements and final candidate integration
 
-- [ ] **3.1** At least one improvement is CONFIRMED under its own adequately powered preregistered confirmation (not a screen, not an inconclusive result).
-      *Evidence:* confirmation report + independently recomputed raw audit with CI excluding zero.
+- [x] **3.1** At least one improvement is CONFIRMED under its own adequately powered preregistered confirmation (not a screen, not an inconclusive result).
+      *Evidence:* `docs/DEV6_EXP0054_REPORT.md` and
+      `benchmarks/recovery/exp0054_independent_raw_audit.json` — ThreatDetection,
+      4,000 combined games, **+23.5374 Elo, 95% CI [+15.6937, +31.4052]**, both
+      batches positive (+20.38 / +26.70), all 7 frozen conditions PASS, audit
+      issues 0, 4,800/4,800 PGN replayed. Prereg SHA
+      `48e800e804dbaa27b32d369c368b3c7baed42c931a6d6236bc1166a4d5b993ea` committed
+      at `dfb4838` before run 42244166583. NOT pooled with the exp-0053 screen.
 - [ ] **3.2** Every component of the final candidate is individually supported by adequate independent evidence.
       *Evidence:* per-component confirmation citations.
 - [ ] **3.3** The final integrated candidate was measured DIRECTLY against the gate baseline; its strength was not inferred by adding individual Elo estimates.
@@ -206,6 +212,13 @@ and research logs. An incomplete checklist means an incomplete mission.
 
 **MISSION INCOMPLETE.** The gate is the frozen dev6 gate: **point >= +75 Elo AND
 two-sided opening-clustered 95% LCB strictly > +50 vs the released dev5
-champion** at 40+4 ms. No strength improvement has been confirmed: exp-0050
-closed negative, exp-0051 closed negative, exp-0052 closed inconclusive
-(+4.20 [-6.97, +15.38]). Execution continues.
+champion** at 40+4 ms.
+
+Progress: exp-0050 closed negative; exp-0051 closed negative; exp-0052 closed
+inconclusive (+4.20 [-6.97,+15.38]); exp-0053 SCREEN ADVANCE (+24.63
+[+13.10,+36.22]); **exp-0054 CONFIRMED IMPROVEMENT (+23.54 [+15.69,+31.41])** —
+the mission's first banked gain. One ~+23.5 Elo term reaches neither the +75
+point requirement nor the +50 LCB requirement. Further distinct confirmed
+improvements are required, and the integrated candidate must then be measured
+DIRECTLY against the released baseline (never inferred by adding estimates).
+Execution continues with passed-pawn evaluation.
