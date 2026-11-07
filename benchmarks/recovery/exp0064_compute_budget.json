@@ -1,0 +1,28 @@
+{
+  "experiment_id": "exp0064",
+  "prereg": "docs/DEV6_PREREG_EXP0064.md",
+  "prereg_sha256": "0f29d36bb5725df062f293cdfaa6237914ec8b44af7778c622931d26890d0cfc",
+  "total_games": 7800,
+  "primary_games": 6000,
+  "null_games": 1200,
+  "stage0_games": 600,
+  "benchmark_jobs": 4,
+  "benchmark_timeout_minutes": 420,
+  "prepare_timeout_minutes": 10,
+  "export_timeout_minutes": 10,
+  "max_workflow_vm_minutes": 1700,
+  "benchmark_dispatches": 1,
+  "export_dispatches": 1,
+  "paid_services": false,
+  "adaptive_games": false,
+  "result_driven_reruns": false,
+  "infrastructure_retry": "only before any game, identical plan, documented; a failed null is INVALID",
+  "openings_seed": 2026110664,
+  "openings_count": 3900,
+  "slices": {
+    "stage0": 300,
+    "null": 600,
+    "batchA": 1500,
+    "batchB": 1500
+  }
+}

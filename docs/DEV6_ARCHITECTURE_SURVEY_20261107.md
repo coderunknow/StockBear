@@ -142,3 +142,48 @@ Any further attempt requires a fresh source-grounded hypothesis, prereg,
 prospective cost/correctness gates and a new direct integrated measurement; it
 must not reinterpret closed verdicts. The current blocker is the non-waivable
 strength gate, not infrastructure or correctness.
+
+### 7. ACTIVE: extension-agnostic main-TT identity (exp-0064)
+
+- **Mechanism + source location:** `src/search/transposition_table.cpp:11–19,
+  68–101` mixes the per-path check-extension **budget** into the bucket index and
+  the entry comparison; call sites `src/search/search.cpp:542–543,850`. The
+  counter is search effort, not position, draw rules or mate normalisation.
+- **Current implementation/config:** shipped identity is
+  `(key, rule50, historyContext, extensions)`; `MaxCheckExtensions = 3`. New
+  default-OFF switch `TTExtensionAgnostic` drops only the fourth field, via one
+  shared helper used at both probe and store.
+- **Prior experiments:** none on this field. Distinct from §5 (historyContext
+  relaxation, rejected for draw soundness — untouched), exp-0009 (entry layout /
+  THP), exp-0038 (separate qsearch cache), exp-0043 (singular extension),
+  exp-0045 (dead eval on TT hits). `DEV6_RESEARCH_MATRIX.md:114` still lists TT
+  identity/replacement as unexecuted.
+- **Why still worth testing — measured, not assumed:** gated sibling-bucket
+  instrument on 250 positions at Hash 16 shows 2.73 % / 4.59 % / 4.40 % of *all*
+  probes at depths 5/7/9 are blocked **only** by this field by a deep-enough
+  entry ⇒ +9.6 % / +19.4 % / +20.0 % relative hit gain available. rule50-only
+  ≤0.021 %, context-only ≤0.0001 %.
+- **Expected benefit / uncertainty:** exp-0015's law (~2× nodes ≈ +90 Elo) makes
+  a single-digit-to-low-double-digit gain plausible; uncertainty is high because
+  extra cutoffs can also return shallower/less accurate values. Fixed-depth nodes
+  fell to 0.9119× at d7 — an efficiency signal, **not** a strength claim.
+- **Correctness risk + controls:** a slimmer identity could corrupt mate or draw
+  scores. Controls: rule50/context isolation pinned by unit tests and a 720,000-
+  check model oracle; python-chess replay of every mate claim (2,453 PV moves,
+  10 mates/arm, 0 problems); 13/13 mutants killed with a surviving control;
+  all three bench signatures exact.
+- **Runtime risk + controls:** no new evaluate/SEE/movegen call site; frozen
+  fixed-depth wall-time guard ≤1.10× passed at 0.9593 (d5) / 0.8679 (d7).
+- **Priority / disposition:** highest remaining — the only direction in this
+  survey backed by a *direct measurement of lost work*. Preregistered screen
+  running; verdict pending.
+
+## Disposition update after the exp-0064 investigation (append-only)
+
+The earlier "remaining directions are low-prior" paragraph above was written
+before this investigation and is superseded **only** in its claim that no
+measured opportunity remained. A concrete, quantified loss of TT reuse was found
+in a field that is not part of the chess position, and it is now under a frozen
+preregistered screen. No closed verdict was reopened, no historical measurement
+was edited, and no component Elo is summed. Gate 1 remains **UNMET** and the
+mission remains **ACTIVE**.

@@ -28,6 +28,7 @@ Res run_one(const std::string& fen, int depth, bool on, const std::string& which
     else if (which == "continuationhistory") sp.continuationHistory = on;
     else if (which == "capturehistory") sp.captureHistory = on;
     else if (which == "badcapturepruning") sp.badCapturePruning = on;
+    else if (which == "ttextensionagnostic") sp.ttExtensionAgnostic = on;
     else { std::fprintf(stderr, "unknown switch %s\n", which.c_str()); std::exit(2); }
     TranspositionTable tt(16);
     SearchLimits lim;

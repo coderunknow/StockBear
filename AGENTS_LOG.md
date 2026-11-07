@@ -2236,3 +2236,59 @@ abandoned exp-0026 ConnectedPassed/RookBehindPassed counts. Mission ACTIVE.
   within ±25 screen noise at 480 g). These ordering mechanisms are fully
   implemented (real tables, real updates) but have **never had a proper Tier-1
   turn-ON test** — a genuinely untested, credible direction.
+
+## 2026-11-07 — exp-0064 registered: extension-agnostic main-TT identity
+
+Recovered the branch after another sandbox reset (fetch → checkout → reset to
+`origin/arena/6a6a2ba3-stockbear` `c516442`), reinstalled deps with
+`--break-system-packages`, rebuilt `build-rel`, re-verified dev5
+`391cb50e13ab…` and bench d4 `243f9a1c1ba5b36f`.
+
+**Investigation (measurement, not intuition).** Read the whole main-TT path and
+found the identity is `(key, rule50, historyContext, extensions)` where
+`extensions` is the per-path **check-extension budget**, mixed into the bucket
+index. Built a compile-time-gated instrument (`SB_TT_IDENTITY_DEBUG`, absent from
+shipped builds) that scans sibling extension buckets, because a naive in-bucket
+counter reported zero and was diagnosed as an instrument limitation, not a
+negative result. On 250 real positions at Hash 16:
+
+| depth | hit rate | probes blocked ONLY by `extensions`, deep enough | relative hit gain |
+|---|---:|---:|---:|
+| 5 | 0.2832 | 2.73 % | +9.6 % |
+| 7 | 0.2372 | 4.59 % | +19.4 % |
+| 9 | 0.2200 | 4.40 % | +20.0 % |
+
+`rule50`-only ≤0.021 %, `historyContext`-only ≤0.0001 %. The loss is concentrated
+in one field that is **not part of the position**. This is distinct from the
+rejected `historyContext` relaxation (draw soundness) and from exp-0009's layout
+work; `docs/DEV6_RESEARCH_MATRIX.md:114` still lists it as unexecuted.
+
+**Implementation.** One default-OFF switch `TTExtensionAgnostic`, one shared
+helper `tt_identity_extensions()` used at BOTH the probe and the store so they
+cannot drift. `rule50` and `historyContext` stay in the key. No new evaluate,
+SEE or movegen call site (verified from the diff).
+
+**Pre-game battery, all green before any game:**
+- ctest **19/19** (new registered group `tt_extension_identity`, 11 cases).
+- bench d4/d6/d7 **all three exact** → shipped path bit-identical.
+- Independent model oracle: **720,000** randomized checks, **0** mismatches,
+  cross-budget reuse gain 120,000, context/rule50 isolation preserved.
+- Independent python-chess soundness oracle: 155 positions, **2,453 PV moves**
+  verified legal, **10 mate claims per arm** all replayed to real checkmate with
+  exact distances, 0 problems. (This oracle caught a bug in my own test: the FEN
+  I had assumed was mate is actually stalemate.)
+- Interactive UCI liveness: option reaches the search, exact node pins
+  31,377 (OFF) vs 31,359 (ON), deterministic across 3 runs, params SHA verified.
+- Mutation matrix: **13/13 killable mutants KILLED**, semantics-preserving
+  control **SURVIVED** as required.
+- Switch liveness: **242/250 (96.8 %)** positions change tree; fixed-depth-7
+  total nodes 8,871,876 → 8,090,236 (**0.9119×**).
+- Frozen search-cost guard (the evaluate()-cost instrument cannot exercise a
+  search switch): time ratio **0.9593** (d5) and **0.8679** (d7), both ≤1.10;
+  A/A spread 0.0373 / 0.0896, both <0.10. **PASS.**
+- Fresh openings: seed **2026110664**, 3,900 openings, 244 earlier files /
+  89,041 positions excluded, **overlap 0**.
+
+Prereg, plan and budget frozen and committed **before any exp-0064 game**.
+Screen is a same-binary ablation on threats+race; it cannot satisfy Gate 1.
+**Gate 1 remains UNMET; mission ACTIVE.**

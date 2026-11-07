@@ -536,7 +536,11 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
     }
 
     const Key context = pos.history_context() ^ rootContextSalt_;
-    const TTEntry* entry = tt_.probe(pos.key(), pos.rule50(), context, extensions);
+#ifdef SB_TT_IDENTITY_DEBUG
+    tt_.diag_set_depth(depth);
+#endif
+    const int ttExtensions = tt_identity_extensions(params_.ttExtensionAgnostic, extensions);
+    const TTEntry* entry = tt_.probe(pos.key(), pos.rule50(), context, ttExtensions);
     const Move hashMove = entry != nullptr ? entry->move : MOVE_NONE;
     if (entry != nullptr && !pvNode && entry->depth >= depth) {
         const int value = TranspositionTable::value_from_table(entry->value, ply);
@@ -843,7 +847,7 @@ int Search::negamax(Position& pos, int depth, int alpha, int beta, int ply,
         !(stored == Bound::Upper && best > rawStaticEval))
         update_correction(pos, us, rawStaticEval, best, depth);
     // The RAW eval is stored, never the corrected one (see exp-0050 above).
-    tt_.store(pos.key(), pos.rule50(), context, extensions, bestMove, best, depth, stored, ply,
+    tt_.store(pos.key(), pos.rule50(), context, ttExtensions, bestMove, best, depth, stored, ply,
               params_.ttEval ? rawStaticEval : VALUE_NONE);
     return best;
 }

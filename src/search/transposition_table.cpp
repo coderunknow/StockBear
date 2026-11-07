@@ -8,6 +8,9 @@
 #include <stdexcept>
 
 namespace stockbear {
+#ifdef SB_TT_IDENTITY_DEBUG
+TTIdentityStats ttIdentityStats;
+#endif
 namespace {
 // Mix the position key with the search context so that contexts which produce
 // incompatible scores are physically separated in the table.
@@ -68,8 +71,32 @@ const TTEntry* TranspositionTable::probe(Key key, std::uint64_t rule50, Key cont
     const Bucket& bucket = bucket_for(key, context, extensions);
     for (const TTEntry& entry : bucket.entry)
         if (entry.bound != Bound::None && entry.key == key && entry.rule50 == rule50 &&
-            entry.historyContext == context && entry.extensions == extensions)
+            entry.historyContext == context && entry.extensions == extensions) {
+#ifdef SB_TT_IDENTITY_DEBUG
+            ++ttIdentityStats.probes;
+            ++ttIdentityStats.hits;
+#endif
             return &entry;
+        }
+#ifdef SB_TT_IDENTITY_DEBUG
+    // No behaviour change: the probe still returns nullptr. This only records
+    // WHICH identity field prevented a match, so the value of each field can be
+    // judged from measurement instead of assumption.
+    ++ttIdentityStats.probes;
+    diag_scan_extension_buckets(key, rule50, context, extensions, diagDepth_);
+    for (const TTEntry& entry : bucket.entry) {
+        if (entry.bound == Bound::None || entry.key != key) continue;
+        if (entry.rule50 == rule50 && entry.historyContext == context &&
+            entry.extensions != extensions)
+            ++ttIdentityStats.missExtOnly;
+        else if (entry.rule50 != rule50 && entry.historyContext == context &&
+                 entry.extensions == extensions)
+            ++ttIdentityStats.missRule50Only;
+        else if (entry.rule50 == rule50 && entry.historyContext != context &&
+                 entry.extensions == extensions)
+            ++ttIdentityStats.missContextOnly;
+    }
+#endif
     return nullptr;
 }
 
@@ -127,6 +154,24 @@ void TranspositionTable::store(Key key, std::uint64_t rule50, Key context, int e
         replace->eval = static_cast<std::int16_t>(VALUE_NONE);
     replace->generation = generation_;
 }
+
+#ifdef SB_TT_IDENTITY_DEBUG
+void TranspositionTable::diag_scan_extension_buckets(Key key, std::uint64_t rule50,
+                                                     Key context, int extensions,
+                                                     int depth) const {
+    for (int e = 0; e <= 8; ++e) {
+        if (e == extensions) continue;
+        const Bucket& b = bucket_for(key, context, e);
+        for (const TTEntry& entry : b.entry) {
+            if (entry.bound == Bound::None || entry.key != key) continue;
+            if (entry.rule50 != rule50 || entry.historyContext != context) continue;
+            ++ttIdentityStats.missExtOtherBucket;
+            if (entry.depth >= depth) ++ttIdentityStats.missExtOtherBucketDeep;
+            return; // count once per probe, not once per sibling slot
+        }
+    }
+}
+#endif
 
 int TranspositionTable::hashfull() const {
     const std::size_t sample = std::min<std::size_t>(1000, buckets_.size());

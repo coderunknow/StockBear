@@ -1,0 +1,15 @@
+{
+  "depth": 6,
+  "expected": {
+    "off": 31377,
+    "on": 31359
+  },
+  "hash_mb": 4,
+  "mode": "uci_liveness",
+  "observed": {
+    "off": 31377,
+    "on": 31359
+  },
+  "params_sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01",
+  "verdict": "PASS"
+}

@@ -160,7 +160,27 @@ struct SearchParams {
     // eval-parameter refit and not an accuracy-gated change: it is judged by
     // FIXED-TIME games only. Frozen in docs/DEV6_PREREG_EXP0050.md.
     bool correctionHistory = false;
+    // --- dev6 exp-0064 (default off; isolated same-binary ablation) ---------
+    // Extension-agnostic main-TT identity. The shipped TT keys entries on
+    // (key, rule50, historyContext, extensions), where `extensions` is the
+    // per-path check-extension BUDGET counter, not part of the position, the
+    // draw rules or mate normalisation. Because it is mixed into the bucket
+    // index, an identical position reached with a different remaining budget is
+    // unreachable: measured 2.7-4.6% of all probes at depths 5-9 (see
+    // benchmarks/recovery/exp0064_tt_identity_diagnostic.json). With this switch
+    // ON the main TT is probed AND stored with extension argument 0, so the
+    // identity is (key, rule50, historyContext). rule50 and historyContext stay
+    // in the key, so repetition/draw soundness is unchanged. No new evaluate,
+    // SEE, movegen or verification work. Frozen in docs/DEV6_PREREG_EXP0064.md.
+    bool ttExtensionAgnostic = false;
 };
+
+// exp-0064: the single source of truth for the main-TT identity's extension
+// argument, shared by the probe and the store so the two can never drift apart.
+// A free function so the correctness tests can exercise it directly.
+inline int tt_identity_extensions(bool agnostic, int extensions) {
+    return agnostic ? 0 : extensions;
+}
 
 // One instance per search. Search is single-threaded; asynchronous UCI control
 // uses a separate controller thread and an atomic stop flag.

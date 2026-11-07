@@ -1,0 +1,3 @@
+cases 20000 seed 2026110664 checked 720000 mismatches 0
+shipped_hits 120000 agnostic_hits 240000 reuse_gain 120000
+verdict PASS

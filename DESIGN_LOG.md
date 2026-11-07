@@ -1221,3 +1221,43 @@ Two engineering decisions worth keeping:
 Screen is a same-binary ablation isolating the increment; any integral claim will
 require a separate direct measurement against released dev5. Estimates are never
 summed. Gate 1 remains UNMET.
+
+## exp-0064 — why an extension counter does not belong in a TT identity
+
+A transposition table is a memo of *positions*. StockBear's main TT keyed entries
+on `(zobrist, rule50, historyContext, extensions)`. Three of those are legitimately
+positional or rule-relevant: the board, the fifty-move counter, and the reversible
+history that repetition detection depends on. The fourth, `extensions`, is the
+remaining **check-extension budget along the current path** — a property of the
+search effort, not of the position. Two identical positions reached with different
+budgets were hashed into different buckets and could never share a result.
+
+The design decision was to remove **exactly that one dimension** and nothing
+else. Earlier work rejected relaxing `historyContext` because draw scores depend
+on it; that rejection stands and is untouched here. `rule50` likewise stays. Mate
+scores keep their existing ply normalisation, so no mate-distance semantics move.
+
+Two choices make this auditable rather than hopeful:
+
+1. **One helper, two call sites.** `tt_identity_extensions()` is the single source
+   of truth used by both the probe and the store. Probe/store asymmetry is the
+   classic way this kind of change silently becomes a no-op or a corruption; two
+   dedicated mutants prove the tests detect it in both directions.
+2. **The instrument was fixed before the hypothesis was accepted.** The first
+   diagnostic reported zero extension-only misses. That was wrong: the field is
+   in the *index*, so a matching entry lives in a sibling bucket the probe never
+   visits. Reporting "no opportunity" there would have been an instrument
+   artefact masquerading as evidence. The sibling-bucket scan is what produced
+   the real 2.7–4.6 % numbers.
+
+Cost methodology had to be preregistered honestly. The standing policy gate
+measures `evaluate()` cost; this change adds no evaluation work, so that gate
+cannot see it. Rather than claim a trivial pass, the prereg freezes a
+**fixed-depth wall-time A/B** as a regression guard (≤1.10×, A/A spread <0.10) and
+labels it explicitly as a guard, not a benefit claim. It passed at 0.959/0.868 —
+the candidate is *faster* at equal depth, consistent with recovered cutoffs.
+
+Fixed-depth node counts are **not** strength. exp-0015's scaling law (~2× nodes
+≈ +90 Elo) makes the mechanism plausible; only the frozen 6,000-game fixed-time
+screen decides. Gate 1 still requires a direct integrated measurement against
+the exact published dev5, and component estimates are never summed.
