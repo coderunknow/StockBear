@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0054",
   "source_sha": "dfb4838912aec3e6426c55b7728d6fefe77aca82",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0054.json",
-  "source_run_id": "",
-  "note": "exp-0054 CONFIRMATION of the exp-0053 SCREEN ADVANCE (+24.6338 [+13.1027,+36.2193], audit 0 issues). Configuration UNCHANGED: ThreatDetection 1 1, weights 10/16, cap 64; KingSafetyQuadratic absent => 0. Arm B is the EXACT released dev5 artifact 391cb50e...5bdb918. Prereg 48e800e8...5b993ea pinned in every job. 4000 combined games (batchA/B 2000 each) + two 400-game validity nulls on 2400 FRESH disjoint openings seed 2026110654, independently verified 0 overlap vs 54441 earlier positions in 194 files and 6/6 slice pairs disjoint. exp-0053 screen games are NEVER pooled. Per-arm EvalParams LOAD VERIFIED enforced. CONFIRMED if point >= +10 AND LCB > 0 AND both batches >= -5; REJECTED if UCB < +5 or point <= 0; else INCONCLUSIVE. This is NOT a Gate-1 decisive run.",
+  "source_run_id": "42244166583",
+  "note": "exp-0054: export the raw evidence bundle of CONFIRMATION run 42244166583 (4 jobs, 4800 games) via the in-workflow git mirror; artifact/log CDN downloads are blocked in the sandbox. An export plays no games. Raw per-game JSONL/PGN will be independently recomputed and fully PGN-replayed before any verdict. Screen (exp-0053) games are never pooled with this confirmation.",
   "attempt": 1
 }
