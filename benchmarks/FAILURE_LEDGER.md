@@ -2697,3 +2697,12 @@ not a relaxed threshold or a favorable rerun.
 - **Gates:** 1 UNMET, 2 supported by two confirmed components, 3 PASS, 4 UNMET.
   Mission ACTIVE / INCOMPLETE; direct integrated measurement and further
   evidence-backed improvement remain required.
+
+## exp-0061 — pre-game cost gate failure (2026-11-07)
+
+**BLOCKED BEFORE GAMES; no strength verdict.** KingSliderBattery=(10,0) over
+threats+race passed correctness/oracle/mutation/liveness/scale checks, but the
+prospective CI cost gate failed: increment median 1.17094 (>1.05) and combined
+median 1.25063 (>1.10), with calibrated A/A spread 0.02792. Zero games. Raw cost
+evidence exported from run 42355810868 via export 42355938905. Do not reuse as a
+budget pass; a future variant needs a new identity and the same limits.
