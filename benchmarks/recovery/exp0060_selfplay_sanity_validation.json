@@ -1,0 +1,8 @@
+{
+  "file": "benchmarks/recovery/exp0060_selfplay_sanity.txt",
+  "format": "score result FEN (selfplay training corpus, not PGN)",
+  "positions": 101,
+  "invalid": 0,
+  "engine_log": "benchmarks/recovery/exp0060_selfplay_sanity.log",
+  "note": "Initial .pgn extension was a labeling error; selfplay --out writes training rows. Corrected before any strength claim."
+}

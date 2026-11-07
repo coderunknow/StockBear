@@ -1,1 +1,7 @@
 selfplay: 2 games, 101 positions, 0 discarded (ply cap), 101 searched plies, 1 decisive mates, 1 non-mate finishes
+
+Validation correction: selfplay --out emits "score result FEN" training rows,
+not PGN. The initial .pgn extension was a labeling error; renamed to .txt and
+all 101 FEN rows validated with python-chess (0 invalid). See
+exp0060_selfplay_sanity_validation.json. This is a node-budget sanity diagnostic,
+not fixed-time strength evidence.
