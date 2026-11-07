@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0057",
-  "source_sha": "0f60282abfae7f2db607ee0e9a90c53889c1dae5",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0057.json",
-  "source_run_id": "42341407630",
-  "note": "exp-0057: export raw evidence of SCREEN run 42341407630 (4 jobs, 5800 games). Export plays no games. Validity will be checked condition-by-condition (NOT via the audit banner), including the POWERED 1200-game null.",
+  "mode": "benchmark",
+  "experiment_id": "exp0058",
+  "source_sha": "520f8541f4caa8226eec450e9f0db8ef41348e31",
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0058.json",
+  "source_run_id": "",
+  "note": "exp-0058 SCREEN: CaptureHistory same-binary ablation (ordering only) on top of threats+race. 4 jobs / 5800 games, 4000 primary. Prereg 8722b108b295b95a9049181662cdf3ac5a4100042e5cff79e32cfd658735f3d5 frozen before any game. Powered 1200 g null. Not a Gate-1 quantity; never summed.",
   "attempt": 1
 }
