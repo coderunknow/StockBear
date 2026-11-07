@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0062",
-  "source_sha": "95606a513c4cc96231fbbba89e04165348c23fbb",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0062.json",
-  "source_run_id": "42356232866",
-  "note": "exp-0062: export all raw game/config/fingerprint evidence from successful 15000-game run 42356232866; one explicit evidence commit.",
+  "mode": "benchmark",
+  "experiment_id": "exp0063",
+  "source_sha": "7d9aa8f03741c97bac8ee134f5cb913ceffbc216",
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0063.json",
+  "source_run_id": "",
+  "note": "exp-0063: semantics-preserving battery cost optimization; prospective cost gate same limits, then 5800-game screen if PASS. Not Gate-1.",
   "attempt": 1
 }
