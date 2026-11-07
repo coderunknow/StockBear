@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0055",
-  "source_sha": "2594479ac8965f0c87b4f1e72d61a87b71984cd3",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0055.json",
-  "source_run_id": "42336347904",
-  "note": "exp-0055: export the raw evidence bundle of SCREEN run 42336347904 (4 jobs, 3800 games, all SUCCESS) via the in-workflow git mirror; artifact/log CDN downloads are blocked in the sandbox. An export plays no games. Raw per-game JSONL/PGN will be independently recomputed and fully PGN-replayed before any verdict. Same-binary ablation measuring the race INCREMENT; never pooled with or summed against exp-0053/exp-0054.",
+  "mode": "benchmark",
+  "experiment_id": "exp0056",
+  "source_sha": "ec7c9c432a04aa14a85d112ffd0d36ab68d3eda4",
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0056.json",
+  "source_run_id": "",
+  "note": "exp-0056 GATE-1 TEST: integral candidate (ThreatDetection 1,1 + PassedPawnRace 0,2) measured DIRECTLY against the EXACT released dev5 artifact. 4 jobs / 6800 games, 6000 primary. Prereg 6437c2cf71ee8483be707f6fc1b2c624b33fd9551be1e316846862d904c6e90f frozen before any game. Never summed from exp-0054/exp-0055. Raw JSONL/PGN independently recomputed and fully replayed before any verdict.",
   "attempt": 1
 }
