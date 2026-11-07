@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0057",
   "source_sha": "0f60282abfae7f2db607ee0e9a90c53889c1dae5",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0057.json",
-  "source_run_id": "",
-  "note": "exp-0057 SCREEN: BadCapturePruning same-binary ablation on top of threats+race. 4 jobs / 5800 games, 4000 primary. Prereg cdbf6dbe59a0ce9f7bb4992623a93ea830e060118c7c4329d9ac78966e3e39e3 frozen before any game. Null POWERED to 1200 g (exp-0056 was invalidated by a 400 g null); criterion unchanged. Not a Gate-1 quantity; never summed with other estimates.",
+  "source_run_id": "42341407630",
+  "note": "exp-0057: export raw evidence of SCREEN run 42341407630 (4 jobs, 5800 games). Export plays no games. Validity will be checked condition-by-condition (NOT via the audit banner), including the POWERED 1200-game null.",
   "attempt": 1
 }
