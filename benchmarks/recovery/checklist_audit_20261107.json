@@ -1,11 +1,11 @@
 {
-  "head": "215829d4667db0529d6ca963165a4fd0fdd8f285",
+  "head": "3f85bfa075959956d75893c42fb46b77ded3fcce",
   "branch": "arena/6a6a2ba3-stockbear",
   "main_sha": "6e7c2e02881faf93a84990a8345c41ad28bcae11",
   "version_branch": "0.1.0-dev6",
   "version_main": "0.1.0-dev5",
-  "checked": 47,
-  "open": 11,
+  "checked": 48,
+  "open": 10,
   "total": 58,
   "items": [
     {
@@ -149,8 +149,10 @@
     },
     {
       "id": "2.1",
-      "checked": false,
-      "cited_filelike": [],
+      "checked": true,
+      "cited_filelike": [
+        "benchmarks/recovery/prereg_freeze_audit.json"
+      ],
       "missing_paths": []
     },
     {
@@ -537,7 +539,7 @@
     "dev5": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
     "dev4_rebuild": "1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae"
   },
-  "append_only_numstat": "1792\t0\tAGENTS_LOG.md\n949\t0\tDESIGN_LOG.md\n2236\t0\tbenchmarks/FAILURE_LEDGER.md",
+  "append_only_numstat": "1792\t0\tAGENTS_LOG.md\n949\t0\tDESIGN_LOG.md\n2257\t0\tbenchmarks/FAILURE_LEDGER.md",
   "append_only_violation": false,
   "raw_artifact_non_additions": []
 }

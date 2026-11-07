@@ -124,10 +124,21 @@ component confirmation followed by direct integrated measurement.
 - **Why rejected:** exp-0047 bounded bit-exact speed ceiling ~+3–8 Elo; speed
   alone cannot reach +75. Use only as liveness/cost diagnostics.
 
-## Immediate execution rule
+## Immediate execution rule / post-exp-0063 disposition
 
-Do not insert any new feature into exp-0060's source pin. After exp-0060 is
-exported and independently audited: if confirmed, freeze a direct integrated
-threats+race gate prereg; if not, close per its frozen rule. Candidate 2 is the
-next *new mechanism* to design, but only with a fresh prereg, cost gate, and
-numeric budget. No historical verdict is reopened.
+The race confirmation and direct integration are complete: exp-0060 confirmed
+the race increment; exp-0062 measured threats+race directly vs dev5 at +40.7732
+[+36.2091,+45.3513] — valid but Gate 1 UNMET (UCB +45.35 < +75). The battery
+direction is closed: exp-0061 cost-blocked, exp-0063 cost-passed but screen
+rejected (−6.03). No historical verdict is reopened and no component Elo is
+summed.
+
+Remaining ranked directions are low-prior or cost-risky: single-feature passer
+support (negative bundle ancestry, likely >5% cost), continuation/counter-move
+ordering (ordering-family failures), TT history relaxation (draw-soundness risk,
+rejected), speed-only work (bounded ~+3–8 Elo, cannot reach gate). None has
+positive game evidence or a credible standalone path to the +75 / LCB>+50 gate.
+Any further attempt requires a fresh source-grounded hypothesis, prereg,
+prospective cost/correctness gates and a new direct integrated measurement; it
+must not reinterpret closed verdicts. The current blocker is the non-waivable
+strength gate, not infrastructure or correctness.

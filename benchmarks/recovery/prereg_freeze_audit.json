@@ -1,0 +1,134 @@
+{
+  "checked_at_head": "3f85bfa075959956d75893c42fb46b77ded3fcce",
+  "rows": [
+    {
+      "experiment": "exp0050",
+      "prereg": "docs/DEV6_PREREG_EXP0050.md",
+      "prereg_commits": 1,
+      "freeze_commit": "3926bdbfa399af040ee34d5552c5bbeda6297886",
+      "prereg_sha256_at_freeze": "e80375135cf991cd8c4fcc1723e5c6c4f2c1dd957e5a6d920be8bfda88f9569a",
+      "benchmark_dispatch_commit": "96822f65fc173d8348a91c1bf136af87450a0eb5",
+      "freeze_before_dispatch": true
+    },
+    {
+      "experiment": "exp0051",
+      "prereg": "docs/DEV6_PREREG_EXP0051.md",
+      "prereg_commits": 1,
+      "freeze_commit": "0dec094f43f6aea17ce7aaf46d62cf4d2033a45d",
+      "prereg_sha256_at_freeze": "94673e910b0dd8f1676ee90db1784524244f08a9df7fec399fb2038485318ae3",
+      "benchmark_dispatch_commit": "a53ff8c1cd1eb8fb51fff67092ef2eca434bbedc",
+      "freeze_before_dispatch": true
+    },
+    {
+      "experiment": "exp0052",
+      "prereg": "docs/DEV6_PREREG_EXP0052.md",
+      "prereg_commits": 1,
+      "freeze_commit": "0b63189207ea5327d35b1b66ab4fe2af78eab69d",
+      "prereg_sha256_at_freeze": "c3a022d5686d4d5485f890ea23884dcc10e36e209e5a9902626c2a505f74d578",
+      "benchmark_dispatch_commit": "a2c6f6a0f848f7215a86779a5197d04ab272b28c",
+      "freeze_before_dispatch": true
+    },
+    {
+      "experiment": "exp0053",
+      "prereg": "docs/DEV6_PREREG_EXP0053.md",
+      "prereg_commits": 1,
+      "freeze_commit": "f4d17793ef4f2fcd80f8bdb8aab7df8b8b13efd8",
+      "prereg_sha256_at_freeze": "6049ef7fd044fad15418e453e7ec6cbc51022dd9954835869cdbe49c44e66722",
+      "benchmark_dispatch_commit": "983e335e99e6336fb130da32b5d6376ed0da15eb",
+      "freeze_before_dispatch": true
+    },
+    {
+      "experiment": "exp0054",
+      "prereg": "docs/DEV6_PREREG_EXP0054.md",
+      "prereg_commits": 1,
+      "freeze_commit": "dfb4838912aec3e6426c55b7728d6fefe77aca82",
+      "prereg_sha256_at_freeze": "48e800e804dbaa27b32d369c368b3c7baed42c931a6d6236bc1166a4d5b993ea",
+      "benchmark_dispatch_commit": "6b8edee04a8fe8aaecb6dff43069eca65112d2d7",
+      "freeze_before_dispatch": true
+    },
+    {
+      "experiment": "exp0055",
+      "prereg": "docs/DEV6_PREREG_EXP0055.md",
+      "prereg_commits": 1,
+      "freeze_commit": "2594479ac8965f0c87b4f1e72d61a87b71984cd3",
+      "prereg_sha256_at_freeze": "1fe7fd18f6df871d65fadfaf7d9b9dda94553cee3c231a0d84988b43502c24ea",
+      "benchmark_dispatch_commit": "de20f5faf58bc928a63dff2ed9980b7bcaedb7b1",
+      "freeze_before_dispatch": true
+    },
+    {
+      "experiment": "exp0056",
+      "prereg": "docs/DEV6_PREREG_EXP0056.md",
+      "prereg_commits": 1,
+      "freeze_commit": "ec7c9c432a04aa14a85d112ffd0d36ab68d3eda4",
+      "prereg_sha256_at_freeze": "6437c2cf71ee8483be707f6fc1b2c624b33fd9551be1e316846862d904c6e90f",
+      "benchmark_dispatch_commit": "b769f1e90dc3fe49cd649502b7c4eb0a6e05bf73",
+      "freeze_before_dispatch": true
+    },
+    {
+      "experiment": "exp0057",
+      "prereg": "docs/DEV6_PREREG_EXP0057.md",
+      "prereg_commits": 1,
+      "freeze_commit": "0f60282abfae7f2db607ee0e9a90c53889c1dae5",
+      "prereg_sha256_at_freeze": "cdbf6dbe59a0ce9f7bb4992623a93ea830e060118c7c4329d9ac78966e3e39e3",
+      "benchmark_dispatch_commit": "97c72636601149239ea2bdd726fe90ce21477e75",
+      "freeze_before_dispatch": true
+    },
+    {
+      "experiment": "exp0058",
+      "prereg": "docs/DEV6_PREREG_EXP0058.md",
+      "prereg_commits": 1,
+      "freeze_commit": "520f8541f4caa8226eec450e9f0db8ef41348e31",
+      "prereg_sha256_at_freeze": "8722b108b295b95a9049181662cdf3ac5a4100042e5cff79e32cfd658735f3d5",
+      "benchmark_dispatch_commit": "720de96354610ceda9af69d6d8c2fff0824a8cd3",
+      "freeze_before_dispatch": true
+    },
+    {
+      "experiment": "exp0059",
+      "prereg": "docs/DEV6_PREREG_EXP0059.md",
+      "prereg_commits": 1,
+      "freeze_commit": "b5f522810b7a744a54a79236227585f5f3a754a5",
+      "prereg_sha256_at_freeze": "9c35f08d7c4c11a0bd326fc89c3bfa76170e487dcbad99fc2154748138069d92",
+      "benchmark_dispatch_commit": null,
+      "freeze_before_dispatch": false
+    },
+    {
+      "experiment": "exp0060",
+      "prereg": "docs/DEV6_PREREG_EXP0060.md",
+      "prereg_commits": 1,
+      "freeze_commit": "8e77e0fec3ee4d919b6aedfc02f89cb9d5c19950",
+      "prereg_sha256_at_freeze": "24f143ccb4e524469e322626e14f8690e226ab29ee9d537f15ddf345353e2a18",
+      "benchmark_dispatch_commit": "7bdf21c55279c4385cff4f3a36a5eb736ac00f91",
+      "freeze_before_dispatch": true
+    },
+    {
+      "experiment": "exp0061",
+      "prereg": "docs/DEV6_PREREG_EXP0061.md",
+      "prereg_commits": 1,
+      "freeze_commit": "91166e5fbbec5ffba1566bd80a43f8bb80199928",
+      "prereg_sha256_at_freeze": "2c518e70a312aa4793fae695860d7fae9d8392d377f0b5ee894643f00aa67617",
+      "benchmark_dispatch_commit": "97438f89ed522642261b0f8ce582d33241bd3093",
+      "freeze_before_dispatch": true
+    },
+    {
+      "experiment": "exp0062",
+      "prereg": "docs/DEV6_PREREG_EXP0062.md",
+      "prereg_commits": 1,
+      "freeze_commit": "95606a513c4cc96231fbbba89e04165348c23fbb",
+      "prereg_sha256_at_freeze": "b7bab412fe0a2c6ca992e188c4d42b14cf9450e86dbdefb1e8004363c6a90365",
+      "benchmark_dispatch_commit": "619088f1b65b6e1246290582022c0b6d7ca6d907",
+      "freeze_before_dispatch": true
+    },
+    {
+      "experiment": "exp0063",
+      "prereg": "docs/DEV6_PREREG_EXP0063.md",
+      "prereg_commits": 1,
+      "freeze_commit": "7d9aa8f03741c97bac8ee134f5cb913ceffbc216",
+      "prereg_sha256_at_freeze": "31c481f3cd14969671bb9cf529015b3fc9ef4d1a8d656b4e7eab02bb8dc5e0a0",
+      "benchmark_dispatch_commit": "d292c59ad1dc3ee264851e4bc9ba63ea2858d255",
+      "freeze_before_dispatch": true
+    }
+  ],
+  "all_pinned_before_dispatch": false,
+  "all_dispatched_pinned_before_dispatch": true,
+  "note": "exp0059 had no benchmark dispatch and zero strength games (pre-game local cost-instrument failure); its prereg was frozen before those cost measurements. All experiments with a benchmark dispatch were pinned before dispatch."
+}

@@ -151,8 +151,8 @@ and research logs. An incomplete checklist means an incomplete mission.
 
 ## 2. Research and experiment discipline
 
-- [ ] **2.1** Every strength-tested experiment has its own preregistration committed BEFORE its first game.
-      *Evidence:* per-experiment prereg path + SHA-256 + the commit SHA preceding the run's dispatch.
+- [x] **2.1** Every strength-tested experiment has its own preregistration committed BEFORE its first game.
+      *Evidence:* `benchmarks/recovery/prereg_freeze_audit.json` recomputes, for exp-0050…0063, each prereg path, SHA-256 at its freeze commit, freeze commit and earliest benchmark-dispatch commit, and verifies `git merge-base --is-ancestor` for every dispatched experiment (`all_dispatched_pinned_before_dispatch=true`). exp-0059 had zero strength games/no benchmark dispatch (pre-game cost-instrument failure); exp-0061 was dispatched only after its prereg freeze and failed before games.
 - [ ] **2.2** Each prereg specifies ID, hypothesis, mechanism, candidate/baseline hashes, frozen ADVANCE/CLOSE/INCONCLUSIVE rules, time control, opening methodology, statistics, power rationale and validity requirements.
       *Evidence:* section-by-section citation into each prereg.
 - [x] **2.3** No preregistered acceptance criterion was altered after results were observed.
