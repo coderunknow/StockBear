@@ -337,8 +337,8 @@ and research logs. An incomplete checklist means an incomplete mission.
       *Evidence:* `git ls-remote` / `gh api` ref lookup.
 - [ ] **8.6** Required post-push CI passed on that exact SHA.
       *Evidence:* run ID, conclusion, per-job results, headSha equality.
-- [ ] **8.7** Final report contains all nine required elements (candidate SHA, baseline identity, games/W-D-L/Elo/CI, explicit LCB > +50 confirmation, independent recomputation evidence, correctness/CI results, checklist path, remote SHA, disclosed limitations).
-      *Evidence:* final report path.
+- [x] **8.7** Final report contains all nine required elements (candidate SHA, baseline identity, games/W-D-L/Elo/CI, explicit LCB > +50 confirmation, independent recomputation evidence, correctness/CI results, checklist path, remote SHA, disclosed limitations).
+      *Evidence:* `docs/DEV6_FINAL_REPORT_20261107.md` §§1–8: candidate/source/binary SHAs, dev5 baseline digest, exp-0062 games/W-D-L/+40.7732 [+36.2091,+45.3513], explicit “LCB > +50 is NOT confirmed”, independent auditor/replay evidence, ctest/bench/CI run 42367825791, checklist path/counts, audit HEAD/remote SHA, and disclosed limitations/blockers. This does not authorize a completion push; §8.3 remains blocked by §4.1.
 
 ---
 

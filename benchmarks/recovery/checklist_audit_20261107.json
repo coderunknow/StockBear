@@ -1,11 +1,11 @@
 {
-  "head": "3f85bfa075959956d75893c42fb46b77ded3fcce",
+  "head": "ef7c1782636d13279c5008a6f876d8d4015b40e1",
   "branch": "arena/6a6a2ba3-stockbear",
   "main_sha": "6e7c2e02881faf93a84990a8345c41ad28bcae11",
   "version_branch": "0.1.0-dev6",
   "version_main": "0.1.0-dev5",
-  "checked": 48,
-  "open": 10,
+  "checked": 49,
+  "open": 9,
   "total": 58,
   "items": [
     {
@@ -530,8 +530,10 @@
     },
     {
       "id": "8.7",
-      "checked": false,
-      "cited_filelike": [],
+      "checked": true,
+      "cited_filelike": [
+        "docs/DEV6_FINAL_REPORT_20261107.md"
+      ],
       "missing_paths": []
     }
   ],
