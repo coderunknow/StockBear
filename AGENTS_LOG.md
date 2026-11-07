@@ -2395,3 +2395,32 @@ so an effect is attributable to ONE mechanism.
 
 Prereg `4f3e0a01…`, plan and budget frozen before any exp-0065 game.
 **Gate 1 remains UNMET; mission ACTIVE.**
+
+### exp-0065 measured and closed (2026-11-07)
+
+Run **42383867075** succeeded 4/4; export **42386174113** → evidence `cbd200e`.
+Independent raw audit: **TOTAL ISSUES 0**, blobs 54/54, sums 44/44, 7,800/7,800
+PGN replay with 0 inconsistencies, 0 forfeits/illegal/failures. Validity
+**25/25 PASS**, including explicit per-arm switch values, primary arms differing
+only by the switch, and fresh ctest 20/20.
+
+Primary combined **+9.7673 [+3.3767,+16.1645]** (batchA +6.7904, batchB +12.7396;
+2,971 complete clusters; bootstrap [+3.3914,+16.2083]). Both powered nulls
+include zero.
+
+**Frozen decision → INCONCLUSIVE.** ADVANCE required point **≥+10**; observed
+**+9.7673**, a miss of **0.23 Elo**. The LCB was above zero and both batches were
+positive, which makes this a genuinely painful near-miss — and exactly why the
+bar was written before the games. I did not round, buy more games, pick a batch,
+or re-read the criterion. `PersistentHistory` stays **default OFF**.
+Closure: `docs/DEV6_EXP0065_REPORT.md`; ledger and backlog updated.
+
+Notable: the plan's pre-game caveat predicted a possibly neutral/negative
+fixed-time effect (0.9654 nodes × 1.0776 per-node cost ≈ 1.04 time-to-depth). The
+games came back positive, so the fixed-node overhead estimate — measured with
+8.6 % A/A noise — over-predicted the cost. Recorded as a calibration lesson.
+
+**Gate 1 remains UNMET. Mission ACTIVE.** Next ranked direction recorded in the
+survey: the continuation/counter-move tables are STILL erased every move, so the
+same confound persists for them; a distinct prereg would be required and this
+sample may not be pooled.

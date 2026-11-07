@@ -192,7 +192,7 @@ preregistered screen. No closed verdict was reopened, no historical measurement
 was edited, and no component Elo is summed. Gate 1 remains **UNMET** and the
 mission remains **ACTIVE**.
 
-### 8. ACTIVE: persistent cross-move quiet history (exp-0065)
+### 8. INCONCLUSIVE: persistent cross-move quiet history (exp-0065)
 
 - **Mechanism + source location:** `src/search/search.cpp:934–943` zeroes
   `history_` (and every other ordering table) at the start of EVERY root search,
@@ -227,6 +227,24 @@ mission remains **ACTIVE**.
   guarded read at `:628`) and is recorded as defensive hardening, not a fix.
 - **Runtime risk + controls:** no evaluation change; frozen **fixed-node** cost
   guard ≤1.10 passed at 1.0776.
-- **Priority / disposition:** highest remaining — a structural confound affecting
-  an entire mechanism family, with a passing game-order diagnostic. Preregistered
-  screen dispatched; verdict pending.
+- **Priority / disposition:** **INCONCLUSIVE / default OFF.** Screen measured
+  **+9.7673 [+3.3767,+16.1645]**; the frozen ADVANCE bar was point ≥+10, missed
+  by 0.23 Elo, so neither ADVANCE nor CLOSE fired. No rounding, no extra games,
+  no promotion. The structural finding is real and the evidence points the right
+  way, but the bar governs.
+
+### 9. NEXT (unregistered): persistence for the still-erased ordering tables
+
+- **Mechanism + source:** `search.cpp` still zeroes `continuation_`,
+  `counterMoves_` and `captureHistory_` every root search. exp-0065 fixed only
+  `history_`. The same "erased every 40 ms" confound therefore still applies to
+  these tables, and the ContinuationHistory turn-ON diagnostic (node ratio
+  **1.0043**, slightly worse) was measured WITH that confound present.
+- **Why worth testing:** continuation history is a large ordering lever in
+  strong engines; it has never been measured with a table that can actually
+  learn across moves. Requires its OWN prereg; exp-0065 games may NOT be pooled.
+- **Risk:** per-node update cost on a ~200k-entry table; must pass a fixed-node
+  guard. Correctness risk low (pure ordering heuristic).
+- **Controls:** same-binary ablation, powered nulls, fresh disjoint openings,
+  sequential-replay efficacy gate, mutation matrix, default-OFF bench pins.
+- **Priority:** highest unregistered. **Not yet preregistered — no games.**

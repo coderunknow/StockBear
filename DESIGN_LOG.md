@@ -1285,3 +1285,32 @@ The methodological point generalises: an inconclusive screen is a *budget* outco
 as much as a mechanism outcome. The honest responses are to record it, leave the
 feature off, and move to a different mechanism — not to spend more games on the
 same sample until the interval cooperates.
+
+## exp-0065 — a 0.23 Elo near-miss is still a miss
+
+The screen returned **+9.7673 [+3.38, +16.16]** against a preregistered ADVANCE
+bar of **+10**. The interval excludes zero; both batches are positive; the
+mechanism is a structural fix for a real defect. Every instinct says "call it a
+win". The protocol says INCONCLUSIVE, and the protocol is right.
+
+The bar was chosen before the games for exactly this scenario. If a near-miss can
+be rounded into a pass, then the bar was never +10 — it was "whatever we got,
+provided it looks encouraging", which is not a criterion at all. So: INCONCLUSIVE,
+switch default OFF, no extra games, no pooling. The cost of discipline here is
+one unpromoted mechanism; the cost of abandoning it would be that every future
+number in this mission becomes uninterpretable.
+
+Two substantive lessons survive the verdict. First, **the ordering family's
+neutral record was confounded**: every history table is erased every 40 ms, so
+exp-0014's no-op ablations and exp-0058's CaptureHistory rejection were measuring
+machinery that never got to learn. A fresh ContinuationHistory turn-ON diagnostic
+this cycle came out at 1.0043 node ratio — slightly *worse* — which is what a
+crippled learning table looks like, not evidence against ordering. Second, **the
+cost model was too pessimistic**: fixed-node timing with 8.6 % A/A noise suggested
+1.0776 per-node overhead and therefore ~1.04 time-to-depth, yet the games were
+positive. Cheap noisy cost probes should gate regressions, not predict Elo.
+
+The follow-up space is genuine but must stay honest: the continuation and
+counter-move tables are still erased, so the same confound persists for them.
+That is a *different* mechanism needing its own preregistration, and it may not
+borrow this sample's games.

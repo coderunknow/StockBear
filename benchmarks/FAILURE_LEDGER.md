@@ -2786,3 +2786,47 @@ budget pass; a future variant needs a new identity and the same limits.
   exp-0015's law and the game evidence landed lower. Structural TT reuse alone is
   not a path to +75. Best integral candidate remains threats+race +40.7732
   [+36.2091,+45.3513]; **Gate 1 UNMET; mission ACTIVE.** No merge/tag/release.
+
+## exp-0065 — persistent cross-move quiet history — VALID / INCONCLUSIVE (2026-11-07)
+
+- **Hypothesis:** `Search::run()` (`search.cpp:934–943`) zeroes every ordering
+  table on EVERY root search, and `uci.cpp:440` builds a fresh `Search` per `go`,
+  so quiet-ordering learning is discarded twice per move. At 40+4 ms (median
+  depth 5, ~10–30k nodes/move) the primary ordering table never accumulates. This
+  is the confound behind the ordering family's neutral record — a fresh
+  ContinuationHistory turn-ON diagnostic this cycle measured node ratio **1.0043**
+  (slightly worse) over 250 positions. No prior experiment touches table lifetime.
+- **Implementation:** one default-OFF switch `PersistentHistory`: carry `history_`
+  across searches with a bounded halving, and keep one `Search` alive until
+  `ucinewgame`. Killers stay cleared; counter-move/continuation/capture/correction/
+  qsearch tables untouched. No update rule, bonus, clamp or reduction changed.
+- **Pre-game gates:** ctest 20/20; bench d4/d6/d7 exact; **sequential-replay
+  efficacy gate** 20 real games / 2,525 positions → node ratio **0.9654** with
+  **19/20** games improving (gate ≤0.98 + majority); **fixed-NODE** cost guard
+  **1.0776** ≤1.10 with A/A spread 0.0859; mutation matrix **9/9 KILLED** + **2**
+  equivalence controls SURVIVED; interactive UCI lifetime oracle PASS; openings
+  seed 2026110665, 3,900, overlap 0, independently re-verified.
+- **Freeze:** prereg `4f3e0a01…`, plan and implementation committed at `6658abb`
+  BEFORE any game; run 42383867075 (4/4 success), export 42386174113 → `cbd200e`.
+- **Result (6,000 primary games, 2,971 complete clusters):** batchA +6.7904
+  [−2.3747,+15.9649]; batchB +12.7396 [+3.8232,+21.6727];
+  **combined +9.7673 [+3.3767,+16.1645]**; bootstrap [+3.3914,+16.2083].
+  Candidate null +5.2557 [−6.7760,+17.3001]; stage0 null −6.4565
+  [−21.6834,+8.7457] — both include zero.
+- **Validity:** 25/25 checks PASS; auditor issues 0; blobs 54/54; sums 44/44;
+  7,800/7,800 PGN replay, 0 inconsistent; 0 forfeits/illegal/failures; identical
+  binary in every arm; explicit per-arm switch values; primary arms differ only
+  by the switch; shipped default recorded false; ctest 20/20.
+- **Verdict: INCONCLUSIVE.** Frozen ADVANCE required point **≥+10**; observed
+  **+9.7673** — missed by **0.23 Elo**. LCB was >0 and both batches positive, but
+  the point bar is conjunctive and was not met. Frozen CLOSE required UCB <+3 or
+  point ≤0; neither. **No rounding, no extra games, no batch selection, no
+  criterion re-reading.** `PersistentHistory` **remains default OFF**.
+- **Lesson:** the structural finding is real and the game evidence points the
+  right way, but a preregistered bar exists precisely for near-misses. A distinct
+  follow-up (different aging schedule, or persistence for the still-erased
+  continuation/counter-move tables) needs its OWN prereg and may not pool with
+  this sample. Also: the pre-game pessimistic reading (0.9654 × 1.0776 ≈ 1.04
+  time-to-depth) was wrong — fixed-node overhead measured with 8.6 % A/A noise
+  over-predicted the cost. Best integral candidate remains threats+race +40.7732
+  [+36.2091,+45.3513]; **Gate 1 UNMET; mission ACTIVE.** No merge/tag/release.
