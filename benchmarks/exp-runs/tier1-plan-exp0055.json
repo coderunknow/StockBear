@@ -1,0 +1,159 @@
+{
+  "experiment_id": "exp0055",
+  "frozen_before_evaluation_games": true,
+  "prereg": "docs/DEV6_PREREG_EXP0055.md",
+  "prereg_sha256": "1fe7fd18f6df871d65fadfaf7d9b9dda94553cee3c231a0d84988b43502c24ea",
+  "control": "FIXED TIME 40+4 ms; never --nodes",
+  "tier": "SCREEN of the passed-pawn race INCREMENT (not a Gate-1 decisive run)",
+  "design": "SAME-BINARY ABLATION: both arms run the identical candidate binary; only EvalParams differs. Measures the race INCREMENT on top of the confirmed threat term, NOT a Gate-1 quantity.",
+  "no_pooling_with_earlier_experiments": true,
+  "never_pooled_with_exp0053_or_exp0054": true,
+  "never_sum_with_exp0054_elo": true,
+  "frozen_combined": "batchA + batchB ONLY (3000 games)",
+  "candidate_config": "research-data/params_exp0055_race.txt",
+  "candidate_config_sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01",
+  "ablation_config": "research-data/params_exp0053_threats.txt",
+  "ablation_config_sha256": "7266eb4c2d17f226b31e8e435c118be1abd06b412e07256c4f793c2f8e097548",
+  "frozen_scale": {
+    "mg": 0,
+    "eg": 2
+  },
+  "baseline_binary": "benchmarks/binaries/stockbear-dev5-release",
+  "baseline_binary_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "baseline_note": "Recorded for provenance only. The primary batches do NOT play dev5; both arms are the candidate binary.",
+  "openings_seed": 2026110655,
+  "jobs": [
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0055.md",
+      "prereg_sha256": "1fe7fd18f6df871d65fadfaf7d9b9dda94553cee3c231a0d84988b43502c24ea",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0055-stage0",
+      "games": 400,
+      "seed": 2026110690,
+      "openings": "benchmarks/positions/openings_exp0055_stage0.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": true,
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "Stage-0 control/control validity null on the packaged candidate; fresh ctest; 0 forfeits required",
+      "assets": [
+        "research-data/params_exp0055_race.txt",
+        "research-data/params_exp0053_threats.txt"
+      ]
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0055.md",
+      "prereg_sha256": "1fe7fd18f6df871d65fadfaf7d9b9dda94553cee3c231a0d84988b43502c24ea",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0055-batchA",
+      "games": 1500,
+      "seed": 2026110691,
+      "openings": "benchmarks/positions/openings_exp0055_batchA.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_exp0053_threats.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "SCREEN batchA; A=candidate+threats+race(0,2), B=SAME candidate binary+threats only => isolates the race increment",
+      "assets": [
+        "research-data/params_exp0055_race.txt",
+        "research-data/params_exp0053_threats.txt"
+      ]
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0055.md",
+      "prereg_sha256": "1fe7fd18f6df871d65fadfaf7d9b9dda94553cee3c231a0d84988b43502c24ea",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0055-batchB",
+      "games": 1500,
+      "seed": 2026110692,
+      "openings": "benchmarks/positions/openings_exp0055_batchB.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_exp0053_threats.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "SCREEN batchB; independent seed and disjoint openings; same arms as batchA",
+      "assets": [
+        "research-data/params_exp0055_race.txt",
+        "research-data/params_exp0053_threats.txt"
+      ]
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0055.md",
+      "prereg_sha256": "1fe7fd18f6df871d65fadfaf7d9b9dda94553cee3c231a0d84988b43502c24ea",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "id": "tier1-exp0055-null",
+      "games": 400,
+      "seed": 2026110693,
+      "openings": "benchmarks/positions/openings_exp0055_null.txt",
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "null": true,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "note": "candidate-options-on-both-sides validity null; CI must include 0",
+      "assets": [
+        "research-data/params_exp0055_race.txt",
+        "research-data/params_exp0053_threats.txt"
+      ]
+    }
+  ]
+}

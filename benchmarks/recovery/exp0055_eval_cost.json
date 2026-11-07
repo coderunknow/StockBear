@@ -1,0 +1,48 @@
+{
+  "gate": "A/A spread(p90-p10) must be < 0.10 before any ratio is interpretable",
+  "aa_control": {
+    "blocks": 60,
+    "median_b_over_a": 1.0042309437780426,
+    "p10": 0.9836978317516681,
+    "p90": 1.0216859366003046,
+    "min": 0.6440407877988494,
+    "max": 1.043738988937852,
+    "a_params": "research-data/params_exp0053_threats.txt",
+    "b_params": "research-data/params_exp0053_threats.txt",
+    "aa_spread": 0.03798810484863646,
+    "usable": true
+  },
+  "aa_usable": true,
+  "fused_ab": {
+    "blocks": 90,
+    "median_b_over_a": 1.0220642317880964,
+    "p10": 0.9997418303482157,
+    "p90": 1.044923241829206,
+    "min": 0.8493797312049999,
+    "max": 1.1974009442123736,
+    "a_params": "research-data/params_exp0053_threats.txt",
+    "b_params": "research-data/params_exp0055_race.txt"
+  },
+  "fused_increment_pct": 2.21,
+  "pre_fusion_ab": {
+    "blocks": 90,
+    "median_b_over_a": 1.1235827524411586,
+    "p10": 1.0951147263840058,
+    "p90": 1.1621195244048794
+  },
+  "pre_fusion_increment_pct": 12.36,
+  "optimization": "race fused into the EXISTING pawn walk in features(); the standalone walker is retained for the breakdown path. Value-identity proven on 4000 positions (pre-fusion vs fused delta vectors identical; race-OFF baseline identical).",
+  "arms": "A = params_exp0053_threats (threats only), B = params_exp0055_race (threats + PassedPawnRace 0 2); SAME binary",
+  "note": "Diagnostic only. No strength claim. Eval is ~33% of node time, so this is roughly a 0.7% node-time cost.",
+  "frozen_config_ab": {
+    "blocks": 90,
+    "median_b_over_a": 1.0197320813523247,
+    "p10": 0.9821053380604974,
+    "p90": 1.0437378268446216,
+    "min": 0.722892579132325,
+    "max": 1.093995768753162,
+    "a_params": "research-data/params_exp0053_threats.txt",
+    "b_params": "research-data/params_exp0055_race.txt"
+  },
+  "frozen_config_increment_pct": 1.97
+}

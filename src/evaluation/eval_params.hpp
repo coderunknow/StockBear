@@ -53,6 +53,8 @@ enum EvalParamId : int {
     KingSafetyQuadratic,
     // exp-0053: material-exposure (threat) detection. Shipped 0 = default OFF.
     ThreatDetection,
+    // exp-0055: passed-pawn promotion race (king escort / blockade / blocked path).
+    PassedPawnRace,
     // The table must only ever be appended: reordering/removing an entry would
     // silently reinterpret every recorded tuning dataset and parameter file.
     EvalParamNB

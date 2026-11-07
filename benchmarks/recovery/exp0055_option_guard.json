@@ -1,0 +1,37 @@
+{
+  "experiment": "exp0055",
+  "command": "python3 scripts/recovery_option_guard_check.py",
+  "cases": [
+    {
+      "case": "valid",
+      "expected": "games must be a positive even number",
+      "found": true,
+      "reached_games_assertion": true,
+      "status": "PASS"
+    },
+    {
+      "case": "undeclared_evalparams",
+      "expected": "is not declared in job['assets']",
+      "found": true,
+      "reached_games_assertion": false,
+      "status": "PASS"
+    },
+    {
+      "case": "corrupt_evalparams",
+      "expected": "could not load",
+      "found": true,
+      "reached_games_assertion": false,
+      "status": "PASS"
+    },
+    {
+      "case": "undeclared_pst",
+      "expected": "is not declared in job['assets']",
+      "found": true,
+      "reached_games_assertion": false,
+      "status": "PASS"
+    }
+  ],
+  "verdict": "PASS",
+  "games_played": 0,
+  "note": "Scratch guard packages (benchmarks/exp-runs/tier1-exp0052guard-guardcheck-*) are intentionally NOT committed; they are reproducible build scratch, not evidence."
+}

@@ -1,0 +1,34 @@
+{
+  "experiment": "exp-0055",
+  "declared_before_measurement": true,
+  "criterion": {
+    "p99_abs_delta_cp_max": 120,
+    "rms_delta_cp_max": 40
+  },
+  "comparison": "params_exp0055_race (threats+race) vs params_exp0053_threats (threats only) -- isolates the race INCREMENT",
+  "rationale": "Same criterion as exp-0052/0053. Pruning margins are cp-calibrated (futility 110, rev-futility 85, delta 200); exp-0049 at RMS 111.83 cp lost ~160 Elo.",
+  "frozen_candidate": {
+    "w_own_king": 2,
+    "w_enemy_king": 2,
+    "w_blocked": 6,
+    "cap_units": 64,
+    "mg": 0,
+    "eg": 1
+  },
+  "no_strength_sweep": true,
+  "rule_if_failed": "Tighten the IMPLEMENTATION (cap/weights). Never relax this criterion after seeing the distribution.",
+  "amendments": [
+    {
+      "seq": 1,
+      "when": "BEFORE any exp-0055 game (0 games played)",
+      "change": "frozen_candidate.eg 1 -> 2 (descriptive snapshot only)",
+      "thresholds_changed": false,
+      "criterion_still": {
+        "p99_abs_delta_cp_max": 120,
+        "rms_delta_cp_max": 40
+      },
+      "reason": "eg=1 overall RMS 7.14 is half of exp-0052's inconclusive 13.87. eg=2 (overall 14.28 / p99 58; endgame 35.66 / p99 106) matches the CONFIRMED threat term's magnitude and still satisfies the UNCHANGED criterion on both corpora.",
+      "integrity": "Original pre-declared values above are preserved verbatim, not overwritten. See exp0055_eval_scale.json for both measured distributions and the full rationale."
+    }
+  ]
+}

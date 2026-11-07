@@ -172,6 +172,8 @@ bool king_safety_active() { return gKingSafety; }
 // exp-0053: cached activation flag for the threat term, same discipline as
 // gKingSafety -- with the shipped set (param 0) evaluate() pays nothing.
 bool gThreats = false;
+// exp-0055: cached activation flag for the passed-pawn race term.
+bool gPassedPawnRace = false;
 
 // Attack-unit weights per attacking piece type (index by PieceType). Pawns and
 // kings weigh 0: their zone contact is already covered by the linear rows and
@@ -355,6 +357,73 @@ ThreatUnions build_threat_unions(const Position& p) {
     return tu;
 }
 
+// exp-0055: passed-pawn promotion race. The shipped evaluation scores a passer
+// ONLY as advance^2 * PassedPawnAdvance. It has no idea whether its own king is
+// escorting it, whether the enemy king is sitting on the promotion path, or
+// whether the path is blocked at all -- king-proximity terms are entirely absent
+// from the parameter table. In an endgame those facts decide whether a passer is
+// a queen or a dead pawn, so this is a large representational gap.
+//
+// Distinct from the abandoned exp-0026 bundle, which contained only the narrow
+// ConnectedPassed / RookBehindPassed counts and no king geometry.
+//
+// ONE scale parameter with fixed internal weights (the exp-0053 discipline).
+// Chebyshev distance is the right metric: it counts king moves.
+constexpr int RaceWeightOwnKing  = 2;
+constexpr int RaceWeightEnemyKing = 2;
+constexpr int RaceWeightBlocked  = 6;
+constexpr int RaceUnitsMax       = 64;
+
+inline int chebyshev(Square a, Square b) {
+    const int df = std::abs(file_of(a) - file_of(b));
+    const int dr = std::abs(rank_of(a) - rank_of(b));
+    return std::max(df, dr);
+}
+
+// Per-passer contribution. Shared by the standalone reference walker and the
+// FUSED live path inside features(), so the formula exists in exactly one place.
+inline int race_passer_units(int advance, int ownD, int enemyD, bool blocked) {
+    return advance * (RaceWeightOwnKing * (7 - ownD)
+                    - RaceWeightEnemyKing * (7 - enemyD)
+                    - (blocked ? RaceWeightBlocked : 0));
+}
+
+bool passed_pawn_race_active() { return gPassedPawnRace; }
+
+// Shared by features(), accumulate_breakdown() and all_feature_counts() so the
+// live evaluation and the offline breakdown can never drift apart. Uses exactly
+// the shipped passed-pawn rule (no enemy pawn in the passed mask, and leading
+// pawn of its file) so "passed" means the same thing everywhere.
+int passed_pawn_race_units(const Position& p, Color us) {
+    const Color them = ~us;
+    const Bitboard pawns = p.pieces(us, Pawn);
+    const Bitboard enemyPawns = p.pieces(them, Pawn);
+    const Bitboard enemyAll = p.pieces(them);
+    const Square ownK = p.king_square(us);
+    const Square enemyK = p.king_square(them);
+    const int forward = us == White ? 8 : -8;
+    int units = 0;
+    for (Bitboard b = pawns; b;) {
+        const Square s = pop_lsb(b);
+        const int f = file_of(s);
+        if (enemyPawns & PassedPawnMaskBB[us][s]) continue;
+        if (pawns & FileBB[f] & ForwardRanksBB[us][rank_of(s)]) continue;
+        const int advance = us == White ? rank_of(s) : 7 - rank_of(s);
+        const int stopIdx = int(s) + forward;
+        if (stopIdx < 0 || stopIdx >= 64) continue;
+        const Square stop = Square(stopIdx);
+        // Own king close to the stop square escorts the passer; the enemy king
+        // close to it blockades. Distances are clamped to the board diameter.
+        const int ownD = std::min(chebyshev(ownK, stop), 7);
+        const int enemyD = std::min(chebyshev(enemyK, stop), 7);
+        // Any enemy piece on the file ahead of the pawn blocks the path.
+        const bool blocked =
+            (enemyAll & FileBB[f] & ForwardRanksBB[us][rank_of(s)]) != 0;
+        units += race_passer_units(advance, ownD, enemyD, blocked);
+    }
+    return std::clamp(units, -RaceUnitsMax, RaceUnitsMax);
+}
+
 // Dev5 isolated experiment: activity on an enemy-pawn-controlled square is
 // often illusory. This mask is deliberately geometric, not a legality test.
 Bitboard mobility_area(const Position& p, Color us) {
@@ -388,6 +457,15 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
         out.eg += egp(BishopPair);
     }
 
+    // exp-0055: the race is fused into this existing pawn walk so a position
+    // with no passer pays only the gate test, not a second 8-pawn scan.
+    const bool raceOn = passed_pawn_race_active();
+    int raceRaw = 0;
+    const Bitboard raceEnemyAll = raceOn ? p.pieces(them) : Bitboard(0);
+    const Square raceOwnK = raceOn ? p.king_square(us) : SQ_NONE;
+    const Square raceEnemyK = raceOn ? p.king_square(them) : SQ_NONE;
+    const int raceForward = us == White ? 8 : -8;
+
     Bitboard b = pawns;
     while (b) {
         const Square s = pop_lsb(b);
@@ -399,12 +477,28 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
         if (!(enemyPawns & PassedPawnMaskBB[us][s])) {
             // A doubled pawn behind another is not an independently useful
             // passed pawn; award only the leading pawn.
-            if (!(pawns & FileBB[f] & ForwardRanksBB[us][rank_of(s)])) {
+            const Bitboard ahead = FileBB[f] & ForwardRanksBB[us][rank_of(s)];
+            if (!(pawns & ahead)) {
                 const int advance = us == White ? rank_of(s) : 7 - rank_of(s);
                 out.mg += advance * advance * mgp(PassedPawnAdvance);
                 out.eg += advance * advance * egp(PassedPawnAdvance);
+                if (raceOn) {
+                    const int stopIdx = int(s) + raceForward;
+                    if (stopIdx >= 0 && stopIdx < 64) {
+                        const Square stop = Square(stopIdx);
+                        const int ownD = std::min(chebyshev(raceOwnK, stop), 7);
+                        const int enemyD = std::min(chebyshev(raceEnemyK, stop), 7);
+                        raceRaw += race_passer_units(advance, ownD, enemyD,
+                                                     (raceEnemyAll & ahead) != 0);
+                    }
+                }
             }
         }
+    }
+    if (raceOn) {
+        const int race = std::clamp(raceRaw, -RaceUnitsMax, RaceUnitsMax);
+        out.mg += race * mgp(PassedPawnRace);
+        out.eg += race * egp(PassedPawnRace);
     }
 
     // Penalize each extra pawn on a file once, not once per pair.
@@ -602,6 +696,13 @@ void accumulate_breakdown(const Position& p, Color us, EvalBreakdown& bd) {
         }
     }
 
+    // exp-0055: passed-pawn race count (shared helper, identical to features()).
+    {
+        const int race = passed_pawn_race_units(p, us);
+        mg(PassedPawnRace) += sign * race;
+        eg(PassedPawnRace) += sign * race;
+    }
+
     // dev6 extended features (identical counts to features(), shared helper).
     if (extended_eval_active()) {
         const ExtCounts e = extended_counts(p, us);
@@ -751,6 +852,8 @@ void all_feature_counts(const Position& p, Color us, std::int16_t* out) {
     // exp-0053: per-side threat count, from the independent union builder.
     out[std::size_t(ThreatDetection)] =
         std::int16_t(threat_units(p, us, build_threat_unions(p)));
+    // exp-0055: per-side passed-pawn race count.
+    out[std::size_t(PassedPawnRace)] = std::int16_t(passed_pawn_race_units(p, us));
     const Bitboard occ = p.pieces();
     const Bitboard own = p.pieces(us);
     const Color them = ~us;
@@ -814,6 +917,8 @@ void evaluation_rebuild_tables() {
     gKingSafety = p.mg[KingSafetyQuadratic] || p.eg[KingSafetyQuadratic];
     // exp-0053: pay for the threat term only when it is enabled.
     gThreats = p.mg[ThreatDetection] || p.eg[ThreatDetection];
+    // exp-0055: pay for the passed-pawn race term only when it is enabled.
+    gPassedPawnRace = p.mg[PassedPawnRace] || p.eg[PassedPawnRace];
 }
 
 EvalBreakdown eval_breakdown(const Position& p) {

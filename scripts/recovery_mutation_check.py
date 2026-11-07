@@ -58,6 +58,66 @@ MUTANTS = [
 ]
 
 
+# exp-0055 passed-pawn race. The formula lives in race_passer_units() (shared by
+# the live FUSED path in features() and the standalone breakdown walker), so a
+# formula mutant hits both. Clamp mutants are applied to BOTH paths separately
+# because each has its own clamp; mutating only one would leave the other live.
+RACE_MUTANTS = [
+    ("computed_but_never_applied",
+     "        out.mg += race * mgp(PassedPawnRace);\n"
+     "        out.eg += race * egp(PassedPawnRace);",
+     "        (void)race;",
+     "a term computed but never added is correct-looking dead code"),
+    ("own_king_escort_removed",
+     "    return advance * (RaceWeightOwnKing * (7 - ownD)\n"
+     "                    - RaceWeightEnemyKing * (7 - enemyD)\n"
+     "                    - (blocked ? RaceWeightBlocked : 0));",
+     "    return advance * (- RaceWeightEnemyKing * (7 - enemyD)\n"
+     "                    - (blocked ? RaceWeightBlocked : 0));",
+     "the escort half is the term's main positive contribution"),
+    ("enemy_king_blockade_removed",
+     "    return advance * (RaceWeightOwnKing * (7 - ownD)\n"
+     "                    - RaceWeightEnemyKing * (7 - enemyD)\n"
+     "                    - (blocked ? RaceWeightBlocked : 0));",
+     "    return advance * (RaceWeightOwnKing * (7 - ownD)\n"
+     "                    - (blocked ? RaceWeightBlocked : 0));",
+     "the defending king's blockade decides most pawn races"),
+    ("blocked_path_penalty_removed",
+     "    return advance * (RaceWeightOwnKing * (7 - ownD)\n"
+     "                    - RaceWeightEnemyKing * (7 - enemyD)\n"
+     "                    - (blocked ? RaceWeightBlocked : 0));",
+     "    return advance * (RaceWeightOwnKing * (7 - ownD)\n"
+     "                    - RaceWeightEnemyKing * (7 - enemyD));",
+     "a blocked passer is not a promotion threat"),
+    ("advance_weighting_removed",
+     "    return advance * (RaceWeightOwnKing * (7 - ownD)",
+     "    return 1 * (RaceWeightOwnKing * (7 - ownD)",
+     "an advanced passer is worth far more than one on rank 2"),
+    ("live_path_cap_removed",
+     "        const int race = std::clamp(raceRaw, -RaceUnitsMax, RaceUnitsMax);",
+     "        const int race = raceRaw;",
+     "without the clamp the LIVE term can swamp cp-calibrated pruning margins"),
+    ("breakdown_path_cap_removed",
+     "    return std::clamp(units, -RaceUnitsMax, RaceUnitsMax);",
+     "    return units;",
+     "the breakdown clamp must match the live clamp or the paths drift"),
+    ("chebyshev_replaced_by_manhattan",
+     "    return std::max(df, dr);",
+     "    return df + dr;",
+     "a king moves diagonally; manhattan mis-ranks escort vs blockade"),
+    ("live_path_scores_non_passers",
+     "        if (!(enemyPawns & PassedPawnMaskBB[us][s])) {\n"
+     "            // A doubled pawn behind another is not an independently useful",
+     "        if (true) {\n"
+     "            // A doubled pawn behind another is not an independently useful",
+     "only genuine passers may contribute in the LIVE path"),
+    ("live_path_disabled",
+     "    const bool raceOn = passed_pawn_race_active();",
+     "    const bool raceOn = false;",
+     "the live path must actually run when the parameter is enabled"),
+]
+
+
 def run(cmd: list[str], timeout: int = 1800) -> subprocess.CompletedProcess:
     return subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=timeout)
 
@@ -67,9 +127,11 @@ def main() -> int:
     ap.add_argument("--source", default="src/evaluation/evaluation.cpp")
     ap.add_argument("--build", default="build-rel")
     ap.add_argument("--group", default="threats")
+    ap.add_argument("--mechanism", default="threats", choices=["threats", "race"])
     ap.add_argument("--json")
     args = ap.parse_args()
 
+    mutants = RACE_MUTANTS if args.mechanism == "race" else MUTANTS
     src = ROOT / args.source
     original = src.read_text()
     results = []
@@ -84,7 +146,7 @@ def main() -> int:
             print(base.stdout[-2000:])
             return 2
 
-        for name, old, new, why in MUTANTS:
+        for name, old, new, why in mutants:
             if original.count(old) != 1:
                 results.append({"mutant": name, "status": "NOT_APPLIED",
                                 "reason": f"anchor count {original.count(old)} != 1"})

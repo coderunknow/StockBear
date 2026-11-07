@@ -1,0 +1,147 @@
+{
+  "fixed_depth": 10,
+  "positions": 11,
+  "positions_live": 11,
+  "bestmoves_changed": 2,
+  "nodes_off": 2639098,
+  "nodes_on": 2797095,
+  "total_node_delta_pct": 5.99,
+  "a_params": "research-data/params_exp0053_threats.txt",
+  "b_params": "research-data/params_exp0055_race.txt",
+  "load_proof": "both parameter files confirmed loaded by the probe",
+  "note": "tree-change proxy only; NOT a strength or speed measurement",
+  "per_position": [
+    {
+      "fen": "1bb1k1nr/3p4/4B3/p1p2ppP/3P1p1P/1P2P3/2PN1K2/R5NR w k - 2 18",
+      "off": {
+        "nodes": 188730,
+        "bestmove": "e6f5"
+      },
+      "on": {
+        "nodes": 202344,
+        "bestmove": "e6f5"
+      },
+      "tree_changed": true
+    },
+    {
+      "fen": "8/8/p7/p7/P2P4/5Pk1/1K6/8 b - - 10 47",
+      "off": {
+        "nodes": 17112,
+        "bestmove": "g3f4"
+      },
+      "on": {
+        "nodes": 12805,
+        "bestmove": "g3f4"
+      },
+      "tree_changed": true
+    },
+    {
+      "fen": "2k1q1n1/3br2p/rp6/p1p2p1P/PPPn1Pp1/R5K1/3b3R/5QNB b - - 1 43",
+      "off": {
+        "nodes": 184688,
+        "bestmove": "e7e3"
+      },
+      "on": {
+        "nodes": 191953,
+        "bestmove": "e7e3"
+      },
+      "tree_changed": true
+    },
+    {
+      "fen": "1q2kb2/1rpnp2r/1p1p3n/p3P1p1/1N1PbpP1/1K5p/PPPQ3P/RNB2B1R b - - 1 21",
+      "off": {
+        "nodes": 1075216,
+        "bestmove": "e4h1"
+      },
+      "on": {
+        "nodes": 1051484,
+        "bestmove": "e4h1"
+      },
+      "tree_changed": true
+    },
+    {
+      "fen": "8/8/8/2P2k2/P7/P5R1/8/4K3 b - - 13 49",
+      "off": {
+        "nodes": 28956,
+        "bestmove": "f5e6"
+      },
+      "on": {
+        "nodes": 48828,
+        "bestmove": "f5e4"
+      },
+      "tree_changed": true
+    },
+    {
+      "fen": "8/8/2P5/5k2/P7/P7/3K4/8 b - - 2 55",
+      "off": {
+        "nodes": 12066,
+        "bestmove": "f5e6"
+      },
+      "on": {
+        "nodes": 11229,
+        "bestmove": "f5e6"
+      },
+      "tree_changed": true
+    },
+    {
+      "fen": "3k1bn1/2pP2B1/r1bP1pQr/4p2P/p2P1P1R/Nn1K2P1/3NB3/8 b - - 0 38",
+      "off": {
+        "nodes": 266049,
+        "bestmove": "h6g6"
+      },
+      "on": {
+        "nodes": 454412,
+        "bestmove": "h6g6"
+      },
+      "tree_changed": true
+    },
+    {
+      "fen": "r2q4/p3kp2/4r3/4p2p/1N1bP1nP/1Q1P1P2/6B1/4K1RR w - - 5 43",
+      "off": {
+        "nodes": 311316,
+        "bestmove": "f3g4"
+      },
+      "on": {
+        "nodes": 300387,
+        "bestmove": "f3g4"
+      },
+      "tree_changed": true
+    },
+    {
+      "fen": "r1b3qr/1p2bk2/n2p3n/5p1p/3QN3/PpP3PN/7P/R3K1BR w - - 1 25",
+      "off": {
+        "nodes": 202848,
+        "bestmove": "e4d6"
+      },
+      "on": {
+        "nodes": 181730,
+        "bestmove": "e4d6"
+      },
+      "tree_changed": true
+    },
+    {
+      "fen": "1k6/8/8/2p5/p7/N2P4/8/6K1 w - - 0 38",
+      "off": {
+        "nodes": 51059,
+        "bestmove": "g1f2"
+      },
+      "on": {
+        "nodes": 42142,
+        "bestmove": "g1f2"
+      },
+      "tree_changed": true
+    },
+    {
+      "fen": "rnb1k3/Np1pn3/5pp1/2pPB2r/1PP2pq1/3QP3/P7/1R2KB2 w - - 2 27",
+      "off": {
+        "nodes": 301058,
+        "bestmove": "e5f4"
+      },
+      "on": {
+        "nodes": 299781,
+        "bestmove": "e5b8"
+      },
+      "tree_changed": true
+    }
+  ]
+}

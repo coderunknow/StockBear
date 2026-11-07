@@ -164,7 +164,8 @@ TEST(unit, evaluation_reproduces_dev2_baseline) {
     // exp-0053 appended ThreatDetection, also shipped 0. Same reasoning: the raw
     // table checksum moves, the semantic dev2-equality pin below and all three
     // frozen bench signatures do not.
-    CHECK(eval_params_checksum(default_eval_params()) == 0x9f04a085a302035eULL);
+    // exp-0055 appended PassedPawnRace, also shipped 0; same reasoning again.
+    CHECK(eval_params_checksum(default_eval_params()) == 0x849cc5a968fd9b1eULL);
     CHECK(active_eval_params() == default_eval_params());
     std::vector<Position> positions;
     for (const auto& c : SearchCases) positions.push_back(test::position(c.fen));

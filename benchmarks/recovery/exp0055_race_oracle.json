@@ -1,0 +1,14 @@
+{
+  "positions": 800,
+  "mismatches": 0,
+  "nonzero_positions": 352,
+  "seed": 20261115,
+  "spec": {
+    "w_own": 2,
+    "w_enemy": 2,
+    "w_blocked": 6,
+    "cap": 64
+  },
+  "examples": [],
+  "verdict": "PASS"
+}

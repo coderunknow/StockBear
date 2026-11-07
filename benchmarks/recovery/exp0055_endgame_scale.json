@@ -1,0 +1,10 @@
+{
+  "purpose": "diagnostic only: confirm the eg-only term is material in genuine endgames",
+  "n": 1241,
+  "changed": 923,
+  "rms_delta_cp": 17.83,
+  "p90_abs": 31,
+  "p99_abs": 53,
+  "max_abs": 64,
+  "note": "capture-biased random play to <=8 pieces, no queens; NOT a strength measure"
+}

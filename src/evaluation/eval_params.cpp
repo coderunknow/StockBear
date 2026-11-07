@@ -66,6 +66,8 @@ constexpr std::array<EvalParamDef, EvalParamNB> kTable = {{
     {"KingSafetyQuadratic", 0, 0, -400, 400},
     // exp-0053. Shipped 0 keeps the default bit-exact.
     {"ThreatDetection", 0, 0, -400, 400},
+    // exp-0055. Shipped 0 keeps the default bit-exact.
+    {"PassedPawnRace", 0, 0, -400, 400},
 }};
 
 EvalParams gActive{};

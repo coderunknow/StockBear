@@ -1,0 +1,79 @@
+{
+  "group": "passed_pawn_race",
+  "baseline": "PASS",
+  "mutants": [
+    {
+      "mutant": "computed_but_never_applied",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "a term computed but never added is correct-looking dead code",
+      "first_failure": null
+    },
+    {
+      "mutant": "own_king_escort_removed",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "the escort half is the term's main positive contribution",
+      "first_failure": null
+    },
+    {
+      "mutant": "enemy_king_blockade_removed",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "the defending king's blockade decides most pawn races",
+      "first_failure": null
+    },
+    {
+      "mutant": "blocked_path_penalty_removed",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "a blocked passer is not a promotion threat",
+      "first_failure": null
+    },
+    {
+      "mutant": "advance_weighting_removed",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "an advanced passer is worth far more than one on rank 2",
+      "first_failure": null
+    },
+    {
+      "mutant": "live_path_cap_removed",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "without the clamp the LIVE term can swamp cp-calibrated pruning margins",
+      "first_failure": null
+    },
+    {
+      "mutant": "breakdown_path_cap_removed",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "the breakdown clamp must match the live clamp or the paths drift",
+      "first_failure": null
+    },
+    {
+      "mutant": "chebyshev_replaced_by_manhattan",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "a king moves diagonally; manhattan mis-ranks escort vs blockade",
+      "first_failure": null
+    },
+    {
+      "mutant": "live_path_scores_non_passers",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "only genuine passers may contribute in the LIVE path",
+      "first_failure": null
+    },
+    {
+      "mutant": "live_path_disabled",
+      "status": "KILLED",
+      "exit_code": 1,
+      "why": "the live path must actually run when the parameter is enabled",
+      "first_failure": null
+    }
+  ],
+  "survivors": [],
+  "source_restored": true,
+  "verdict": "PASS"
+}

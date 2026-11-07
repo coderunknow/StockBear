@@ -1,0 +1,82 @@
+{
+  "pre_declared_criterion": {
+    "experiment": "exp-0055",
+    "declared_before_measurement": true,
+    "criterion": {
+      "p99_abs_delta_cp_max": 120,
+      "rms_delta_cp_max": 40
+    },
+    "comparison": "params_exp0055_race (threats+race) vs params_exp0053_threats (threats only) -- isolates the race INCREMENT",
+    "rationale": "Same criterion as exp-0052/0053. Pruning margins are cp-calibrated (futility 110, rev-futility 85, delta 200); exp-0049 at RMS 111.83 cp lost ~160 Elo.",
+    "frozen_candidate": {
+      "w_own_king": 2,
+      "w_enemy_king": 2,
+      "w_blocked": 6,
+      "cap_units": 64,
+      "mg": 0,
+      "eg": 1
+    },
+    "no_strength_sweep": true,
+    "rule_if_failed": "Tighten the IMPLEMENTATION (cap/weights). Never relax this criterion after seeing the distribution."
+  },
+  "measured_before_any_exp0055_game": true,
+  "games_played_for_exp0055_at_selection_time": 0,
+  "candidates_measured": {
+    "eg1": {
+      "n": 4000,
+      "changed": 1445,
+      "rms": 7.14,
+      "p50": 0,
+      "p90": 12,
+      "p99": 29,
+      "max": 48
+    },
+    "eg2_overall": {
+      "n": 4000,
+      "changed": 1483,
+      "rms": 14.28,
+      "p50": 0,
+      "p90": 23,
+      "p99": 58,
+      "max": 96
+    },
+    "eg2_endgame": {
+      "n": 1241,
+      "changed": 923,
+      "rms": 35.66,
+      "p50": 16,
+      "p90": 62,
+      "p99": 106,
+      "max": 128
+    }
+  },
+  "frozen_scale": {
+    "mg": 0,
+    "eg": 2
+  },
+  "selection_rationale": [
+    "ZERO exp-0055 games existed when the scale was chosen, so this is a-priori design, not a post-hoc strength sweep.",
+    "eg=1 gave overall RMS 7.14 -- HALF of exp-0052's 13.87, which was INCONCLUSIVE at 3200 games. Repeating that magnitude would likely be unresolvable.",
+    "eg=2 gives overall RMS 14.28, close to the CONFIRMED threat term's 16.88 which produced +23.5 Elo.",
+    "Both corpora remain inside the pre-declared envelope (RMS<40, p99<=120): overall 14.28/58, endgame 35.66/106.",
+    "Far below the destructive magnitudes already measured (exp-0049 RMS 111.83 -> -160 Elo)."
+  ],
+  "envelope_check": {
+    "overall": {
+      "rms": 14.28,
+      "p99": 58,
+      "rms_lt_40": true,
+      "p99_le_120": true
+    },
+    "endgame": {
+      "rms": 35.66,
+      "p99": 106,
+      "rms_lt_40": true,
+      "p99_le_120": true
+    }
+  },
+  "frozen_config": "research-data/params_exp0055_race.txt",
+  "frozen_config_sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01",
+  "note": "Scale is FROZEN. A CLOSE or INCONCLUSIVE result does not license rescaling and re-running.",
+  "verdict": "PASS"
+}
