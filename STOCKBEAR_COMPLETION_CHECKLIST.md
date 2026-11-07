@@ -6,7 +6,7 @@ and research logs. An incomplete checklist means an incomplete mission.
 - **Branch:** `arena/6a6a2ba3-stockbear`
 - **Checklist created:** 2026-11-06 at HEAD `d3d40d59ff8b627ae7ce541a8ed59598da8c5898`
 - **Status:** **MISSION INCOMPLETE** — two components CONFIRMED (exp-0054 threats +23.54 [+15.69,+31.41]; exp-0060 race increment +27.01 [+20.87,+33.16]); exp-0062 provides the first VALID direct integral dev5 estimate for threats+race: **+40.7732 [+36.2091,+45.3513]**. The +75 / LCB>+50 strength gate is **NOT** met (point and LCB both fail; UCB +45.35 < +75).
-- **Latest:** exp-0062 (decisive integrated threats+race vs exact published dev5, 15,000 games) is a **VALID MEASUREMENT / GATE UNMET**: primary combined **+40.7732 [+36.2091,+45.3513]**, batchA +38.3422, batchB +43.2141; both powered nulls include zero; 17/17 validity checks PASS; auditor issues 0; 15,000/15,000 PGN replay. Evidence: `docs/DEV6_EXP0062_REPORT.md`, `benchmarks/recovery/exp0062_validity.json`, `benchmarks/recovery/exp0062_independent_raw_audit.json` (run 42356232866, export 42364780824). exp-0061 (king-slider battery) remains **BLOCKED BEFORE GAMES** by the prospective CI cost gate (increment 1.17094 > 1.05; combined 1.25063 > 1.10), zero games, no strength verdict; see `docs/DEV6_EXP0061_REPORT.md`. Previous confirmed increment: exp-0060 (passed-pawn race confirmation, 7,800 games) is a **VALID MEASUREMENT / CONFIRMED INCREMENT**: combined **+27.0085 [+20.8746,+33.1592]**, batchA +29.0007, batchB +25.0260; both powered nulls include zero; 16/16 validity checks PASS; 7,800/7,800 PGN replay. Prospective CI cost gate passed before games (A/A spread 0.0155; increment 1.0207; combined 1.0903). Evidence: `docs/DEV6_EXP0060_REPORT.md`, `benchmarks/recovery/exp0060_validity.json`, `benchmarks/recovery/exp0060_independent_raw_audit.json` (run 42352690063). exp-0059 closed pre-game on cost-instrument noise; exp-0058 REJECTED; exp-0057 INCONCLUSIVE; exp-0056 INVALID. Individual Elo estimates are **never summed**; integrated direct-dev5 measurement remains required.
+- **Latest:** exp-0063 (battery after semantics-preserving cost optimization, 5,800 games) is a **VALID SCREEN / CLOSED (mechanism rejected)**: prospective cost gate PASS (increment 1.04470 ≤1.05, combined 1.08861 ≤1.10), but primary combined **−6.0300 [−14.1476,+2.0809]**; 16/16 validity checks PASS; see `docs/DEV6_EXP0063_REPORT.md` (run 42365991406, export 42367464017). The battery direction is closed by game evidence. Previous: exp-0062 (decisive integrated threats+race vs exact published dev5, 15,000 games) is a **VALID MEASUREMENT / GATE UNMET**: primary combined **+40.7732 [+36.2091,+45.3513]**, batchA +38.3422, batchB +43.2141; both powered nulls include zero; 17/17 validity checks PASS; auditor issues 0; 15,000/15,000 PGN replay. Evidence: `docs/DEV6_EXP0062_REPORT.md`, `benchmarks/recovery/exp0062_validity.json`, `benchmarks/recovery/exp0062_independent_raw_audit.json` (run 42356232866, export 42364780824). exp-0061 (king-slider battery) remains **BLOCKED BEFORE GAMES** by the prospective CI cost gate (increment 1.17094 > 1.05; combined 1.25063 > 1.10), zero games, no strength verdict; see `docs/DEV6_EXP0061_REPORT.md`. Previous confirmed increment: exp-0060 (passed-pawn race confirmation, 7,800 games) is a **VALID MEASUREMENT / CONFIRMED INCREMENT**: combined **+27.0085 [+20.8746,+33.1592]**, batchA +29.0007, batchB +25.0260; both powered nulls include zero; 16/16 validity checks PASS; 7,800/7,800 PGN replay. Prospective CI cost gate passed before games (A/A spread 0.0155; increment 1.0207; combined 1.0903). Evidence: `docs/DEV6_EXP0060_REPORT.md`, `benchmarks/recovery/exp0060_validity.json`, `benchmarks/recovery/exp0060_independent_raw_audit.json` (run 42352690063). exp-0059 closed pre-game on cost-instrument noise; exp-0058 REJECTED; exp-0057 INCONCLUSIVE; exp-0056 INVALID. Individual Elo estimates are **never summed**; integrated direct-dev5 measurement remains required.
 
 ## Checkbox rules (binding)
 
@@ -169,10 +169,10 @@ and research logs. An incomplete checklist means an incomplete mission.
       holds for exp-0058/0059/0060/0061/0062 preregs and plans; exp-0062 prereg
       `b7bab412…` was created at `95606a5` before dispatch `619088f` and never
       edited after the 15,000-game result.
-- [ ] **2.4** Cheap pre-game checks (correctness oracle, scale, cost, liveness, mutation) preceded every substantial compute spend.
-      *Evidence:* per-experiment pre-game evidence JSON paths.
+- [x] **2.4** Cheap pre-game checks (correctness oracle, scale, cost, liveness, mutation) preceded every substantial compute spend.
+      *Evidence:* exp-0053/0054 threats oracle+mutation+ctest; exp-0055/0060 race oracle 800/0, scale, 10/10 mutants, liveness, prospective cost gate (`exp0060_validity.json`); exp-0061 battery oracle/scale/mutation/liveness then cost FAIL before games; exp-0062 no new feature enabled — enabled config had passed exp-0060 prospective cost gate and fresh suite verification PASS before 15,000 games; exp-0063 oracle 800/0, evaldata 4000/0, 11/11 mutants, liveness 12/12, ctest 18/18, bench exact, then fresh prospective cost PASS before 5,800 games (`exp0063_battery_*.json`, `exp0063_suite_verification.json`, cost verdict).
 - [x] **2.5** Inconclusive/rejected experiments were preserved with full verdicts and the mission continued to a distinct next direction.
-      *Evidence:* `benchmarks/FAILURE_LEDGER.md` preserves exp-0050/0051 negative, exp-0052 inconclusive, exp-0056 INVALID, exp-0057 inconclusive, exp-0058 rejected, exp-0059/0061 pre-game cost blocks and exp-0062 GATE UNMET; each was followed by a distinct next direction (exp-0053→0054→0055→0060→0061→0062). No closed verdict was rescored.
+      *Evidence:* `benchmarks/FAILURE_LEDGER.md` preserves exp-0050/0051 negative, exp-0052 inconclusive, exp-0056 INVALID, exp-0057 inconclusive, exp-0058 rejected, exp-0059/0061 pre-game cost blocks, exp-0062 GATE UNMET and exp-0063 CLOSED (battery rejected); each was followed by a distinct next direction (exp-0053→0054→0055→0060→0061→0062→0063). No closed verdict was rescored.
 - [x] **2.6** No inconclusive experiment was re-run without a justified preregistered reason.
       *Evidence:* Ledger cross-check: exp-0052 was not rerun; exp-0056 INVALID was not retried as the same integral claim; exp-0057/0058 closed; exp-0060 was a preregistered technical replacement for exp-0059’s failed pre-game cost instrument with zero exp-0059 strength data; exp-0062 is a new direct integral design, not a rerun of an inconclusive experiment.
 - [x] **2.7** The strategy is not blind summation of individually inconclusive candidates.
@@ -237,7 +237,7 @@ and research logs. An incomplete checklist means an incomplete mission.
 - [x] **6.2** Every registered automated test EXECUTES and returns a successful exit code — verified individually, not inferred from a green CTest summary.
       *Evidence:* after registering `king_slider_battery`, all **18** registered
       tests were invoked one-by-one (`ctest -R '^name$'`) with each exit captured;
-      `benchmarks/recovery/exp0061_individual_ctest.log` records `registered=18`,
+      `benchmarks/recovery/exp0063_individual_ctest.log` (and earlier `exp0061_individual_ctest.log`) records `registered=18`,
       18 `EXIT=0` lines and `ANY_FAILURE=0`. Earlier direct group run had 14 C++
       groups / 110 assertions plus 3 Python integration tests; the new C++ group
       adds 4 assertions (live contribution, exact blockers, cap, ortho/diag split).
@@ -277,7 +277,10 @@ and research logs. An incomplete checklist means an incomplete mission.
       advance_weighting_removed, live_path_cap_removed, breakdown_path_cap_removed,
       chebyshev_replaced_by_manhattan, live_path_scores_non_passers,
       **live_path_disabled**. Source restoration verified (bench depth-4 sig unchanged
-      afterwards). Earlier mechanisms: threats 7/7 KILLED, king-safety 3/3 KILLED.
+      afterwards). Battery mechanism: exp-0061 8/8 KILLED and exp-0063 optimized
+      implementation **11/11 KILLED** (`exp0063_battery_mutation_matrix.json`),
+      including both ray-mask-empty mutants and queen-ignored on both ray classes.
+      Earlier mechanisms: threats 7/7 KILLED, king-safety 3/3 KILLED.
 - [x] **6.8** Performance/resource overhead measured with a calibrated instrument and within the declared budget.
       *Evidence:* exp-0060 prospective fail-closed CI cost gate,
       `benchmarks/exp-runs/tier1-export/run-42352690063/cost-gate-exp0060-run42352690063/verdict.json`
@@ -287,7 +290,11 @@ and research logs. An incomplete checklist means an incomplete mission.
       threats+race vs champion median **1.09025 ≤ 1.10**. All 13 cost-gate
       checksums verify; gate ran before any game. Historical exp-0055 cost JSON
       was not retroactively budgeted; exp-0059’s failed local calibrations are
-      preserved as a pre-game instrument failure, not a pass.
+      preserved as a pre-game instrument failure, not a pass. exp-0063 battery
+      optimization also passed a fresh prospective gate before games: A/A spread
+      0.02631, increment median **1.04470 ≤1.05**, combined **1.08861 ≤1.10**
+      (`run-42365991406/cost-gate-exp0063-run42365991406/verdict.json`, 13/13 sums);
+      exp-0061’s failed gate remains a failure, not retroactively budgeted.
 - [x] **6.9** No unintended regression in existing engine functionality.
       *Evidence:* 2026-11-07 at HEAD `1ea329c` (engine tree unchanged since
       `2594479`): `benchmarks/recovery/exp0060_ctest.log` — **17/17 passed,
@@ -346,7 +353,9 @@ advance; **exp-0054 CONFIRMED threats (+23.54 [+15.69,+31.41])**; exp-0055 scree
 advance; exp-0056 INVALID integral; exp-0057 inconclusive; exp-0058 rejected;
 exp-0059 pre-game cost failure; **exp-0060 CONFIRMED race increment (+27.01
 [+20.87,+33.16])**; exp-0061 battery BLOCKED pre-game on cost; **exp-0062 VALID
-direct integral threats+race vs dev5: +40.7732 [+36.2091,+45.3513], GATE UNMET**.
+direct integral threats+race vs dev5: +40.7732 [+36.2091,+45.3513], GATE UNMET**;
+exp-0063 optimized battery cost PASS but screen **CLOSED/rejected (−6.03
+[−14.15,+2.08])**.
 The integrated candidate now has a valid direct dev5 estimate, but it is far
 below the +75 / LCB>+50 gate (UCB +45.35 < +75). Component Elo is not additive.
 Further distinct source-grounded improvements and a new direct integrated gate

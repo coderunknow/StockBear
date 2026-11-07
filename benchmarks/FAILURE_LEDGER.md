@@ -2726,3 +2726,24 @@ budget pass; a future variant needs a new identity and the same limits.
   Point +40.77 and LCB +36.21 fail; UCB +45.35 is also below +75. This is a valid
   integral estimate, not a component increment. Do not sum component Elo or
   rescale after close. Mission remains incomplete; no merge/tag/release.
+
+## exp-0063 — VALID SCREEN / CLOSED, battery mechanism rejected (2026-11-07)
+
+- **Prereg** `docs/DEV6_PREREG_EXP0063.md` sha `31c481f3…e0a0` frozen at
+  `7d9aa8f` before dispatch `d292c59`. Run **42365991406** (5,800 g), export
+  **42367464017**. Semantics-preserving cost optimization of the exp-0061
+  battery mechanism; same weights/cap/scale, fresh openings/prereg; exp-0061
+  was not reused as a budget pass.
+- **Prospective cost gate PASS before games:** A/A spread 0.02631, median
+  0.99860; increment median **1.04470 ≤1.05**; combined median **1.08861 ≤1.10**.
+- **Result:** primary combined **−6.0300 [−14.1476,+2.0809]**, W/D/L
+  1329/1259/1400, 3,988 scored of 4,000 (12 symmetric max-ply exclusions).
+  batchA −6.0990, batchB −5.9606. Candidate null +0.8744 [−9.9834,+11.7340];
+  stage0 −5.8300 [−21.1728,+9.4901]; both include 0.
+- **Validity:** 16/16 checks PASS (`exp0063_validity.json`); auditor issues 0;
+  68/68 blobs, 44/44 job sums, 13/13 cost sums; 5,800/5,800 PGN replay; zero
+  forfeits/illegal/failures; identical binaries; positive load proofs; ctest 18/18.
+- **Verdict: CLOSED (mechanism rejected).** Frozen close rule point ≤0 or
+  UCB <+5 satisfied (point −6.03, UCB +2.08). No rescale/retune/pooling. The
+  battery direction is closed by game evidence. Best integral candidate remains
+  threats+race +40.7732 [+36.2091,+45.3513], Gate 1 UNMET. No merge/tag/release.

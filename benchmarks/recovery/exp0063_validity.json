@@ -1,0 +1,265 @@
+{
+  "experiment": "exp0063",
+  "run_id": 42365991406,
+  "export_run_id": 42367464017,
+  "source_sha": "7d9aa8f03741c97bac8ee134f5cb913ceffbc216",
+  "valid": true,
+  "checks": {
+    "cost_gate_before_games": {
+      "pass": true,
+      "detail": {
+        "aa_spread": {
+          "value": 0.02631360120174797,
+          "limit_exclusive": 0.1,
+          "pass": true
+        },
+        "aa_median": {
+          "value": 0.9985966808979942,
+          "range": [
+            0.98,
+            1.02
+          ],
+          "pass": true
+        },
+        "increment_median": {
+          "value": 1.044700277110187,
+          "limit": 1.05,
+          "pass": true
+        },
+        "combined_median": {
+          "value": 1.088611539463757,
+          "limit": 1.1,
+          "pass": true
+        }
+      }
+    },
+    "cost_gate_checksums": {
+      "pass": true,
+      "detail": "13/13"
+    },
+    "source_prereg_protocol": {
+      "pass": true,
+      "detail": {
+        "batchA": "7d9aa8f03741c97bac8ee134f5cb913ceffbc216",
+        "batchB": "7d9aa8f03741c97bac8ee134f5cb913ceffbc216",
+        "null": "7d9aa8f03741c97bac8ee134f5cb913ceffbc216",
+        "stage0": "7d9aa8f03741c97bac8ee134f5cb913ceffbc216"
+      }
+    },
+    "same_binary_arms": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "a": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988",
+          "b": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988",
+          "built": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988",
+          "packaged": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988"
+        },
+        "batchB": {
+          "a": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988",
+          "b": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988",
+          "built": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988",
+          "packaged": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988"
+        },
+        "null": {
+          "a": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988",
+          "b": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988",
+          "built": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988",
+          "packaged": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988"
+        },
+        "stage0": {
+          "a": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988",
+          "b": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988",
+          "built": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988",
+          "packaged": "5f923f4f2e7ba5050e2ef28c446f3319fbac4f43b3ddfd5dd6a91b5500fed988"
+        }
+      }
+    },
+    "explicit_options": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0061_battery.txt",
+            "tteval": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true"
+          }
+        },
+        "batchB": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0061_battery.txt",
+            "tteval": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true"
+          }
+        },
+        "null": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0061_battery.txt",
+            "tteval": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0061_battery.txt",
+            "tteval": "true"
+          }
+        },
+        "stage0": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_abc.txt",
+            "tteval": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_abc.txt",
+            "tteval": "true"
+          }
+        }
+      }
+    },
+    "identical_recorded_defaults": {
+      "pass": true,
+      "detail": "engine_a_defaults == engine_b_defaults in every job"
+    },
+    "stage0_null_includes_zero": {
+      "pass": true,
+      "detail": [
+        -21.172836591534683,
+        9.490112657046652
+      ]
+    },
+    "null_null_includes_zero": {
+      "pass": true,
+      "detail": [
+        -9.983412465331288,
+        11.733961819349876
+      ]
+    },
+    "auditor_issues_zero": {
+      "pass": true,
+      "detail": []
+    },
+    "committed_blobs": {
+      "pass": true,
+      "detail": "68/68"
+    },
+    "per_job_checksums": {
+      "pass": true,
+      "detail": "44/44"
+    },
+    "option_load_proof": {
+      "pass": true,
+      "detail": {
+        "batchA": [
+          "arm A EvalParams: research-data/params_exp0061_battery.txt",
+          "arm B EvalParams: research-data/params_exp0055_race.txt"
+        ],
+        "batchB": [
+          "arm A EvalParams: research-data/params_exp0061_battery.txt",
+          "arm B EvalParams: research-data/params_exp0055_race.txt"
+        ],
+        "null": [
+          "arm A EvalParams: research-data/params_exp0061_battery.txt",
+          "arm B EvalParams: research-data/params_exp0061_battery.txt"
+        ],
+        "stage0": [
+          "arm A EvalParams: research-data/params_abc.txt",
+          "arm B EvalParams: research-data/params_abc.txt"
+        ]
+      }
+    },
+    "pgn_replay_5800": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "games_replayed": 2000,
+          "inconsistent": 0
+        },
+        "batchB": {
+          "games_replayed": 2000,
+          "inconsistent": 0
+        },
+        "null": {
+          "games_replayed": 1200,
+          "inconsistent": 0
+        },
+        "stage0": {
+          "games_replayed": 600,
+          "inconsistent": 0
+        }
+      }
+    },
+    "zero_failures": {
+      "pass": true,
+      "detail": true
+    },
+    "openings_disjoint": {
+      "pass": true,
+      "detail": []
+    },
+    "stage0_ctest_18": {
+      "pass": true,
+      "detail": "stage0 run.log"
+    }
+  },
+  "combined": {
+    "pairs": 1988,
+    "clusters": 1988,
+    "pair_mean": 0.982645875251509,
+    "score": 0.4913229376257545,
+    "cr1_stderr": 0.011902868294738706,
+    "naive_stderr": 0.011902868294738706,
+    "design_effect": 1.0,
+    "t_critical_0975": 1.9611585956929556,
+    "df": 1987,
+    "elo": -6.0300458894026585,
+    "elo_ci95": [
+      -14.147586958979867,
+      2.080916568407552
+    ],
+    "elo_ci95_repo_convention": [
+      -14.225349367338296,
+      2.158552361368025
+    ],
+    "t_critical_repo_convention": 1.979931,
+    "obs_per_cluster": {
+      "1": 1988
+    }
+  },
+  "batchA_elo": -6.099044415443894,
+  "batchB_elo": -5.960630092356349,
+  "verdict": "CLOSED",
+  "gate1_met": false,
+  "cost_gate": {
+    "increment_median": {
+      "value": 1.044700277110187,
+      "limit": 1.05,
+      "pass": true
+    },
+    "combined_median": {
+      "value": 1.088611539463757,
+      "limit": 1.1,
+      "pass": true
+    }
+  },
+  "note": "Battery increment screen after semantics-preserving cost optimization; not integral vs dev5 and not Gate 1."
+}

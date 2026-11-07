@@ -45,7 +45,7 @@ component confirmation followed by direct integrated measurement.
   semantics-preserving optimization of a cost-blocked mechanism, followed by a
   new direct integrated measurement.
 
-### 2. NEW eval candidate: king-facing slider battery / x-ray alignment
+### 2. CLOSED: king-facing slider battery / x-ray alignment (exp-0061 cost block; exp-0063 rejected)
 
 - **Weakness:** `KingDanger*` counts attacks into a fixed king zone
   (`evaluation.cpp:576–590`, breakdown 733–745). A rook/queen aligned with the
@@ -69,15 +69,16 @@ component confirmation followed by direct integrated measurement.
   ray/blocker oracle; breakdown/live/incremental agreement; mutation matrix
   including live-path-disabled; liveness probe; cost gate; fresh disjoint
   openings; preregistered numeric compute budget.
-- **Rank rationale / outcome:** plausible representational gap, but no game
-  evidence yet; king-safety nonlinear attempt was inconclusive, so confidence was
-  moderate-low. Implemented with an explicit **16-point cap** and default-off row;
-  correctness/liveness passed (800/0 oracle, 8/8 mutants, 18/18 tests, depth-8
-  probe). exp-0061 then **FAILED the prospective CI cost gate before games**
-  (increment median 1.17094 > 1.05; combined 1.25063 > 1.10; A/A calibrated), so it
-  is closed as blocked with zero games and no strength claim. Any future attempt
-  must be a semantics-preserving optimization or a distinct mechanism under the
-  same limits and a fresh prereg. exp-0060 pin untouched.
+- **Rank rationale / outcome:** plausible representational gap, but confidence
+  was moderate-low. Implemented with an explicit **16-point cap** and default-off
+  row; correctness/liveness passed. exp-0061 **FAILED the prospective CI cost gate
+  before games** (increment 1.17094, combined 1.25063). exp-0063 then applied a
+  semantics-preserving optimization (hoisted ray masks + aligned-slider loops),
+  passed a fresh prospective cost gate (increment 1.04470, combined 1.08861), but
+  the 5,800-game screen was **CLOSED / mechanism rejected**: −6.0300
+  [−14.1476,+2.0809] over threats+race, nulls valid. The battery direction is now
+  closed by game evidence, not merely cost. No rescale/retune/pooling; exp-0060
+  pin untouched.
 
 ### 3. Single-feature passed-pawn rook support / connected passer revisit
 
