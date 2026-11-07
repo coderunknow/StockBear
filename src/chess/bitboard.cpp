@@ -24,6 +24,7 @@ Bitboard BetweenBB[SQ_NB][SQ_NB];
 Bitboard LineBB[SQ_NB][SQ_NB];
 Bitboard PassedPawnMaskBB[ColorNB][SQ_NB];
 Bitboard KingZoneBB[ColorNB][SQ_NB];
+Bitboard BatteryDiagonalBB[SQ_NB];
 
 Magic RookMagics[SQ_NB];
 Magic BishopMagics[SQ_NB];
@@ -246,6 +247,8 @@ void init_bitboards() {
     }
     init_magics(RookMagics, rookRows, RookMagicNumbers, false);
     init_magics(BishopMagics, bishopRows, BishopMagicNumbers, true);
+    for (Square sq = SQ_A1; sq <= SQ_H8; sq = Square(int(sq) + 1))
+        BatteryDiagonalBB[sq] = bishop_attacks_bb(sq, Bitboard(0));
     });
 }
 

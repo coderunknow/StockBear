@@ -88,6 +88,9 @@ extern Bitboard PassedPawnMaskBB[ColorNB][SQ_NB];
 // King zone used by king-safety evaluation (3 files around the king, pushed
 // one rank towards the enemy side, plus the king's own squares).
 extern Bitboard KingZoneBB[ColorNB][SQ_NB];
+// exp-0063: full diagonal ray from a square (empty-occupancy bishop attacks),
+// hoisted out of the king-slider-battery live loop. Pure geometry table.
+extern Bitboard BatteryDiagonalBB[SQ_NB];
 
 // --- Magic bitboards ------------------------------------------------------------
 struct Magic {

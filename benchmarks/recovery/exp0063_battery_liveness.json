@@ -1,0 +1,10 @@
+{
+  "probe": "liveness-battery",
+  "depth": 8,
+  "positions": 12,
+  "tree_changed": 12,
+  "bestmove_changed": 2,
+  "off_params": "research-data/params_exp0055_race.txt",
+  "on_params": "research-data/params_exp0061_battery.txt",
+  "note": "tree-change proxy only; not strength/speed"
+}

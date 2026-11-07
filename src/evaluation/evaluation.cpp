@@ -438,30 +438,43 @@ constexpr int BatteryUnitsMax         = 16;
 
 bool king_slider_battery_active() { return gKingSliderBattery; }
 
-inline int slider_battery_piece_units(PieceType pt, Square s, Square k, Bitboard occ) {
-    const int df = std::abs(file_of(s) - file_of(k));
-    const int dr = std::abs(rank_of(s) - rank_of(k));
-    const bool orthogonal = (df == 0 || dr == 0);
-    const bool diagonal = (df == dr && df != 0);
-    if (pt == Rook && !orthogonal) return 0;
-    if (pt == Bishop && !diagonal) return 0;
-    if (pt == Queen && !orthogonal && !diagonal) return 0;
-    if (popcount(BetweenBB[s][k] & occ) != 1) return 0;
-    return diagonal ? BatteryWeightDiagonal : BatteryWeightOrthogonal;
+// exp-0063 semantics-preserving cost optimization of the exp-0061 mechanism:
+// alignment is tested with hoisted ray masks instead of per-slider abs(df)/abs(dr),
+// and BetweenBB is touched only for a slider already on the king's ray. The
+// counted set is identical: exactly one intervening blocker, same weights/cap.
+inline Bitboard battery_orthogonal_mask(Square k) {
+    return FileBB[file_of(k)] | RankBB[rank_of(k)];
+}
+inline Bitboard battery_diagonal_mask(Square k) {
+    return BatteryDiagonalBB[k];
+}
+inline int slider_battery_between_units(Square s, Square k, Bitboard occ, int weight) {
+    return popcount(BetweenBB[s][k] & occ) == 1 ? weight : 0;
+}
+inline int slider_battery_aligned_raw(const Position& p, Color them, Square k,
+                                      Bitboard occ, Bitboard orth, Bitboard diag) {
+    int units = 0;
+    // Only sliders already on the king's rays are visited; no per-piece branch
+    // is added to the existing king-danger attack loop. Rook/queen orthogonal
+    // and bishop/queen diagonal sets are disjoint for any enemy square != k.
+    for (Bitboard b = (p.pieces(them, Rook) | p.pieces(them, Queen)) & orth; b;) {
+        const Square s = pop_lsb(b);
+        units += slider_battery_between_units(s, k, occ, BatteryWeightOrthogonal);
+    }
+    for (Bitboard b = (p.pieces(them, Bishop) | p.pieces(them, Queen)) & diag; b;) {
+        const Square s = pop_lsb(b);
+        units += slider_battery_between_units(s, k, occ, BatteryWeightDiagonal);
+    }
+    return units;
 }
 
 int king_slider_battery_units(const Position& p, Color us) {
     const Color them = ~us;
     const Square k = p.king_square(us);
-    const Bitboard occ = p.pieces();
-    int units = 0;
-    for (PieceType pt : {Bishop, Rook, Queen}) {
-        for (Bitboard b = p.pieces(them, pt); b;) {
-            const Square s = pop_lsb(b);
-            units += slider_battery_piece_units(pt, s, k, occ);
-        }
-    }
-    return std::min(units, BatteryUnitsMax);
+    const int raw = slider_battery_aligned_raw(p, them, k, p.pieces(),
+                                               battery_orthogonal_mask(k),
+                                               battery_diagonal_mask(k));
+    return std::min(raw, BatteryUnitsMax);
 }
 
 // Dev5 isolated experiment: activity on an enemy-pawn-controlled square is
@@ -612,8 +625,6 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
         const bool ks = king_safety_active();
         const bool batteryOn = king_slider_battery_active();
         int kingUnits = 0;
-        int batteryRaw = 0;
-        const Bitboard batteryOcc = batteryOn ? p.pieces() : Bitboard(0);
         const Bitboard zone = KingZoneBB[us][k];
         for (PieceType pt : {Pawn, Knight, Bishop, Rook, Queen}) {
             EvalParamId id = KingDangerPawn;
@@ -632,13 +643,14 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
                 const int hits = popcount(at & zone);
                 out.mg -= hits * mgp(id);
                 if (ks) kingUnits += KingAttackWeight[pt] * hits;
-                if (batteryOn && (pt == Bishop || pt == Rook || pt == Queen))
-                    batteryRaw += slider_battery_piece_units(pt, s, k, batteryOcc);
             }
         }
         if (ks) out.mg -= king_safety_danger(p, them, kingUnits) * mgp(KingSafetyQuadratic);
         if (batteryOn) {
-            const int battery = std::min(batteryRaw, BatteryUnitsMax);
+            const int raw = slider_battery_aligned_raw(p, them, k, p.pieces(),
+                                                       battery_orthogonal_mask(k),
+                                                       battery_diagonal_mask(k));
+            const int battery = std::min(raw, BatteryUnitsMax);
             out.mg -= battery * mgp(KingSliderBattery);
             out.eg -= battery * egp(KingSliderBattery);
         }
