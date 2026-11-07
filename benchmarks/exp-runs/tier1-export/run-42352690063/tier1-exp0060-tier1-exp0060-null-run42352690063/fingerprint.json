@@ -1,0 +1,59 @@
+{
+  "fingerprint_sha256": "09aed3f1f7c2a5772dbc01da1f5fa754465a28ed3a260c8dcf70c4cf1211705c",
+  "source_sha": "8e77e0fec3ee4d919b6aedfc02f89cb9d5c19950",
+  "prereg_sha256": "24f143ccb4e524469e322626e14f8690e226ab29ee9d537f15ddf345353e2a18",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0060.md",
+    "prereg_sha256": "24f143ccb4e524469e322626e14f8690e226ab29ee9d537f15ddf345353e2a18",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "assets": [
+      "research-data/params_exp0055_race.txt",
+      "research-data/params_exp0053_threats.txt"
+    ],
+    "id": "tier1-exp0060-null",
+    "games": 1200,
+    "seed": 2026110697,
+    "openings": "benchmarks/positions/openings_exp0060_null.txt",
+    "null": true,
+    "ctest": false,
+    "a_options": [
+      "EvalParams=research-data/params_exp0055_race.txt",
+      "TTEval=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_exp0055_race.txt",
+      "TTEval=true"
+    ],
+    "engine_a": "candidate",
+    "engine_b": "candidate",
+    "note": "candidate-options-on-both-sides powered validity null; CI must include 0"
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+  "packaged_binary_sha256": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+  "package_sha256": "a02ad3d067e97de85772fbfffba0cee08d7dedd8f0f5f0b1068ab67c2863c45b",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "106002f499fcfa9bcd8981db31b2fb06e7e70e96d8dc71f2dbf35c49b6e324ef",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_exp0055_race.txt",
+    "TTEval=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_exp0055_race.txt",
+    "TTEval=true"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0060-null/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0060-null/stockbear",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}
