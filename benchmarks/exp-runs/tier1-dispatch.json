@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0062",
   "source_sha": "95606a513c4cc96231fbbba89e04165348c23fbb",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0062.json",
-  "source_run_id": "",
-  "note": "exp-0062: decisive integrated threats+race vs exact published dev5. 15000 games max; Gate point>=75 and LCB>50; no pooling; powered nulls.",
+  "source_run_id": "42356232866",
+  "note": "exp-0062: export all raw game/config/fingerprint evidence from successful 15000-game run 42356232866; one explicit evidence commit.",
   "attempt": 1
 }
