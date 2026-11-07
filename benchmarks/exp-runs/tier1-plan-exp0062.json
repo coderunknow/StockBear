@@ -1,0 +1,152 @@
+{
+  "experiment_id": "exp0062",
+  "frozen_before_evaluation_games": true,
+  "prereg": "docs/DEV6_PREREG_EXP0062.md",
+  "prereg_sha256": "b7bab412fe0a2c6ca992e188c4d42b14cf9450e86dbdefb1e8004363c6a90365",
+  "control": "FIXED TIME 40+4 ms; never --nodes",
+  "tier": "DECISIVE integrated Gate-1 measurement vs published dev5",
+  "gate": {
+    "point_min": 75,
+    "lcb_strictly_greater": 50
+  },
+  "design": "DIRECT candidate vs exact released dev5; no summation of component Elo",
+  "no_pooling_with_earlier_experiments": true,
+  "frozen_combined": "batchA + batchB ONLY (13200 games)",
+  "candidate_config": "research-data/params_exp0055_race.txt",
+  "candidate_config_sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01",
+  "baseline_binary": "benchmarks/binaries/stockbear-dev5-release",
+  "baseline_binary_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "baseline_config": "research-data/params_abc.txt",
+  "baseline_config_sha256": "8a9dc81fa5921e5b642c790ffa3cf84c2ba68f2193023c19dc7f3f7cea86d0be",
+  "openings_seed": 2026110662,
+  "jobs": [
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0062.md",
+      "prereg_sha256": "b7bab412fe0a2c6ca992e188c4d42b14cf9450e86dbdefb1e8004363c6a90365",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "assets": [
+        "research-data/params_exp0055_race.txt"
+      ],
+      "id": "tier1-exp0062-stage0",
+      "games": 600,
+      "seed": 2026110702,
+      "openings": "benchmarks/positions/openings_exp0062_stage0.txt",
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "a_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "null": true,
+      "ctest": true,
+      "note": "Stage-0 candidate/champion control null; fresh ctest 18 groups"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0062.md",
+      "prereg_sha256": "b7bab412fe0a2c6ca992e188c4d42b14cf9450e86dbdefb1e8004363c6a90365",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "assets": [
+        "research-data/params_exp0055_race.txt"
+      ],
+      "id": "tier1-exp0062-batchA",
+      "games": 6600,
+      "seed": 2026110703,
+      "openings": "benchmarks/positions/openings_exp0062_batchA.txt",
+      "engine_a": "candidate",
+      "engine_b": "baseline",
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "null": false,
+      "ctest": false,
+      "note": "GATE batchA; integrated threats+race vs EXACT published dev5 champion"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0062.md",
+      "prereg_sha256": "b7bab412fe0a2c6ca992e188c4d42b14cf9450e86dbdefb1e8004363c6a90365",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "assets": [
+        "research-data/params_exp0055_race.txt"
+      ],
+      "id": "tier1-exp0062-batchB",
+      "games": 6600,
+      "seed": 2026110704,
+      "openings": "benchmarks/positions/openings_exp0062_batchB.txt",
+      "engine_a": "candidate",
+      "engine_b": "baseline",
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_abc.txt",
+        "TTEval=true"
+      ],
+      "null": false,
+      "ctest": false,
+      "note": "GATE batchB; independent seed/disjoint openings"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0062.md",
+      "prereg_sha256": "b7bab412fe0a2c6ca992e188c4d42b14cf9450e86dbdefb1e8004363c6a90365",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "assets": [
+        "research-data/params_exp0055_race.txt"
+      ],
+      "id": "tier1-exp0062-null",
+      "games": 1200,
+      "seed": 2026110705,
+      "openings": "benchmarks/positions/openings_exp0062_null.txt",
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true"
+      ],
+      "null": true,
+      "ctest": false,
+      "note": "powered candidate/race null; CI must include 0"
+    }
+  ]
+}

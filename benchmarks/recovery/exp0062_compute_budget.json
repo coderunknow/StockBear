@@ -1,0 +1,18 @@
+{
+  "experiment": "exp0062",
+  "declared_before_games": true,
+  "prereg_sha256": "b7bab412fe0a2c6ca992e188c4d42b14cf9450e86dbdefb1e8004363c6a90365",
+  "policy_sha256": "33747373bcfb7b89ac6d55206786e02f475464efe9c9b76255a2904e3aec0e7a",
+  "new_feature_enabled": false,
+  "cost_gate": "not applicable; enabled config passed exp-0060 prospective cost gate; default-off battery row preserves bench signatures",
+  "games_total": 15000,
+  "games_primary": 13200,
+  "benchmark_jobs": 4,
+  "job_timeout_minutes": 420,
+  "prepare_timeout_minutes": 10,
+  "export_timeout_minutes": 10,
+  "workflow_vm_minutes_max": 1700,
+  "benchmark_dispatches": 1,
+  "export_dispatches": 1,
+  "result_driven_retries": 0
+}
