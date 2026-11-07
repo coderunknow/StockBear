@@ -1,0 +1,153 @@
+Individual registered-test execution after king_slider_battery registration (2026-11-07)
+registered=18
+Test project /home/user/StockBear/build-rel
+    Start 1: unit
+1/1 Test #1: unit .............................   Passed    0.42 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.42 sec
+TEST unit EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 2: nnue
+1/1 Test #2: nnue .............................   Passed    0.01 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.01 sec
+TEST nnue EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 3: pst
+1/1 Test #3: pst ..............................   Passed    0.00 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.01 sec
+TEST pst EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 4: position_extra
+1/1 Test #4: position_extra ...................   Passed    0.00 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.00 sec
+TEST position_extra EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 5: qsearch_tt
+1/1 Test #5: qsearch_tt .......................   Passed    0.14 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.14 sec
+TEST qsearch_tt EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 6: correction_history
+1/1 Test #6: correction_history ...............   Passed    0.62 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.62 sec
+TEST correction_history EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 7: king_safety
+1/1 Test #7: king_safety ......................   Passed    0.26 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.26 sec
+TEST king_safety EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 8: threats
+1/1 Test #8: threats ..........................   Passed    0.25 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.25 sec
+TEST threats EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 9: passed_pawn_race
+1/1 Test #9: passed_pawn_race .................   Passed    0.12 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.12 sec
+TEST passed_pawn_race EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 10: king_slider_battery
+1/1 Test #10: king_slider_battery ..............   Passed    0.00 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.00 sec
+TEST king_slider_battery EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 11: regression
+1/1 Test #11: regression .......................   Passed    0.01 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.01 sec
+TEST regression EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 12: perft_quick
+1/1 Test #12: perft_quick ......................   Passed    0.01 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.01 sec
+TEST perft_quick EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 13: stress
+1/1 Test #13: stress ...........................   Passed    0.07 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.07 sec
+TEST stress EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 14: perft_full
+1/1 Test #14: perft_full .......................   Passed    0.05 sec
+
+100% tests passed out of 1
+
+Label Time Summary:
+slow    =   0.05 sec*proc (1 test)
+
+Total Test time (real) =   0.05 sec
+TEST perft_full EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 15: deadpos
+1/1 Test #15: deadpos ..........................   Passed    4.37 sec
+
+100% tests passed out of 1
+
+Label Time Summary:
+slow    =   4.37 sec*proc (1 test)
+
+Total Test time (real) =   4.37 sec
+TEST deadpos EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 16: uci_integration
+1/1 Test #16: uci_integration ..................   Passed    0.48 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.48 sec
+TEST uci_integration EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 17: uci_fuzz
+1/1 Test #17: uci_fuzz .........................   Passed    0.07 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.07 sec
+TEST uci_fuzz EXIT=0
+Test project /home/user/StockBear/build-rel
+    Start 18: nnue_features
+1/1 Test #18: nnue_features ....................   Passed    0.03 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.03 sec
+TEST nnue_features EXIT=0
+ANY_FAILURE=0

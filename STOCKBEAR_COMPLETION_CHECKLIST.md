@@ -6,7 +6,7 @@ and research logs. An incomplete checklist means an incomplete mission.
 - **Branch:** `arena/6a6a2ba3-stockbear`
 - **Checklist created:** 2026-11-06 at HEAD `d3d40d59ff8b627ae7ce541a8ed59598da8c5898`
 - **Status:** **MISSION INCOMPLETE** — two components CONFIRMED (exp-0054 threats +23.54 [+15.69,+31.41]; exp-0060 race increment +27.01 [+20.87,+33.16]); the +75 / LCB>+50 strength gate is **NOT** met and no valid integral dev5 estimate exists yet.
-- **Latest:** exp-0060 (passed-pawn race confirmation, 7,800 games) is a **VALID MEASUREMENT / CONFIRMED INCREMENT**: combined **+27.0085 [+20.8746,+33.1592]**, batchA +29.0007, batchB +25.0260; both powered nulls include zero; 16/16 validity checks PASS; 7,800/7,800 PGN replay. Prospective CI cost gate passed before games (A/A spread 0.0155; increment 1.0207; combined 1.0903). Evidence: `docs/DEV6_EXP0060_REPORT.md`, `benchmarks/recovery/exp0060_validity.json`, `benchmarks/recovery/exp0060_independent_raw_audit.json` (run 42352690063). exp-0059 closed pre-game on cost-instrument noise; exp-0058 REJECTED; exp-0057 INCONCLUSIVE; exp-0056 INVALID. Individual Elo estimates are **never summed**; integrated direct-dev5 measurement remains required.
+- **Latest:** exp-0061 (king-slider battery) is **BLOCKED BEFORE GAMES** by the prospective CI cost gate (increment 1.17094 > 1.05; combined 1.25063 > 1.10; A/A calibrated), zero games, no strength verdict; see `docs/DEV6_EXP0061_REPORT.md`. exp-0062 is a decisive integrated threats+race measurement vs exact published dev5 (frozen, running). Previous confirmed increment: exp-0060 (passed-pawn race confirmation, 7,800 games) is a **VALID MEASUREMENT / CONFIRMED INCREMENT**: combined **+27.0085 [+20.8746,+33.1592]**, batchA +29.0007, batchB +25.0260; both powered nulls include zero; 16/16 validity checks PASS; 7,800/7,800 PGN replay. Prospective CI cost gate passed before games (A/A spread 0.0155; increment 1.0207; combined 1.0903). Evidence: `docs/DEV6_EXP0060_REPORT.md`, `benchmarks/recovery/exp0060_validity.json`, `benchmarks/recovery/exp0060_independent_raw_audit.json` (run 42352690063). exp-0059 closed pre-game on cost-instrument noise; exp-0058 REJECTED; exp-0057 INCONCLUSIVE; exp-0056 INVALID. Individual Elo estimates are **never summed**; integrated direct-dev5 measurement remains required.
 
 ## Checkbox rules (binding)
 
@@ -232,23 +232,18 @@ and research logs. An incomplete checklist means an incomplete mission.
       exit **0** (`Tests: 4, failures: 0`), `unit` exit **0** (`Tests: 41, failures: 0`,
       includes move-generation/geometry).
 - [x] **6.2** Every registered automated test EXECUTES and returns a successful exit code — verified individually, not inferred from a green CTest summary.
-      *Evidence:* all **17** registered groups invoked one-by-one with `$?` captured
-      immediately (never through a pipe). 14 C++ groups via `stockbear_tests`:
-      unit 41, nnue 7, pst 4, position_extra 4, qsearch_tt 4, correction_history 5,
-      king_safety 7, threats 8, passed_pawn_race 7, regression 6, perft_quick 2,
-      stress 1, perft_full 1, deadpos 13 — **110 assertions, every exit=0, 0 failures**.
-      3 Python integration tests run directly against `./build-rel/stockbear`, each
-      exit=0: `uci_integration` ("PASS UCI EvalParams loading, spaced paths, invalid
-      file and reset"), `uci_fuzz` ("PASS 300 deterministic malformed/cancellation
-      cases; 101 legal-format bestmoves for 101 accepted go commands"),
-      `nnue_features` ("11 positions, 2 perspectives each, 0 mismatches").
-      Aggregate `ANY_FAILURE=0`.
+      *Evidence:* after registering `king_slider_battery`, all **18** registered
+      tests were invoked one-by-one (`ctest -R '^name$'`) with each exit captured;
+      `benchmarks/recovery/exp0061_individual_ctest.log` records `registered=18`,
+      18 `EXIT=0` lines and `ANY_FAILURE=0`. Earlier direct group run had 14 C++
+      groups / 110 assertions plus 3 Python integration tests; the new C++ group
+      adds 4 assertions (live contribution, exact blockers, cap, ortho/diag split).
 - [x] **6.3** Every new test group is actually registered with `add_test()` and appears in CTest output.
-      *Evidence:* `CMakeLists.txt:190` `add_test(NAME passed_pawn_race COMMAND
-      stockbear_tests passed_pawn_race)`; `ctest -N` lists **`Test #9: passed_pawn_race`**
-      and `Total Tests: 17`. The group also appears as `9/17 ... Passed` in the
-      ASan/UBSan ctest run. (This check exists because exp-0052's `king_safety` group
-      was initially never registered and CTest silently skipped it.)
+      *Evidence:* `CMakeLists.txt` registers `passed_pawn_race` and
+      `king_slider_battery`; `ctest -N` lists `Test #9: passed_pawn_race`,
+      `Test #10: king_slider_battery` and **Total Tests: 18**. Both execute
+      individually in `exp0061_individual_ctest.log`. (This check exists because
+      exp-0052's `king_safety` group was initially never registered.)
 - [x] **6.4** King-safety, threat-evaluation, parameter-loading and file-loading branches are directly exercised.
       *Evidence:* `king_safety` 7 tests exit 0, `threats` 8 tests exit 0,
       `passed_pawn_race` 7 tests exit 0. Parameter/file loading is exercised by

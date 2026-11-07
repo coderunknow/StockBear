@@ -61,9 +61,15 @@ component confirmation followed by direct integrated measurement.
   ray/blocker oracle; breakdown/live/incremental agreement; mutation matrix
   including live-path-disabled; liveness probe; cost gate; fresh disjoint
   openings; preregistered numeric compute budget.
-- **Rank rationale:** plausible representational gap, but no game evidence yet;
-  king-safety nonlinear attempt was inconclusive, so confidence is moderate-low.
-  Proceed only after exp-0060 disposition and without altering its pin.
+- **Rank rationale / outcome:** plausible representational gap, but no game
+  evidence yet; king-safety nonlinear attempt was inconclusive, so confidence was
+  moderate-low. Implemented with an explicit **16-point cap** and default-off row;
+  correctness/liveness passed (800/0 oracle, 8/8 mutants, 18/18 tests, depth-8
+  probe). exp-0061 then **FAILED the prospective CI cost gate before games**
+  (increment median 1.17094 > 1.05; combined 1.25063 > 1.10; A/A calibrated), so it
+  is closed as blocked with zero games and no strength claim. Any future attempt
+  must be a semantics-preserving optimization or a distinct mechanism under the
+  same limits and a fresh prereg. exp-0060 pin untouched.
 
 ### 3. Single-feature passed-pawn rook support / connected passer revisit
 
