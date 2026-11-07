@@ -1,0 +1,38 @@
+{
+  "run_id": "42365991406",
+  "status": "completed",
+  "conclusion": "success",
+  "elapsed_seconds": 1210.8,
+  "jobs": [
+    {
+      "name": "Resolve dispatch / verify pinned plan",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "tier1-exp0063-null",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "tier1-exp0063-stage0",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "tier1-exp0063-batchA",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "tier1-exp0063-batchB",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Export evidence (deliberate, explicit)",
+      "status": "completed",
+      "conclusion": "skipped"
+    }
+  ]
+}

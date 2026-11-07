@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0063",
   "source_sha": "7d9aa8f03741c97bac8ee134f5cb913ceffbc216",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0063.json",
-  "source_run_id": "",
-  "note": "exp-0063: semantics-preserving battery cost optimization; prospective cost gate same limits, then 5800-game screen if PASS. Not Gate-1.",
+  "source_run_id": "42365991406",
+  "note": "exp-0063: export cost-gate + 5800-game screen raw evidence from successful run 42365991406; one explicit evidence commit.",
   "attempt": 1
 }
