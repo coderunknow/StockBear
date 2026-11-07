@@ -1,0 +1,58 @@
+{
+  "fingerprint_sha256": "e7e9672c82302832bff1a96505704810bbb036608c8b6f1f9169ab097c6950c0",
+  "source_sha": "ec7c9c432a04aa14a85d112ffd0d36ab68d3eda4",
+  "prereg_sha256": "6437c2cf71ee8483be707f6fc1b2c624b33fd9551be1e316846862d904c6e90f",
+  "plan_job": {
+    "prereg": "docs/DEV6_PREREG_EXP0056.md",
+    "prereg_sha256": "6437c2cf71ee8483be707f6fc1b2c624b33fd9551be1e316846862d904c6e90f",
+    "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+    "hash": 16,
+    "threads": 1,
+    "max_plies": 240,
+    "id": "tier1-exp0056-batchB",
+    "games": 3000,
+    "seed": 2026110702,
+    "openings": "benchmarks/positions/openings_exp0056_batchB.txt",
+    "control": {
+      "base_ms": 40,
+      "inc_ms": 4
+    },
+    "null": false,
+    "ctest": false,
+    "a_options": [
+      "EvalParams=research-data/params_exp0055_race.txt",
+      "TTEval=true"
+    ],
+    "b_options": [
+      "EvalParams=research-data/params_abc.txt",
+      "TTEval=true"
+    ],
+    "engine_a": "candidate",
+    "engine_b": "baseline",
+    "note": "GATE-1 batchB; independent seed and disjoint openings; same arms",
+    "assets": [
+      "research-data/params_exp0055_race.txt"
+    ]
+  },
+  "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+  "built_binary_sha256": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+  "packaged_binary_sha256": "9da443d13fcb5941c16b5742988e5de53f2edc92b24e2d7e69c684a58b0bf6b4",
+  "package_sha256": "e14c78096a096841a2af505e0dbf5093312cb915d43fd34fcaa19e59e70a1ef5",
+  "dev5_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "opening_suite_sha256": "690885801e379730cfa1fb0997a05afacc01cca870dc5df56672ec14318d2257",
+  "control": {
+    "base_ms": 40,
+    "inc_ms": 4
+  },
+  "a_options": [
+    "EvalParams=research-data/params_exp0055_race.txt",
+    "TTEval=true"
+  ],
+  "b_options": [
+    "EvalParams=research-data/params_abc.txt",
+    "TTEval=true"
+  ],
+  "engine_a": "/home/runner/work/StockBear/StockBear/build-tier1-pkg-tier1-exp0056-batchB/stockbear",
+  "engine_b": "/home/runner/work/StockBear/StockBear/benchmarks/binaries/stockbear-dev5-release",
+  "default_bench_signature": "243f9a1c1ba5b36f"
+}
