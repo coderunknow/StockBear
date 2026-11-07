@@ -21,7 +21,7 @@ def sha(p):
 def main():
     text = (ROOT / "STOCKBEAR_COMPLETION_CHECKLIST.md").read_text()
     items = []
-    for m in re.finditer(r"- \[(x| )\] \*\*(\d+\.\d+)\*\*(.*?)(?=\n- \[(?:x| )\] \*\*\d+\.\d+|\n## |\n---|\Z)", text, re.S):
+    for m in re.finditer(r"- \[(x| )\] \*\*(\d+\.\d+)[^*]*\*\*(.*?)(?=\n- \[(?:x| )\] \*\*\d+\.\d+|\n## |\n---|\Z)", text, re.S):
         checked, ident, body = m.group(1) == "x", m.group(2), m.group(3)
         paths = re.findall(r"`([^`]+)`", body)
         filelike = [p for p in paths if ("/" in p or p.endswith((".md", ".json", ".txt", ".cpp", ".hpp", ".yml"))) and not p.startswith(("git ", "gh ", "ctest", "sha256sum", "http", "benchmarks/exp-runs/tier1-dispatch.json"))]

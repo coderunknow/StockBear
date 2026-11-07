@@ -1,13 +1,24 @@
 {
-  "head": "4664ca86abd4c39049d4bf431b7483f5948b38f5",
+  "head": "9461d5721ce63ea65f0d9782335056a6c756a21b",
   "branch": "arena/6a6a2ba3-stockbear",
   "main_sha": "6e7c2e02881faf93a84990a8345c41ad28bcae11",
   "version_branch": "0.1.0-dev6",
   "version_main": "0.1.0-dev5",
-  "checked": 19,
+  "checked": 20,
   "open": 38,
-  "total": 57,
+  "total": 58,
   "items": [
+    {
+      "id": "0.1",
+      "checked": true,
+      "cited_filelike": [
+        "docs/DEV6_PREREG.md:146-147",
+        "EvalParams=research-data/params_abc.txt"
+      ],
+      "missing_paths": [
+        "EvalParams=research-data/params_abc.txt"
+      ]
+    },
     {
       "id": "0.2",
       "checked": true,
