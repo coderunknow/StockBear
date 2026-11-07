@@ -1,0 +1,45 @@
+id name StockBear 0.1.0-dev6
+id author The StockBear developers
+option name Hash type spin default 16 min 1 max 512
+option name NullMove type check default true
+option name LMR type check default true
+option name Aspiration type check default true
+option name Futility type check default true
+option name ReverseFutility type check default true
+option name SEEPruning type check default true
+option name CheckExtension type check default true
+option name CounterMoves type check default false
+option name ContinuationHistory type check default false
+option name CaptureHistory type check default false
+option name HistoryMaluses type check default false
+option name LMRHistory type check default false
+option name ModernLMR type check default false
+option name MoveCountPruning type check default false
+option name IIR type check default false
+option name Improving type check default false
+option name TTEval type check default false
+option name FullSoftBudget type check default false
+option name Razoring type check default false
+option name BadCapturePruning type check default false
+option name ProbCut type check default false
+option name QSearchTT type check default false
+option name BankedTime type check default false
+option name BadCaptureAllDepths type check default false
+option name MaxGainDelta type check default false
+option name TTSingularExtension type check default false
+option name BadCaptureOrdering type check default false
+option name SkipDeadTTEval type check default false
+option name AdaptiveNullR type check default false
+option name TTExtensionAgnostic type check default false
+option name PersistentHistory type check default false
+option name CorrectionHistory type check default false
+option name AspirationWindow type spin default 16 min 1 max 1200
+option name FutilityMargin type spin default 110 min 0 max 2000
+option name RevFutilityMargin type spin default 85 min 0 max 2000
+option name DeltaMargin type spin default 200 min 0 max 2000
+option name MultiPV type spin default 1 min 1 max 8
+option name EvalParams type string default <empty>
+option name PstFile type string default <empty>
+option name NNUE type check default false
+option name NnueFile type string default <empty>
+uciok
