@@ -1,0 +1,21 @@
+[1/21] Building CXX object CMakeFiles/stockbear_core.dir/src/chess/bitboard.cpp.o
+[2/21] Building CXX object CMakeFiles/stockbear_core.dir/src/chess/dead_position.cpp.o
+[3/21] Building CXX object CMakeFiles/stockbear_core.dir/src/chess/move.cpp.o
+[4/21] Building CXX object CMakeFiles/stockbear_core.dir/src/chess/fen.cpp.o
+[5/21] Building CXX object CMakeFiles/stockbear_core.dir/src/chess/zobrist.cpp.o
+[6/21] Building CXX object CMakeFiles/stockbear_core.dir/src/chess/position.cpp.o
+[7/21] Building CXX object CMakeFiles/stockbear_core.dir/src/evaluation/eval_params.cpp.o
+[8/21] Building CXX object CMakeFiles/stockbear_core.dir/src/evaluation/evaluation.cpp.o
+[9/21] Building CXX object CMakeFiles/stockbear_core.dir/src/evaluation/nnue_forward.cpp.o
+[10/21] Building CXX object CMakeFiles/stockbear_core.dir/src/evaluation/nnue_net_data.cpp.o
+[11/21] Building CXX object CMakeFiles/stockbear_core.dir/src/evaluation/nnue.cpp.o
+[12/21] Building CXX object CMakeFiles/stockbear_core.dir/src/search/timeman.cpp.o
+[13/21] Building CXX object CMakeFiles/stockbear_core.dir/src/search/search.cpp.o
+[14/21] Building CXX object CMakeFiles/stockbear_core.dir/src/search/transposition_table.cpp.o
+[15/21] Building CXX object CMakeFiles/stockbear_core.dir/src/uci/uci.cpp.o
+[16/21] Building CXX object CMakeFiles/stockbear_core.dir/src/utilities/bench.cpp.o
+[17/21] Building CXX object CMakeFiles/stockbear_core.dir/src/utilities/nnuecli.cpp.o
+[18/21] Building CXX object CMakeFiles/stockbear_core.dir/src/utilities/evaldata.cpp.o
+[19/21] Building CXX object CMakeFiles/stockbear_core.dir/src/utilities/selfplay.cpp.o
+[20/21] Building CXX object CMakeFiles/stockbear_core.dir/src/evaluation/nnue_forward_avx2.cpp.o
+[21/21] Linking CXX static library libstockbear_core.a

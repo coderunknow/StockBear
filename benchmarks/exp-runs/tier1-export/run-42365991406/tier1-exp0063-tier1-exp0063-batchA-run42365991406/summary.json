@@ -1,0 +1,27 @@
+{
+  "job_id": "tier1-exp0063-batchA",
+  "experiment_id": "exp0063",
+  "games": 1997,
+  "unadjudicated": 3,
+  "wins": 653,
+  "draws": 656,
+  "losses": 688,
+  "score": 0.4912368552829244,
+  "elo": -6.099044415443858,
+  "ci95": [
+    -17.909210687657822,
+    5.697040012429813
+  ],
+  "clusters": 997,
+  "terminations": {
+    "CHECKMATE": 1341,
+    "THREEFOLD_REPETITION": 605,
+    "INSUFFICIENT_MATERIAL": 50,
+    "UNADJUDICATED_MAX_PLIES": 3,
+    "STALEMATE": 1
+  },
+  "time_forfeit": 0,
+  "illegal": 0,
+  "engine_failure": 0,
+  "independent_elo_from_score": -6.089880227180785
+}

@@ -1,0 +1,16 @@
+-- The CXX compiler identification is GNU 15.2.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Performing Test STOCKBEAR_HAS_SIMD_FLAG
+-- Performing Test STOCKBEAR_HAS_SIMD_FLAG - Success
+-- StockBear: AVX2 neural kernel enabled (-mavx2), run-time detected
+-- StockBear version: 0.1.0-dev6
+-- Configuring done (3.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/runner/work/StockBear/StockBear/build-cost-gate

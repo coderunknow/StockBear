@@ -1,0 +1,11 @@
+{
+  "blocks": 90,
+  "repeats": 3,
+  "median_b_over_a": 1.044700277110187,
+  "p10": 1.0328085970896665,
+  "p90": 1.0587317571527215,
+  "min": 1.0100648252914042,
+  "max": 1.1283128082662957,
+  "a_params": "research-data/params_exp0055_race.txt",
+  "b_params": "research-data/params_exp0061_battery.txt"
+}

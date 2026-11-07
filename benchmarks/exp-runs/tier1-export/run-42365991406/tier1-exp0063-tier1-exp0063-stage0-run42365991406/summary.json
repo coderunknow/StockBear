@@ -1,0 +1,27 @@
+{
+  "job_id": "tier1-exp0063-stage0",
+  "experiment_id": "exp0063",
+  "games": 598,
+  "unadjudicated": 2,
+  "wins": 197,
+  "draws": 195,
+  "losses": 206,
+  "score": 0.49247491638795987,
+  "elo": -5.830003259278235,
+  "ci95": [
+    -21.26617346932209,
+    9.583172320413036
+  ],
+  "clusters": 298,
+  "terminations": {
+    "THREEFOLD_REPETITION": 174,
+    "CHECKMATE": 403,
+    "INSUFFICIENT_MATERIAL": 19,
+    "FIFTY_MOVES": 2,
+    "UNADJUDICATED_MAX_PLIES": 2
+  },
+  "time_forfeit": 0,
+  "illegal": 0,
+  "engine_failure": 0,
+  "independent_elo_from_score": -5.229358515262385
+}
