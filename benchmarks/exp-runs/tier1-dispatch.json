@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0061",
   "source_sha": "91166e5fbbec5ffba1566bd80a43f8bb80199928",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0061.json",
-  "source_run_id": "",
-  "note": "exp-0061: king-slider-battery screen over threats+race. Fail-closed CI cost gate before games; 5800 games max; no pooling; powered nulls.",
+  "source_run_id": "42355810868",
+  "note": "exp-0061: export pre-game cost-gate evidence from failed prepare run 42355810868. Zero games dispatched; preserve failure verdict.",
   "attempt": 1
 }
