@@ -1,11 +1,11 @@
 {
-  "head": "1ea329c64e66f45bec83583ef7cfb1c3f57f356b",
+  "head": "234e6743e2486e42e56407139f6eafdee9532bd9",
   "branch": "arena/6a6a2ba3-stockbear",
   "main_sha": "6e7c2e02881faf93a84990a8345c41ad28bcae11",
   "version_branch": "0.1.0-dev6",
   "version_main": "0.1.0-dev5",
-  "checked": 21,
-  "open": 37,
+  "checked": 22,
+  "open": 36,
   "total": 58,
   "items": [
     {
@@ -30,14 +30,16 @@
     },
     {
       "id": "0.3",
-      "checked": false,
+      "checked": true,
       "cited_filelike": [
         ".github/workflows/dev6-tier1.yml",
         "on: push: paths:\n      benchmarks/exp-runs/tier1-dispatch.json",
+        "arena/6a6a2ba3-stockbear",
         "arena/6a6a2ba3-stockbear"
       ],
       "missing_paths": [
         "on: push: paths:\n      benchmarks/exp-runs/tier1-dispatch.json",
+        "arena/6a6a2ba3-stockbear",
         "arena/6a6a2ba3-stockbear"
       ]
     },

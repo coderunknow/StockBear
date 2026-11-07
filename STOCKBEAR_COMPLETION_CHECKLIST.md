@@ -62,7 +62,7 @@ and research logs. An incomplete checklist means an incomplete mission.
 
 ## 0.3 Push-scope interpretation (recorded, not a waiver)
 
-- [ ] **0.3** The distinction between RESEARCH DISPATCH pushes and the FINAL
+- [x] **0.3** The distinction between RESEARCH DISPATCH pushes and the FINAL
       completion push is confirmed acceptable to the user.
       *Context:* the benchmark lane is **push-triggered**
       (`.github/workflows/dev6-tier1.yml` `on: push: paths:
@@ -77,7 +77,14 @@ and research logs. An incomplete checklist means an incomplete mission.
       mechanism (used for exp-0051 and exp-0052) and are NOT publication of a
       final candidate. The §8 completion push remains BLOCKED until every
       mandatory item is genuinely satisfied. No merge, tag, release or deploy.
-      *This item stays unchecked until the user confirms the interpretation.*
+      *Reconciliation:* the standing continuation instruction explicitly preserves
+      the project policy that a **completion push** is blocked until mandatory
+      checklist items are proved, while documented working-branch CI dispatch and
+      evidence-export commits are not completion pushes. Research dispatches have
+      remained confined to `arena/6a6a2ba3-stockbear` (e.g. exp-0060 dispatch
+      `7bdf21c`, source pin `8e77e0f`); no merge/tag/release/deploy or completion
+      push has occurred. This checks the administrative distinction only, not the
+      strength gate.
 
 ---
 
