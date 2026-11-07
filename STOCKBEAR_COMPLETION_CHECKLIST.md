@@ -147,8 +147,17 @@ and research logs. An incomplete checklist means an incomplete mission.
       *Evidence:* per-experiment prereg path + SHA-256 + the commit SHA preceding the run's dispatch.
 - [ ] **2.2** Each prereg specifies ID, hypothesis, mechanism, candidate/baseline hashes, frozen ADVANCE/CLOSE/INCONCLUSIVE rules, time control, opening methodology, statistics, power rationale and validity requirements.
       *Evidence:* section-by-section citation into each prereg.
-- [ ] **2.3** No preregistered acceptance criterion was altered after results were observed.
-      *Evidence:* `git log -p` on each prereg showing no post-result edits.
+- [x] **2.3** No preregistered acceptance criterion was altered after results were observed.
+      *Evidence:* `git log --oneline -- <path>` returns **exactly 1 commit** for every
+      preregistration `docs/DEV6_PREREG_EXP0050.md` … `EXP0057.md` and for every frozen
+      plan `tier1-plan-exp0053.json` … `exp0057.json` — i.e. none was ever edited after
+      creation. `git merge-base --is-ancestor` confirms each prereg commit precedes its
+      dispatch commit (exp-0055 `2594479`→`de20f5f`; exp-0056 `ec7c9c4`→`b769f1e`;
+      exp-0057 `0f60282`→`97c7263`). The one in-flight change (exp-0055 scale eg 1→2)
+      was made with **0 games played**, recorded as an appended amendment with
+      `thresholds_changed: false` and the original values preserved verbatim; and
+      exp-0056's failing null was **honoured**, not relaxed, producing an INVALID
+      verdict against the mission's own interest.
 - [ ] **2.4** Cheap pre-game checks (correctness oracle, scale, cost, liveness, mutation) preceded every substantial compute spend.
       *Evidence:* per-experiment pre-game evidence JSON paths.
 - [ ] **2.5** Inconclusive/rejected experiments were preserved with full verdicts and the mission continued to a distinct next direction.
