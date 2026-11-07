@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0065",
   "source_sha": "6658abb20ebe0b1d1902a31e777d6f66574992dc",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0065.json",
-  "source_run_id": "",
-  "note": "exp-0065: frozen 7800-game same-binary SCREEN of PersistentHistory on threats+race. Prereg 4f3e0a01 frozen at 6658abb BEFORE any game. Primary batchA+batchB 6000; powered null 1200; stage0 600 with fresh ctest 20 groups. Cannot satisfy Gate 1.",
+  "source_run_id": "42383867075",
+  "note": "exp-0065: export the 7800-game persistent-history screen raw evidence from successful run 42383867075; one explicit evidence commit.",
   "attempt": 1
 }
