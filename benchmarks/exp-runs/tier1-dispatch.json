@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0061",
-  "source_sha": "91166e5fbbec5ffba1566bd80a43f8bb80199928",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0061.json",
-  "source_run_id": "42355810868",
-  "note": "exp-0061: export pre-game cost-gate evidence from failed prepare run 42355810868. Zero games dispatched; preserve failure verdict.",
+  "mode": "benchmark",
+  "experiment_id": "exp0062",
+  "source_sha": "95606a513c4cc96231fbbba89e04165348c23fbb",
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0062.json",
+  "source_run_id": "",
+  "note": "exp-0062: decisive integrated threats+race vs exact published dev5. 15000 games max; Gate point>=75 and LCB>50; no pooling; powered nulls.",
   "attempt": 1
 }
