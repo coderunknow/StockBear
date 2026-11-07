@@ -1,0 +1,112 @@
+name: Dev4 published-release provenance
+
+# Checklist item 0.2: fetch the ACTUAL published v0.1.0-dev4 release asset and
+# verify its checksum, rather than accepting the in-repo tag rebuild as proof of
+# provenance. The sandbox cannot download release blobs (the asset CDN is not on
+# the allowlist), so this runs on a GitHub-hosted runner and commits ONE small
+# provenance record. It plays no games and builds nothing.
+#
+# Triggered by a deliberate commit to the request file, because a
+# workflow_dispatch workflow must exist on the default branch first and this
+# mission must not modify main.
+on:
+  push:
+    paths:
+      - 'benchmarks/dev6-baseline/dev4-provenance-request.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dev4-provenance-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  fetch-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download published dev4 assets and verify checksums
+        run: |
+          set -euo pipefail
+          TAG=v0.1.0-dev4
+          BASE="https://github.com/${{ github.repository }}/releases/download/${TAG}"
+          mkdir -p /tmp/dev4/assets /tmp/dev4/extract
+          for f in SHA256SUMS.txt \
+                   stockbear-0.1.0-dev4-linux-x64.tar.gz \
+                   stockbear-0.1.0-dev4-windows-x64.zip; do
+            echo "--- downloading $f"
+            curl -fsSL "$BASE/$f" -o "/tmp/dev4/assets/$f"
+          done
+          ls -l /tmp/dev4/assets
+          echo "=== published SHA256SUMS.txt ==="
+          cat /tmp/dev4/assets/SHA256SUMS.txt
+          echo "=== sha256sum -c ==="
+          ( cd /tmp/dev4/assets && sha256sum -c SHA256SUMS.txt ) | tee /tmp/dev4/checksums.txt
+
+      - name: Extract, identify and compare against the in-repo tag rebuild
+        run: |
+          set -euo pipefail
+          tar xzf /tmp/dev4/assets/stockbear-0.1.0-dev4-linux-x64.tar.gz -C /tmp/dev4/extract
+          find /tmp/dev4/extract -type f -printf '%p %s bytes\n'
+          BIN=$(find /tmp/dev4/extract -type f -name 'stockbear' | head -1)
+          test -n "$BIN"
+          chmod +x "$BIN"
+          REL_SHA=$(sha256sum "$BIN" | cut -d' ' -f1)
+          REPO_SHA=$(sha256sum benchmarks/binaries/stockbear-dev4-1c5b61a7 | cut -d' ' -f1)
+          BENCH=$("$BIN" bench 2>&1 | sed -n 's/.*signature //p' | tail -1)
+          D4=$("$BIN" bench --depth 4 2>&1 | sed -n 's/.*signature //p' | tail -1)
+          VER=$(printf 'uci\nquit\n' | "$BIN" 2>&1 | grep -m1 'id name' || true)
+          echo "released sha256 = $REL_SHA"
+          echo "tag rebuild sha = $REPO_SHA"
+          echo "bench=$BENCH depth4=$D4 version=$VER"
+          python3 - "$REL_SHA" "$REPO_SHA" "$BENCH" "$D4" "$VER" <<'PY'
+          import hashlib, json, sys, datetime, pathlib
+          rel, repo, bench, d4, ver = sys.argv[1:6]
+          a = pathlib.Path("/tmp/dev4/assets")
+          sums = (a / "SHA256SUMS.txt").read_text()
+          checked = pathlib.Path("/tmp/dev4/checksums.txt").read_text()
+          rec = {
+            "purpose": "Checklist 0.2 - provenance of the PUBLISHED v0.1.0-dev4 release asset",
+            "tag": "v0.1.0-dev4",
+            "fetched_via": "GitHub-hosted runner, releases/download URL",
+            "utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "assets_sha256": {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                              for p in sorted(a.iterdir())},
+            "published_SHA256SUMS": sums,
+            "sha256sum_c_output": checked,
+            "all_published_checksums_ok": all(l.strip().endswith(": OK")
+                                              for l in checked.splitlines() if l.strip()),
+            "released_linux_binary_sha256": rel,
+            "in_repo_tag_rebuild_sha256": repo,
+            "released_equals_tag_rebuild": rel == repo,
+            "released_bench_signature": bench,
+            "released_bench_depth4_signature": d4,
+            "released_uci_identity": ver,
+            "note": ("dev4 is a verified historical/reference anchor only. The dev6 "
+                     "gate baseline is released dev5, per the user's 2026-11-06 decision. "
+                     "A differing digest here would mean the in-repo dev4 file is a "
+                     "rebuild, not the published artifact, and must be recorded as such."),
+          }
+          out = pathlib.Path("benchmarks/dev6-baseline/exp_dev4_release_provenance.json")
+          out.write_text(json.dumps(rec, indent=2) + "\n")
+          print(json.dumps(rec, indent=2))
+          assert rec["all_published_checksums_ok"], "published checksum verification FAILED"
+          PY
+
+      - name: Commit ONE provenance record
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add benchmarks/dev6-baseline/exp_dev4_release_provenance.json
+          if git diff --cached --quiet; then
+            echo "no change"
+          else
+            git commit -m "dev4 provenance: published v0.1.0-dev4 asset fetched and checksum-verified [skip ci]"
+            git push origin HEAD:${{ github.ref_name }}
+          fi

@@ -1,0 +1,12 @@
+{
+  "request": "fetch_published_dev4_release",
+  "tag": "v0.1.0-dev4",
+  "reason": "Checklist 0.2. The user explicitly chose fetch_release over accepting the in-repo tag rebuild. The sandbox cannot reach the release asset CDN, so a GitHub-hosted runner downloads and checksum-verifies the actual published artifact.",
+  "expected_asset_ids": {
+    "SHA256SUMS.txt": 700612872,
+    "stockbear-0.1.0-dev4-linux-x64.tar.gz": 700612873,
+    "stockbear-0.1.0-dev4-windows-x64.zip": 700612875
+  },
+  "plays_games": false,
+  "attempt": 1
+}
