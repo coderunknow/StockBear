@@ -1,0 +1,45 @@
+MaterialPawn 100 123
+MaterialKnight 314 303
+MaterialBishop 335 336
+MaterialRook 523 552
+MaterialQueen 1031 1000
+PstPawnRank 2 5
+PstPawnFile 1 0
+PstKnightCenter 10 6
+PstBishopCenter 5 4
+PstRookRank 3 0
+PstRookFile 2 0
+PstRookCenter 0 3
+PstQueenCenter 3 5
+PstKingRank -8 0
+PstKingFile -7 0
+PstKingCenter 0 10
+BishopPair 29 40
+IsolatedPawn -12 -9
+DoubledPawn -9 -13
+PassedPawnAdvance 1 6
+MobilityKnight 5 3
+MobilityBishop 7 4
+MobilityRook 3 5
+MobilityQueen 3 4
+RookOpenFile 22 13
+RookSemiOpenFile 12 7
+PawnShield 9 0
+KingDangerPawn 2 0
+KingDangerKnight 3 0
+KingDangerBishop 3 0
+KingDangerRook 4 0
+KingDangerQueen 7 0
+
+# exp-0053 frozen candidate: champion + ONE threat knob. No other change.
+ThreatDetection 1 1
+
+# exp-0055 frozen candidate: confirmed threat term + ONE passed-pawn race knob.
+# mg=0, eg=2: king geometry decides promotion races in the ENDGAME.
+# Scale frozen BEFORE any exp-0055 game. eg=2 chosen a priori to match the
+# overall magnitude of the empirically CONFIRMED threat term (RMS 16.88 ->
+# +23.5 Elo) instead of repeating exp-0052's too-conservative-to-resolve
+# failure. Both corpora stay inside the pre-declared envelope (RMS<40,
+# p99<=120): overall RMS 14.28 / p99 58; endgame RMS 35.66 / p99 106.
+PassedPawnRace 0 2
+KingSliderBattery 10 0

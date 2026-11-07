@@ -57,3 +57,7 @@ ThreatDetection 0 0
 # exp-0055: passed-pawn race row, appended and shipped 0 so the default
 # evaluation and all three bench signatures are unchanged.
 PassedPawnRace 0 0
+
+# DEV6 architecture-survey candidate: slider battery row, appended and shipped 0
+# so the default evaluation and all three bench signatures are unchanged.
+KingSliderBattery 0 0

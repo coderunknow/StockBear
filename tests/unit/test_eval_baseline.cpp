@@ -165,7 +165,10 @@ TEST(unit, evaluation_reproduces_dev2_baseline) {
     // table checksum moves, the semantic dev2-equality pin below and all three
     // frozen bench signatures do not.
     // exp-0055 appended PassedPawnRace, also shipped 0; same reasoning again.
-    CHECK(eval_params_checksum(default_eval_params()) == 0x849cc5a968fd9b1eULL);
+    // DEV6 architecture-survey candidate appended KingSliderBattery, shipped 0;
+    // the raw table checksum moves, the semantic dev2-equality pin and all three
+    // frozen bench signatures do not.
+    CHECK(eval_params_checksum(default_eval_params()) == 0x64662610d489aadeULL);
     CHECK(active_eval_params() == default_eval_params());
     std::vector<Position> positions;
     for (const auto& c : SearchCases) positions.push_back(test::position(c.fen));

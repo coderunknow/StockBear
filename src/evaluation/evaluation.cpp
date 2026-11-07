@@ -174,6 +174,8 @@ bool king_safety_active() { return gKingSafety; }
 bool gThreats = false;
 // exp-0055: cached activation flag for the passed-pawn race term.
 bool gPassedPawnRace = false;
+// DEV6 architecture-survey candidate: cached activation flag for slider batteries.
+bool gKingSliderBattery = false;
 
 // Attack-unit weights per attacking piece type (index by PieceType). Pawns and
 // kings weigh 0: their zone contact is already covered by the linear rows and
@@ -424,6 +426,44 @@ int passed_pawn_race_units(const Position& p, Color us) {
     return std::clamp(units, -RaceUnitsMax, RaceUnitsMax);
 }
 
+// DEV6 architecture-survey candidate: king-facing slider battery / x-ray.
+// The shipped KingDanger* rows count immediate zone hits; they do not represent
+// an enemy slider aligned with our king behind exactly one intervening blocker.
+// Fixed internal weights + ONE scale row, default OFF. Only exactly-one-blocker
+// alignments are counted: zero-blocker contact is already covered by checks /
+// zone attacks, and two blockers are too screened to be a battery.
+constexpr int BatteryWeightOrthogonal = 4; // rook/queen on file/rank
+constexpr int BatteryWeightDiagonal   = 3; // bishop/queen on diagonal
+constexpr int BatteryUnitsMax         = 16;
+
+bool king_slider_battery_active() { return gKingSliderBattery; }
+
+inline int slider_battery_piece_units(PieceType pt, Square s, Square k, Bitboard occ) {
+    const int df = std::abs(file_of(s) - file_of(k));
+    const int dr = std::abs(rank_of(s) - rank_of(k));
+    const bool orthogonal = (df == 0 || dr == 0);
+    const bool diagonal = (df == dr && df != 0);
+    if (pt == Rook && !orthogonal) return 0;
+    if (pt == Bishop && !diagonal) return 0;
+    if (pt == Queen && !orthogonal && !diagonal) return 0;
+    if (popcount(BetweenBB[s][k] & occ) != 1) return 0;
+    return diagonal ? BatteryWeightDiagonal : BatteryWeightOrthogonal;
+}
+
+int king_slider_battery_units(const Position& p, Color us) {
+    const Color them = ~us;
+    const Square k = p.king_square(us);
+    const Bitboard occ = p.pieces();
+    int units = 0;
+    for (PieceType pt : {Bishop, Rook, Queen}) {
+        for (Bitboard b = p.pieces(them, pt); b;) {
+            const Square s = pop_lsb(b);
+            units += slider_battery_piece_units(pt, s, k, occ);
+        }
+    }
+    return std::min(units, BatteryUnitsMax);
+}
+
 // Dev5 isolated experiment: activity on an enemy-pawn-controlled square is
 // often illusory. This mask is deliberately geometric, not a legality test.
 Bitboard mobility_area(const Position& p, Color us) {
@@ -570,7 +610,10 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
         // computes these attacks. Hoisted flag => no per-piece branch cost
         // when the feature is off, and no recomputed attack sets when it is on.
         const bool ks = king_safety_active();
+        const bool batteryOn = king_slider_battery_active();
         int kingUnits = 0;
+        int batteryRaw = 0;
+        const Bitboard batteryOcc = batteryOn ? p.pieces() : Bitboard(0);
         const Bitboard zone = KingZoneBB[us][k];
         for (PieceType pt : {Pawn, Knight, Bishop, Rook, Queen}) {
             EvalParamId id = KingDangerPawn;
@@ -589,9 +632,16 @@ Score features(const Position& p, Color us, const EvalParams& par, bool lite = f
                 const int hits = popcount(at & zone);
                 out.mg -= hits * mgp(id);
                 if (ks) kingUnits += KingAttackWeight[pt] * hits;
+                if (batteryOn && (pt == Bishop || pt == Rook || pt == Queen))
+                    batteryRaw += slider_battery_piece_units(pt, s, k, batteryOcc);
             }
         }
         if (ks) out.mg -= king_safety_danger(p, them, kingUnits) * mgp(KingSafetyQuadratic);
+        if (batteryOn) {
+            const int battery = std::min(batteryRaw, BatteryUnitsMax);
+            out.mg -= battery * mgp(KingSliderBattery);
+            out.eg -= battery * egp(KingSliderBattery);
+        }
     }
     return out;
 }
@@ -747,6 +797,11 @@ void accumulate_breakdown(const Position& p, Color us, EvalBreakdown& bd) {
     // The curve is a pure function of the POSITION, so it enters as a COUNT and
     // the parameter stays linear: sum(count*param) == features() exactly.
     if (ks) mg(KingSafetyQuadratic) -= sign * king_safety_danger(p, them, kingUnits);
+    // Slider battery is also a pure position count; same sign convention as the
+    // linear king-danger rows (enemy batteries hurt `us`).
+    const int battery = king_slider_battery_units(p, us);
+    mg(KingSliderBattery) -= sign * battery;
+    eg(KingSliderBattery) -= sign * battery;
 }
 } // namespace
 
@@ -919,6 +974,8 @@ void evaluation_rebuild_tables() {
     gThreats = p.mg[ThreatDetection] || p.eg[ThreatDetection];
     // exp-0055: pay for the passed-pawn race term only when it is enabled.
     gPassedPawnRace = p.mg[PassedPawnRace] || p.eg[PassedPawnRace];
+    // DEV6 architecture-survey candidate: pay for slider batteries only when enabled.
+    gKingSliderBattery = p.mg[KingSliderBattery] || p.eg[KingSliderBattery];
 }
 
 EvalBreakdown eval_breakdown(const Position& p) {

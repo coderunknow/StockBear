@@ -145,6 +145,7 @@ if(STOCKBEAR_BUILD_TESTS)
         tests/unit/test_king_safety.cpp
         tests/unit/test_threats.cpp
         tests/unit/test_passed_pawn_race.cpp
+        tests/unit/test_king_slider_battery.cpp
         tests/unit/test_fen.cpp
         tests/unit/test_move.cpp
         tests/unit/test_nnue.cpp
@@ -188,6 +189,9 @@ if(STOCKBEAR_BUILD_TESTS)
     add_test(NAME king_safety COMMAND stockbear_tests king_safety)
     add_test(NAME threats COMMAND stockbear_tests threats)
     add_test(NAME passed_pawn_race COMMAND stockbear_tests passed_pawn_race)
+    # DEV6 architecture-survey candidate: slider battery installs process-wide
+    # parameters explicitly ON, so it gets its own isolated CTest entry.
+    add_test(NAME king_slider_battery COMMAND stockbear_tests king_slider_battery)
     add_test(NAME regression  COMMAND stockbear_tests regression)
     add_test(NAME perft_quick COMMAND stockbear_tests perft_quick)
     add_test(NAME stress      COMMAND stockbear_tests stress)

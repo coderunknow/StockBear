@@ -55,6 +55,9 @@ enum EvalParamId : int {
     ThreatDetection,
     // exp-0055: passed-pawn promotion race (king escort / blockade / blocked path).
     PassedPawnRace,
+    // DEV6 architecture-survey candidate: enemy slider aligned with our king behind exactly one blocker
+    // (x-ray battery). Shipped 0 = default OFF; no extra cost when gated off.
+    KingSliderBattery,
     // The table must only ever be appended: reordering/removing an entry would
     // silently reinterpret every recorded tuning dataset and parameter file.
     EvalParamNB

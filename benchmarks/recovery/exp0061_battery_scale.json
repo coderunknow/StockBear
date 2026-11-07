@@ -1,0 +1,84 @@
+{
+  "corpus": "benchmarks/positions/diagnostic_exp0059_eval.epd",
+  "n": 4000,
+  "nonzero_count_positions": 897,
+  "pre_declared_envelope": {
+    "rms_max": 40,
+    "p99_abs_max": 120
+  },
+  "candidates": {
+    "mg1_eg0": {
+      "n": 4000,
+      "rms": 1.44,
+      "p50": 0.0,
+      "p90": 3.0,
+      "p99": 4.0,
+      "max": 9.625,
+      "changed": 897
+    },
+    "mg2_eg0": {
+      "n": 4000,
+      "rms": 2.89,
+      "p50": 0.0,
+      "p90": 6.0,
+      "p99": 8.0,
+      "max": 19.25,
+      "changed": 897
+    },
+    "mg1_eg0_endgame_phase_lt8": {
+      "n": 9,
+      "rms": 0.61,
+      "p50": 0.0,
+      "p90": 1.1666666666666667,
+      "p99": 1.1666666666666667,
+      "max": 1.1666666666666667,
+      "changed": 3
+    },
+    "mg2_eg0_endgame_phase_lt8": {
+      "n": 9,
+      "rms": 1.22,
+      "p50": 0.0,
+      "p90": 2.3333333333333335,
+      "p99": 2.3333333333333335,
+      "max": 2.3333333333333335,
+      "changed": 3
+    },
+    "mg10_eg0": {
+      "n": 4000,
+      "rms": 14.43,
+      "p50": 0.0,
+      "p90": 30.0,
+      "p99": 40.0,
+      "max": 96.25,
+      "changed": 897
+    },
+    "mg10_eg0_endgame_phase_lt8": {
+      "n": 9,
+      "rms": 6.11,
+      "p50": 0.0,
+      "p90": 11.666666666666666,
+      "p99": 11.666666666666666,
+      "max": 11.666666666666666,
+      "changed": 3
+    }
+  },
+  "pre_declared_criterion": {
+    "declared_before_games": true,
+    "rms_max": 40,
+    "p99_abs_max": 120,
+    "no_strength_sweep": true,
+    "rule_if_failed": "tighten implementation/scale before games; never relax after observation"
+  },
+  "frozen_scale": {
+    "mg": 10,
+    "eg": 0
+  },
+  "selection_rationale": [
+    "Zero exp-0061 games existed when scale was chosen.",
+    "mg1/mg2 RMS 1.44/2.89 are far below exp-0052 RMS 13.87 which was inconclusive; likely unresolvable.",
+    "mg10 RMS 14.40 is close to confirmed threat term RMS 16.88 and race increment RMS 14.28.",
+    "Overall p99 40 and max 96.25 remain inside the pre-declared envelope (RMS<40, p99<=120).",
+    "Middlegame-only scale; endgame phase<8 subset remains small (RMS 6.08)."
+  ],
+  "measured_before_any_exp0061_game": true
+}

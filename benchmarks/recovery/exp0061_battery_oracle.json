@@ -1,0 +1,13 @@
+{
+  "positions": 800,
+  "mismatches": 0,
+  "nonzero_positions": 197,
+  "seed": 20261117,
+  "spec": {
+    "w_orth": 4,
+    "w_diag": 3,
+    "cap": 16
+  },
+  "examples": [],
+  "verdict": "PASS"
+}

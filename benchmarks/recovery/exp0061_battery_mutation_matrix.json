@@ -1,0 +1,65 @@
+{
+  "mechanism": "KingSliderBattery",
+  "mutants": [
+    {
+      "mutant": "live_path_disabled",
+      "status": "KILLED",
+      "killed": true,
+      "exit": 1,
+      "tail": "o_and_default_untouched\nRUN  king_slider_battery/counts_match_geometry_exactly\nPASS king_slider_battery/counts_match_geometry_exactly\nRUN  king_slider_battery/cap_is_live_and_symmetric\nPASS king_slider_battery/cap_is_live_and_symmetric\nRUN  king_slider_battery/live_evaluate_path_applies_the_count\nTests: 4, failures: 1\nFAIL king_slider_battery/live_evaluate_path_applies_the_count: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:98: evaluate(test::position(kOrthRook)) == baseOrth - 4\n"
+    },
+    {
+      "mutant": "computed_but_never_applied",
+      "status": "KILLED",
+      "killed": true,
+      "exit": 1,
+      "tail": "o_and_default_untouched\nRUN  king_slider_battery/counts_match_geometry_exactly\nPASS king_slider_battery/counts_match_geometry_exactly\nRUN  king_slider_battery/cap_is_live_and_symmetric\nPASS king_slider_battery/cap_is_live_and_symmetric\nRUN  king_slider_battery/live_evaluate_path_applies_the_count\nTests: 4, failures: 1\nFAIL king_slider_battery/live_evaluate_path_applies_the_count: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:98: evaluate(test::position(kOrthRook)) == baseOrth - 4\n"
+    },
+    {
+      "mutant": "orthogonal_weight_removed",
+      "status": "KILLED",
+      "killed": true,
+      "exit": 1,
+      "tail": "t\nTests: 4, failures: 3\nFAIL king_slider_battery/counts_match_geometry_exactly: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:67: battery_count(kOrthRook) == -4\nFAIL king_slider_battery/cap_is_live_and_symmetric: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:83: battery_count(kCap) == -16\nFAIL king_slider_battery/live_evaluate_path_applies_the_count: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:98: evaluate(test::position(kOrthRook)) == baseOrth - 4\n"
+    },
+    {
+      "mutant": "diagonal_weight_removed",
+      "status": "KILLED",
+      "killed": true,
+      "exit": 1,
+      "tail": "unt\nTests: 4, failures: 3\nFAIL king_slider_battery/counts_match_geometry_exactly: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:68: battery_count(kDiagBishop) == -3\nFAIL king_slider_battery/cap_is_live_and_symmetric: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:83: battery_count(kCap) == -16\nFAIL king_slider_battery/live_evaluate_path_applies_the_count: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:100: evaluate(test::position(kCap)) == baseCap - 16\n"
+    },
+    {
+      "mutant": "exactly_one_blocker_becomes_zero",
+      "status": "KILLED",
+      "killed": true,
+      "exit": 1,
+      "tail": "t\nTests: 4, failures: 3\nFAIL king_slider_battery/counts_match_geometry_exactly: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:67: battery_count(kOrthRook) == -4\nFAIL king_slider_battery/cap_is_live_and_symmetric: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:83: battery_count(kCap) == -16\nFAIL king_slider_battery/live_evaluate_path_applies_the_count: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:98: evaluate(test::position(kOrthRook)) == baseOrth - 4\n"
+    },
+    {
+      "mutant": "cap_removed",
+      "status": "KILLED",
+      "killed": true,
+      "exit": 1,
+      "tail": "attery/shipped_row_is_zero_and_default_untouched\nRUN  king_slider_battery/counts_match_geometry_exactly\nPASS king_slider_battery/counts_match_geometry_exactly\nRUN  king_slider_battery/cap_is_live_and_symmetric\nRUN  king_slider_battery/live_evaluate_path_applies_the_count\nPASS king_slider_battery/live_evaluate_path_applies_the_count\nTests: 4, failures: 1\nFAIL king_slider_battery/cap_is_live_and_symmetric: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:83: battery_count(kCap) == -16\n"
+    },
+    {
+      "mutant": "queen_ignored",
+      "status": "KILLED",
+      "killed": true,
+      "exit": 1,
+      "tail": "y/shipped_row_is_zero_and_default_untouched\nRUN  king_slider_battery/counts_match_geometry_exactly\nRUN  king_slider_battery/cap_is_live_and_symmetric\nPASS king_slider_battery/cap_is_live_and_symmetric\nRUN  king_slider_battery/live_evaluate_path_applies_the_count\nPASS king_slider_battery/live_evaluate_path_applies_the_count\nTests: 4, failures: 1\nFAIL king_slider_battery/counts_match_geometry_exactly: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:71: battery_count(kQueenOrth) == -4\n"
+    },
+    {
+      "mutant": "breakdown_sign_reversed",
+      "status": "KILLED",
+      "killed": true,
+      "exit": 1,
+      "tail": "xactly\nRUN  king_slider_battery/cap_is_live_and_symmetric\nRUN  king_slider_battery/live_evaluate_path_applies_the_count\nPASS king_slider_battery/live_evaluate_path_applies_the_count\nTests: 4, failures: 2\nFAIL king_slider_battery/counts_match_geometry_exactly: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:67: battery_count(kOrthRook) == -4\nFAIL king_slider_battery/cap_is_live_and_symmetric: /home/user/StockBear/tests/unit/test_king_slider_battery.cpp:83: battery_count(kCap) == -16\n"
+    }
+  ],
+  "killed": 8,
+  "total": 8,
+  "survivors": [],
+  "verdict": "PASS"
+}
