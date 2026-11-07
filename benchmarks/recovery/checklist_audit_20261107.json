@@ -1,5 +1,5 @@
 {
-  "head": "ef7c1782636d13279c5008a6f876d8d4015b40e1",
+  "head": "500fdf730d0a7f4ff2bc121809bc84f25f8e2121",
   "branch": "arena/6a6a2ba3-stockbear",
   "main_sha": "6e7c2e02881faf93a84990a8345c41ad28bcae11",
   "version_branch": "0.1.0-dev6",
@@ -158,7 +158,13 @@
     {
       "id": "2.2",
       "checked": false,
-      "cited_filelike": [],
+      "cited_filelike": [
+        "scripts/recovery_prereg_content_audit.py",
+        "benchmarks/recovery/prereg_content_audit.json",
+        "docs/DEV6_PREREG.md",
+        "docs/DEV6_POWER_ANALYSIS.md",
+        "docs/DEV6_PREREG_BASELINE.md"
+      ],
       "missing_paths": []
     },
     {
@@ -485,8 +491,25 @@
     {
       "id": "7.6",
       "checked": false,
-      "cited_filelike": [],
-      "missing_paths": []
+      "cited_filelike": [
+        "scripts/recovery_artifact_hygiene_audit.py",
+        "benchmarks/recovery/artifact_hygiene_audit.json",
+        "build/",
+        "build-*/",
+        "cmake-build-*/",
+        "out/",
+        "dist/",
+        "benchmarks/binaries/stockbear-dev5-release",
+        "benchmarks/binaries/stockbear-dev4-1c5b61a7",
+        "benchmarks/exp-runs/exp0025-baseline/extract/stockbear"
+      ],
+      "missing_paths": [
+        "build/",
+        "build-*/",
+        "cmake-build-*/",
+        "out/",
+        "dist/"
+      ]
     },
     {
       "id": "8.1",
@@ -541,7 +564,7 @@
     "dev5": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
     "dev4_rebuild": "1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae"
   },
-  "append_only_numstat": "1792\t0\tAGENTS_LOG.md\n949\t0\tDESIGN_LOG.md\n2257\t0\tbenchmarks/FAILURE_LEDGER.md",
+  "append_only_numstat": "1848\t0\tAGENTS_LOG.md\n989\t0\tDESIGN_LOG.md\n2257\t0\tbenchmarks/FAILURE_LEDGER.md",
   "append_only_violation": false,
   "raw_artifact_non_additions": []
 }
