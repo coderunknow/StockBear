@@ -1,9 +1,9 @@
 {
-  "mode": "export",
-  "experiment_id": "exp0060",
-  "source_sha": "8e77e0fec3ee4d919b6aedfc02f89cb9d5c19950",
-  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0060.json",
-  "source_run_id": "42352690063",
-  "note": "exp-0060: export raw evidence of confirmation run 42352690063 (4 jobs, 7800 games) plus pre-game cost-gate artifact. Export plays no games. Validity checked condition-by-condition, not via audit banner.",
+  "mode": "benchmark",
+  "experiment_id": "exp0061",
+  "source_sha": "91166e5fbbec5ffba1566bd80a43f8bb80199928",
+  "plan_path": "benchmarks/exp-runs/tier1-plan-exp0061.json",
+  "source_run_id": "",
+  "note": "exp-0061: king-slider-battery screen over threats+race. Fail-closed CI cost gate before games; 5800 games max; no pooling; powered nulls.",
   "attempt": 1
 }
