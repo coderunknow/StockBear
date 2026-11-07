@@ -1,0 +1,459 @@
+{
+  "head": "4664ca86abd4c39049d4bf431b7483f5948b38f5",
+  "branch": "arena/6a6a2ba3-stockbear",
+  "main_sha": "6e7c2e02881faf93a84990a8345c41ad28bcae11",
+  "version_branch": "0.1.0-dev6",
+  "version_main": "0.1.0-dev5",
+  "checked": 19,
+  "open": 38,
+  "total": 57,
+  "items": [
+    {
+      "id": "0.2",
+      "checked": true,
+      "cited_filelike": [
+        ".github/workflows/dev4-provenance.yml",
+        "benchmarks/dev6-baseline/exp_dev4_release_provenance.json"
+      ],
+      "missing_paths": []
+    },
+    {
+      "id": "0.3",
+      "checked": false,
+      "cited_filelike": [
+        ".github/workflows/dev6-tier1.yml",
+        "on: push: paths:\n      benchmarks/exp-runs/tier1-dispatch.json",
+        "arena/6a6a2ba3-stockbear"
+      ],
+      "missing_paths": [
+        "on: push: paths:\n      benchmarks/exp-runs/tier1-dispatch.json",
+        "arena/6a6a2ba3-stockbear"
+      ]
+    },
+    {
+      "id": "1.1",
+      "checked": true,
+      "cited_filelike": [
+        "origin/main"
+      ],
+      "missing_paths": [
+        "origin/main"
+      ]
+    },
+    {
+      "id": "1.2",
+      "checked": true,
+      "cited_filelike": [
+        "arena/6a6a2ba3-stockbear",
+        "arena/6a6a2ba3-stockbear",
+        "origin/arena/6a6a2ba3-stockbear",
+        "arena/*"
+      ],
+      "missing_paths": [
+        "arena/6a6a2ba3-stockbear",
+        "arena/6a6a2ba3-stockbear",
+        "origin/arena/6a6a2ba3-stockbear",
+        "arena/*"
+      ]
+    },
+    {
+      "id": "1.3",
+      "checked": true,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "1.4",
+      "checked": true,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "1.5",
+      "checked": true,
+      "cited_filelike": [
+        "benchmarks/dev6-baseline/manifest.json",
+        "releases/download/v0.1.0-dev5/stockbear-0.1.0-dev5-linux-x64.tar.gz",
+        "benchmarks/exp-runs/exp0025-baseline/checksums.txt",
+        "params_abc.txt",
+        "benchmarks/dev6-baseline/PROVENANCE.md"
+      ],
+      "missing_paths": [
+        "releases/download/v0.1.0-dev5/stockbear-0.1.0-dev5-linux-x64.tar.gz",
+        "params_abc.txt"
+      ]
+    },
+    {
+      "id": "1.6",
+      "checked": true,
+      "cited_filelike": [
+        "DESIGN_LOG.md",
+        "AGENTS_LOG.md",
+        "benchmarks/FAILURE_LEDGER.md",
+        "DESIGN_LOG.md 923 added / 0 removed",
+        "AGENTS_LOG.md 1718 / 0",
+        "benchmarks/FAILURE_LEDGER.md 1988 / 0"
+      ],
+      "missing_paths": [
+        "DESIGN_LOG.md 923 added / 0 removed",
+        "AGENTS_LOG.md 1718 / 0",
+        "benchmarks/FAILURE_LEDGER.md 1988 / 0"
+      ]
+    },
+    {
+      "id": "1.7",
+      "checked": true,
+      "cited_filelike": [
+        "benchmarks/",
+        "FAILURE_LEDGER.md",
+        "params/dev3-shipped.txt",
+        "research-data/"
+      ],
+      "missing_paths": [
+        "FAILURE_LEDGER.md",
+        "params/dev3-shipped.txt"
+      ]
+    },
+    {
+      "id": "1.8",
+      "checked": true,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "1.9",
+      "checked": true,
+      "cited_filelike": [
+        "docs/DEV6_CONTINUATION_POLICY.md",
+        "benchmarks/recovery/version/exp0059_identity_audit.json",
+        "exp0059_releases.json",
+        "exp0059_tags.json"
+      ],
+      "missing_paths": [
+        "exp0059_releases.json",
+        "exp0059_tags.json"
+      ]
+    },
+    {
+      "id": "2.1",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "2.2",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "2.3",
+      "checked": true,
+      "cited_filelike": [
+        "docs/DEV6_PREREG_EXP0050.md",
+        "EXP0057.md",
+        "tier1-plan-exp0053.json",
+        "exp0057.json"
+      ],
+      "missing_paths": [
+        "EXP0057.md",
+        "tier1-plan-exp0053.json",
+        "exp0057.json"
+      ]
+    },
+    {
+      "id": "2.4",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "2.5",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "2.6",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "2.7",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "3.1",
+      "checked": true,
+      "cited_filelike": [
+        "docs/DEV6_EXP0054_REPORT.md",
+        "benchmarks/recovery/exp0054_independent_raw_audit.json"
+      ],
+      "missing_paths": []
+    },
+    {
+      "id": "3.2",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "3.3",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "3.4",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "4.1",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "4.2",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "4.3",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "4.4",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "4.5",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "5.1",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "5.2",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "5.3",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "5.4",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "5.5",
+      "checked": false,
+      "cited_filelike": [
+        "verified/total"
+      ],
+      "missing_paths": [
+        "verified/total"
+      ]
+    },
+    {
+      "id": "5.6",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "5.7",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "5.8",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "6.1",
+      "checked": true,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "6.2",
+      "checked": true,
+      "cited_filelike": [
+        "./build-rel/stockbear"
+      ],
+      "missing_paths": []
+    },
+    {
+      "id": "6.3",
+      "checked": true,
+      "cited_filelike": [
+        "9/17 ... Passed"
+      ],
+      "missing_paths": [
+        "9/17 ... Passed"
+      ]
+    },
+    {
+      "id": "6.4",
+      "checked": true,
+      "cited_filelike": [
+        "tests/unit/test_eval_baseline.cpp"
+      ],
+      "missing_paths": []
+    },
+    {
+      "id": "6.5",
+      "checked": true,
+      "cited_filelike": [
+        "docs/DEV5_BENCHMARKS.md:14",
+        "docs/DEV4_BENCHMARKS.md:79"
+      ],
+      "missing_paths": []
+    },
+    {
+      "id": "6.6",
+      "checked": true,
+      "cited_filelike": [
+        "9/17 ... Passed 1.66 sec",
+        ".github/workflows/ci.yml:198"
+      ],
+      "missing_paths": [
+        "9/17 ... Passed 1.66 sec"
+      ]
+    },
+    {
+      "id": "6.7",
+      "checked": true,
+      "cited_filelike": [
+        "benchmarks/recovery/exp0055_mutation_matrix.json"
+      ],
+      "missing_paths": []
+    },
+    {
+      "id": "6.8",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "6.9",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "7.1",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "7.2",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "7.3",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "7.4",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "7.5",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "7.6",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "8.1",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "8.2",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "8.3",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "8.4",
+      "checked": false,
+      "cited_filelike": [
+        "arena/6a6a2ba3-stockbear"
+      ],
+      "missing_paths": [
+        "arena/6a6a2ba3-stockbear"
+      ]
+    },
+    {
+      "id": "8.5",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "8.6",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    },
+    {
+      "id": "8.7",
+      "checked": false,
+      "cited_filelike": [],
+      "missing_paths": []
+    }
+  ],
+  "binary_sha256": {
+    "dev5": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+    "dev4_rebuild": "1c5b61a755215134a030b9bf3b55876f7d287e1c965591ff0d22b485c0743aae"
+  },
+  "append_only_numstat": "1792\t0\tAGENTS_LOG.md\n949\t0\tDESIGN_LOG.md\n2184\t0\tbenchmarks/FAILURE_LEDGER.md",
+  "append_only_violation": false,
+  "raw_artifact_non_additions": []
+}
