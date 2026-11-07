@@ -191,3 +191,42 @@ in a field that is not part of the chess position, and it is now under a frozen
 preregistered screen. No closed verdict was reopened, no historical measurement
 was edited, and no component Elo is summed. Gate 1 remains **UNMET** and the
 mission remains **ACTIVE**.
+
+### 8. ACTIVE: persistent cross-move quiet history (exp-0065)
+
+- **Mechanism + source location:** `src/search/search.cpp:934–943` zeroes
+  `history_` (and every other ordering table) at the start of EVERY root search,
+  and `src/uci/uci.cpp:440` builds a **fresh `Search` per `go`**. Quiet-ordering
+  learning is therefore discarded twice per move. At 40+4 ms (median depth 5,
+  ~10–30k nodes/move) the primary ordering table never accumulates anything.
+- **Current implementation/config:** `history_[us][from][to]`, bonus `depth²`,
+  clamp ±60000 with saturation halving. New default-OFF `PersistentHistory`
+  carries the table across searches with a bounded halving and keeps one
+  `Search` alive until `ucinewgame`. Killers stay cleared; counter-move,
+  continuation, capture, correction and qsearch tables are untouched.
+- **Prior experiments:** none on table lifetime. This is also the **confound**
+  behind the ordering family's neutral record: exp-0014's ablations were no-ops
+  on already-OFF switches, exp-0058 rejected CaptureHistory, and a fresh
+  diagnostic this cycle measured ContinuationHistory turn-ON at **+0.43 % nodes**
+  (slightly worse) over 250 positions — a table erased every 40 ms cannot show
+  its value.
+- **Measured opportunity:** sequential replay of **20 real games / 2,525
+  positions** at depth 7 gives node ratio **0.9654**, with **19/20 games**
+  individually improving. An independent-position corpus cannot see this
+  mechanism at all, which is why the diagnostic replays games in move order.
+- **Expected benefit / uncertainty:** 3.5 % fewer nodes maps to only a few Elo by
+  exp-0015's law, and exp-0064 taught us to discount that mapping further.
+  Per-node overhead measured **1.0776** (A/A spread 0.0859, so noisy), which
+  combined with the node ratio gives ~1.04 time-to-depth — the fixed-time effect
+  could honestly be neutral or negative. The 6,000-game screen is the arbiter.
+- **Correctness risk + controls:** reused object could leak state. Pinned: a
+  reused object with the switch OFF is indistinguishable from a fresh one;
+  `ucinewgame` resets; terminal/mate scores unchanged; interactive UCI lifetime
+  oracle; **9/9** killable mutants killed with **2** equivalence controls
+  surviving. `evalStack_` clear is provably a no-op (write at `:622` precedes the
+  guarded read at `:628`) and is recorded as defensive hardening, not a fix.
+- **Runtime risk + controls:** no evaluation change; frozen **fixed-node** cost
+  guard ≤1.10 passed at 1.0776.
+- **Priority / disposition:** highest remaining — a structural confound affecting
+  an entire mechanism family, with a passing game-order diagnostic. Preregistered
+  screen dispatched; verdict pending.

@@ -147,6 +147,7 @@ if(STOCKBEAR_BUILD_TESTS)
         tests/unit/test_passed_pawn_race.cpp
         tests/unit/test_king_slider_battery.cpp
         tests/unit/test_tt_extension_identity.cpp
+        tests/unit/test_persistent_history.cpp
         tests/unit/test_fen.cpp
         tests/unit/test_move.cpp
         tests/unit/test_nnue.cpp
@@ -194,6 +195,7 @@ if(STOCKBEAR_BUILD_TESTS)
     # parameters explicitly ON, so it gets its own isolated CTest entry.
     add_test(NAME king_slider_battery COMMAND stockbear_tests king_slider_battery)
     add_test(NAME tt_extension_identity COMMAND stockbear_tests tt_extension_identity)
+    add_test(NAME persistent_history COMMAND stockbear_tests persistent_history)
     add_test(NAME regression  COMMAND stockbear_tests regression)
     add_test(NAME perft_quick COMMAND stockbear_tests perft_quick)
     add_test(NAME stress      COMMAND stockbear_tests stress)

@@ -3,6 +3,7 @@
 #include "search/search.hpp"
 #include <atomic>
 #include <iosfwd>
+#include <memory>
 #include <mutex>
 #include <string>
 #include <thread>
@@ -38,5 +39,8 @@ private:
     // matches, not only by node counts, and every one defaults to the value
     // used by the engine (true) or by the released build.
     SearchParams params_{};
+    // exp-0065: only allocated when PersistentHistory is ON, so the default
+    // build's object lifetime and memory profile are unchanged.
+    std::unique_ptr<Search> persistentSearch_;
 };
 }

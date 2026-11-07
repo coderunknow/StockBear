@@ -1,0 +1,160 @@
+{
+  "diagnostic": "sequential_replay_history_lifetime",
+  "depth": 7,
+  "hash_mb": 16,
+  "games": 20,
+  "positions": 2525,
+  "nodes_off": 84993819,
+  "nodes_on": 82051828,
+  "overall_ratio": 0.965386,
+  "games_at_or_below_1": 19,
+  "majority_condition": true,
+  "gate_overall_max": 0.98,
+  "gate_pass": true,
+  "corpus_sha256": "b0efab35525e2c484377162adf9e6317692362f13c1daca6f81ace7c20690e7b",
+  "params_sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01",
+  "source_pgn": "benchmarks/exp-runs/tier1-export/run-42356232866 batchA match.pgn (first 20 complete games, >=40 positions)",
+  "strength_claim": false,
+  "per_game": [
+    {
+      "game": 0,
+      "positions": 134,
+      "nodes_off": 3444471,
+      "nodes_on": 3313975,
+      "ratio": 0.962114
+    },
+    {
+      "game": 1,
+      "positions": 145,
+      "nodes_off": 3412690,
+      "nodes_on": 3237843,
+      "ratio": 0.948766
+    },
+    {
+      "game": 2,
+      "positions": 162,
+      "nodes_off": 3714403,
+      "nodes_on": 3630468,
+      "ratio": 0.977403
+    },
+    {
+      "game": 3,
+      "positions": 114,
+      "nodes_off": 8101209,
+      "nodes_on": 7638735,
+      "ratio": 0.942913
+    },
+    {
+      "game": 4,
+      "positions": 80,
+      "nodes_off": 2312488,
+      "nodes_on": 2299188,
+      "ratio": 0.994249
+    },
+    {
+      "game": 5,
+      "positions": 98,
+      "nodes_off": 1982464,
+      "nodes_on": 1942412,
+      "ratio": 0.979797
+    },
+    {
+      "game": 6,
+      "positions": 146,
+      "nodes_off": 2815703,
+      "nodes_on": 2678122,
+      "ratio": 0.951138
+    },
+    {
+      "game": 7,
+      "positions": 133,
+      "nodes_off": 6631601,
+      "nodes_on": 6277420,
+      "ratio": 0.946592
+    },
+    {
+      "game": 8,
+      "positions": 50,
+      "nodes_off": 1219648,
+      "nodes_on": 1200946,
+      "ratio": 0.984666
+    },
+    {
+      "game": 9,
+      "positions": 60,
+      "nodes_off": 1244422,
+      "nodes_on": 1128834,
+      "ratio": 0.907115
+    },
+    {
+      "game": 10,
+      "positions": 157,
+      "nodes_off": 3414009,
+      "nodes_on": 3307716,
+      "ratio": 0.968866
+    },
+    {
+      "game": 11,
+      "positions": 133,
+      "nodes_off": 3947329,
+      "nodes_on": 3823614,
+      "ratio": 0.968659
+    },
+    {
+      "game": 12,
+      "positions": 184,
+      "nodes_off": 5757615,
+      "nodes_on": 5231153,
+      "ratio": 0.908562
+    },
+    {
+      "game": 13,
+      "positions": 69,
+      "nodes_off": 2697841,
+      "nodes_on": 2593226,
+      "ratio": 0.961223
+    },
+    {
+      "game": 14,
+      "positions": 117,
+      "nodes_off": 2887407,
+      "nodes_on": 2684510,
+      "ratio": 0.92973
+    },
+    {
+      "game": 15,
+      "positions": 145,
+      "nodes_off": 5553919,
+      "nodes_on": 5517783,
+      "ratio": 0.993494
+    },
+    {
+      "game": 16,
+      "positions": 196,
+      "nodes_off": 13777846,
+      "nodes_on": 13390315,
+      "ratio": 0.971873
+    },
+    {
+      "game": 17,
+      "positions": 123,
+      "nodes_off": 3211070,
+      "nodes_on": 2976004,
+      "ratio": 0.926795
+    },
+    {
+      "game": 18,
+      "positions": 119,
+      "nodes_off": 2310837,
+      "nodes_on": 2147724,
+      "ratio": 0.929414
+    },
+    {
+      "game": 19,
+      "positions": 160,
+      "nodes_off": 6556847,
+      "nodes_on": 7031840,
+      "ratio": 1.072442
+    }
+  ]
+}

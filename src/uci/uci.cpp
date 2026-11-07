@@ -328,6 +328,7 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     else if (key == "skipdeadtteval") flag = &params_.skipDeadTTEval;
     else if (key == "adaptivenullr") flag = &params_.adaptiveNullR;
     else if (key == "ttextensionagnostic") flag = &params_.ttExtensionAgnostic;
+    else if (key == "persistenthistory") flag = &params_.persistentHistory;
     else if (key == "correctionhistory") flag = &params_.correctionHistory;
     if (flag == nullptr) {
         emit("info string setoption: unknown option " + name); return;
@@ -437,7 +438,19 @@ void UciEngine::handle_go(const std::string& arguments) {
     try {
         worker_ = std::thread([this, root = std::move(root), limits, fallback, multipv]() mutable {
             try {
-                auto search = std::make_unique<Search>(table_, params_);
+                // exp-0065: with PersistentHistory the Search object must
+                // outlive a single `go`, otherwise the carried-over table would
+                // be destroyed with it. OFF keeps the exact shipped path.
+                std::unique_ptr<Search> fresh;
+                Search* search = nullptr;
+                if (params_.persistentHistory) {
+                    if (!persistentSearch_)
+                        persistentSearch_ = std::make_unique<Search>(table_, params_);
+                    search = persistentSearch_.get();
+                } else {
+                    fresh = std::make_unique<Search>(table_, params_);
+                    search = fresh.get();
+                }
                 const SearchResult result = search->run(std::move(root), limits, stop_,
                     [this, multipv](const SearchResult& r) {
                         const int lines = multipv > 1 ? int(r.lines.size()) : 1;
@@ -527,6 +540,8 @@ void UciEngine::loop() {
                  check(params_.adaptiveNullR));
             emit(std::string("option name TTExtensionAgnostic type check default ") +
                  check(params_.ttExtensionAgnostic));
+            emit(std::string("option name PersistentHistory type check default ") +
+                 check(params_.persistentHistory));
             // exp-0050: default off; isolated same-binary ablation.
             emit(std::string("option name CorrectionHistory type check default ") +
                  check(params_.correctionHistory));
@@ -549,6 +564,8 @@ void UciEngine::loop() {
         else if (command == "setoption") handle_setoption(arguments);
         else if (command == "ucinewgame") {
             stop_and_join(); table_.clear();
+            // exp-0065: a new game must forget the previous game's history.
+            persistentSearch_.reset();
             std::string error;
             if (!position_.set(START_FEN, &error)) emit("info string ucinewgame: " + error);
         } else if (command == "debug") {

@@ -2348,3 +2348,50 @@ Closure: `docs/DEV6_EXP0064_REPORT.md`. Ledger and backlog updated.
 The mechanism did what the diagnostic said (8.8 % fewer nodes at equal depth) but
 the lever is small. Gate 1 remains UNMET; continuing immediately to the next
 source-grounded hypothesis rather than stopping.
+
+## 2026-11-07 — exp-0065 registered: persistent cross-move quiet history
+
+After closing exp-0064 I went straight back to source. Reading the ordering path
+turned up a structural finding: `Search::run()` zeroes `history_`, `killers_`,
+`counterMoves_`, `continuation_`, `captureHistory_` and `correction_` on **every**
+root search, and `uci.cpp:440` additionally constructs a **fresh `Search` for
+every `go`**. Quiet-ordering learning is discarded twice per move. At 40+4 ms
+(median depth 5) that means the primary ordering table is trained on ~10–30k
+nodes and then thrown away, every single move.
+
+**This is the confound behind the whole ordering family's neutral record.** I
+first measured ContinuationHistory turn-ON as a candidate: **ratio 1.0043**
+(slightly MORE nodes) over 250 positions, only 67.2 % of trees changing. A table
+erased every 40 ms cannot demonstrate its value — that is not evidence against
+ordering. No prior experiment touches table lifetime (ledger, matrix and survey
+all checked).
+
+**Mechanism (one knob):** default-OFF `PersistentHistory` carries `history_`
+across searches with a bounded halving, and keeps one `Search` alive until
+`ucinewgame`. Killers stay cleared (ply-local); every other table is untouched,
+so an effect is attributable to ONE mechanism.
+
+**Pre-game gates, all before any game:**
+- ctest **20/20**; bench d4/d6/d7 **all exact**.
+- **Sequential-replay efficacy gate** (the mechanism only exists across moves):
+  20 real games / 2,525 positions at depth 7 → node ratio **0.9654**, **19/20**
+  games individually improving. Gate was ≤0.98 + majority. **PASS.**
+- **Fixed-node cost guard** (isolates per-node overhead, the real fixed-time
+  risk): **1.0776** ≤1.10, A/A spread 0.0859 <0.10, node counts match to 1e-6.
+  **PASS.** Recorded honestly: 0.9654 × 1.0776 ≈ 1.04 time-to-depth, so the
+  fixed-time effect may be neutral/negative; no limit relaxed, no rerun taken.
+- Mutation matrix **9/9 killable KILLED**, **2** equivalence controls SURVIVED.
+  Three mutants initially survived: two were real test gaps (the in-process
+  group cannot see `UciEngine` object lifetime) and were fixed by adding an
+  interactive UCI oracle; the third (`evalStack_` clear) is **provably
+  unobservable** — `search.cpp:622` writes before the `ply>=2`-guarded read at
+  `:628` — so it was reclassified as a control, with the source proof, BEFORE
+  freezing.
+- My own first lifetime test was wrong (shared TT made it measure transposition
+  reuse, not history); fixed by clearing the TT before every search.
+- Interactive UCI lifetime oracle: reuse live, `ucinewgame` resets. **PASS.**
+- Fresh openings seed **2026110665**, 3,900, 249 files / 92,941 positions
+  excluded, overlap **0**; independently re-verified PASS.
+
+Prereg `4f3e0a01…`, plan and budget frozen before any exp-0065 game.
+**Gate 1 remains UNMET; mission ACTIVE.**

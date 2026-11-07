@@ -173,6 +173,18 @@ struct SearchParams {
     // in the key, so repetition/draw soundness is unchanged. No new evaluate,
     // SEE, movegen or verification work. Frozen in docs/DEV6_PREREG_EXP0064.md.
     bool ttExtensionAgnostic = false;
+    // --- dev6 exp-0065 (default off; isolated same-binary ablation) ---------
+    // Persistent cross-move quiet history. Shipped behaviour zeroes history_ at
+    // the start of EVERY root search (search.cpp run()) AND builds a fresh
+    // Search per `go` (uci.cpp), so the primary quiet-ordering table never
+    // learns anything across moves: at 40+4 ms that is only ~10-30k nodes of
+    // training per move, discarded each time. With this switch ON the table is
+    // carried over and HALVED (bounded forgetting) instead of zeroed, and the
+    // UCI engine keeps one Search alive until `ucinewgame`. Killers stay cleared
+    // (ply/position-local); counter-move, continuation, capture, correction and
+    // qsearch tables are untouched, so an effect is attributable to ONE table.
+    // Frozen in docs/DEV6_PREREG_EXP0065.md.
+    bool persistentHistory = false;
 };
 
 // exp-0064: the single source of truth for the main-TT identity's extension

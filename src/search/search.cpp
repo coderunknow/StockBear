@@ -933,8 +933,21 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
     selDepth_ = 0;
     std::fill(std::begin(pvLength_), std::end(pvLength_), 0);
     for (auto& row : killers_) std::fill(std::begin(row), std::end(row), MOVE_NONE);
-    for (auto& color : history_)
-        for (auto& row : color) std::fill(std::begin(row), std::end(row), 0);
+    // exp-0065: the ONE mechanism. OFF => exactly the shipped zeroing. ON =>
+    // carry the quiet history across root searches with a bounded halving, so
+    // ordering statistics accumulate over the game instead of restarting every
+    // move. No update rule, bonus, clamp or reduction changes.
+    if (params_.persistentHistory) {
+        for (auto& color : history_)
+            for (auto& row : color)
+                for (int& value : row) value /= 2;
+    } else {
+        for (auto& color : history_)
+            for (auto& row : color) std::fill(std::begin(row), std::end(row), 0);
+    }
+    // evalStack_ was previously zero only because the object was fresh. A reused
+    // Search must not leak the previous search's static evals into `improving`.
+    std::fill(std::begin(evalStack_), std::end(evalStack_), 0);
     for (auto& row : counterMoves_) std::fill(std::begin(row), std::end(row), MOVE_NONE);
     std::fill_n(continuation_.get(), ContinuationSlots, 0);
     std::fill_n(correction_.get(), CorrectionSlots * ColorNB, 0);

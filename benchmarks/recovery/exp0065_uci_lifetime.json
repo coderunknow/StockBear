@@ -1,0 +1,33 @@
+{
+  "mode": "uci_lifetime",
+  "params_sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01",
+  "reset": {
+    "off": {
+      "after_ucinewgame": 47454,
+      "equal": true,
+      "first": 47454
+    },
+    "on": {
+      "after_ucinewgame": 47454,
+      "equal": true,
+      "first": 47454
+    }
+  },
+  "reuse_live": true,
+  "sequence_nodes": {
+    "off": [
+      47454,
+      48030,
+      21271,
+      36040
+    ],
+    "on": [
+      47454,
+      59892,
+      15566,
+      15093
+    ]
+  },
+  "ucinewgame_resets": true,
+  "verdict": "PASS"
+}

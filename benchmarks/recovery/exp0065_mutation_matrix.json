@@ -1,0 +1,110 @@
+{
+  "mechanism": "PersistentHistory",
+  "mutants": [
+    {
+      "mutant": "live_path_disabled",
+      "file": "src/search/search.cpp",
+      "expect_killed": true,
+      "detector": "cpp",
+      "status": "KILLED",
+      "good": true,
+      "tail": "FAIL persistent_history/wiring_characterization_pins: /home/user/StockBear/tests/unit/test_persistent_history.cpp:148: r.nodes == on ? onPins[i] : offPins[i]"
+    },
+    {
+      "mutant": "always_persistent",
+      "file": "src/search/search.cpp",
+      "expect_killed": true,
+      "detector": "cpp",
+      "status": "KILLED",
+      "good": true,
+      "tail": "FAIL persistent_history/wiring_characterization_pins: /home/user/StockBear/tests/unit/test_persistent_history.cpp:148: r.nodes == on ? onPins[i] : offPins[i]"
+    },
+    {
+      "mutant": "decay_removed",
+      "file": "src/search/search.cpp",
+      "expect_killed": true,
+      "detector": "cpp",
+      "status": "KILLED",
+      "good": true,
+      "tail": "FAIL persistent_history/wiring_characterization_pins: /home/user/StockBear/tests/unit/test_persistent_history.cpp:148: r.nodes == on ? onPins[i] : offPins[i]"
+    },
+    {
+      "mutant": "decay_applied_twice",
+      "file": "src/search/search.cpp",
+      "expect_killed": true,
+      "detector": "cpp",
+      "status": "KILLED",
+      "good": true,
+      "tail": "FAIL persistent_history/wiring_characterization_pins: /home/user/StockBear/tests/unit/test_persistent_history.cpp:148: r.nodes == on ? onPins[i] : offPins[i]"
+    },
+    {
+      "mutant": "decay_sign_flip",
+      "file": "src/search/search.cpp",
+      "expect_killed": true,
+      "detector": "cpp",
+      "status": "KILLED",
+      "good": true,
+      "tail": "FAIL persistent_history/wiring_characterization_pins: /home/user/StockBear/tests/unit/test_persistent_history.cpp:148: r.nodes == on ? onPins[i] : offPins[i]"
+    },
+    {
+      "mutant": "decay_only_one_color",
+      "file": "src/search/search.cpp",
+      "expect_killed": true,
+      "detector": "cpp",
+      "status": "KILLED",
+      "good": true,
+      "tail": "FAIL persistent_history/wiring_characterization_pins: /home/user/StockBear/tests/unit/test_persistent_history.cpp:148: r.nodes == on ? onPins[i] : offPins[i]"
+    },
+    {
+      "mutant": "uci_option_misdirected",
+      "file": "src/uci/uci.cpp",
+      "expect_killed": true,
+      "detector": "uci",
+      "status": "KILLED",
+      "good": true,
+      "tail": "\": {     \"off\": [       47454,       48030,       21271,       36040     ],     \"on\": [       47454,       48030,       21271,       36040     ]   },   \"ucinewgame_resets\": true,   \"verdict\": \"FAIL\" }"
+    },
+    {
+      "mutant": "object_not_reused",
+      "file": "src/uci/uci.cpp",
+      "expect_killed": true,
+      "detector": "uci",
+      "status": "KILLED",
+      "good": true,
+      "tail": "\": {     \"off\": [       47454,       48030,       21271,       36040     ],     \"on\": [       47454,       48030,       21271,       36040     ]   },   \"ucinewgame_resets\": true,   \"verdict\": \"FAIL\" }"
+    },
+    {
+      "mutant": "ucinewgame_does_not_reset",
+      "file": "src/uci/uci.cpp",
+      "expect_killed": true,
+      "detector": "uci",
+      "status": "KILLED",
+      "good": true,
+      "tail": ": {     \"off\": [       47454,       48030,       21271,       36040     ],     \"on\": [       47454,       59892,       15566,       15093     ]   },   \"ucinewgame_resets\": false,   \"verdict\": \"FAIL\" }"
+    },
+    {
+      "mutant": "control_evalstack_clear_is_defensive",
+      "file": "src/search/search.cpp",
+      "expect_killed": false,
+      "detector": "cpp",
+      "status": "SURVIVED_AS_EXPECTED",
+      "good": true,
+      "tail": "Tests: 7, failures: 0"
+    },
+    {
+      "mutant": "control_equivalent_decay_rewrite",
+      "file": "src/search/search.cpp",
+      "expect_killed": false,
+      "detector": "cpp",
+      "status": "SURVIVED_AS_EXPECTED",
+      "good": true,
+      "tail": "Tests: 7, failures: 0"
+    }
+  ],
+  "killed": 9,
+  "killable": 9,
+  "total": 11,
+  "control_survived": true,
+  "bad": [],
+  "verdict": "PASS"
+}
