@@ -1,0 +1,249 @@
+{
+  "plan": "benchmarks/exp-runs/tier1-plan-exp0068.json",
+  "plan_sha256": "fe61dd5d2a6d609c5cb261fa74a6a9832fca1c80c09b000e746169ac5cd3770b",
+  "checks": {
+    "stage0_features_in_both_arms": {
+      "pass": true,
+      "detail": {
+        "required": {
+          "continuationhistory": "true",
+          "tteval": "true"
+        },
+        "a": {
+          "continuationhistory": "true",
+          "tteval": "true"
+        },
+        "b": {
+          "continuationhistory": "true",
+          "tteval": "true"
+        }
+      }
+    },
+    "stage0_evalparams_explicit_and_equal": {
+      "pass": true,
+      "detail": {
+        "a": "research-data/params_exp0055_race.txt",
+        "b": "research-data/params_exp0055_race.txt"
+      }
+    },
+    "stage0_null_arms_identical": {
+      "pass": true,
+      "detail": "null job: arms must be identical"
+    },
+    "stage0_protocol": {
+      "pass": true,
+      "detail": {
+        "control": {
+          "base_ms": 40,
+          "inc_ms": 4
+        },
+        "hash": 16,
+        "threads": 1,
+        "max_plies": 240
+      }
+    },
+    "batchA_features_in_both_arms": {
+      "pass": true,
+      "detail": {
+        "required": {
+          "continuationhistory": "true",
+          "tteval": "true"
+        },
+        "a": {
+          "continuationhistory": "true",
+          "tteval": "true"
+        },
+        "b": {
+          "continuationhistory": "true",
+          "tteval": "true"
+        }
+      }
+    },
+    "batchA_evalparams_explicit_and_equal": {
+      "pass": true,
+      "detail": {
+        "a": "research-data/params_exp0055_race.txt",
+        "b": "research-data/params_exp0055_race.txt"
+      }
+    },
+    "batchA_arms_actually_differ": {
+      "pass": true,
+      "detail": "arms differ"
+    },
+    "batchA_differ_only_by_intervention": {
+      "pass": true,
+      "detail": {
+        "differing_keys": [
+          "persistentcontinuation",
+          "persistenthistory"
+        ],
+        "declared": [
+          "persistentcontinuation",
+          "persistenthistory"
+        ]
+      }
+    },
+    "batchA_intervention_values_correct": {
+      "pass": true,
+      "detail": {
+        "persistenthistory": {
+          "a": "true",
+          "want_a": "true",
+          "b": "false",
+          "want_b": "false"
+        },
+        "persistentcontinuation": {
+          "a": "true",
+          "want_a": "true",
+          "b": "false",
+          "want_b": "false"
+        }
+      }
+    },
+    "batchA_protocol": {
+      "pass": true,
+      "detail": {
+        "control": {
+          "base_ms": 40,
+          "inc_ms": 4
+        },
+        "hash": 16,
+        "threads": 1,
+        "max_plies": 240
+      }
+    },
+    "batchB_features_in_both_arms": {
+      "pass": true,
+      "detail": {
+        "required": {
+          "continuationhistory": "true",
+          "tteval": "true"
+        },
+        "a": {
+          "continuationhistory": "true",
+          "tteval": "true"
+        },
+        "b": {
+          "continuationhistory": "true",
+          "tteval": "true"
+        }
+      }
+    },
+    "batchB_evalparams_explicit_and_equal": {
+      "pass": true,
+      "detail": {
+        "a": "research-data/params_exp0055_race.txt",
+        "b": "research-data/params_exp0055_race.txt"
+      }
+    },
+    "batchB_arms_actually_differ": {
+      "pass": true,
+      "detail": "arms differ"
+    },
+    "batchB_differ_only_by_intervention": {
+      "pass": true,
+      "detail": {
+        "differing_keys": [
+          "persistentcontinuation",
+          "persistenthistory"
+        ],
+        "declared": [
+          "persistentcontinuation",
+          "persistenthistory"
+        ]
+      }
+    },
+    "batchB_intervention_values_correct": {
+      "pass": true,
+      "detail": {
+        "persistenthistory": {
+          "a": "true",
+          "want_a": "true",
+          "b": "false",
+          "want_b": "false"
+        },
+        "persistentcontinuation": {
+          "a": "true",
+          "want_a": "true",
+          "b": "false",
+          "want_b": "false"
+        }
+      }
+    },
+    "batchB_protocol": {
+      "pass": true,
+      "detail": {
+        "control": {
+          "base_ms": 40,
+          "inc_ms": 4
+        },
+        "hash": 16,
+        "threads": 1,
+        "max_plies": 240
+      }
+    },
+    "null_features_in_both_arms": {
+      "pass": true,
+      "detail": {
+        "required": {
+          "continuationhistory": "true",
+          "tteval": "true"
+        },
+        "a": {
+          "continuationhistory": "true",
+          "tteval": "true"
+        },
+        "b": {
+          "continuationhistory": "true",
+          "tteval": "true"
+        }
+      }
+    },
+    "null_evalparams_explicit_and_equal": {
+      "pass": true,
+      "detail": {
+        "a": "research-data/params_exp0055_race.txt",
+        "b": "research-data/params_exp0055_race.txt"
+      }
+    },
+    "null_null_arms_identical": {
+      "pass": true,
+      "detail": "null job: arms must be identical"
+    },
+    "null_protocol": {
+      "pass": true,
+      "detail": {
+        "control": {
+          "base_ms": 40,
+          "inc_ms": 4
+        },
+        "hash": 16,
+        "threads": 1,
+        "max_plies": 240
+      }
+    },
+    "all_expected_slices_present": {
+      "pass": true,
+      "detail": [
+        "batchA",
+        "batchB",
+        "null",
+        "stage0"
+      ]
+    },
+    "primary_is_6000": {
+      "pass": true,
+      "detail": "primary game count"
+    },
+    "total_is_7800": {
+      "pass": true,
+      "detail": "total game count"
+    },
+    "openings_slices_distinct": {
+      "pass": true,
+      "detail": "each job uses its own opening slice"
+    }
+  },
+  "problems": [],
+  "verdict": "SAFE_TO_DISPATCH"
+}

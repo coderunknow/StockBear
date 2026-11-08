@@ -24,7 +24,7 @@ Usage: recovery_validate_plan.py PLAN.json --switches A=B [--switches ...]
 Exit 0 = plan is safe to dispatch; exit 1 = defect, DO NOT DISPATCH.
 """
 from __future__ import annotations
-import argparse, json, sys
+import argparse, hashlib, json, sys
 from pathlib import Path
 
 
@@ -108,7 +108,9 @@ def main():
     add("total_is_7800", sum(j["games"] for j in jobs) == 7800, "total game count")
     add("openings_slices_distinct", len({j["openings"] for j in jobs}) == len(jobs),
         "each job uses its own opening slice")
-    out = {"plan": a.plan, "checks": checks, "problems": problems,
+    out = {"plan": a.plan,
+           "plan_sha256": hashlib.sha256(Path(a.plan).read_bytes()).hexdigest(),
+           "checks": checks, "problems": problems,
            "verdict": "SAFE_TO_DISPATCH" if not problems else "DO_NOT_DISPATCH"}
     text = json.dumps(out, indent=2)
     if a.json:
