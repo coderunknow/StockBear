@@ -1,0 +1,360 @@
+{
+  "experiment": "exp0066",
+  "decision_rule": {
+    "advance_point_min": 15,
+    "advance_lcb_min_exclusive": 0,
+    "advance_each_batch_min": -5,
+    "close_ucb_max_exclusive": 5,
+    "close_point_max": 0
+  },
+  "run_id": 42434718590,
+  "export_run_id": 42436688031,
+  "source_sha": "a17e304e297f2edb89e526bf1b5fd891d81e60bc",
+  "valid": true,
+  "checks": {
+    "per_node_cost_guard_pass": {
+      "pass": true,
+      "detail": {
+        "ratio": 0.9707405441702338,
+        "limit": 1.1,
+        "aa_spread": 0.07023182962258134
+      }
+    },
+    "sequential_efficacy_gate_pass": {
+      "pass": true,
+      "detail": {
+        "overall_ratio": 0.966264,
+        "games_improving": 18,
+        "games": 20
+      }
+    },
+    "gate_digests_pinned_in_plan": {
+      "pass": true,
+      "detail": "plan pins both gate digests"
+    },
+    "mutation_matrix_pass": {
+      "pass": true,
+      "detail": {
+        "killed": 11,
+        "killable": 11
+      }
+    },
+    "uci_lifetime_oracle_pass": {
+      "pass": true,
+      "detail": {
+        "cross_configuration_isolation_off": true,
+        "cross_configuration_isolation_on": true,
+        "cross_game_isolation_off": true,
+        "cross_game_isolation_on": true,
+        "off_path_is_deterministic_across_fresh_engines": true,
+        "persistence_across_go": true
+      }
+    },
+    "prereg_single_commit_never_edited": {
+      "pass": true,
+      "detail": [
+        "fc5375c4099a5d11c5626c8345b6714b78fe9551"
+      ]
+    },
+    "prereg_digest_matches_plan": {
+      "pass": true,
+      "detail": "96c20de126b9ce8f5ca2031c5a90dfb72e24794462c077651939d1084c215fa3"
+    },
+    "freeze_is_ancestor_of_head": {
+      "pass": true,
+      "detail": "a17e304e297f2edb89e526bf1b5fd891d81e60bc"
+    },
+    "source_prereg_protocol": {
+      "pass": true,
+      "detail": {
+        "batchA": "a17e304e297f2edb89e526bf1b5fd891d81e60bc",
+        "batchB": "a17e304e297f2edb89e526bf1b5fd891d81e60bc",
+        "null": "a17e304e297f2edb89e526bf1b5fd891d81e60bc",
+        "stage0": "a17e304e297f2edb89e526bf1b5fd891d81e60bc"
+      }
+    },
+    "same_binary_arms": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "a": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8",
+          "b": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8",
+          "built": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8",
+          "packaged": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8"
+        },
+        "batchB": {
+          "a": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8",
+          "b": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8",
+          "built": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8",
+          "packaged": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8"
+        },
+        "null": {
+          "a": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8",
+          "b": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8",
+          "built": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8",
+          "packaged": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8"
+        },
+        "stage0": {
+          "a": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8",
+          "b": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8",
+          "built": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8",
+          "packaged": "36fe761f20f28a252a977e24bff9a0addf798088619cea97d047ebf202fd87c8"
+        }
+      }
+    },
+    "explicit_eval_options": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true",
+            "continuationhistory": "true",
+            "persistentcontinuation": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true",
+            "continuationhistory": "true",
+            "persistentcontinuation": "false"
+          }
+        },
+        "batchB": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true",
+            "continuationhistory": "true",
+            "persistentcontinuation": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true",
+            "continuationhistory": "true",
+            "persistentcontinuation": "false"
+          }
+        },
+        "null": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true",
+            "continuationhistory": "true",
+            "persistentcontinuation": "true"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true",
+            "continuationhistory": "true",
+            "persistentcontinuation": "true"
+          }
+        },
+        "stage0": {
+          "a": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true",
+            "continuationhistory": "true",
+            "persistentcontinuation": "false"
+          },
+          "b": {
+            "hash": "requested 16",
+            "threads": "1 (StockBear single-threaded build)",
+            "evalparams": "research-data/params_exp0055_race.txt",
+            "tteval": "true",
+            "continuationhistory": "true",
+            "persistentcontinuation": "false"
+          }
+        }
+      }
+    },
+    "explicit_switch_values": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "a": "true",
+          "b": "false"
+        },
+        "batchB": {
+          "a": "true",
+          "b": "false"
+        },
+        "null": {
+          "a": "true",
+          "b": "true"
+        },
+        "stage0": {
+          "a": "false",
+          "b": "false"
+        }
+      }
+    },
+    "primary_arms_differ_only_by_switch": {
+      "pass": true,
+      "detail": "primary arms identical except the switch"
+    },
+    "shipped_default_is_off": {
+      "pass": true,
+      "detail": {
+        "batchA": "false",
+        "batchB": "false",
+        "null": "false",
+        "stage0": "false"
+      }
+    },
+    "identical_recorded_defaults": {
+      "pass": true,
+      "detail": "engine_a_defaults == engine_b_defaults in every job"
+    },
+    "stage0_null_includes_zero": {
+      "pass": true,
+      "detail": [
+        -13.106416264215785,
+        16.610520420607514
+      ]
+    },
+    "null_null_includes_zero": {
+      "pass": true,
+      "detail": [
+        -10.945840854349639,
+        10.94584085434964
+      ]
+    },
+    "auditor_issues_zero": {
+      "pass": true,
+      "detail": []
+    },
+    "committed_blobs": {
+      "pass": true,
+      "detail": "54/54"
+    },
+    "per_job_checksums": {
+      "pass": true,
+      "detail": "44/44"
+    },
+    "option_load_proof": {
+      "pass": true,
+      "detail": {
+        "batchA": [
+          "arm A EvalParams: research-data/params_exp0055_race.txt",
+          "arm B EvalParams: research-data/params_exp0055_race.txt"
+        ],
+        "batchB": [
+          "arm A EvalParams: research-data/params_exp0055_race.txt",
+          "arm B EvalParams: research-data/params_exp0055_race.txt"
+        ],
+        "null": [
+          "arm A EvalParams: research-data/params_exp0055_race.txt",
+          "arm B EvalParams: research-data/params_exp0055_race.txt"
+        ],
+        "stage0": [
+          "arm A EvalParams: research-data/params_exp0055_race.txt",
+          "arm B EvalParams: research-data/params_exp0055_race.txt"
+        ]
+      }
+    },
+    "pgn_replay_7800": {
+      "pass": true,
+      "detail": {
+        "batchA": {
+          "games_replayed": 3000,
+          "inconsistent": 0
+        },
+        "batchB": {
+          "games_replayed": 3000,
+          "inconsistent": 0
+        },
+        "null": {
+          "games_replayed": 1200,
+          "inconsistent": 0
+        },
+        "stage0": {
+          "games_replayed": 600,
+          "inconsistent": 0
+        }
+      }
+    },
+    "zero_failures": {
+      "pass": true,
+      "detail": true
+    },
+    "openings_disjoint": {
+      "pass": true,
+      "detail": []
+    },
+    "stage0_ctest_21": {
+      "pass": true,
+      "detail": "stage0 run.log"
+    },
+    "feature_enabled_in_both_arms": {
+      "pass": true,
+      "detail": {
+        "batchA": [
+          "true",
+          "true"
+        ],
+        "batchB": [
+          "true",
+          "true"
+        ],
+        "null": [
+          "true",
+          "true"
+        ],
+        "stage0": [
+          "true",
+          "true"
+        ]
+      }
+    }
+  },
+  "combined": {
+    "pairs": 2985,
+    "clusters": 2985,
+    "pair_mean": 1.0326633165829147,
+    "score": 0.5163316582914573,
+    "cr1_stderr": 0.008878041795806648,
+    "naive_stderr": 0.008878041795806648,
+    "design_effect": 1.0,
+    "t_critical_0975": 1.9607592986799647,
+    "df": 2984,
+    "elo": 11.352436947027437,
+    "elo_ci95": [
+      5.300754282871558,
+      17.41101417415075
+    ],
+    "elo_ci95_repo_convention": [
+      5.241604643525997,
+      17.47029934048094
+    ],
+    "t_critical_repo_convention": 1.979931,
+    "obs_per_cluster": {
+      "1": 2985
+    }
+  },
+  "batchA_elo": 12.830633076336891,
+  "batchB_elo": 9.879593354034423,
+  "verdict": "INCONCLUSIVE",
+  "gate1_met": false,
+  "per_node_cost_guard": {
+    "time_ratio": 0.9707405441702338,
+    "aa_spread": 0.07023182962258134,
+    "limit": 1.1
+  },
+  "sequential_efficacy": {
+    "overall_ratio": 0.966264,
+    "games_improving": 18
+  },
+  "note": "Persistent continuation-history increment screen on threats+race; ContinuationHistory=true in BOTH arms; same-binary ablation, not integral vs dev5 and not Gate 1."
+}

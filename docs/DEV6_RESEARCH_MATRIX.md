@@ -746,3 +746,18 @@ frozen; no pooling, no retune, no extension, no reinterpretation.
 Gates 1/4 UNMET, 2 direction-supported, 3 PASS; mission ACTIVE / NOT COMPLETE;
 no direction is claimed exhausted, no result terminates the mission, no
 strength claim made.
+
+## exp-0066 — persistent continuation history (CLOSED, INCONCLUSIVE)
+
+Single-factor lifetime ablation with `ContinuationHistory=true` in **both** arms.
+Prereg `96c20de1…` frozen at `fc5375c`; run **42434718590**, export **42436688031**.
+Primary 6,000 games / 2,985 clusters → **+11.3524 [+5.3008,+17.4110]**; validity
+**26/26**; 7,800 PGN replayed, 0 issues. Frozen ADVANCE point bar **+15** (derived
+from the 75 − 40.7732 = 34.23 Elo gate gap) → **INCONCLUSIVE**; UCB +17.41 also
+fails CLOSE. `PersistentContinuation` **default OFF**, not promoted.
+
+Counter-move persistence remains **untested** (deliberately excluded: categorical
+table saturates after one write) and would need its own prereg. A **joint**
+graded-table persistence treatment is a new hypothesis requiring its own prereg;
+**no pooling with exp-0065 and no summing of component Elo**. Best valid integral
+remains **+40.7732 [+36.2091,+45.3513]**; Gates 1/4 **UNMET**; mission **ACTIVE**.

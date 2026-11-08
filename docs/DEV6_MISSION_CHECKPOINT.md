@@ -147,3 +147,40 @@ varying factor is table lifetime.
 **Next executable task:** dispatch the frozen exp-0066 benchmark (7,800 games),
 then export, independently audit, apply the frozen decision rule, and record the
 verdict. Gate remains UNMET; mission ACTIVE.
+
+## 2026-11-08 — exp-0066 CLOSED as VALID / INCONCLUSIVE
+
+Benchmark **42434718590** 4/4 SUCCESS; export **42436688031**; binary
+`36fe761f20f2…`. Primary 6,000 games / 2,985 clusters →
+**+11.3524 [+5.3008,+17.4110]**. Validity **26/26**; auditor issues **0**;
+**7,800/7,800** PGN replayed, 0 inconsistent; both powered nulls include 0.
+
+Frozen ADVANCE point bar **+15** → missed by **3.65 Elo** ⇒ **INCONCLUSIVE**.
+UCB **+17.41** also fails the CLOSE bar, so the mechanism is **not refuted**.
+`PersistentContinuation` **remains default OFF**; not promoted to champion.
+No rounding, no extra games, no batch selection, no threshold relaxation.
+
+**No pooling with exp-0065** (different seed + switch) and **no summing** of
++9.7673 and +11.3524 — the two tables feed the same quiet-ordering path.
+
+### Checklist state (unchanged: 49 complete / 9 open / 58)
+
+Open: 2.2 (baseline prereg gap), 4.1, 7.6 (large datasets present), 8.1–8.6
+(mission-completion items). exp-0066 adds a 37th→38th complete prereg for the
+2.2 keyword sweep but does **not** close 2.2, because
+`DEV6_PREREG_BASELINE.md` remains incomplete. Nothing was deleted to pass a check.
+
+### Gate status
+
+**UNMET.** Best valid integral **+40.7732 [+36.2091,+45.3513]**; gap **34.23 Elo**
+to the +75 point requirement. No merge, tag or release. PR #2 remains OPEN and
+untouched; release remains `v0.1.0-dev5`.
+
+**Next executable task:** the mission needs a **new mechanism**, not another
+~10 Elo increment. Candidates that remain untested and are *not* on the rejected
+list: a joint graded-table persistence treatment (own prereg required, no
+pooling), and the confirmed-missing evaluation terms (tempo/side-to-move,
+bad-bishop, space, OCB drawish scaling). Each requires its own preregistration
+and may not inherit exp-0065/0066 samples. Given two consecutive sub-bar
+increments, a further single-table screen is **not** a credible gate lever and
+should not be run merely to show activity.

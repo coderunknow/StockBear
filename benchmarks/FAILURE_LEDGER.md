@@ -2830,3 +2830,42 @@ budget pass; a future variant needs a new identity and the same limits.
   time-to-depth) was wrong — fixed-node overhead measured with 8.6 % A/A noise
   over-predicted the cost. Best integral candidate remains threats+race +40.7732
   [+36.2091,+45.3513]; **Gate 1 UNMET; mission ACTIVE.** No merge/tag/release.
+
+## exp-0066 — persistent continuation history — VALID / INCONCLUSIVE
+
+- **Prereg:** `docs/DEV6_PREREG_EXP0066.md` `96c20de126b9ce8f5ca2031c5a90dfb72e24794462c077651939d1084c215fa3`,
+  frozen at **`fc5375c`** (exactly 1 commit) BEFORE implementation measurements
+  and games. Implementation freeze `a17e304`.
+- **Design:** same-binary ablation; `ContinuationHistory=true` in **BOTH** arms
+  (both features ship OFF, so persisting an unwritten table is a no-op); only
+  `PersistentContinuation` lifetime varies. Counter-move persistence deliberately
+  excluded — categorical table saturates after one write.
+- **Run:** benchmark **42434718590** (4/4 SUCCESS), export **42436688031**;
+  binary `36fe761f20f2…`; 7,800 games; 40+4 ms, Hash16, Threads1, max240.
+- **Result:** batchA **+12.8306** [+4.2045,+21.4726]; batchB **+9.8796**
+  [+1.3818,+18.3892]; **primary 6,000 / 2,985 clusters → +11.3524
+  [+5.3008,+17.4110]**; bootstrap [+5.2963,+17.4154]. Candidate null −0.0000
+  [−10.9458,+10.9458]; stage0 +1.7489 [−13.1064,+16.6105] — both include zero.
+- **Validity:** **26/26** PASS; auditor issues 0; blobs 54/54; sums 44/44;
+  7,800/7,800 PGN replay, 0 inconsistent; 0 forfeits/illegal/failures; identical
+  binary every arm; primary arms differ only by the switch; feature ON both arms;
+  shipped default false; ctest 21/21.
+- **Pre-game gates:** efficacy node ratio **0.966264** (18/20 games improving);
+  per-node cost **0.970741**, A/A spread 0.070232; mutations **11/11 + 2 controls**;
+  UCI oracle 6/6; openings seed 2026110666 / 3,900 / overlap 0.
+- **Verdict: INCONCLUSIVE.** Frozen ADVANCE required point **≥+15** (derived from
+  the 34.23 Elo gate gap, stricter than exp-0064/0065's +10); observed **+11.3524**
+  — missed by **3.65 Elo**. LCB >0 and both batches positive, but the bar is
+  conjunctive. Frozen CLOSE required UCB <+5 or point ≤0; UCB is +17.41, so the
+  mechanism is not refuted. **No rounding, no extra games, no batch selection, no
+  threshold relaxation.** `PersistentContinuation` **remains default OFF**.
+- **Lesson:** two consecutive erased-table increments have landed in the same
+  ~10 Elo band (exp-0065 +9.7673, exp-0066 +11.3524). Neither alone closes a 34.23
+  Elo gap. **Never pool** these samples (different seeds and switches) and
+  **never sum** them (+9.77 + +11.35 is not an estimate of anything — the two
+  tables feed the same quiet-ordering path). A joint persistence treatment needs
+  its OWN prereg and fresh games. Also fixed in scope: `handle_setoption` never
+  reset `persistentSearch_` at its six TT-clear sites; now fixed, a no-op when
+  persistence is OFF, so exp-0065's verdict stands.
+- **Best integral unchanged:** threats+race **+40.7732 [+36.2091,+45.3513]**;
+  **Gate 1 UNMET; mission ACTIVE.** No merge/tag/release.

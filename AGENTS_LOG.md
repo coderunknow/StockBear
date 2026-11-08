@@ -2476,3 +2476,36 @@ because its anchor matched an identically-indented reset in `handle_setoption`;
 made the anchor unique and it is now killed.
 
 Gate 1 remains **UNMET**; mission **ACTIVE**.
+
+## 2026-11-08 — exp-0066 CLOSED: VALID / INCONCLUSIVE (+11.3524)
+
+Benchmark **42434718590** 4/4 SUCCESS; export **42436688031**; freeze `a17e304`;
+binary `36fe761f20f2…`. batchA **+12.8306** [+4.2045,+21.4726]; batchB **+9.8796**
+[+1.3818,+18.3892]; **primary 6,000 / 2,985 clusters → +11.3524
+[+5.3008,+17.4110]**; bootstrap [+5.2963,+17.4154]. Candidate null −0.0000
+[−10.9458,+10.9458]; stage0 +1.7489 [−13.1064,+16.6105] — both include zero.
+
+Independent audit with `--pgn-replay`: issues **0**, blobs **54/54**, sums
+**44/44**, **7,800/7,800** replayed with **0** inconsistent, 0 forfeits/illegal/
+failures, batch overlap 0. Validity script **26/26 PASS** including the new
+"feature ON in both arms" check.
+
+**Verdict INCONCLUSIVE** against the frozen **+15** point bar (derived from the
+34.23 Elo gate gap) — missed by **3.65 Elo**. LCB >0 and both batches positive,
+but ADVANCE is conjunctive; UCB **+17.41** also fails CLOSE, so the mechanism is
+not refuted. `PersistentContinuation` **stays default OFF**. No rounding, extra
+games, batch selection or threshold relaxation.
+
+**Explicitly not claimed:** no pooling with exp-0065 (different seed and switch)
+and no summing (+9.77 + +11.35 is not an estimate of anything; both tables feed
+the same quiet-ordering path). These were same-binary ablations, never matches
+vs dev5, so the best valid integral is unchanged at **+40.7732
+[+36.2091,+45.3513]**. Gate 1 **UNMET**; mission **ACTIVE**; no merge/tag/release.
+
+Two consecutive erased-table increments landing near ~10 Elo is itself the
+finding: a further single-table screen is not a credible gate lever. Recorded
+that the next step must be a NEW mechanism (joint persistence under its own
+prereg, or the confirmed-missing eval terms), not another sub-bar increment.
+
+Fixed in scope: `handle_setoption` never reset `persistentSearch_` at its six
+TT-clear sites. No-op with persistence OFF, bench unchanged, exp-0065 stands.

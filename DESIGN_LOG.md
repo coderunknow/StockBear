@@ -1314,3 +1314,21 @@ The follow-up space is genuine but must stay honest: the continuation and
 counter-move tables are still erased, so the same confound persists for them.
 That is a *different* mechanism needing its own preregistration, and it may not
 borrow this sample's games.
+
+## 2026-11-08 — PersistentContinuation shipped default OFF (exp-0066)
+
+`SearchParams::persistentContinuation = false`. When true, the continuation table
+is **halved** rather than zeroed at each root search (aging instead of erasure),
+and the UCI worker reuses its `Search` across `go` within a game. Both arms of the
+experiment set `ContinuationHistory=true` because the feature ships OFF and the
+update sites are gated on it — persisting an unwritten table would be a no-op.
+
+Measured on 6,000 primary games: **+11.3524 [+5.3008,+17.4110]** — positive with
+LCB >0, but below the preregistered **+15** promotion bar ⇒ **INCONCLUSIVE**, so
+the default stays **OFF** and the champion is unchanged. Not refuted (UCB +17.41),
+not promoted.
+
+Also: `handle_setoption` now resets `persistentSearch_` at all six TT-clear paths,
+closing a latent leak where persisted ordering state survived a configuration
+change. Behaviour is identical when every persistence switch is OFF (bench
+signatures unchanged).

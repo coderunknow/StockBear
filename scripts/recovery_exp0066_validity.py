@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN_ID = 42434718590
-EXPORT_RUN_ID = 0  # set from the export run before closure
+EXPORT_RUN_ID = 42436688031
 D = ROOT / f"benchmarks/exp-runs/tier1-export/run-{RUN_ID}"
 SOURCE = "a17e304e297f2edb89e526bf1b5fd891d81e60bc"
 PREREG = "96c20de126b9ce8f5ca2031c5a90dfb72e24794462c077651939d1084c215fa3"
@@ -73,9 +73,10 @@ def main() -> int:
         and mut["killable"] >= 8 and mut["controls_survived"] == 2,
         {"killed": mut["killed"], "killable": mut["killable"]})
     uci = json.loads((ROOT / "benchmarks/recovery/exp0066_uci_lifetime.json").read_text())
-    uchecks = {c["name"]: c["pass"] for c in uci["checks"]}
+    uchecks = uci["checks"]  # oracle emits a name->bool map
     add("uci_lifetime_oracle_pass",
         uci["verdict"] == "PASS" and len(uchecks) == 6 and all(uchecks.values())
+        and uchecks.get("persistence_across_go") is True
         and uchecks.get("cross_game_isolation_on") is True
         and uchecks.get("cross_configuration_isolation_on") is True, uchecks)
     frozen = subprocess.run(
