@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN_ID = 42440539874
-EXPORT_RUN_ID = 0  # set from the export run before closure
+EXPORT_RUN_ID = 42442512528
 D = ROOT / f"benchmarks/exp-runs/tier1-export/run-{RUN_ID}"
 SOURCE = "0917c19c1d9f679b36f54d14f60b541bb4c3d04c"
 PREREG = "e96fa243cef02263ed0fafc6cc47a8505843b4f8eec8f6c88e85fce25803efc1"
@@ -72,7 +72,7 @@ def main() -> int:
     add("mutation_matrix_pass", mut["verdict"] == "PASS" and mut["killed"] == mut["killable"]
         and mut["killable"] >= 8 and mut["controls_survived"] == 3,
         {"killed": mut["killed"], "killable": mut["killable"]})
-    uci = json.loads((ROOT / "benchmarks/recovery/exp0067_uci_lifetime.json").read_text())
+    uci = json.loads((ROOT / "benchmarks/recovery/exp0067_uci_joint_lifetime.json").read_text())
     uchecks = uci["checks"]  # oracle emits a name->bool map
     add("uci_lifetime_oracle_pass",
         uci["verdict"] == "PASS" and len(uchecks) == 8 and all(uchecks.values())

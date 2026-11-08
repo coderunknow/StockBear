@@ -2869,3 +2869,46 @@ budget pass; a future variant needs a new identity and the same limits.
   persistence is OFF, so exp-0065's verdict stands.
 - **Best integral unchanged:** threats+race **+40.7732 [+36.2091,+45.3513]**;
   **Gate 1 UNMET; mission ACTIVE.** No merge/tag/release.
+
+## exp-0067 — joint persistence — INVALID (author error in dispatched plan)
+
+- **Prereg:** `docs/DEV6_PREREG_EXP0067.md` `e96fa243cef02263ed0fafc6cc47a8505843b4f8eec8f6c88e85fce25803efc1`,
+  frozen `ce9ddef` (1 commit, never edited). Plan freeze `0917c19`.
+- **Defect (mine):** the plan generator took ONE `persist` flag and emitted it into
+  BOTH arms (`a_options=opts(persist), b_options=opts(persist)`), where exp-0066's
+  had taken two. batchA and batchB therefore ran **joint vs joint** — an accidental
+  A/A null with **no causal contrast**. Confirmed in the frozen plan and in the
+  exported per-job `match.jsonl` (`a == b == true/true`). Not a harness bug and not
+  a recording artifact.
+- **Run:** benchmark **42440539874** (4/4 SUCCESS), export **42442512528**; binary
+  `36fe761f20f2…` (byte-identical to exp-0066, confirming no new search semantics).
+- **Numbers, correctly labelled as A/A:** batchA −2.5581 [−10.1751,+5.0564];
+  batchB +6.3960 [−0.7509,+13.5482]; "primary" +1.9186 [−3.3021,+7.1402];
+  null +7.8843 [−3.3303,+19.1155]; stage0 −2.9050 [−19.7161,+13.8924]. All include
+  zero, as identical arms should. **These say nothing about joint persistence.**
+- **Caught by:** the condition-by-condition validity script, **28/30**, failing
+  `explicit_switch_values` and `primary_arms_differ_only_by_persistence_options`.
+  The independent auditor had said `INDEPENDENT AUDIT PASS` (0 issues, 54/54 blobs,
+  44/44 sums, 7,800/7,800 replay) — **an auditor banner is not validity**; it checks
+  integrity, not whether the intended contrast exists.
+- **Verdict: INVALID** per prereg §8. No retry under this id: §8 allows retry only
+  for infrastructure failure **before any game** with the **identical plan**, and
+  states **partial-game reruns require a new experiment id**; §11 forbids
+  result-driven retry or additional dispatch. The plan was **not** quietly
+  repaired and re-run. All evidence preserved, nothing deleted.
+- **Process fix:** added `scripts/recovery_validate_plan.py` as a mandatory
+  **pre-dispatch** gate asserting the contrast exists (primary arms differ, differ
+  only by the declared intervention, correct treatment/control values, null arms
+  identical, features in both arms, protocol/counts/slices). Proven: exp-0067 plan
+  → **DO_NOT_DISPATCH** (18/24, 6 defects); exp-0066 plan → **SAFE_TO_DISPATCH**
+  (24/24). Would have prevented the waste of 7,800 games.
+- **Mechanism work still stands:** composition audit 14/14 (6/6 setoption resets);
+  ctest 22/22; joint group 8/8; UCI oracle 8/8; mutations 14/14 + 3 controls;
+  efficacy 0.974289 (18/20); per-node cost 1.026725 / spread 0.032082. Fixed a real
+  detector gap: five aging-RATE mutants survived node-count *inequality* assertions
+  and are now killed by **exact** pins for all four configurations.
+- **Lesson:** validate the CAUSAL CONTRAST in the plan before spending compute, not
+  only the integrity of the artifacts afterwards. A green integrity audit can
+  coexist with a scientifically empty experiment.
+- **Gate 1 UNMET; mission ACTIVE.** Best integral unchanged +40.7732
+  [+36.2091,+45.3513]. No merge/tag/release. Question re-registered as exp-0068.

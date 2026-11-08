@@ -761,3 +761,21 @@ table saturates after one write) and would need its own prereg. A **joint**
 graded-table persistence treatment is a new hypothesis requiring its own prereg;
 **no pooling with exp-0065 and no summing of component Elo**. Best valid integral
 remains **+40.7732 [+36.2091,+45.3513]**; Gates 1/4 **UNMET**; mission **ACTIVE**.
+
+## exp-0067 — joint persistence (CLOSED, INVALID — author plan defect)
+
+Prereg `e96fa243…` frozen `ce9ddef`; run **42440539874**, export **42442512528**.
+The dispatched plan set the intervention in **both** arms (single `persist` flag
+reused for `a_options` and `b_options`), so the primary batches compared **joint vs
+joint**. **INVALID** per prereg §8; the +1.9186 [−3.3021,+7.1402] "primary" is an
+accidental A/A null and is **not** evidence about joint persistence. No retry under
+this id (§8 requires a new experiment id; §11 forbids result-driven retry). All
+evidence preserved. Mechanism-level work stands (composition 14/14, ctest 22/22,
+mutations 14/14 + 3 controls, efficacy 0.974289, cost 1.026725).
+
+Added a mandatory **pre-dispatch** plan validator
+(`scripts/recovery_validate_plan.py`), proven to flag this plan DO_NOT_DISPATCH and
+the correct exp-0066 plan SAFE_TO_DISPATCH. **An integrity audit banner is not
+validity.** The question is re-registered as **exp-0068** with its own prereg and a
+validated plan. No pooling, no summing; exp-0065/0066 untouched. Gates 1/4
+**UNMET**; mission **ACTIVE**.
