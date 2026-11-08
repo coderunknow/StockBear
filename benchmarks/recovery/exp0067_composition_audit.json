@@ -1,0 +1,32 @@
+{
+  "audit": "exp0067 joint composition source audit",
+  "checks": {
+    "history_branch_present": true,
+    "continuation_branch_present": true,
+    "history_halved_exactly_once_in_run": true,
+    "continuation_halved_exactly_once_in_run": true,
+    "branches_independent_no_nesting": true,
+    "evalStack_still_erased": true,
+    "counterMoves_still_erased": true,
+    "correction_still_erased": true,
+    "captureHistory_still_erased": true,
+    "moveStack_still_erased": true,
+    "qcache_still_erased": true,
+    "uci_reuse_is_or_not_and": true,
+    "both_defaults_off": true,
+    "setoption_all_six_paths_reset": true
+  },
+  "setoption_tt_clears": 6,
+  "setoption_persistent_resets": 6,
+  "search_cpp_sha256": "da54bed54b29266acd985d21bb265b3e42ab2325829ad19bfd38ee6f20d046ad",
+  "uci_cpp_sha256": "4f20a901dea10e5e4711b0fd65cf7234ec63ca30084ffa898a84910c95e963f0",
+  "search_hpp_sha256": "ffc52d623b30db73830995cbb97f11edfd76920609d8d086d15daf4e27761692",
+  "new_search_semantics_introduced": false,
+  "note": "Both switches pre-exist and ship false; exp-0067 introduces NO new search semantics. The intervention is the composition of two existing age-instead-of-erase branches at the same reset site. All non-graded tables remain erased exactly as shipped.",
+  "verdict": "PASS",
+  "setoption_line_range": [
+    115,
+    372
+  ],
+  "ucinewgame_resets_persistent": true
+}

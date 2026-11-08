@@ -2509,3 +2509,45 @@ prereg, or the confirmed-missing eval terms), not another sub-bar increment.
 
 Fixed in scope: `handle_setoption` never reset `persistentSearch_` at its six
 TT-clear sites. No-op with persistence OFF, bench unchanged, exp-0065 stands.
+
+## 2026-11-08 — exp-0067 (joint persistence) registered, gated, ready to run
+
+Step 1: HEAD/worktree verified; `AGENTS.md` absent; exp-0066 evidence, verdict and
+thresholds preserved untouched. Read DESIGN_LOG, AGENTS_LOG, research matrix,
+checkpoint and continuation policy.
+
+**Step 2 selection was measured on committed evidence, read-only.** OCB scaling
+REJECTED: pure OCB in 58/3000 games (1.93 %), 0.56 % of positions, absolute
+ceiling +6.71 Elo assuming every pure-OCB draw becomes a win — underpowered by
+construction. Bad bishop DEFERRED (r = −0.5247 with existing MobilityBishop ⇒
+27.5 % shared variance; mobility already excludes own-pawn-blocked squares).
+Space DEFERRED (r = −0.3931 ⇒ 15.4 %). Tempo DEFERRED (constant offset, weak
+prior). **Joint persistence SELECTED** — the only candidate with direct positive
+in-engine evidence rather than an imported prior.
+
+**Step 3:** prereg frozen at `ce9ddef`, digest `e96fa243…`, exactly 1 commit,
+before implementation measurements and games. Frozen rule: PROMOTE P≥+10 AND
+L>0 AND both batches ≥−5; CLOSE U<+3 OR P≤0; else INCONCLUSIVE. The prereg
+**discloses in advance** that +10 is lower than exp-0066's +15 and why (component
+screen vs whole-gate conflation); it changes nothing retroactively.
+
+**Step 4 (implementation = composition proof; no new search semantics).** Both
+switches pre-exist and ship false. Composition audit 14/14: branches independent,
+each halving exactly once, `evalStack_`/`counterMoves_`/`correction_`/
+`captureHistory_`/`moveStack_`/`qcache_` all still erased, UCI reuse is OR,
+6/6 setoption TT-clear paths reset. ctest 22/22; joint group 8/8; UCI oracle 8/8;
+bench d4/d6/d7 exact; openings seed 2026110667 / 3,900 / overlap 0 verified.
+
+**Detector gap found by my own mutation run and fixed.** Five aging-RATE mutants
+survived because the group asserted only node-count INEQUALITY. Added EXACT pins
+for all four configurations; all five now KILLED. Also widened both detector
+classes to all three persistence groups / all three UCI oracles, so a composition
+edit (`||`→`&&`) that keeps the joint arm correct but breaks both shipped
+single-table arms is caught. Final: **14/14 killable KILLED, 3 controls SURVIVED**.
+
+**Gates:** efficacy 0.974289 (18/20 games improving) PASS; per-node cost 1.026725,
+A/A spread 0.032082 PASS. Honest signal: joint node ratio is WORSE than either
+single table and time-to-depth ≈1.0003 (neutral) vs exp-0066's ≈0.938 — consistent
+with the frozen sub-additivity prior. No strength claim.
+
+Gate 1 **UNMET**; mission **ACTIVE**. No PR/merge/tag/release.

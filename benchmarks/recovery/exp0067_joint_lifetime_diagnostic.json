@@ -1,0 +1,164 @@
+{
+  "diagnostic": "sequential_replay_JOINT_lifetime",
+  "depth": 7,
+  "hash_mb": 16,
+  "feature_on_in_both_arms": "ContinuationHistory=true",
+  "intervention": "PersistentHistory AND PersistentContinuation together (age both graded tables)",
+  "games": 20,
+  "positions": 2525,
+  "nodes_off": 83817436,
+  "nodes_on": 81662390,
+  "overall_ratio": 0.974289,
+  "games_at_or_below_1": 18,
+  "majority_condition": true,
+  "gate_overall_max": 0.98,
+  "gate_pass": true,
+  "corpus": "benchmarks/positions/diagnostic_exp0066_games.txt",
+  "corpus_sha256": "b0efab35525e2c484377162adf9e6317692362f13c1daca6f81ace7c20690e7b",
+  "corpus_note": "Same deterministic selection rule as exp-0065/0066 (first 20 complete games with >=40 positions from run-42356232866 batchA); reusing the identical committed corpus, not a favourable subset.",
+  "params_sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01",
+  "strength_claim": false,
+  "observation": "Joint node ratio 0.974289 is WORSE than either single table measured separately (exp-0065 history 0.965386, exp-0066 continuation 0.966264). Consistent with the prereg's sub-additivity prior: both tables feed the same quiet-ordering score. This is a node diagnostic, never an Elo estimate.",
+  "per_game": [
+    {
+      "game": 0,
+      "positions": 134,
+      "nodes_off": 3464790,
+      "nodes_on": 3289333,
+      "ratio": 0.94936
+    },
+    {
+      "game": 1,
+      "positions": 145,
+      "nodes_off": 3370479,
+      "nodes_on": 3228965,
+      "ratio": 0.958014
+    },
+    {
+      "game": 2,
+      "positions": 162,
+      "nodes_off": 3679546,
+      "nodes_on": 3596305,
+      "ratio": 0.977377
+    },
+    {
+      "game": 3,
+      "positions": 114,
+      "nodes_off": 7795794,
+      "nodes_on": 7698001,
+      "ratio": 0.987456
+    },
+    {
+      "game": 4,
+      "positions": 80,
+      "nodes_off": 2287552,
+      "nodes_on": 2241258,
+      "ratio": 0.979763
+    },
+    {
+      "game": 5,
+      "positions": 98,
+      "nodes_off": 1957792,
+      "nodes_on": 1983856,
+      "ratio": 1.013313
+    },
+    {
+      "game": 6,
+      "positions": 146,
+      "nodes_off": 2768680,
+      "nodes_on": 2839165,
+      "ratio": 1.025458
+    },
+    {
+      "game": 7,
+      "positions": 133,
+      "nodes_off": 6604046,
+      "nodes_on": 6357680,
+      "ratio": 0.962695
+    },
+    {
+      "game": 8,
+      "positions": 50,
+      "nodes_off": 1230066,
+      "nodes_on": 1183934,
+      "ratio": 0.962496
+    },
+    {
+      "game": 9,
+      "positions": 60,
+      "nodes_off": 1251597,
+      "nodes_on": 1131413,
+      "ratio": 0.903975
+    },
+    {
+      "game": 10,
+      "positions": 157,
+      "nodes_off": 3388713,
+      "nodes_on": 3323305,
+      "ratio": 0.980698
+    },
+    {
+      "game": 11,
+      "positions": 133,
+      "nodes_off": 3857345,
+      "nodes_on": 3842013,
+      "ratio": 0.996025
+    },
+    {
+      "game": 12,
+      "positions": 184,
+      "nodes_off": 5665629,
+      "nodes_on": 5267866,
+      "ratio": 0.929794
+    },
+    {
+      "game": 13,
+      "positions": 69,
+      "nodes_off": 2702480,
+      "nodes_on": 2674512,
+      "ratio": 0.989651
+    },
+    {
+      "game": 14,
+      "positions": 117,
+      "nodes_off": 2855736,
+      "nodes_on": 2719887,
+      "ratio": 0.952429
+    },
+    {
+      "game": 15,
+      "positions": 145,
+      "nodes_off": 5530823,
+      "nodes_on": 5412960,
+      "ratio": 0.97869
+    },
+    {
+      "game": 16,
+      "positions": 196,
+      "nodes_off": 13473219,
+      "nodes_on": 13241091,
+      "ratio": 0.982771
+    },
+    {
+      "game": 17,
+      "positions": 123,
+      "nodes_off": 3148145,
+      "nodes_on": 3073567,
+      "ratio": 0.97631
+    },
+    {
+      "game": 18,
+      "positions": 119,
+      "nodes_off": 2295509,
+      "nodes_on": 2124752,
+      "ratio": 0.925613
+    },
+    {
+      "game": 19,
+      "positions": 160,
+      "nodes_off": 6489495,
+      "nodes_on": 6432527,
+      "ratio": 0.991222
+    }
+  ]
+}

@@ -41,6 +41,12 @@ int main(int argc, char** argv) {
     SearchParams sp; sp.ttEval = true;
     if (which == "persistenthistory") sp.persistentHistory = on;
     else if (which == "ttextensionagnostic") sp.ttExtensionAgnostic = on;
+    else if (which == "jointpersistence") {
+        // exp-0067: ONE intervention (age vs erase) on BOTH graded tables.
+        sp.continuationHistory = true;
+        sp.persistentHistory = on;
+        sp.persistentContinuation = on;
+    }
     else if (which == "persistentcontinuation") {
         // exp-0066: the feature is ON in BOTH arms; only lifetime varies.
         sp.continuationHistory = true;

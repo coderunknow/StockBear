@@ -149,6 +149,7 @@ if(STOCKBEAR_BUILD_TESTS)
         tests/unit/test_tt_extension_identity.cpp
         tests/unit/test_persistent_history.cpp
         tests/unit/test_persistent_continuation.cpp
+        tests/unit/test_joint_persistence.cpp
         tests/unit/test_fen.cpp
         tests/unit/test_move.cpp
         tests/unit/test_nnue.cpp
@@ -198,6 +199,7 @@ if(STOCKBEAR_BUILD_TESTS)
     add_test(NAME tt_extension_identity COMMAND stockbear_tests tt_extension_identity)
     add_test(NAME persistent_history COMMAND stockbear_tests persistent_history)
     add_test(NAME persistent_continuation COMMAND stockbear_tests persistent_continuation)
+    add_test(NAME joint_persistence COMMAND stockbear_tests joint_persistence)
     add_test(NAME regression  COMMAND stockbear_tests regression)
     add_test(NAME perft_quick COMMAND stockbear_tests perft_quick)
     add_test(NAME stress      COMMAND stockbear_tests stress)

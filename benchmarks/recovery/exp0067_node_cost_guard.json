@@ -1,0 +1,53 @@
+{
+  "aa_spread": 0.032081730896983976,
+  "corpus_sha256": "32a054fdeefb02a5b44b11d8287b01b77cb3bc9e04a07f988eefd1e615877afa",
+  "feature_on_in_both_arms": "ContinuationHistory=true",
+  "guard": "fixed_node_wall_time_ab",
+  "hash_mb": 16,
+  "limit": 1.1,
+  "max_node_count_deviation": 6.027961906897525e-07,
+  "median_off_ms": 5530.336,
+  "median_on_ms": 5678.133,
+  "nodes_off": [
+    4976805,
+    4976805,
+    4976805,
+    4976805,
+    4976805,
+    4976805
+  ],
+  "nodes_on": [
+    4976808,
+    4976808,
+    4976808,
+    4976808,
+    4976808,
+    4976808
+  ],
+  "nodes_per_position": 20000,
+  "off_ms": [
+    5450.782,
+    5657.804,
+    4841.938,
+    4976.993,
+    5609.89,
+    5792.799
+  ],
+  "on_ms": [
+    4864.075,
+    5882.145,
+    5761.365,
+    5429.57,
+    5681.266,
+    5675.0
+  ],
+  "params_sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01",
+  "passes": 3,
+  "positions": 250,
+  "probe_sha256": "b8f2dad9418fdc3e67191795507a74c27573da1bb1301e24b89c4230a8ea2096",
+  "spread_limit": 0.1,
+  "strength_claim": false,
+  "switch": "PersistentHistory + PersistentContinuation (joint)",
+  "time_ratio_on_over_off": 1.0267247776626953,
+  "verdict": "PASS"
+}

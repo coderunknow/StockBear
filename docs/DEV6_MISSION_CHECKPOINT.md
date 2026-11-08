@@ -184,3 +184,58 @@ bad-bishop, space, OCB drawish scaling). Each requires its own preregistration
 and may not inherit exp-0065/0066 samples. Given two consecutive sub-bar
 increments, a further single-table screen is **not** a credible gate lever and
 should not be run merely to show activity.
+
+## 2026-11-08 — exp-0067 registered, implemented and gated (no games yet)
+
+Step 1 re-verified HEAD/worktree; `AGENTS.md` does not exist in this repository.
+exp-0066's verdict, evidence and thresholds are untouched.
+
+**Candidate selection was measured, not asserted** (read-only, on committed
+evidence): pure OCB occurs in **58/3000 games (1.93 %)** / **0.56 %** of positions
+⇒ absolute ceiling **+6.71 Elo** even converting every such game to a win →
+**rejected as underpowered by construction**. Bad bishop shares **27.5 %**
+variance with the existing `MobilityBishop` (r = −0.5247); space shares **15.4 %**
+with total mobility (r = −0.3931) → both **deferred as partially redundant**.
+Tempo is a constant offset with a weak prior → deferred. **Joint persistence
+selected**: the only candidate with direct positive in-engine evidence.
+
+Prereg `docs/DEV6_PREREG_EXP0067.md` SHA-256
+`e96fa243cef02263ed0fafc6cc47a8505843b4f8eec8f6c88e85fce25803efc1`, frozen at
+**`ce9ddef`** (exactly 1 commit) before implementation measurements and games.
+
+**No new search semantics**: both switches already exist and ship false. The work
+was proving the **composition**. All pre-game gates PASS:
+
+| Gate | Result |
+|---|---|
+| Composition source audit | 14/14 checks; both branches independent, each halving exactly once, all 5 non-graded tables still erased, 6/6 `setoption` resets |
+| Bench d4/d6/d7 | exact |
+| ctest | **22/22** |
+| `joint_persistence` group | **8/8** |
+| Interactive UCI oracle | **8/8** (incl. joint ≠ history-only and joint ≠ continuation-only) |
+| Mutations | **14/14 killable KILLED**, **3** controls SURVIVED |
+| Efficacy (20 games / 2,525 pos, d7) | **0.974289** ≤ 0.98; **18/20** improving |
+| Per-node cost (20k × 250) | **1.026725** ≤ 1.10; A/A spread **0.032082** |
+| Openings | seed **2026110667**, 3,900, overlap **0**, independently verified |
+
+### A real detector gap found and fixed (recorded, not hidden)
+
+Five aging-**rate** mutants (halving removed / applied twice / only first slot
+decayed, for either table) initially **SURVIVED**: the group asserted only node
+count *inequality*, which is blind to the rate. Fixed by pinning **exact** node
+counts for all four configurations (OFF `{29153,37911,29153,37911}`, history-only
+`{29153,58093,28620,49940}`, continuation-only `{29153,37916,25730,36912}`, joint
+`{29153,57921,28610,47611}`). All five are now KILLED. The mutation detectors were
+also widened to run **all three** persistence groups and **all three** UCI
+oracles, because a composition edit like `||` → `&&` leaves the joint arm correct
+while silently breaking both shipped single-table arms.
+
+**Honest pre-game signal:** joint node ratio **0.9743** is *worse* than either
+single table (0.9654 / 0.9663), and joint per-node cost **1.0267** gives
+time-to-depth ≈ **1.0003** — essentially neutral, materially less favourable than
+exp-0066's ≈0.938. Consistent with the frozen sub-additivity prior. Not an Elo
+claim.
+
+**Next executable task:** dispatch the frozen 7,800-game benchmark, export,
+independently audit, apply the frozen PROMOTE/CLOSE rule, record the verdict.
+Gate 1 remains **UNMET**; mission **ACTIVE**.

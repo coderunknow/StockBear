@@ -1,0 +1,170 @@
+{
+  "mechanism": "joint persistence (PersistentHistory + PersistentContinuation)",
+  "uci_detectors": [
+    "check_joint_persistence_uci.py",
+    "check_persistent_history_uci.py",
+    "check_persistent_continuation_uci.py"
+  ],
+  "mutants": [
+    {
+      "mutant": "history_branch_disabled",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "joint_persistence/both_tables_contribute_independently:FAIL; persistent_history/on_carries_history_and_changes_the_tree:FAIL"
+    },
+    {
+      "mutant": "continuation_branch_disabled",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "joint_persistence/both_tables_contribute_independently:FAIL; persistent_continuation/on_carries_state_and_changes_the_tree:FAIL"
+    },
+    {
+      "mutant": "history_decay_removed",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "joint_persistence/joint_wiring_characterization_pins:FAIL; persistent_history/wiring_characterization_pins:FAIL"
+    },
+    {
+      "mutant": "continuation_decay_removed",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "joint_persistence/joint_wiring_characterization_pins:FAIL; persistent_continuation/wiring_characterization_pins:FAIL"
+    },
+    {
+      "mutant": "history_decay_applied_twice",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "joint_persistence/joint_wiring_characterization_pins:FAIL; persistent_history/wiring_characterization_pins:FAIL"
+    },
+    {
+      "mutant": "continuation_decay_applied_twice",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "joint_persistence/joint_wiring_characterization_pins:FAIL; persistent_continuation/wiring_characterization_pins:FAIL"
+    },
+    {
+      "mutant": "continuation_clearing_kept_while_on",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "joint_persistence/both_tables_contribute_independently:FAIL; persistent_continuation/on_carries_state_and_changes_the_tree:FAIL"
+    },
+    {
+      "mutant": "only_first_continuation_slot_decayed",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "joint_persistence/joint_wiring_characterization_pins:FAIL; persistent_continuation/wiring_characterization_pins:FAIL"
+    },
+    {
+      "mutant": "history_option_misdirected",
+      "file": "src/uci/uci.cpp",
+      "detector": "uci",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "joint_persistence:FAIL,persistent_history:FAIL"
+    },
+    {
+      "mutant": "continuation_option_misdirected",
+      "file": "src/uci/uci.cpp",
+      "detector": "uci",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "joint_persistence:FAIL,persistent_continuation:FAIL"
+    },
+    {
+      "mutant": "object_not_reused",
+      "file": "src/uci/uci.cpp",
+      "detector": "uci",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "joint_persistence:FAIL,persistent_history:FAIL,persistent_continuation:FAIL"
+    },
+    {
+      "mutant": "reuse_requires_both",
+      "file": "src/uci/uci.cpp",
+      "detector": "uci",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "persistent_history:FAIL,persistent_continuation:FAIL"
+    },
+    {
+      "mutant": "ucinewgame_does_not_reset",
+      "file": "src/uci/uci.cpp",
+      "detector": "uci",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "joint_persistence:FAIL,persistent_history:FAIL,persistent_continuation:FAIL"
+    },
+    {
+      "mutant": "setoption_does_not_reset",
+      "file": "src/uci/uci.cpp",
+      "detector": "uci",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "joint_persistence:FAIL,persistent_continuation:FAIL"
+    },
+    {
+      "mutant": "control_equivalent_history_decay",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": false,
+      "status": "SURVIVED_AS_EXPECTED",
+      "good": true,
+      "tail": "all 3 groups PASS"
+    },
+    {
+      "mutant": "control_equivalent_continuation_decay",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": false,
+      "status": "SURVIVED_AS_EXPECTED",
+      "good": true,
+      "tail": "all 3 groups PASS"
+    },
+    {
+      "mutant": "control_equivalent_reuse_demorgan",
+      "file": "src/uci/uci.cpp",
+      "detector": "uci",
+      "expect_killed": false,
+      "status": "SURVIVED_AS_EXPECTED",
+      "good": true,
+      "tail": "all 3 oracles PASS"
+    }
+  ],
+  "killed": 14,
+  "killable": 14,
+  "total": 17,
+  "controls_survived": 3,
+  "bad": [],
+  "gate_min_killable": 8,
+  "verdict": "PASS"
+}
