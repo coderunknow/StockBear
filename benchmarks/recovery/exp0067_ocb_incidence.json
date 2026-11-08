@@ -1,0 +1,24 @@
+{
+  "games": 3000,
+  "games_reaching_pure_OCB": 58,
+  "fraction_games": 0.0193,
+  "positions": 353605,
+  "pure_OCB_positions": 1974,
+  "fraction_positions": 0.0056,
+  "pawn_abs_diff_hist": {
+    "0": 493,
+    "1": 636,
+    "2": 384,
+    "3": 378,
+    "4": 83
+  },
+  "diff<=1_and_one_flank": 210,
+  "diff<=2_one_flank_total": 327,
+  "median_first_ply": 99,
+  "source_pgn": "run-42434718590 batchA match.pgn (exp-0066 evidence, READ ONLY)",
+  "source_pgn_sha256": "3daa3525b594aaa9a2238b54700431e403eb77bab25633e4ab4769697e3ef596",
+  "definition": "pure OCB = exactly one bishop each on opposite square colours, no knight/rook/queen either side",
+  "absolute_elo_ceiling_if_every_OCB_game_won": 6.71,
+  "interpretation": "Ceiling assumes converting EVERY pure-OCB game from a draw to a win, which is impossible. Realistic gain is a small fraction of this. Standalone OCB scaling is underpowered by construction at any affordable sample.",
+  "strength_claim": false
+}

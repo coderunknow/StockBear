@@ -1,0 +1,16 @@
+{
+  "sampled_positions": 2500,
+  "bishop_samples": 1621,
+  "bad_bishop_mean": 2.553,
+  "bad_bishop_sd": 1.526,
+  "corr_bad_bishop_vs_existing_bishop_mobility": -0.5247,
+  "space_mean": 7.48,
+  "space_sd": 2.412,
+  "corr_space_vs_existing_total_mobility": -0.3931,
+  "source_pgn": "run-42434718590 batchA match.pgn (exp-0066 evidence, READ ONLY)",
+  "sampling_seed": 2026110667,
+  "interpretation": "Bad-bishop shares r^2=27.5% of variance with the EXISTING MobilityBishop term (attacks & ~own already excludes own-pawn-blocked squares); space shares 15.4% with existing total mobility. Both are partially redundant, so their marginal effect is attenuated relative to a naive prior.",
+  "bad_bishop_shared_variance": 0.2753,
+  "space_shared_variance": 0.1545,
+  "strength_claim": false
+}
