@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0066",
   "source_sha": "a17e304e297f2edb89e526bf1b5fd891d81e60bc",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0066.json",
-  "source_run_id": "",
-  "note": "exp-0066: frozen 7800-game single-factor SCREEN of PersistentContinuation. ContinuationHistory=true in BOTH arms; only table lifetime varies. Prereg 96c20de1 frozen at fc5375c BEFORE any game. ADVANCE >=+15/LCB>0/batches>=-5; CLOSE UCB<+5 or point<=0. No exp-0065 pooling. Cannot satisfy Gate 1.",
+  "source_run_id": "42434718590",
+  "note": "Deliberate export of exp-0066 evidence (7800 games) into the repository; artifact CDN is blocked in this environment.",
   "attempt": 1
 }
