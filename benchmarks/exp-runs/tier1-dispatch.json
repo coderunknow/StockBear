@@ -1,9 +1,9 @@
 {
-  "mode": "benchmark",
+  "mode": "export",
   "experiment_id": "exp0067",
   "source_sha": "0917c19c1d9f679b36f54d14f60b541bb4c3d04c",
   "plan_path": "benchmarks/exp-runs/tier1-plan-exp0067.json",
-  "source_run_id": "",
-  "note": "exp-0067: frozen 7800-game SCREEN of JOINT persistence (age both graded tables vs erase both). ContinuationHistory=true in BOTH arms. Prereg e96fa243 frozen at ce9ddef BEFORE any game. PROMOTE P>=+10/L>0/batches>=-5; CLOSE U<+3 or P<=0. No pooling with exp-0065/0066, no summing. Cannot satisfy Gate 1.",
+  "source_run_id": "42440539874",
+  "note": "Deliberate export of exp-0067 evidence (7800 games) into the repository; artifact CDN is blocked in this environment.",
   "attempt": 1
 }
