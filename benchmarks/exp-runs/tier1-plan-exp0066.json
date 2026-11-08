@@ -1,0 +1,232 @@
+{
+  "experiment_id": "exp0066",
+  "frozen_before_evaluation_games": true,
+  "prereg": "docs/DEV6_PREREG_EXP0066.md",
+  "prereg_sha256": "96c20de126b9ce8f5ca2031c5a90dfb72e24794462c077651939d1084c215fa3",
+  "prereg_freeze_commit": "fc5375c4099a5d11c5626c8345b6714b78fe9551",
+  "control": "FIXED TIME 40+4 ms; never --nodes",
+  "tier": "SCREEN of persistent continuation history (single-factor lifetime ablation; not Gate-1)",
+  "design": "SAME-BINARY ABLATION; ContinuationHistory=true in BOTH arms so table lifetime is the ONLY factor; primary batches do not play dev5",
+  "mechanism": "PersistentContinuation (search switch, default OFF)",
+  "counter_move_persistence": "deliberately NOT bundled; categorical table saturates after one write; would be unattributable (exp-0026 lesson)",
+  "no_pooling_with_earlier_experiments": true,
+  "pools_exp0065_games": false,
+  "never_sum_individual_elo": true,
+  "frozen_combined": "batchA + batchB ONLY (6000 games)",
+  "candidate_config": "research-data/params_exp0055_race.txt",
+  "candidate_config_sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01",
+  "ablation_config": "research-data/params_exp0055_race.txt",
+  "ablation_config_sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01",
+  "frozen_switch": {
+    "name": "PersistentContinuation",
+    "a": true,
+    "b": false,
+    "shipped_default": false,
+    "feature_enabled_both_arms": "ContinuationHistory=true"
+  },
+  "baseline_binary": "benchmarks/binaries/stockbear-dev5-release",
+  "baseline_binary_sha256": "391cb50e13ab99168aba0255482554ab5e59d1a34af810bf8f4d2c88e5bdb918",
+  "baseline_note": "Provenance only; primary arms are the identical candidate binary.",
+  "openings_seed": 2026110666,
+  "decision_derivation": {
+    "gate_point_required": 75,
+    "best_valid_integral": 40.7732,
+    "remaining_gap": 34.2268,
+    "rationale": "A sub-15 component would need >=3 further confirmed components to close a 34.23 Elo gap; adopt the repository's promotion-relevant screen convention (exp-0057/0058/0061). STRICTER than exp-0064/0065's +10/+3.",
+    "advance_point_min": 15,
+    "advance_lcb_min_exclusive": 0,
+    "advance_each_batch_point_min": -5,
+    "close_ucb_max_exclusive": 5,
+    "close_point_max": 0,
+    "otherwise": "INCONCLUSIVE"
+  },
+  "pregame_gates": {
+    "efficacy": {
+      "evidence": "benchmarks/recovery/exp0066_continuation_lifetime_diagnostic.json",
+      "evidence_sha256": "67a6a5b27665766487512d2ede96b4aa0310e19a0e4d084448d5c615cb38f10a",
+      "gate_overall_ratio_max": 0.98,
+      "observed_overall_ratio": 0.966264,
+      "games_improving": 18,
+      "games_total": 20,
+      "verdict": "PASS"
+    },
+    "per_node_cost": {
+      "evidence": "benchmarks/recovery/exp0066_node_cost_guard.json",
+      "evidence_sha256": "b99165f8afa09601b1478f1e854a0b7903b02fdbb19fb6312fddd4d04d587816",
+      "limit": 1.1,
+      "observed_ratio": 0.970741,
+      "aa_spread": 0.070232,
+      "verdict": "PASS",
+      "eval_cost_gate_applicable": false
+    },
+    "mutations": {
+      "evidence": "benchmarks/recovery/exp0066_mutation_matrix.json",
+      "killed": 11,
+      "killable": 11,
+      "controls_survived": 2,
+      "verdict": "PASS"
+    },
+    "uci_lifetime": {
+      "evidence": "benchmarks/recovery/exp0066_uci_lifetime.json",
+      "checks": 6,
+      "verdict": "PASS"
+    },
+    "suites": {
+      "evidence": "benchmarks/recovery/exp0066_suite_verification.json",
+      "verdict": "PASS"
+    },
+    "bench_signatures": {
+      "4": "243f9a1c1ba5b36f",
+      "6": "e06c4352681ae8eb",
+      "7": "5bceff035f2a4ae4"
+    },
+    "registered_test_groups": 21,
+    "pregame_signal": "0.9663 node ratio x 0.9707 per-node cost ~ 0.938 time-to-depth (favourable, unlike exp-0065's ~1.04). NOT a strength claim; the 6000-game screen decides."
+  },
+  "jobs": [
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0066.md",
+      "prereg_sha256": "96c20de126b9ce8f5ca2031c5a90dfb72e24794462c077651939d1084c215fa3",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "assets": [
+        "research-data/params_exp0055_race.txt"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "id": "tier1-exp0066-stage0",
+      "games": 600,
+      "seed": 2026110772,
+      "openings": "benchmarks/positions/openings_exp0066_stage0.txt",
+      "null": true,
+      "ctest": true,
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "ContinuationHistory=true",
+        "PersistentContinuation=false"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "ContinuationHistory=true",
+        "PersistentContinuation=false"
+      ],
+      "note": "Stage-0 control/null on packaged candidate; fresh ctest 21 groups"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0066.md",
+      "prereg_sha256": "96c20de126b9ce8f5ca2031c5a90dfb72e24794462c077651939d1084c215fa3",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "assets": [
+        "research-data/params_exp0055_race.txt"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "id": "tier1-exp0066-batchA",
+      "games": 3000,
+      "seed": 2026110773,
+      "openings": "benchmarks/positions/openings_exp0066_batchA.txt",
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "ContinuationHistory=true",
+        "PersistentContinuation=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "ContinuationHistory=true",
+        "PersistentContinuation=false"
+      ],
+      "note": "SCREEN batchA; continuation-table lifetime only, feature ON in both arms"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0066.md",
+      "prereg_sha256": "96c20de126b9ce8f5ca2031c5a90dfb72e24794462c077651939d1084c215fa3",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "assets": [
+        "research-data/params_exp0055_race.txt"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "id": "tier1-exp0066-batchB",
+      "games": 3000,
+      "seed": 2026110774,
+      "openings": "benchmarks/positions/openings_exp0066_batchB.txt",
+      "null": false,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "ContinuationHistory=true",
+        "PersistentContinuation=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "ContinuationHistory=true",
+        "PersistentContinuation=false"
+      ],
+      "note": "SCREEN batchB; independent seed/disjoint openings"
+    },
+    {
+      "prereg": "docs/DEV6_PREREG_EXP0066.md",
+      "prereg_sha256": "96c20de126b9ce8f5ca2031c5a90dfb72e24794462c077651939d1084c215fa3",
+      "build_flags": "-mpopcnt -mbmi2 -mlzcnt -DSB_SEE_CACHE=1 -flto=4",
+      "hash": 16,
+      "threads": 1,
+      "max_plies": 240,
+      "control": {
+        "base_ms": 40,
+        "inc_ms": 4
+      },
+      "assets": [
+        "research-data/params_exp0055_race.txt"
+      ],
+      "engine_a": "candidate",
+      "engine_b": "candidate",
+      "id": "tier1-exp0066-null",
+      "games": 1200,
+      "seed": 2026110775,
+      "openings": "benchmarks/positions/openings_exp0066_null.txt",
+      "null": true,
+      "ctest": false,
+      "a_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "ContinuationHistory=true",
+        "PersistentContinuation=true"
+      ],
+      "b_options": [
+        "EvalParams=research-data/params_exp0055_race.txt",
+        "TTEval=true",
+        "ContinuationHistory=true",
+        "PersistentContinuation=true"
+      ],
+      "note": "powered candidate null (treatment vs identical); CI must include 0"
+    }
+  ]
+}

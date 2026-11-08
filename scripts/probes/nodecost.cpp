@@ -41,6 +41,11 @@ int main(int argc, char** argv) {
     SearchParams sp; sp.ttEval = true;
     if (which == "persistenthistory") sp.persistentHistory = on;
     else if (which == "ttextensionagnostic") sp.ttExtensionAgnostic = on;
+    else if (which == "persistentcontinuation") {
+        // exp-0066: the feature is ON in BOTH arms; only lifetime varies.
+        sp.continuationHistory = true;
+        sp.persistentContinuation = on;
+    }
     else { std::fprintf(stderr, "unknown switch %s\n", which.c_str()); return 2; }
     auto s = std::make_unique<Search>(tt, sp);
     for (const std::string& fen : fens) {

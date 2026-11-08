@@ -88,11 +88,17 @@ varying factor is table lifetime.
       bench d4/d6/d7 exact; ctest 20/20; dev5 `391cb50e…` verified.
 - [x] Continuation/counter-move lifecycle independently verified — source
       citations above + executable option-list check.
-- [ ] New experiment preregistered and frozen.
-- [ ] Treatment implemented.
-- [ ] Cross-move persistence tests passed.
-- [ ] Cross-game isolation tests passed.
-- [ ] Regression and adversarial (mutant) tests passed.
+- [x] New experiment preregistered and frozen — `docs/DEV6_PREREG_EXP0066.md`
+      SHA-256 `96c20de126b9ce8f5ca2031c5a90dfb72e24794462c077651939d1084c215fa3`,
+      freeze commit `fc5375c`, `git log` shows exactly **1** commit for the file.
+- [x] Treatment implemented — `PersistentContinuation` default OFF; bench
+      d4/d6/d7 all exact; option advertised `default false`.
+- [x] Cross-move persistence tests passed — `persistent_continuation` group
+      9/9; TT cleared before every probe so lifetime (not TT reuse) is measured.
+- [x] Cross-game isolation tests passed — interactive UCI oracle 6/6 including
+      `cross_game_isolation_on` and `cross_configuration_isolation_on`.
+- [x] Regression and adversarial (mutant) tests passed — **11/11** killable
+      KILLED, **2** equivalence controls SURVIVED; ctest **21/21**.
 - [ ] Primary experiment executed.
 - [ ] Statistical analysis independently verified.
 - [ ] Verdict formally recorded.
@@ -104,6 +110,40 @@ varying factor is table lifetime.
 - [ ] All required audits and evidence complete.
 - [ ] Final report and repo state independently verified.
 
-**Next executable task:** write and freeze `docs/DEV6_PREREG_EXP0066.md`
-(continuation-history persistence, single-factor, both arms feature-ON), then
-implement `PersistentContinuation` default-OFF plus the `setoption` reset fix.
+## 2026-11-08 — Steps C/D complete (DONE, verified)
+
+- Prereg frozen at `fc5375c` (1 commit, digest `96c20de1…`), **before** any
+  implementation measurement or game.
+- Implemented `PersistentContinuation` (default OFF) + reuse of the Search when
+  either persistence switch is ON + reset of persisted state on **all six**
+  `handle_setoption` TT-clear paths (verified programmatically: 6 clears,
+  6 resets).
+- New registered group `persistent_continuation`: **9/9**; full suite **21/21**;
+  bench d4/d6/d7 **exact**.
+- Interactive UCI oracle: **6/6** checks PASS (persistence across `go`,
+  cross-game isolation ON and OFF, cross-configuration isolation ON and OFF,
+  determinism across fresh engines).
+- Mutation matrix: **11/11 killable KILLED**, **2** controls SURVIVED.
+- Frozen efficacy gate: 20 real games / 2,525 positions, node ratio **0.966264**
+  (≤0.98), **18/20** games improving → **PASS**. Corpus byte-identical to the
+  exp-0065 selection rule, proving the rule was followed.
+- Frozen per-node cost gate: ratio **0.970741** (≤1.10), A/A spread **0.070232**
+  (<0.10), node-count deviation 0 → **PASS**.
+- Openings seed **2026110666**, 3,900, 254 files / 96,841 positions excluded,
+  overlap **0**; independently re-verified **PASS**.
+
+### Two errors caught by verification during this step (recorded, not hidden)
+
+1. My first UCI oracle asserted that repeated searches of one position within a
+   single engine must be equal. That is **false**: the TT persists across `go`,
+   so a later search legitimately costs fewer nodes. Replaced with a determinism
+   check across **fresh engines**. Same class of confound as the earlier
+   "lifetime test measured TT reuse" lesson.
+2. The `ucinewgame_does_not_reset` mutant initially **survived** because its
+   anchor matched the first identically-indented `persistentSearch_.reset()`,
+   which lives in `handle_setoption`, not `ucinewgame`. Made the anchor unique
+   (asserted exactly 1 occurrence); the mutant is now **KILLED**.
+
+**Next executable task:** dispatch the frozen exp-0066 benchmark (7,800 games),
+then export, independently audit, apply the frozen decision rule, and record the
+verdict. Gate remains UNMET; mission ACTIVE.

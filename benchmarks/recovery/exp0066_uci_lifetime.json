@@ -1,0 +1,39 @@
+{
+  "checks": {
+    "cross_configuration_isolation_off": true,
+    "cross_configuration_isolation_on": true,
+    "cross_game_isolation_off": true,
+    "cross_game_isolation_on": true,
+    "off_path_is_deterministic_across_fresh_engines": true,
+    "persistence_across_go": true
+  },
+  "mode": "uci_continuation_lifetime",
+  "off": {
+    "after_setoption": 60628,
+    "after_ucinewgame": 60628,
+    "first": 60628,
+    "newgame_isolated": true,
+    "sequence": [
+      60628,
+      59141,
+      25377,
+      8301
+    ],
+    "setoption_isolated": true
+  },
+  "on": {
+    "after_setoption": 60628,
+    "after_ucinewgame": 60628,
+    "first": 60628,
+    "newgame_isolated": true,
+    "sequence": [
+      60628,
+      59143,
+      15657,
+      8662
+    ],
+    "setoption_isolated": true
+  },
+  "params_sha256": "82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01",
+  "verdict": "PASS"
+}

@@ -949,7 +949,14 @@ SearchResult Search::run(Position root, const SearchLimits& limits,
     // Search must not leak the previous search's static evals into `improving`.
     std::fill(std::begin(evalStack_), std::end(evalStack_), 0);
     for (auto& row : counterMoves_) std::fill(std::begin(row), std::end(row), MOVE_NONE);
-    std::fill_n(continuation_.get(), ContinuationSlots, 0);
+    // exp-0066: the ONE mechanism. OFF => exactly the shipped zeroing. ON =>
+    // carry the graded continuation statistic across root searches with a
+    // bounded halving. No update rule, bonus, clamp or ordering weight changes.
+    if (params_.persistentContinuation) {
+        for (std::size_t i = 0; i < ContinuationSlots; ++i) continuation_[i] /= 2;
+    } else {
+        std::fill_n(continuation_.get(), ContinuationSlots, 0);
+    }
     std::fill_n(correction_.get(), CorrectionSlots * ColorNB, 0);
     for (auto& a : captureHistory_)
         for (auto& b : a) std::fill(std::begin(b), std::end(b), 0);

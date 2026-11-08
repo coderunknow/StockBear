@@ -234,6 +234,10 @@ void UciEngine::handle_setoption(const std::string& arguments) {
                 return;
             }
             table_.clear();
+            // exp-0066: persisted ordering state was learned under the OLD
+            // configuration; it must not survive a configuration change.
+            // No-op when every persistence switch is off (pointer is null).
+            persistentSearch_.reset();
             emit("info string EvalParams reset: shipped set");
             return;
         }
@@ -243,6 +247,10 @@ void UciEngine::handle_setoption(const std::string& arguments) {
             return;
         }
         table_.clear();
+        // exp-0066: persisted ordering state was learned under the OLD
+        // configuration; it must not survive a configuration change.
+        // No-op when every persistence switch is off (pointer is null).
+        persistentSearch_.reset();
         emit("info string EvalParams loaded: " + value);
         return;
     }
@@ -254,6 +262,10 @@ void UciEngine::handle_setoption(const std::string& arguments) {
         if (value.empty() || lower(value) == "<empty>") {
             clear_pst_file();
             table_.clear();
+            // exp-0066: persisted ordering state was learned under the OLD
+            // configuration; it must not survive a configuration change.
+            // No-op when every persistence switch is off (pointer is null).
+            persistentSearch_.reset();
             emit("info string PstFile cleared: formulaic tables");
             return;
         }
@@ -263,6 +275,10 @@ void UciEngine::handle_setoption(const std::string& arguments) {
             return;
         }
         table_.clear();
+        // exp-0066: persisted ordering state was learned under the OLD
+        // configuration; it must not survive a configuration change.
+        // No-op when every persistence switch is off (pointer is null).
+        persistentSearch_.reset();
         emit("info string PstFile loaded: " + value);
         return;
     }
@@ -292,6 +308,10 @@ void UciEngine::handle_setoption(const std::string& arguments) {
         }
         *intTarget = static_cast<int>(parsed);
         table_.clear();
+        // exp-0066: persisted ordering state was learned under the OLD
+        // configuration; it must not survive a configuration change.
+        // No-op when every persistence switch is off (pointer is null).
+        persistentSearch_.reset();
         return;
     }
     // Boolean ablation switches for the search features. They default to the
@@ -329,6 +349,7 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     else if (key == "adaptivenullr") flag = &params_.adaptiveNullR;
     else if (key == "ttextensionagnostic") flag = &params_.ttExtensionAgnostic;
     else if (key == "persistenthistory") flag = &params_.persistentHistory;
+    else if (key == "persistentcontinuation") flag = &params_.persistentContinuation;
     else if (key == "correctionhistory") flag = &params_.correctionHistory;
     if (flag == nullptr) {
         emit("info string setoption: unknown option " + name); return;
@@ -344,6 +365,10 @@ void UciEngine::handle_setoption(const std::string& arguments) {
     // Clearing keeps a same-session ablation honest. A GUI that never sends
     // these options pays nothing.
     table_.clear();
+    // exp-0066: persisted ordering state was learned under the OLD feature set
+    // and must not survive a switch flip, exactly like the TT scores above.
+    // No-op when every persistence switch is off (pointer is null).
+    persistentSearch_.reset();
 }
 
 void UciEngine::handle_go(const std::string& arguments) {
@@ -443,7 +468,7 @@ void UciEngine::handle_go(const std::string& arguments) {
                 // be destroyed with it. OFF keeps the exact shipped path.
                 std::unique_ptr<Search> fresh;
                 Search* search = nullptr;
-                if (params_.persistentHistory) {
+                if (params_.persistentHistory || params_.persistentContinuation) {
                     if (!persistentSearch_)
                         persistentSearch_ = std::make_unique<Search>(table_, params_);
                     search = persistentSearch_.get();
@@ -542,6 +567,8 @@ void UciEngine::loop() {
                  check(params_.ttExtensionAgnostic));
             emit(std::string("option name PersistentHistory type check default ") +
                  check(params_.persistentHistory));
+            emit(std::string("option name PersistentContinuation type check default ") +
+                 check(params_.persistentContinuation));
             // exp-0050: default off; isolated same-binary ablation.
             emit(std::string("option name CorrectionHistory type check default ") +
                  check(params_.correctionHistory));

@@ -185,6 +185,19 @@ struct SearchParams {
     // qsearch tables are untouched, so an effect is attributable to ONE table.
     // Frozen in docs/DEV6_PREREG_EXP0065.md.
     bool persistentHistory = false;
+    // --- dev6 exp-0066 (default off; single-factor lifetime ablation) -------
+    // continuation_ is a GRADED statistic accumulated by +-depth^2, yet run()
+    // zeroes it on EVERY root search (search.cpp) and UCI destroys the Search
+    // after every `go`. At 40+4 ms it is trained on one move of data and then
+    // thrown away. With this switch ON the table is carried across searches and
+    // HALVED (bounded forgetting) instead of zeroed, and UCI keeps one Search
+    // alive until ucinewgame or a configuration change. The feature switch
+    // ContinuationHistory must ALSO be on for anything to be written; the
+    // frozen experiment enables it in BOTH arms so lifetime is the only factor.
+    // counterMoves_ is deliberately NOT persisted: it is a categorical
+    // single-move reply table that saturates after one write.
+    // Frozen in docs/DEV6_PREREG_EXP0066.md.
+    bool persistentContinuation = false;
 };
 
 // exp-0064: the single source of truth for the main-TT identity's extension

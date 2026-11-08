@@ -2424,3 +2424,55 @@ games came back positive, so the fixed-node overhead estimate — measured with
 survey: the continuation/counter-move tables are STILL erased every move, so the
 same confound persists for them; a distinct prereg would be required and this
 sample may not be pooled.
+
+## 2026-11-08 — exp-0066 registered, implemented and gated (no games yet)
+
+Sandbox had reset to `main` again; recovered to `origin/arena/6a6a2ba3-stockbear`
+`cbd099a`, reinstalled deps with `--break-system-packages`, rebuilt `build-rel`
+(53 targets), re-verified bench d4/d6/d7 exact, ctest 20/20 and dev5
+`391cb50e13ab…`. Confirmed from the repository that **exp-0065 is the highest
+registered ID**, so exp-0066 was free. `AGENTS.md` does not exist.
+
+**Step B (source, not assumption).** `continuation_` is a graded statistic
+(`search.hpp:265,275`, 200,704 ints) updated by ±depth² (`search.cpp:386–389`)
+and read for quiet ordering (`:296–301`), but **zeroed unconditionally every root
+search** (`:952`). UCI destroys the Search after every `go` (`uci.cpp:445–453`).
+Verified from the **executable's own option list** that `ContinuationHistory` and
+`CounterMoves` both ship **false** — so persisting them alone is a no-op because
+the update sites are gated on the feature. The treatment therefore holds
+`ContinuationHistory=true` in **both** arms and varies only lifetime.
+
+**Counter-move persistence deliberately excluded:** `counterMoves_` is a
+categorical `Move[PieceNB][64]` reply table that saturates after one write
+(`search.hpp:282`, `search.cpp:375,291–293`) — a different, weaker mechanism.
+Bundling would repeat the exp-0026 attribution failure. Factorial rejected
+because it halves power at fixed budget for a weak-prior factor.
+
+**New latent defect found and fixed in scope:** `handle_setoption` clears the TT
+at six sites but never reset `persistentSearch_`, so persisted ordering state
+could survive a configuration change. Frozen Tier-1 matches are unaffected
+(options set once, `ucinewgame` per game), so exp-0065's verdict stands. Added the
+reset to all six paths (verified: 6 clears, 6 resets); no-op when persistence is
+OFF, bench unchanged.
+
+**Thresholds derived, not copied:** gate gap = 75 − 40.7732 = **34.23 Elo**; a
+sub-15 component would need ≥3 further confirmed components, so adopted the
+repository's promotion-relevant convention (exp-0057/0058/0061): ADVANCE
+**≥+15 / LCB>0 / batches ≥−5**, CLOSE **UCB<+5 or point ≤0**. Stricter than
+exp-0064/0065's +10/+3. Prereg frozen at `fc5375c` BEFORE implementation
+measurements or games; digest `96c20de1…`; exactly 1 commit.
+
+**Gates all green before any game:** ctest **21/21**; bench d4/d6/d7 exact; new
+group 9/9; interactive UCI oracle **6/6**; mutations **11/11 killed + 2 controls
+survived**; sequential efficacy over 20 real games / 2,525 positions node ratio
+**0.966264** with **18/20** improving; per-node cost **0.970741** with A/A spread
+0.070232; openings seed 2026110666, 3,900, overlap 0, independently verified.
+
+**Two of my own errors caught by verification:** (1) an oracle check wrongly
+required repeated searches within one engine to be equal — the TT persists
+across `go`, so that confounded transposition reuse with non-determinism; replaced
+with a fresh-engine comparison. (2) the `ucinewgame` mutant initially survived
+because its anchor matched an identically-indented reset in `handle_setoption`;
+made the anchor unique and it is now killed.
+
+Gate 1 remains **UNMET**; mission **ACTIVE**.

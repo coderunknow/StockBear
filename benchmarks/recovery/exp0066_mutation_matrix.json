@@ -1,0 +1,128 @@
+{
+  "mechanism": "PersistentContinuation",
+  "mutants": [
+    {
+      "mutant": "live_path_disabled",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "FAIL persistent_continuation/wiring_characterization_pins: /home/user/StockBear/tests/unit/test_persistent_continuation.cpp:204: r.nodes == on ? onPins[i] : offPins[i]"
+    },
+    {
+      "mutant": "always_persistent",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "FAIL persistent_continuation/wiring_characterization_pins: /home/user/StockBear/tests/unit/test_persistent_continuation.cpp:204: r.nodes == on ? onPins[i] : offPins[i]"
+    },
+    {
+      "mutant": "decay_removed",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "FAIL persistent_continuation/wiring_characterization_pins: /home/user/StockBear/tests/unit/test_persistent_continuation.cpp:204: r.nodes == on ? onPins[i] : offPins[i]"
+    },
+    {
+      "mutant": "decay_applied_twice",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "FAIL persistent_continuation/wiring_characterization_pins: /home/user/StockBear/tests/unit/test_persistent_continuation.cpp:204: r.nodes == on ? onPins[i] : offPins[i]"
+    },
+    {
+      "mutant": "decay_sign_flip",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "FAIL persistent_continuation/wiring_characterization_pins: /home/user/StockBear/tests/unit/test_persistent_continuation.cpp:204: r.nodes == on ? onPins[i] : offPins[i]"
+    },
+    {
+      "mutant": "clearing_kept_while_on",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "FAIL persistent_continuation/wiring_characterization_pins: /home/user/StockBear/tests/unit/test_persistent_continuation.cpp:204: r.nodes == on ? onPins[i] : offPins[i]"
+    },
+    {
+      "mutant": "only_first_slot_decayed",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "FAIL persistent_continuation/wiring_characterization_pins: /home/user/StockBear/tests/unit/test_persistent_continuation.cpp:204: r.nodes == on ? onPins[i] : offPins[i]"
+    },
+    {
+      "mutant": "uci_option_misdirected",
+      "file": "src/uci/uci.cpp",
+      "detector": "uci",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "     60628,       59141,       25377,       8301     ],     \"setoption_isolated\": true   },   \"params_sha256\": \"82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01\",   \"verdict\": \"FAIL\" }"
+    },
+    {
+      "mutant": "object_not_reused",
+      "file": "src/uci/uci.cpp",
+      "detector": "uci",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "     60628,       59141,       25377,       8301     ],     \"setoption_isolated\": true   },   \"params_sha256\": \"82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01\",   \"verdict\": \"FAIL\" }"
+    },
+    {
+      "mutant": "ucinewgame_does_not_reset",
+      "file": "src/uci/uci.cpp",
+      "detector": "uci",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "     60628,       59143,       15657,       8662     ],     \"setoption_isolated\": true   },   \"params_sha256\": \"82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01\",   \"verdict\": \"FAIL\" }"
+    },
+    {
+      "mutant": "setoption_does_not_reset",
+      "file": "src/uci/uci.cpp",
+      "detector": "uci",
+      "expect_killed": true,
+      "status": "KILLED",
+      "good": true,
+      "tail": "    60628,       59143,       15657,       8662     ],     \"setoption_isolated\": false   },   \"params_sha256\": \"82f93ba7a7b7e8e757c245098f5e2c4f42c866aa25124c73d0ad67ad11f89f01\",   \"verdict\": \"FAIL\" }"
+    },
+    {
+      "mutant": "control_equivalent_decay_rewrite",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": false,
+      "status": "SURVIVED_AS_EXPECTED",
+      "good": true,
+      "tail": "Tests: 9, failures: 0"
+    },
+    {
+      "mutant": "control_equivalent_condition_rewrite",
+      "file": "src/search/search.cpp",
+      "detector": "cpp",
+      "expect_killed": false,
+      "status": "SURVIVED_AS_EXPECTED",
+      "good": true,
+      "tail": "Tests: 9, failures: 0"
+    }
+  ],
+  "killed": 11,
+  "killable": 11,
+  "total": 13,
+  "controls_survived": 2,
+  "bad": [],
+  "verdict": "PASS"
+}
