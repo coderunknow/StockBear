@@ -1,15 +1,15 @@
 {
   "item": "7.6",
   "criterion": "No build artifacts, large datasets or unclear-licensing assets were committed.",
-  "tracked_files": 3117,
-  "tracked_bytes": 430507641,
-  "branch_added_files": 2342,
-  "branch_added_bytes": 303164255,
+  "tracked_files": 3340,
+  "tracked_bytes": 480583574,
+  "branch_added_files": 2565,
+  "branch_added_bytes": 353207386,
   "build_artifact_matches": [],
   "build_artifact_count": 0,
   "local_build_dirs_ignore_status": {
     "build-rel": ".gitignore:3:build-*/\tbuild-rel",
-    "build-ttdiag": ".gitignore:3:build-*/\tbuild-ttdiag",
+    "build-ttdiag": "NOT IGNORED",
     "build": "NOT IGNORED"
   },
   "tracked_elf_binaries": [
@@ -35,35 +35,35 @@
   ],
   "branch_added_categories": {
     "immutable raw experiment evidence": {
-      "bytes": 283910019,
-      "files": 1683
+      "bytes": 332002694,
+      "files": 1847
     },
     "frozen opening / diagnostic suite (experiment input)": {
-      "bytes": 12749166,
-      "files": 245
+      "bytes": 14189396,
+      "files": 257
     },
     "baseline provenance record": {
-      "bytes": 2793751,
-      "files": 115
+      "bytes": 2794963,
+      "files": 117
     },
     "published baseline executable (provenance)": {
       "bytes": 1767032,
       "files": 1
     },
     "document": {
-      "bytes": 758470,
-      "files": 83
-    },
-    "source / tooling": {
-      "bytes": 684580,
-      "files": 100
+      "bytes": 825057,
+      "files": 89
     },
     "audit / validity record": {
-      "bytes": 461037,
-      "files": 109
+      "bytes": 797114,
+      "files": 130
+    },
+    "source / tooling": {
+      "bytes": 786782,
+      "files": 118
     },
     "other": {
-      "bytes": 34915,
+      "bytes": 39063,
       "files": 1
     },
     "frozen evaluation parameters (experiment input)": {

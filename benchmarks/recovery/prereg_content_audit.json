@@ -13,8 +13,8 @@
     "power_rationale",
     "validity_requirements"
   ],
-  "preregs_total": 37,
-  "preregs_complete": 36,
+  "preregs_total": 39,
+  "preregs_complete": 38,
   "preregs_incomplete": [
     {
       "path": "docs/DEV6_PREREG_BASELINE.md",
@@ -27,8 +27,8 @@
     }
   ],
   "mission_scope_regex": "EXP0050..EXP0064 (strength-tested era, as in 2.1)",
-  "mission_scope_total": 15,
-  "mission_scope_complete": 15,
+  "mission_scope_total": 17,
+  "mission_scope_complete": 17,
   "mission_scope_incomplete": [],
   "rows": [
     {
@@ -6847,6 +6847,372 @@
               "line": 161,
               "pattern": "ILLEGAL",
               "text": "4. Zero time forfeits, illegal moves, engine failures or crashes; capped `*`"
+            }
+          ]
+        }
+      },
+      "resolved_by_incorporation": [],
+      "missing": [],
+      "complete": true
+    },
+    {
+      "path": "docs/DEV6_PREREG_EXP0065.md",
+      "elements": {
+        "id": {
+          "present": true,
+          "citations": [
+            {
+              "line": 1,
+              "pattern": "exp[- ]?00\\d\\d",
+              "text": "# exp-0065 \u2014 persistent cross-move quiet history (ordering learning)"
+            },
+            {
+              "line": 82,
+              "pattern": "BASELINE",
+              "text": "- Published dev5 baseline (provenance only, not an arm here):"
+            }
+          ]
+        },
+        "hypothesis": {
+          "present": true,
+          "citations": [
+            {
+              "line": 4,
+              "pattern": "hypothes[ie]s",
+              "text": "## 1. Hypothesis and source-grounded mechanism"
+            },
+            {
+              "line": 54,
+              "pattern": "\\bprior\\b",
+              "text": "## 2. Distinction from prior experiments (no closed verdict reopened)"
+            },
+            {
+              "line": 170,
+              "pattern": "expected",
+              "text": "roughly \u00b19 Elo near the expected effect, so a true zero cannot pass LCB > 0."
+            }
+          ]
+        },
+        "mechanism": {
+          "present": true,
+          "citations": [
+            {
+              "line": 4,
+              "pattern": "mechanism",
+              "text": "## 1. Hypothesis and source-grounded mechanism"
+            },
+            {
+              "line": 9,
+              "pattern": "src/[a-z]+/[a-z_]+\\.(cpp|hpp)",
+              "text": "1. `src/search/search.cpp:934\u2013943` \u2014 `Search::run()` zeroes `history_`,"
+            },
+            {
+              "line": 92,
+              "pattern": "SearchParams::",
+              "text": "1. `SearchParams::persistentHistory = false` + UCI check option"
+            }
+          ]
+        },
+        "candidate_baseline_hashes": {
+          "present": true,
+          "citations": [
+            {
+              "line": 72,
+              "pattern": "candidate|arm a|engine_a",
+              "text": "Same-binary ablation on the **current best valid integrated candidate**"
+            },
+            {
+              "line": 24,
+              "pattern": "baseline|ablation|arm b|engine_b|dev5",
+              "text": "neutral-to-negative here: exp-0014's ablations were later found to be **no-ops**"
+            }
+          ]
+        },
+        "frozen_decision_rules": {
+          "present": true,
+          "citations": [
+            {
+              "line": 203,
+              "pattern": "ADVANCE|GATE MET|GATE 1 PASS|\\bPASS iff\\b",
+              "text": "- **SCREEN ADVANCE** iff point \u2265 **+10**, LCB **> 0**, and both batch points"
+            },
+            {
+              "line": 54,
+              "pattern": "CLOSE|GATE UNMET|GATE 1 FAIL|\\bFAIL iff\\b",
+              "text": "## 2. Distinction from prior experiments (no closed verdict reopened)"
+            },
+            {
+              "line": 24,
+              "pattern": "INCONCLUSIVE|Otherwise|INVALID|NEGATIVE",
+              "text": "neutral-to-negative here: exp-0014's ablations were later found to be **no-ops**"
+            }
+          ]
+        },
+        "time_control": {
+          "present": true,
+          "citations": [
+            {
+              "line": 17,
+              "pattern": "40\\s*\\+\\s*4",
+              "text": "reductions. At the frozen 40+4 ms control the engine reaches **median depth 5**"
+            },
+            {
+              "line": 17,
+              "pattern": "40\\+4",
+              "text": "reductions. At the frozen 40+4 ms control the engine reaches **median depth 5**"
+            }
+          ]
+        },
+        "opening_methodology": {
+          "present": true,
+          "citations": [
+            {
+              "line": 151,
+              "pattern": "opening",
+              "text": "## 6. Protocol, openings, sample, compute budget"
+            },
+            {
+              "line": 117,
+              "pattern": "seed|disjoint|suite",
+              "text": "suite unchanged; mate and stalemate scores unchanged."
+            }
+          ]
+        },
+        "statistics": {
+          "present": true,
+          "citations": [
+            {
+              "line": 168,
+              "pattern": "cluster",
+              "text": "opening-clustered CR1 95 % Student-t, independent cluster bootstrap cross-check."
+            },
+            {
+              "line": 168,
+              "pattern": "\\bCR1\\b",
+              "text": "opening-clustered CR1 95 % Student-t, independent cluster bootstrap cross-check."
+            },
+            {
+              "line": 168,
+              "pattern": "bootstrap",
+              "text": "opening-clustered CR1 95 % Student-t, independent cluster bootstrap cross-check."
+            }
+          ]
+        },
+        "power_rationale": {
+          "present": true,
+          "citations": [
+            {
+              "line": 169,
+              "pattern": "\\bpower\\b",
+              "text": "Nulls are never pooled. Power: at 6,000 games the established methodology gives"
+            },
+            {
+              "line": 170,
+              "pattern": "\u00b1\\s*\\d",
+              "text": "roughly \u00b19 Elo near the expected effect, so a true zero cannot pass LCB > 0."
+            }
+          ]
+        },
+        "validity_requirements": {
+          "present": true,
+          "citations": [
+            {
+              "line": 180,
+              "pattern": "validity",
+              "text": "## 7. Validity \u2014 every condition required"
+            },
+            {
+              "line": 178,
+              "pattern": "\\bINVALID\\b",
+              "text": "a failed null is INVALID, not a retry."
+            },
+            {
+              "line": 187,
+              "pattern": "ILLEGAL",
+              "text": "4. Zero time forfeits, illegal moves, engine failures or crashes; capped `*`"
+            }
+          ]
+        }
+      },
+      "resolved_by_incorporation": [],
+      "missing": [],
+      "complete": true
+    },
+    {
+      "path": "docs/DEV6_PREREG_EXP0066.md",
+      "elements": {
+        "id": {
+          "present": true,
+          "citations": [
+            {
+              "line": 1,
+              "pattern": "exp[- ]?00\\d\\d",
+              "text": "# exp-0066 \u2014 persistent continuation history (single-factor lifetime ablation)"
+            },
+            {
+              "line": 89,
+              "pattern": "BASELINE",
+              "text": "- Published dev5 gate baseline (provenance only, **not** an arm here): SHA-256"
+            }
+          ]
+        },
+        "hypothesis": {
+          "present": true,
+          "citations": [
+            {
+              "line": 4,
+              "pattern": "hypothes[ie]s",
+              "text": "## 1. Hypothesis"
+            },
+            {
+              "line": 67,
+              "pattern": "\\bprior\\b",
+              "text": "mechanistic prior for the reason above. Counter-move persistence, if pursued,"
+            },
+            {
+              "line": 70,
+              "pattern": "expected",
+              "text": "## 4. Expected behavioural and search-tree effects"
+            }
+          ]
+        },
+        "mechanism": {
+          "present": true,
+          "citations": [
+            {
+              "line": 60,
+              "pattern": "mechanism",
+              "text": "accumulation, so persistence is a materially different and weaker mechanism."
+            },
+            {
+              "line": 8,
+              "pattern": "src/[a-z]+/[a-z_]+\\.(cpp|hpp)",
+              "text": "cutoff and malus (`src/search/search.cpp:386\u2013389,403\u2013405`) but is **zeroed"
+            },
+            {
+              "line": 32,
+              "pattern": "\\b[A-Z][A-Za-z]+=(true|false)\\b",
+              "text": "`EvalParams=research-data/params_exp0055_race.txt`, `TTEval=true`, and"
+            }
+          ]
+        },
+        "candidate_baseline_hashes": {
+          "present": true,
+          "citations": [
+            {
+              "line": 31,
+              "pattern": "candidate|arm a|engine_a",
+              "text": "Both arms run the **identical packaged candidate binary** with"
+            },
+            {
+              "line": 1,
+              "pattern": "baseline|ablation|arm b|engine_b|dev5",
+              "text": "# exp-0066 \u2014 persistent continuation history (single-factor lifetime ablation)"
+            }
+          ]
+        },
+        "frozen_decision_rules": {
+          "present": true,
+          "citations": [
+            {
+              "line": 199,
+              "pattern": "ADVANCE|GATE MET|GATE 1 PASS|\\bPASS iff\\b",
+              "text": "## 11. Frozen ADVANCE / CLOSE / INCONCLUSIVE criteria"
+            },
+            {
+              "line": 182,
+              "pattern": "CLOSE|GATE UNMET|GATE 1 FAIL|\\bFAIL iff\\b",
+              "text": "\u2264 0.98** AND a **majority of games individually \u2264 1.00**. Otherwise close"
+            },
+            {
+              "line": 27,
+              "pattern": "INCONCLUSIVE|Otherwise|INVALID|NEGATIVE",
+              "text": "(INCONCLUSIVE against its own +10 bar; verdict immutable, switch stays OFF)."
+            }
+          ]
+        },
+        "time_control": {
+          "present": true,
+          "citations": [
+            {
+              "line": 12,
+              "pattern": "40\\s*\\+\\s*4",
+              "text": "40+4 ms control the engine reaches median depth 5, roughly 10\u201330k nodes per move,"
+            },
+            {
+              "line": 12,
+              "pattern": "40\\+4",
+              "text": "40+4 ms control the engine reaches median depth 5, roughly 10\u201330k nodes per move,"
+            }
+          ]
+        },
+        "opening_methodology": {
+          "present": true,
+          "citations": [
+            {
+              "line": 101,
+              "pattern": "opening",
+              "text": "opening pairs only**, from the frozen combined primary sample (batchA + batchB)."
+            },
+            {
+              "line": 112,
+              "pattern": "seed|disjoint|suite",
+              "text": "Fresh openings from `scripts/dev6_exp0066_openings.py`, seed **2026110666**,"
+            }
+          ]
+        },
+        "statistics": {
+          "present": true,
+          "citations": [
+            {
+              "line": 121,
+              "pattern": "cluster",
+              "text": "Two-sided **opening-clustered CR1** variance of the pair mean with a"
+            },
+            {
+              "line": 121,
+              "pattern": "\\bCR1\\b",
+              "text": "Two-sided **opening-clustered CR1** variance of the pair mean with a"
+            },
+            {
+              "line": 123,
+              "pattern": "bootstrap",
+              "text": "opening clusters. Independent **cluster bootstrap** (20,000 resamples) as a"
+            }
+          ]
+        },
+        "power_rationale": {
+          "present": true,
+          "citations": [
+            {
+              "line": 66,
+              "pattern": "\\bpower\\b",
+              "text": "halves the power of every contrast, and the counter-move factor has a weak"
+            },
+            {
+              "line": 144,
+              "pattern": "half.width",
+              "text": "Power: at 6,000 games this methodology yields roughly \u00b19\u201310 Elo half-width near"
+            },
+            {
+              "line": 144,
+              "pattern": "\u00b1\\s*\\d",
+              "text": "Power: at 6,000 games this methodology yields roughly \u00b19\u201310 Elo half-width near"
+            }
+          ]
+        },
+        "validity_requirements": {
+          "present": true,
+          "citations": [
+            {
+              "line": 153,
+              "pattern": "validity",
+              "text": "## 10. Validity, mutant tests and independent audit"
+            },
+            {
+              "line": 149,
+              "pattern": "\\bINVALID\\b",
+              "text": "until favourable, no favourable-batch selection. A failed null is **INVALID**,"
             }
           ]
         }
