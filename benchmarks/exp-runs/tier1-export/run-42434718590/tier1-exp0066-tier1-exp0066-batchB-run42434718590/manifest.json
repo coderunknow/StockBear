@@ -1,0 +1,47 @@
+{
+  "workflow_run_id": "42434718590",
+  "workflow_run_attempt": "1",
+  "job_id": "tier1-exp0066-batchB",
+  "experiment_id": "exp0066",
+  "source_sha": "a17e304e297f2edb89e526bf1b5fd891d81e60bc",
+  "runner": {
+    "os": "Linux",
+    "nproc": 4,
+    "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43"
+  },
+  "toolchain": {
+    "compiler": "c++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "cmake": "cmake version 4.4.4"
+  },
+  "fingerprint_sha256": "0fb98a55bbbd488c64cf9f6ef26f13846391cf9dbe339a87217f6d3c1af0e2f8",
+  "artifact_channel": "GitHub Actions artifact; export mode mirrors to git for Contents-API retrieval (blob CDN blocked)",
+  "benchmark_scripts_never_push": true,
+  "summary": {
+    "job_id": "tier1-exp0066-batchB",
+    "experiment_id": "exp0066",
+    "games": 2995,
+    "unadjudicated": 5,
+    "wins": 1074,
+    "draws": 934,
+    "losses": 987,
+    "score": 0.5145242070116861,
+    "elo": 9.879593354034437,
+    "ci95": [
+      1.3022291345062222,
+      18.469016527594164
+    ],
+    "clusters": 1495,
+    "terminations": {
+      "CHECKMATE": 2061,
+      "THREEFOLD_REPETITION": 866,
+      "UNADJUDICATED_MAX_PLIES": 5,
+      "INSUFFICIENT_MATERIAL": 58,
+      "FIFTY_MOVES": 9,
+      "STALEMATE": 1
+    },
+    "time_forfeit": 0,
+    "illegal": 0,
+    "engine_failure": 0,
+    "independent_elo_from_score": 10.09529287816008
+  }
+}
